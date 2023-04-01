@@ -1,0 +1,273 @@
+---
+title: "Viability"
+author: "Tom Miller,Jacob Moutouama and Aldo Compagnoni"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+ rmdformats::readthedown:
+    code_folding: show
+    self_contained: true
+    number_sections: true
+    thumbnails: true
+    lightbox: true
+    gallery: true
+    keep_md: true
+    highlight: tango
+    df_print: kable 
+    toc_depth: 3
+    fig_width: 8
+    fig_height: 8
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment=NA, 
+                      echo = TRUE,
+                      warning=FALSE, 
+                      message=FALSE)
+knitr::opts_knit$set(global.par = TRUE,knitr.table.format = "latex")
+```
+
+```{r eval=TRUE,echo=T}
+rm(list = ls())
+
+```
+
+# Required libraries
+```{r}
+# load packages
+library(rstan)
+# set rstan options
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+set.seed(13)
+# Sys.setenv(LOCAL_CPPFLAGS = '-march=corei7 -mtune=corei7')
+options(tidyverse.quiet = TRUE)
+library(tidyverse)
+options(dplyr.summarise.inform = FALSE)
+library(bayesplot)
+# install.packages("countreg",repos = "http://R-Forge.R-project.org")
+library(countreg)
+library(rmutil)
+library(actuar)
+library(SPEI)
+library(LaplacesDemon)
+```
+
+# Demography and germination data  
+```{r}
+poar_allsites <- read.csv("https://www.dropbox.com/s/xk4225mn8btqhbm/demography_allsites.csv?dl=1", stringsAsFactors = F)#common garden data
+viabVr <- read.csv("https://www.dropbox.com/s/jfkgoxgv8o1fgqx/viability.csv?dl=1") #seed viability and germination
+```
+
+# Add current climatic conditions to match with the demograhic data
+```{r}
+poar_allsites$census.year<-poar_allsites$year-1 #Add census year to match with climate data 
+summary(poar_allsites)
+
+poar_ppt <- read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR Forecasting/data/Poa_pr.csv", stringsAsFactors = F) # monthly  precipitation 
+poar_temp <- read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR Forecasting/data/Poa_tas.csv", stringsAsFactors = F) # monthly temperature)
+poar_ppt$census.year<-ifelse(poar_ppt$month<5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from May to December of the previous year and precipitation of the current year.  
+poar_temp$census.year<-ifelse(poar_temp$month<5,poar_temp$year-1,poar_temp$year)
+
+poar_ppt %>% 
+  dplyr::select(Longitude, Latitude, census.year, ppt,site,long.scaled,long.center) %>% 
+  filter(census.year %in% (2014:2016)) %>%
+  group_by(site,census.year) %>%
+	summarise(mean_ppt=sum(ppt),sd_ppt=sd(ppt),cv_ppt=sd_ppt/mean_ppt,Longitude=unique(Longitude),Latitude=unique(Latitude))->poar_pptann # annual precipitation and seasonality of precipitation seasonality of temperature
+
+poar_temp %>% 
+  dplyr::select(Longitude, Latitude, census.year, temp,site,long.scaled,long.center) %>% 
+  filter(census.year %in% (2014:2016)) %>%
+  group_by(site,census.year) %>%
+	summarise(mean_temp = mean(temp),sd_temp=sd(temp),cv_temp=sd_temp/mean_temp,Longitude=unique(Longitude),Latitude=unique(Latitude))->poar_tempann # mean annual temperature and 
+poar_clim<- merge(x = poar_pptann, y = poar_tempann) # merge temperature and precipitation data
+
+poar_allsites.clim <- left_join(x = poar_allsites ,y =poar_clim,by=c("site","census.year","Longitude","Latitude")) # merge the demographic data with climatic data for each site
+poar_allsites.clim$siteyear<-interaction(poar_allsites.clim$site,poar_allsites.clim$census.year) # create a new variable taking into account the year and the climate variable
+poar_allsites.clim$siteyear<-as.character(poar_allsites.clim$siteyear)
+
+```
+
+# Check for correlation between predictors ( precipitation and seasonality of precipitation,  temperature and seasonality of temperature )
+
+```{r,eval=FALSE}
+figppt <- ggpubr::ggscatter(poar_allsites.clim, x = "mean_ppt", y = "cv_ppt",
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   )
+figppt + ggpubr::stat_cor(method = "pearson", label.x = 1000, label.y = 0.09)
+```
+
+```{r,eval=FALSE}
+fitemp <- ggpubr::ggscatter(poar_allsites.clim, x = "mean_temp", y = "cv_temp",
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   )
+fitemp + ggpubr::stat_cor(method = "pearson", label.x = 14, label.y = 0.2)
+```
+# Data for each vital rate
+```{r}
+# Survival
+poar_allsites.clim %>% 
+  subset( tillerN_t0 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t0, surv_t1,mean_ppt,cv_ppt,mean_temp,siteyear)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          siteyear = siteyear %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( log_size_t0   = log(tillerN_t0),
+          log_ppt_t1_z = log(mean_ppt) %>% scale %>% .[,1],
+          log_cvppt_t1_z = log(cv_ppt) %>% scale %>% .[,1],
+          log_temp_t1_z = log(mean_temp) %>% scale %>% .[,1])->poar_allsites.surv
+
+# seed viability
+viabVr %>% 
+  dplyr::select( plot, totS, yesMaybe, sr_f ) %>% 
+  rename( SR        = sr_f,
+          y_viab = yesMaybe,
+          tot_seeds_viab = totS) %>% 
+  dplyr::select(y_viab, tot_seeds_viab, SR ) %>% 
+  na.omit->viab
+
+# seed germination
+viabVr %>% 
+  dplyr::select( plot, germTot, germFail, sr_f ) %>% 
+  rename( SR        = sr_f,
+          y_germ    = germTot ) %>% 
+  mutate(tot_seeds_germ = y_germ + germFail ) %>% 
+  dplyr::select(y_germ, tot_seeds_germ, SR ) %>% 
+  na.omit->germ
+
+# seeds per panicle
+viabVr %>% 
+  dplyr::select(SeedN)  %>% 
+  na.omit->seeds
+
+```
+
+# Bundle data for model for current climatic conditions
+```{r}
+
+data_allsites.via <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
+                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
+                  
+                  # viability
+                  n_v       = nrow(viab),
+                  y_v       = viab$y_viab,
+                  tot_seeds_v = viab$tot_seeds_viab,
+                  SR_v        = viab$SR,
+                  
+                  # germination
+                  n_m       = nrow(germ),
+                  y_m       = germ$y_germ,
+                  tot_seeds_m = germ$tot_seeds_germ,
+                  SR_m        = germ$SR,
+                  
+                  # seeds per panicle
+                  n_d = nrow(seeds),
+                  y_d = seeds$SeedN)
+```
+
+# MCMC parameters
+```{r}
+sim_pars <- list(
+  warmup = 1000, 
+  iter = 4000, 
+  thin = 3, 
+  chains = 3
+)
+
+
+```
+
+```{r flowering, cache=TRUE}
+fit_allsites_via <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR Forecasting/viability/poar_germination.stan",
+ data = data_allsites.via,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains,
+ seed=13)
+# saveRDS(fit_allsites_full, 'C:/YOURDIRECTORY')
+
+```
+
+# Diagnostics
+## Posterior Distributions
+
+```{r}
+traceplot(fit_allsites_via, pars = c("v0","a_v","m","phi_m","phi_v","lambda_d"), inc_warmup = TRUE, nrow = 2) # The traceplot method is used to plot the time series of the posterior draws. If we include the warmup draws by setting inc_warmup=TRUE, the background color of the warmup area is different from the post-warmup phase
+
+```
+
+
+
+```{r}
+pairs(fit_allsites_via, pars =  c("v0","a_v","m","phi_v","phi_m","lambda_d"), las = 2)# We can also make a graphical representation of (much of the) the same information using pairs. The “pairs”" plot can be used to get a sense of whether any sampling difficulties are occurring in the tails or near the mode. Here btempptt has an issue. The marginal distribution of each selected parameter is included as a histogram along the diagonal.Ideally, the below-diagonal intersection and the above-diagonal intersection of the same two variables should have distributions that are mirror images of each other. Any yellow points would indicate transitions where the maximum treedepth__ was hit, and red points indicate a divergent transition.
+
+```
+
+
+```{r}
+stan_ac(fit_allsites_via, pars = c("v0","a_v","m","phi_m","phi_v","lambda_d"), lags = 15)# We can also evaluate the autocorrelation between samples for each parameter at different lags. Given the nature of Markov chains, there has to be some autocorrelation at the first lag, but we want to see a sharp drop off as the lags increase. Since we are performing this operation on multiple chains, these results are the average autocorrelation values from all four chains.
+
+```
+
+```{r}
+coda::gelman.plot(As.mcmc.list(fit_allsites_via, pars = c("v0","a_v","m","phi_m","phi_v","lambda_d")), autoburnin = F) # What if we want a plot of the potential scale reduction factor R̂ at each iteration of the sampler? Unfortunately, rstan doesn’t include a builtin function to produce this plot. Fortunately, it does provide an incredibly easy way to convert a stanfit object to a coda object using the As.mcmc.list() function.
+```
+
+```{r}
+stan_dens(fit_allsites_via, pars =  c("v0","a_v","m","phi_m","phi_v","lambda_d")) + geom_vline(xintercept = 0, linetype = 2)
+```
+
+```{r}
+# extract regression parameters
+regpar <- summary(fit_allsites_via, pars = c("v0","a_v","m","phi_m"))$summary
+knitr::kable(regpar)
+```
+
+
+```{r}
+plot(fit_allsites_paniclecv,pars = c("b0_p", "bsize_p","bsex_p","bppt_p","btemp_p","bcvppt_p","bcvtemp_p","bpptsex_p","btempsex_p","bcvpptsex_p","bcvtempsex_p","bppttempsex_p","bcvpptcvtempsex_p"))+ geom_vline(xintercept = 0, linetype = 2)
+```
+
+
+
+# Posterior predictive check
+
+
+```{r,eval=FALSE}
+#Now we’ve run the models, let’s do some posterior predictive checks. The idea of posterior predictive checks is to compare our observed data to replicated data from the model. If our model is a good fit, we should be able to use it to generate a dataset that resembles the observed data.
+#pull out parameter posterior distributions
+predP <- rstan::extract(fit_allsites_paniclecv, pars = c("predP"))$predP
+#draw 500 random samples from the joint posterior
+n_post_draws <- 100
+post_draws <-sample.int(dim(predP)[1],n_post_draws)
+#set up simulation output
+y_p_sim <- matrix(NA,n_post_draws,length(poar_allsites.panic$y_p))
+#loop over the posterior and generate new observations
+for(i in 1:n_post_draws){
+  print(i)
+  ## sample flowering data (bernoulli)
+  y_p_sim[i,] <- rbinom(n=length(poar_allsites.panic$y_p), size=1, prob = invlogit(predP[i,]))
+}
+
+```
+
+
+```{r,eval=FALSE}
+#plot ppc overlay
+(ppc_dens_overlay(poar_allsites.panic$y_p, y_p_sim)+
+  xlab("  P status")+ylab("Density")+
+  ggtitle(("P"))+theme(legend.position = "none")->ppc_pa)
+```
+
