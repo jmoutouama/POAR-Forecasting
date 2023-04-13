@@ -1,11 +1,7 @@
 
 
 data {
-  // Data for all vital rates
-  int<lower=0> n_sites;         // N. of sites
-  int<lower=0> n_sources;         // N. of source populations
-
- 
+  
   // Data for seed viability sub-model (v)
   int<lower=0> n_v;   // data points
   int<lower=0> y_v[n_v];  // number of viable seeds
@@ -18,9 +14,6 @@ data {
   int<lower=0> tot_seeds_m[n_m]; // number of trials
   real SR_m[n_m]; // Sex ratio (proportion female)
   
-  // data for seed count
-  int<lower=0> n_d;   // data points
-  int<lower=0> y_d[n_d];  // total number of seeds per panicle 
 }
 
 parameters {
@@ -31,8 +24,7 @@ parameters {
   // Germination rate
   real<lower=0,upper=1> m;
   real<lower=0.1> phi_m;  
-  // Seed count
-  real<lower=0> lambda_d;
+  
   }
 
 transformed parameters {
@@ -71,14 +63,11 @@ model {
   phi_v ~ pareto(0.1,1.5);
   m  ~ beta(10,1);  // intercept viability model
   phi_m ~ pareto(0.1,1.5);
-  lambda_d ~ inv_gamma(0.001, 0.001);
   // sampling  
     //viability
   y_v ~ beta_binomial(tot_seeds_v, alpha_v, beta_v);
   //germination
   y_m ~ beta_binomial(tot_seeds_m, alpha_m, beta_m);
-  //seed number
-  y_d ~ poisson(lambda_d);
   
 }
 
