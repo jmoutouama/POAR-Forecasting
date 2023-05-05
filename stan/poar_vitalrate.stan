@@ -24,41 +24,35 @@ data {
   // Data for survival sub-model (s)
   int<lower=0> n_s;    // N. of data points for the surival  model
   int<lower=0> n_blocks_s;         // N. of blocks
-  int<lower=0> n_siteyear_s;         // N. of siteyear
   int<lower=0> site_s[n_s];  // site index
   int<lower=0> block_s[n_s];  // block index
   int<lower=0> source_s[n_s];  // source index
-  int<lower=0> siteyear_s[n_s];  // site year index
   int<lower=0,upper=1> y_s[n_s]; // Survival at time t+1.
   vector[n_s] size_s;  // log size at time t
   vector[n_s] male_s;  // sex (male=1, fem=0)
   vector[n_s] ppt_s;  // precipitation of site
   vector[n_s] temp_s;  //  temperature of site
-  vector[n_s] cvppt_s;  // precipitation standard deviation  of site
+  vector[n_s] cvppt_s;  // precipitation coefficient of variation of site
   
   // Data for growth sub-model (g)
   int<lower=0> n_g;    // N. of data points for the surival  model
   int<lower=0> n_blocks_g;         // N. of blocks
-  int<lower=0> n_siteyear_g;         // N. of siteyear
   int<lower=0> site_g[n_g];  // site index
   int<lower=0> block_g[n_g];  // block index
   int<lower=0> source_g[n_g];  // source index
-  int<lower=0> siteyear_g[n_g];  // site year index
   int<lower=1> y_g[n_g]; // # tillers at time t+1.
   vector[n_g] size_g;  // log size at time t
   vector[n_g] male_g;  // sex (male=1, fem=0)
   vector[n_g] ppt_g;  // precipitation of site
   vector[n_g] temp_g;  //  temperature of site
-  vector[n_g] cvppt_g;  // precipitation standard deviation  of site
+  vector[n_g] cvppt_g;  // precipitation coefficient of variation of site
 
   // Data for flowering sub-model (f)
   int<lower=0> n_f;    // N. of data points for the flowering  model
   int<lower=0> n_blocks_f;         // N. of blocks
-  int<lower=0> n_siteyear_f;         // N. of siteyear
   int<lower=0> site_f[n_f];  // site index
   int<lower=0> block_f[n_f];  // block index
   int<lower=0> source_f[n_f];  // source index
-  int<lower=0> siteyear_f[n_f];  // site year index
   int<lower=0,upper=1> y_f[n_f]; // Flowering at time t+1.
   vector[n_f] size_f;  // log size at time t
   vector[n_f] male_f;  // sex (male=1, fem=0)
@@ -72,14 +66,12 @@ data {
   int<lower=0> site_p[n_p];  // site index
   int<lower=0> block_p[n_p];  // block index
   int<lower=0> source_p[n_p];  // source index
-  int<lower=0> siteyear_p[n_p];  // site year index
-  int<lower=0> n_siteyear_p;  // N. of siteyear
   int<lower=1> y_p[n_p]; // # panicles at time t.
   vector[n_p] size_p;  // log size at time t
   vector[n_p] male_p;  // sex (male=1, fem=0)
   vector[n_p] ppt_p;  // precipitation of site
   vector[n_p] temp_p;  //  temperature of site
-  vector[n_p] cvppt_p;  // precipitation standard deviation  of site
+  vector[n_p] cvppt_p;  // precipitation coefficient of variation of site
 
   // Data for seed viability sub-model (v)
   int<lower=0> n_v;   // data points
@@ -116,8 +108,8 @@ parameters {
   real block_rfx_s[n_blocks_s];  
   real<lower=0> source_tau_s; 
   real source_rfx_s[n_sources];
-  real<lower=0> siteyear_tau_s; 
-  real siteyear_rfx_s[n_siteyear_s];
+  real<lower=0> site_tau_s; 
+  real site_rfx_s[n_sites];
 
   //Growth
   //fixed effects
@@ -136,8 +128,8 @@ parameters {
   real block_rfx_g[n_blocks_g];  
   real<lower=0> source_tau_g; 
   real source_rfx_g[n_sources];
-  real<lower=0> siteyear_tau_g; 
-  real siteyear_rfx_g[n_siteyear_g];
+  real<lower=0> site_tau_g; 
+  real site_rfx_g[n_sites];
   real<lower=0> sigma;      // IG shape
   real<lower=0> theta[n_g]; //observation-level deviates
 
@@ -158,8 +150,8 @@ parameters {
   real block_rfx_f[n_blocks_f];  
   real<lower=0> source_tau_f; 
   real source_rfx_f[n_sources];
-  real<lower=0> siteyear_tau_f; 
-  real siteyear_rfx_f[n_siteyear_f];
+  real<lower=0> site_tau_f; 
+  real site_rfx_f[n_sites];
 
   //Panicles
   //fixed effects
@@ -178,8 +170,8 @@ parameters {
   real block_rfx_p[n_blocks_p];  
   real<lower=0> source_tau_p; 
   real source_rfx_p[n_sources];
-  real<lower=0> siteyear_tau_p; 
-  real siteyear_rfx_p[n_siteyear_p];
+  real<lower=0> site_tau_p; 
+  real site_rfx_p[n_sites];
   real<lower=0> phi_p; // Panicle dispersion parameter
 
   // Seed viability parameters
@@ -225,7 +217,7 @@ transformed parameters {
                 //random effects
                 block_rfx_s[block_s[isurv]] +
                 source_rfx_s[source_s[isurv]]+
-                siteyear_rfx_s[siteyear_s[isurv]];
+                site_rfx_s[site_s[isurv]];
     }
   
   // prediction for  growth
@@ -245,7 +237,7 @@ transformed parameters {
                 //random effects
                 block_rfx_g[block_g[igrow]] +
                 source_rfx_g[source_g[igrow]]+
-                siteyear_rfx_g[siteyear_g[igrow]]);
+                site_rfx_g[site_g[igrow]]);
     }
   // prediction for flowering
   for(iflow in 1:n_f){
@@ -264,7 +256,7 @@ transformed parameters {
                 //random effects
                 block_rfx_f[block_f[iflow]] +
                 source_rfx_f[source_f[iflow]]+
-                siteyear_rfx_f[siteyear_f[iflow]];
+                site_rfx_f[site_f[iflow]];
     }
 
   // prediction for fertility
@@ -284,7 +276,7 @@ transformed parameters {
                 //random effects
                 block_rfx_p[block_p[ipan]] +
                 source_rfx_p[source_p[ipan]]+
-                siteyear_rfx_p[siteyear_p[ipan]];
+                site_rfx_p[site_p[ipan]];
     }
 
   // Prediction for seed viability
@@ -322,9 +314,9 @@ model {
   for (i in 1:n_sources){
     source_rfx_s[i] ~ normal(0, source_tau_s);
   }
-  siteyear_tau_s ~ inv_gamma(0.1, 0.1);
-  for (i in 1:n_siteyear_s){
-    siteyear_rfx_s[i] ~ normal(0, siteyear_tau_s);
+  site_tau_s ~ inv_gamma(0.1, 0.1);
+  for (i in 1:n_sites){
+    site_rfx_s[i] ~ normal(0, site_tau_s);
   }
   // Growth
   b0_g ~ normal(0, 100);    
@@ -344,9 +336,9 @@ model {
   for (i in 1:n_sources){
     source_rfx_g[i] ~ normal(0, source_tau_g);
   }
-  siteyear_tau_g ~ inv_gamma(0.1, 0.1);
-  for (i in 1:n_siteyear_g){
-    siteyear_rfx_g[i] ~ normal(0, siteyear_tau_g);
+  site_tau_g ~ inv_gamma(0.1, 0.1);
+  for (i in 1:n_sites){
+    site_rfx_g[i] ~ normal(0, site_tau_g);
   }
   for(i in 1:n_g){
     theta[i] ~ ig(1, sigma);
@@ -370,9 +362,9 @@ model {
   for (i in 1:n_sources){
     source_rfx_f[i] ~ normal(0, source_tau_f);
   }
-  siteyear_tau_f ~ inv_gamma(0.1, 0.1);
-  for (i in 1:n_siteyear_f){
-    siteyear_rfx_f[i] ~ normal(0, siteyear_tau_f);
+  site_tau_f ~ inv_gamma(0.1, 0.1);
+  for (i in 1:n_sites){
+    site_rfx_f[i] ~ normal(0, site_tau_f);
   }
 
   // fertility
@@ -393,9 +385,9 @@ model {
   for (i in 1:n_sources){
     source_rfx_p[i] ~ normal(0, source_tau_p);
   }
-  siteyear_tau_p ~ inv_gamma(0.2, 0.2);
-  for (i in 1:n_siteyear_p){
-    siteyear_rfx_p[i] ~ normal(0, siteyear_tau_p);
+  site_tau_p ~ inv_gamma(0.2, 0.2);
+  for (i in 1:n_sites){
+    site_rfx_p[i] ~ normal(0, site_tau_p);
   }
 
   // viability and germination

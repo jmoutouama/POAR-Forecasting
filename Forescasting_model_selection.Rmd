@@ -1,0 +1,823 @@
+---
+title: "Demographic response of a dioecious range-limited species to climate change"
+author: "Tom Miller,Jacob Moutouama and Aldo Compagnoni"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+ rmdformats::readthedown:
+    code_folding: show
+    self_contained: true
+    number_sections: true
+    thumbnails: true
+    lightbox: true
+    gallery: true
+    keep_md: true
+    highlight: tango
+    df_print: kable 
+    toc_depth: 3
+    fig_width: 8
+    fig_height: 8
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment=NA, 
+                      echo = TRUE,
+                      warning=FALSE, 
+                      message=FALSE)
+knitr::opts_knit$set(global.par = TRUE,knitr.table.format = "latex")
+```
+
+```{r eval=TRUE,echo=T}
+rm(list = ls())
+```
+
+# Required libraries
+```{r}
+# load packages
+library(rstan)
+# set rstan options
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+set.seed(13)
+# Sys.setenv(LOCAL_CPPFLAGS = '-march=corei7 -mtune=corei7')
+options(tidyverse.quiet = TRUE)
+library(tidyverse)
+options(dplyr.summarise.inform = FALSE)
+library(bayesplot)
+# install.packages("countreg",repos = "http://R-Forge.R-project.org")
+library(countreg)
+library(rmutil)
+library(actuar)
+library(SPEI)
+library(LaplacesDemon)
+# if (!require("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# BiocManager::install("scater")
+library(scater)
+```
+
+# Demography data 
+```{r}
+poar_allsites <- read.csv("https://www.dropbox.com/s/xk4225mn8btqhbm/demography_allsites.csv?dl=1", stringsAsFactors = F)#common garden data
+poar_allsites$census.year<-poar_allsites$year-1 #Add census year to match with climate data
+poar_allsites %>% 
+  dplyr::select(everything()) %>% 
+  filter(census.year %in% (2015:2016))-> poar_allsites_2015_2016 # Drop the first census to match with the seasonal model (growing and dormant season temp and precip)
+```
+
+# Current climatic conditions 
+```{r}
+poar_ppt <- read.csv("https://www.dropbox.com/s/kkga2hf9k1w9ht1/Poa_pr.csv?dl=1", stringsAsFactors = F) # monthly  precipitation 
+poar_temp <- read.csv("https://www.dropbox.com/s/n0vrn8q5ma49rc9/Poa_tas.csv?dl=1", stringsAsFactors = F) # monthly temperature)
+poar_ppt$census.year<-ifelse(poar_ppt$month<5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from May to December of the previous year and precipitation of the current year.  
+poar_temp$census.year<-ifelse(poar_temp$month<5,poar_temp$year-1,poar_temp$year)
+```
+
+# Climatic data for the model with annual precipitation, annual mean temprature and their coefficient of variation
+```{r}
+poar_ppt %>% 
+  dplyr::select(Longitude, Latitude, census.year, ppt,site) %>% 
+  filter(census.year %in% (2015:2016)) %>%
+  group_by(site,census.year) %>%
+	summarise(mean_ppt=sum(ppt),sd_ppt=sd(ppt),cv_ppt=sd_ppt/mean_ppt,Longitude=unique(Longitude),Latitude=unique(Latitude))->poar_pptann 
+
+poar_temp %>% 
+  dplyr::select(Longitude, Latitude, census.year, temp,site) %>% 
+  filter(census.year %in% (2015:2016)) %>%
+  group_by(site,census.year) %>%
+	summarise(mean_temp = mean(temp),sd_temp=sd(temp),cv_temp=sd_temp/mean_temp,Longitude=unique(Longitude),Latitude=unique(Latitude))->poar_tempann 
+
+poar_climann<- merge(x = poar_pptann, y = poar_tempann) # merge temperature and precipitation data
+```
+
+
+
+# Match climatic data with annual precipitation, annual mean temprature and their coefficient of variation
+
+```{r}
+poar_allsites.clim <- left_join(x = poar_allsites_2015_2016 ,y =poar_climann,by=c("site","census.year","Longitude","Latitude")) # merge the demographic data with climatic data for each site
+```
+
+# Check for correlation between predictors ( precipitation and seasonality of precipitation,  temperature and seasonality of temperature )
+
+```{r,eval=FALSE}
+figppt <- ggpubr::ggscatter(poar_allsites.clim, x = "mean_ppt", y = "cv_ppt", color = '#0072B2',shape = 19, size=4,xlab="Annual mean precipitation",
+  ylab="CV precipitation",
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   )
+figppt<-figppt + ggpubr::stat_cor(method = "pearson", label.x = 1200, label.y = 0.04)
+
+fitemp <- ggpubr::ggscatter(poar_allsites.clim, x = "mean_temp", y = "cv_temp",color = '#0072B2',shape = 19,size=4,xlab="Annual mean temperature ",ylab="CV temperature",
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   )
+fitemp<-fitemp + ggpubr::stat_cor(method = "pearson", label.x = 14, label.y = 0.2)
+
+
+(figppttemp<-ggpubr::ggarrange(plotlist = list(figppt, fitemp)))
+
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/Correlationannualclimate.pdf",useDingbats = F,height=5,width=8)
+# print(figppttemp)
+# dev.off()
+```
+
+# Climatic data with  seasonal variables (growing and dormant season temp and precip) 
+```{r img-with-knitr,echo=FALSE, fig.align='center', out.width='100%', fig.cap='Growing and dormant season for Poa arachnifera'}
+knitr::include_graphics("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/POARlifecycle.png")
+```
+
+```{r}
+poar_temp %>% 
+  dplyr::select(site,Longitude, Latitude,census.year,temp,month) %>% 
+  filter(census.year %in% (2015:2016)) %>%
+  mutate(Season=ifelse((month >= 6) & (month <= 9), "dormant", "growing")) %>% 
+  group_by(site,Season) %>%
+	summarise(site=unique(site),Longitude=unique(Longitude),Latitude=unique(Latitude),temp_season = mean(temp))->poar_tempseason 
+
+poar_ppt %>% 
+  dplyr::select(site,Longitude, Latitude,census.year,ppt,month) %>% 
+  filter(census.year %in% (2015:2016)) %>%
+  mutate(Season=ifelse((month >= 6) & (month <= 9), "dormant", "growing")) %>% 
+  group_by(site,Season) %>%
+	summarise(site=unique(site),Longitude=unique(Longitude),Latitude=unique(Latitude),ppt_season = sum(ppt))->poar_pptseason 
+
+poar_climseason<- merge(x = poar_tempseason, y = poar_pptseason) # merge temperature and precipitation data
+
+```
+
+# Match seasonnal data with demographic data and clean the data 
+
+```{r}
+poar_allsites.clim_season <- left_join(x = poar_allsites_2015_2016 ,y =poar_climseason,by=c("site","Longitude","Latitude")) # merge the demographic data with climatic data for each site
+poar_allsites.clim_season %>% 
+  filter(Season=="growing") %>% 
+  mutate(tempgrow=temp_season,pptgrow=ppt_season)->poar_allsites.clim_season_grow
+
+# head(poar_allsites.clim_season_grow)
+# head(poar_allsites.clim_season_dorm)
+poar_allsites.clim_season %>% 
+  filter(Season=="dormant") %>% 
+  mutate(tempdorm=temp_season,pptdorm=ppt_season)->poar_allsites.clim_season_dorm
+
+
+poar.clim_seasonal<- cbind(poar_allsites.clim_season_grow,tempdorm=poar_allsites.clim_season_dorm$tempdorm,pptdorm=poar_allsites.clim_season_dorm$pptdorm)
+
+
+```
+
+# Check for correlation between predictors
+
+```{r,eval=FALSE}
+figgrow <- ggpubr::ggscatter(poar.clim_seasonal, x = "tempgrow", y = "pptgrow", color = '#0072B2',shape = 19, size=4,xlab="Annual mean temperature",
+  ylab="Annual mean precipitation",
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   )
+figgrow<-figgrow + ggpubr::stat_cor(method = "pearson")
+
+
+
+figdorm <- ggpubr::ggscatter(poar.clim_seasonal, x = "tempdorm", y = "pptdorm",color = '#0072B2',shape = 19,size=4,xlab="Annual mean temperature ",ylab="Annual mean precipitation",
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   )
+figdorm<-figdorm + ggpubr::stat_cor(method = "pearson")
+
+
+(figgrowdorm<-ggpubr::ggarrange(plotlist = list(figgrow, figdorm)))
+
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/Correlationannualclimate.pdf",useDingbats = F,height=5,width=8)
+# print(figppttemp)
+# dev.off()
+```
+
+
+# Suvival 
+# First model: annual data 
+```{r}
+# Survival
+poar_allsites.clim %>% 
+  subset( tillerN_t0 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t0, surv_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( z_size_t0   = tillerN_t0 %>% scale %>% .[,1],
+          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
+          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
+          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.surv
+
+
+poar_sites_annual.surv <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
+                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
+                  
+                  # survival data
+                  n_blocks_s = poar_allsites.surv$Block %>% n_distinct,
+                  site_s   = poar_allsites.surv$site,
+                  source_s =  poar_allsites.surv$source,
+                  block_s  = poar_allsites.surv$Block,
+                  ppt_s=poar_allsites.surv$z_ppt_t1_z,
+                  cvppt_s=poar_allsites.surv$z_cvppt_t1_z,
+                  temp_s=poar_allsites.surv$z_temp_t1_z,
+                  site_block_s = data.frame( site_i  = poar_allsites.surv$site,
+                                             block_i = poar_allsites.surv$Block ) %>%
+                    unique %>% .$site_i,
+                  male_s   = poar_allsites.surv$Sex-1,
+                  size_s   = poar_allsites.surv$z_size_t0,
+                  y_s      = poar_allsites.surv$surv_t1,
+                  n_s      = nrow(poar_allsites.surv)
+                  
+  )
+```
+
+
+# MCMC parameters
+```{r}
+sim_pars <- list(
+  warmup = 1000,
+  iter = 4000,
+  thin = 3,
+  chains = 3
+)
+
+```
+
+```{r , eval=FALSE}
+fit_allsites_surv_annual <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survivalannual.stan",
+ data = poar_sites_annual.surv,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+# saveRDS(fit_allsites_full_annual, 'F:/POAR-Forecasting-main/Stan/poar_vitalrate.rds')
+```
+
+```{r}
+traceplot(fit_allsites_surv_annual, pars = c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s"), inc_warmup = TRUE, nrow =9 )
+```
+
+```{r}
+log_lik_surv_annual <- loo::extract_log_lik(fit_allsites_surv_annual, merge_chains = FALSE)
+r_eff_surv_annual <- loo::relative_eff(exp(log_lik_surv_annual))
+loo_surv_annual <- loo(log_lik_surv_annual, r_eff = r_eff_surv_annual, cores = 2)
+print(loo_surv_annual)
+
+# plot(loo_surv_annual)
+```
+
+
+
+## Second  model: seasonnal data 
+```{r}
+# Survival
+poar.clim_seasonal %>% 
+  subset( tillerN_t0 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t0, surv_t1,pptgrow,pptdorm,tempgrow,tempdorm,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( z_size_t0   = tillerN_t0 %>% scale %>% .[,1],
+          z_ppt_t1_grow = pptgrow %>% scale %>% .[,1],
+          z_ppt_t1_dorm = pptdorm %>% scale %>% .[,1],
+          z_temp_t1_grow = tempgrow %>% scale %>% .[,1],
+          z_temp_t1_dorm = tempdorm %>% scale %>% .[,1])->poarclim_seasonal.surv
+
+
+poar_sites_season.surv <- list( n_sites    = poarclim_seasonal.surv$site %>% n_distinct,
+                  n_sources  = poarclim_seasonal.surv$source %>% n_distinct(),
+                  
+                  # survival data
+                  n_blocks_s = poarclim_seasonal.surv$Block %>% n_distinct,
+                  site_s   = poarclim_seasonal.surv$site,
+                  source_s =  poarclim_seasonal.surv$source,
+                  block_s  = poarclim_seasonal.surv$Block,
+                  pptgrow_s=poarclim_seasonal.surv$z_ppt_t1_grow,
+                  pptdorm_s=poarclim_seasonal.surv$z_ppt_t1_dorm,
+                  tempgrow_s=poarclim_seasonal.surv$z_temp_t1_grow,
+                  tempdorm_s=poarclim_seasonal.surv$z_temp_t1_dorm,
+                  site_block_s = data.frame( site_i  = poarclim_seasonal.surv$site,
+                                             block_i = poarclim_seasonal.surv$Block ) %>%
+                    unique %>% .$site_i,
+                  male_s   = poarclim_seasonal.surv$Sex-1,
+                  size_s   = poarclim_seasonal.surv$z_size_t0,
+                  y_s      = poarclim_seasonal.surv$surv_t1,
+                  n_s      = nrow(poarclim_seasonal.surv))
+```
+
+
+```{r , eval=FALSE}
+fit_allsites_surv_season <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survival_season.stan",
+ data = poar_sites_season.surv,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+traceplot(fit_allsites_surv_season, pars = c("b0_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"), inc_warmup = TRUE, nrow =9 )
+```
+
+```{r}
+log_lik_surv_season <- loo::extract_log_lik(fit_allsites_surv_season, merge_chains = FALSE)
+r_eff_surv_season <- loo::relative_eff(exp(log_lik_surv_season))
+loo_surv_season <- loo(log_lik_surv_season, r_eff = r_eff_surv_season, cores = 2)
+print(loo_surv_season)
+```
+
+```{r}
+# Compare
+comp_surv <- loo::loo_compare(loo_surv_annual,loo_surv_season)
+print(comp_surv)
+# The first column shows the difference in ELPD relative to the model with the largest ELPD. In this case, the difference in elpd and its scale relative to the approximate standard error of the difference) indicates a preference for the second model (model1).
+```
+
+
+```{r}
+posteriorsurvannual <- as.array(fit_allsites_surv_annual)
+color_scheme_set("blue")
+mcmc_intervals(posteriorsurvannual, pars = c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+```{r}
+posteriorsurv_season <- as.array(fit_allsites_surv_season)
+color_scheme_set("blue")
+mcmc_intervals(posteriorsurv_season, pars = c("b0_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+
+
+# growth 
+
+```{r}
+# growth
+poar_allsites.clim %>% 
+  subset( tillerN_t0 > 0 & tillerN_t1 > 0)%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t0, tillerN_t1,surv_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( z_size_t0   = tillerN_t0 %>% scale %>% .[,1],
+          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
+          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
+          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.grow
+
+poar_sites_annual.grow <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
+                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
+                  # growth data
+                  n_blocks_g = poar_allsites.grow$Block %>% n_distinct,
+                  site_g   = poar_allsites.grow$site,
+                  source_g =  poar_allsites.grow$source,
+                  block_g  = poar_allsites.grow$Block,
+                  ppt_g=poar_allsites.grow$z_ppt_t1_z,
+                  cvppt_g=poar_allsites.grow$z_cvppt_t1_z,
+                  temp_g=poar_allsites.grow$z_temp_t1_z,
+                  site_block_g = data.frame( site_i  = poar_allsites.grow$site,
+                                             block_i = poar_allsites.grow$Block ) %>%
+                    unique %>% .$site_i,
+                  male_g   = poar_allsites.grow$Sex-1,
+                  size_g   = poar_allsites.grow$z_size_t0,
+                  y_g      = poar_allsites.grow$tillerN_t1,
+                  n_g      = nrow(poar_allsites.grow))
+```
+
+
+```{r , eval=FALSE}
+fit_allsites_grow_annual <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_annual.stan",
+ data = poar_sites_annual.grow,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+traceplot(fit_allsites_grow_annual, pars = c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g"), inc_warmup = TRUE, nrow =9 )
+```
+
+```{r}
+log_lik_grow_annual <- loo::extract_log_lik(fit_allsites_grow_annual, merge_chains = FALSE)
+r_eff_grow_annual <- loo::relative_eff(exp(log_lik_grow_annual))
+loo_grow_annual <- loo::loo(log_lik_grow_annual, r_eff = r_eff_grow_annual, cores = 2)
+print(loo_grow_annual)
+```
+
+```{r}
+# growth
+poar.clim_seasonal %>% 
+  subset( tillerN_t0 > 0 & tillerN_t1 > 0)%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t0, tillerN_t1,surv_t1,pptgrow,pptdorm,tempgrow,tempdorm,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( z_size_t0   = tillerN_t0 %>% scale %>% .[,1],
+          z_ppt_t1_grow = pptgrow %>% scale %>% .[,1],
+          z_ppt_t1_dorm = pptdorm %>% scale %>% .[,1],
+          z_temp_t1_grow = tempgrow %>% scale %>% .[,1],
+          z_temp_t1_dorm = tempdorm %>% scale %>% .[,1])->poarclim_seasonal.grow
+
+
+poar_sites_season.grow <- list( n_sites    = poarclim_seasonal.surv$site %>% n_distinct,
+                  n_sources  = poarclim_seasonal.surv$source %>% n_distinct(),
+                  # growth data
+                  n_blocks_g = poarclim_seasonal.grow$Block %>% n_distinct,
+                  site_g   = poarclim_seasonal.grow$site,
+                  source_g =  poarclim_seasonal.grow$source,
+                  block_g  = poarclim_seasonal.grow$Block,
+                  pptgrow_g=poarclim_seasonal.grow$z_ppt_t1_grow,
+                  pptdorm_g=poarclim_seasonal.grow$z_ppt_t1_dorm,
+                  tempgrow_g=poarclim_seasonal.grow$z_temp_t1_grow,
+                  tempdorm_g=poarclim_seasonal.grow$z_temp_t1_dorm,
+                  site_block_g = data.frame( site_i  = poarclim_seasonal.grow$site,
+                                             block_i = poarclim_seasonal.grow$Block ) %>%
+                    unique %>% .$site_i,
+                  male_g   = poarclim_seasonal.grow$Sex-1,
+                  size_g   = poarclim_seasonal.grow$z_size_t0,
+                  y_g      = poarclim_seasonal.grow$tillerN_t1,
+                  n_g      = nrow(poarclim_seasonal.grow))
+```
+
+```{r , eval=FALSE}
+fit_allsites_grow_season <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_season.stan",
+ data = poar_sites_season.grow,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+# traceplot(fit_allsites_grow_season, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"), inc_warmup = TRUE, nrow =9 )
+
+
+pairs(fit_allsites_grow_season, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"), las = 2)
+```
+
+```{r}
+log_lik_grow_season <- loo::extract_log_lik(fit_allsites_grow_season, merge_chains = FALSE)
+r_eff_grow_season <- loo::relative_eff(exp(log_lik_grow_season))
+loo_grow_season <- loo(log_lik_grow_season, r_eff = r_eff_grow_season, cores = 2)
+print(loo_grow_season)
+```
+
+```{r}
+# Compare
+comp_grow <- loo::loo_compare(loo_grow_annual,loo_grow_season)
+print(comp_grow)
+```
+
+```{r}
+posteriorgrowannual <- as.array(fit_allsites_grow_annual)
+color_scheme_set("blue")
+mcmc_intervals(posteriorgrowannual, pars = c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+```{r}
+posteriorgrow_season <- as.array(fit_allsites_grow_season)
+color_scheme_set("blue")
+mcmc_intervals(posteriorgrow_season, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+
+
+
+#Flowering
+
+```{r}
+poar_allsites.clim %>% 
+  subset( tillerN_t1 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t1, flowerN_t1,flow_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( z_size_t1   = tillerN_t1 %>% scale %>% .[,1],
+          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
+          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
+          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.flow
+
+poar_sites_annual.flow <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
+                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
+                  
+                  # flowering data
+                   n_blocks_f = poar_allsites.flow$Block %>% n_distinct,
+                  site_f   = poar_allsites.flow$site,
+                  source_f =  poar_allsites.flow$source,
+                  block_f  = poar_allsites.flow$Block,
+                  ppt_f=poar_allsites.flow$z_ppt_t1_z,
+                  cvppt_f=poar_allsites.flow$z_cvppt_t1_z,
+                  temp_f=poar_allsites.flow$z_temp_t1_z,
+                  site_block_f = data.frame( site_i  = poar_allsites.flow$site,
+                                             block_i = poar_allsites.flow$Block ) %>%
+                    unique %>% .$site_i,
+                  male_f   = poar_allsites.flow$Sex-1,
+                  size_f   = poar_allsites.flow$z_size_t1,
+                  y_f      = poar_allsites.flow$flow_t1,
+                  n_f      = nrow(poar_allsites.flow))
+```
+
+
+
+```{r , eval=FALSE}
+fit_allsites_flow_annual <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_annual.stan",
+ data = poar_sites_annual.flow,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+traceplot(fit_allsites_flow_annual, pars = c("b0_f", "bsize_f","bsex_f","bppt_f","btemp_f","bcvppt_f","bpptsex_f","btempsex_f","bcvpptsex_f","bppttempsex_f"), inc_warmup = TRUE, nrow =9 )
+```
+
+```{r}
+log_lik_flow_annual <- loo::extract_log_lik(fit_allsites_flow_annual, merge_chains = FALSE)
+r_eff_flow_annual <- loo::relative_eff(exp(log_lik_flow_annual))
+loo_flow_annual <- loo::loo(log_lik_flow_annual, r_eff = r_eff_flow_annual, cores = 2)
+print(loo_flow_annual)
+```
+
+
+
+```{r}
+poar.clim_seasonal %>% 
+  subset( tillerN_t1 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t1, flowerN_t1,flow_t1,pptgrow,pptdorm,tempgrow,tempdorm,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  mutate( z_size_t1   = tillerN_t1 %>% scale %>% .[,1],
+          z_ppt_t1_grow = pptgrow %>% scale %>% .[,1],
+          z_ppt_t1_dorm = pptdorm %>% scale %>% .[,1],
+          z_temp_t1_grow = tempgrow %>% scale %>% .[,1],
+          z_temp_t1_dorm = tempdorm %>% scale %>% .[,1])->poarclim_seasonal.flow
+
+
+poar_sites_season.flow <- list( n_sites    = poarclim_seasonal.surv$site %>% n_distinct,
+                  n_sources  = poarclim_seasonal.surv$source %>% n_distinct(),
+                  # flowering data
+                   n_blocks_f = poarclim_seasonal.flow$Block %>% n_distinct,
+                  site_f   = poarclim_seasonal.flow$site,
+                  source_f =  poarclim_seasonal.flow$source,
+                  block_f  = poarclim_seasonal.flow$Block,
+                  pptgrow_f=poarclim_seasonal.flow$z_ppt_t1_grow,
+                  pptdorm_f=poarclim_seasonal.flow$z_ppt_t1_dorm,
+                  tempgrow_f=poarclim_seasonal.flow$z_temp_t1_grow,
+                  tempdorm_f=poarclim_seasonal.flow$z_temp_t1_dorm,
+                  site_block_f = data.frame( site_i  = poarclim_seasonal.flow$site,
+                                             block_i = poarclim_seasonal.flow$Block ) %>%
+                    unique %>% .$site_i,
+                  male_f   = poarclim_seasonal.flow$Sex-1,
+                  size_f   = poarclim_seasonal.flow$z_size_t1,
+                  y_f      = poarclim_seasonal.flow$flow_t1,
+                  n_f      = nrow(poarclim_seasonal.flow))
+```
+
+```{r , eval=FALSE}
+fit_allsites_flow_season <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_season.stan",
+ data = poar_sites_season.flow,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+traceplot(fit_allsites_flow_season, pars = c("b0_f", "bsize_f","bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f","bpptgrowsex_f","bpptdormsex_f","btempgrowsex_f","btempdormsex_f","btempdormpptdormsex_f","btempgrowpptgrowsex_f"), inc_warmup = TRUE, nrow =9 )
+
+```
+
+
+```{r}
+log_lik_flow_season <- loo::extract_log_lik(fit_allsites_flow_season, merge_chains = FALSE)
+r_eff_flow_season <- loo::relative_eff(exp(log_lik_flow_season))
+loo_flow_season <- loo(log_lik_flow_season, r_eff = r_eff_flow_season, cores = 2)
+print(loo_flow_season)
+```
+
+```{r}
+# Compare
+comp_flow <- loo::loo_compare(loo_flow_annual,loo_flow_season)
+print(comp_flow)
+```
+
+
+```{r}
+posteriorflowannual <- as.array(fit_allsites_flow_annual)
+color_scheme_set("blue")
+mcmc_intervals(posteriorflowannual, pars = c("b0_f", "bsize_f","bsex_f","bppt_f","btemp_f","bcvppt_f","bpptsex_f","btempsex_f","bcvpptsex_f","bppttempsex_f"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+```{r}
+posteriorflow_season <- as.array(fit_allsites_flow_season)
+color_scheme_set("blue")
+mcmc_intervals(posteriorflow_season, pars = c("b0_f", "bsize_f","bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f","bpptgrowsex_f","bpptdormsex_f","btempgrowsex_f","btempdormsex_f","btempdormpptdormsex_f","btempgrowpptgrowsex_f"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+
+
+# Fertility
+
+```{r}
+# Panicles
+poar_allsites.clim %>% 
+  subset( flowerN_t1 > 0 & tillerN_t1 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t1, flowerN_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric,
+          panic_t1 = flowerN_t1) %>%
+  mutate( z_size_t1   = tillerN_t1 %>% scale %>% .[,1],
+          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
+          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
+          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.panic
+
+poar_sites_annual.panic <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
+                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
+                  
+                  # panicle data
+                   n_blocks_p = poar_allsites.panic$Block %>% n_distinct,
+                  site_p   = poar_allsites.panic$site,
+                  source_p =  poar_allsites.panic$source,
+                  block_p  = poar_allsites.panic$Block,
+                  ppt_p=poar_allsites.panic$z_ppt_t1_z,
+                  cvppt_p=poar_allsites.panic$z_cvppt_t1_z,
+                  temp_p=poar_allsites.panic$z_temp_t1_z,
+                  site_block_p = data.frame( site_i  = poar_allsites.panic$site,
+                                             block_i = poar_allsites.panic$Block ) %>%
+                    unique %>% .$site_i,
+                  male_p   = poar_allsites.panic$Sex-1,
+                  size_p   = poar_allsites.panic$z_size_t1,
+                  y_p      = poar_allsites.panic$panic_t1,
+                  n_p      = nrow(poar_allsites.panic))
+```
+
+
+```{r , eval=FALSE}
+fit_allsites_panic_annual <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_annual.stan",
+ data = poar_sites_annual.panic,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+traceplot(fit_allsites_panic_annual, pars = c("b0_p", "bsize_p","bsex_p","bppt_p","btemp_p","bcvppt_p","bpptsex_p","btempsex_p","bcvpptsex_p","bppttempsex_p"), inc_warmup = TRUE, nrow = 2)
+# traceplot(fit_allsites_panic_annual, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"), inc_warmup = TRUE, nrow =9 )
+
+```
+```{r}
+log_lik_panic_annual <- loo::extract_log_lik(fit_allsites_panic_annual, merge_chains = FALSE)
+r_eff_panic_annual <- loo::relative_eff(exp(log_lik_panic_annual))
+loo_panic_annual <- loo::loo(log_lik_panic_annual, r_eff = r_eff_panic_annual, cores = 2)
+print(loo_panic_annual)
+```
+
+
+
+
+
+```{r}
+poar.clim_seasonal %>% 
+  subset( flowerN_t1 > 0 & tillerN_t1 > 0 )%>%
+  dplyr::select( year, Code, site, Block, Sex, 
+          Longitude, Latitude, 
+          tillerN_t1, flowerN_t1,pptgrow,pptdorm,tempgrow,tempdorm,site)%>% 
+  na.omit %>% 
+  mutate( site         = site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          Sex          = Sex %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric,
+          panic_t1 = flowerN_t1) %>%
+  mutate( z_size_t1   = tillerN_t1 %>% scale %>% .[,1],
+          z_ppt_t1_grow = pptgrow %>% scale %>% .[,1],
+          z_ppt_t1_dorm = pptdorm %>% scale %>% .[,1],
+          z_temp_t1_grow = tempgrow %>% scale %>% .[,1],
+          z_temp_t1_dorm = tempdorm %>% scale %>% .[,1])->poarclim_seasonal.panic
+
+
+poar_sites_season.panic <- list( n_sites    = poarclim_seasonal.surv$site %>% n_distinct,
+                  n_sources  = poarclim_seasonal.surv$source %>% n_distinct(),
+                  # panicle data
+                   n_blocks_p = poarclim_seasonal.panic$Block %>% n_distinct,
+                  site_p   = poarclim_seasonal.panic$site,
+                  source_p =  poarclim_seasonal.panic$source,
+                  block_p  = poarclim_seasonal.panic$Block,
+                  pptgrow_p=poarclim_seasonal.panic$z_ppt_t1_grow,
+                  pptdorm_p=poarclim_seasonal.panic$z_ppt_t1_dorm,
+                  tempgrow_p=poarclim_seasonal.panic$z_temp_t1_grow,
+                  tempdorm_p=poarclim_seasonal.panic$z_temp_t1_dorm,
+                  site_block_p = data.frame( site_i  = poarclim_seasonal.panic$site,
+                                             block_i = poarclim_seasonal.panic$Block ) %>%
+                    unique %>% .$site_i,
+                  male_p   = poarclim_seasonal.panic$Sex-1,
+                  size_p   = poarclim_seasonal.panic$z_size_t1,
+                  y_p      = poarclim_seasonal.panic$panic_t1,
+                  n_p      = nrow(poarclim_seasonal.panic))
+```
+
+```{r , eval=FALSE}
+fit_allsites_panic_season <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_season.stan",
+ data = poar_sites_season.panic,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+# saveRDS(fit_allsites_full_season, 'F:/POAR-Forecasting-main/stan/poar_vitalrate_season.rds')
+
+```
+
+```{r}
+traceplot(fit_allsites_panic_season, pars = c("b0_p", "bsize_p","bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p","bpptgrowsex_p","bpptdormsex_p","btempgrowsex_p","btempdormsex_p","btempdormpptdormsex_p","btempgrowpptgrowsex_p"), inc_warmup = TRUE, nrow =9 )
+```
+
+
+
+```{r}
+log_lik_panic_season <- loo::extract_log_lik(fit_allsites_panic_season, merge_chains = FALSE)
+r_eff_panic_season <- loo::relative_eff(exp(log_lik_panic_season))
+loo_panic_season <- loo(log_lik_panic_season, r_eff = r_eff_panic_season, cores = 2)
+print(loo_panic_season)
+```
+
+```{r}
+# Compare
+comp_panic <- loo::loo_compare(loo_panic_annual,loo_panic_season)
+print(comp_panic)
+```
+
+
+```{r}
+posteriorpanicannual <- as.array(fit_allsites_panic_annual)
+color_scheme_set("blue")
+mcmc_intervals(posteriorpanicannual, pars = c("b0_p", "bsize_p","bsex_p","bppt_p","btemp_p","bcvppt_p","bpptsex_p","btempsex_p","bcvpptsex_p","bppttempsex_p"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
+```{r}
+posteriorpanic_season <- as.array(fit_allsites_panic_season)
+color_scheme_set("blue")
+mcmc_intervals(posteriorpanic_season, pars = c("b0_p", "bsize_p","bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p","bpptgrowsex_p","bpptdormsex_p","btempgrowsex_p","btempdormsex_p","btempdormpptdormsex_p","btempgrowpptgrowsex_p"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+```
+
