@@ -94,6 +94,8 @@ model {
   bpptdormsex_p ~ normal(0, 100);
   btempgrowsex_p ~ normal(0, 100);
   btempdormsex_p ~ normal(0, 100);
+  btempdormpptdormsex_p ~ normal(0, 100);
+  btempgrowpptgrowsex_p ~ normal(0, 100);
   block_tau_p ~ inv_gamma(0.2, 0.2);
   for (i in 1:n_blocks_p){
     block_rfx_p[i] ~ normal(0, block_tau_p);

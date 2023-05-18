@@ -87,6 +87,8 @@ model {
   bpptdormsex_s ~ normal(0, 100);
   btempgrowsex_s ~ normal(0, 100);
   btempdormsex_s ~ normal(0, 100);
+  btempdormpptdormsex_s ~ normal(0, 100);
+  btempgrowpptgrowsex_s ~ normal(0, 100);
   block_tau_s ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_s){
     block_rfx_s[i] ~ normal(0, block_tau_s);

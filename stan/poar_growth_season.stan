@@ -105,6 +105,8 @@ model {
   bpptdormsex_g ~ normal(0, 100);
   btempgrowsex_g ~ normal(0, 100);
   btempdormsex_g ~ normal(0, 100);
+  btempdormpptdormsex_g ~ normal (0,1000);
+  btempgrowpptgrowsex_g ~ normal (0,1000);
   block_tau_g ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_g){
     block_rfx_g[i] ~ normal(0, block_tau_g);
