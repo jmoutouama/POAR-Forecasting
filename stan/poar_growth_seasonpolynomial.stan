@@ -124,8 +124,8 @@ model {
   bpptdormsex_g ~ normal(0, 100);
   btempgrowsex_g ~ normal(0, 100);
   btempdormsex_g ~ normal(0, 100);
-  btempdormpptdormsex_g ~ normal(0, 100);
-  btempgrowpptgrowsex_g ~ normal(0, 100);
+  btempdormpptdormsex_g ~ normal(0, 1000);
+  btempgrowpptgrowsex_g ~ normal(0, 1000);
   bpptgrow2sex_g ~ normal(0, 0.5);  
   bpptdorm2sex_g ~ normal(0, 0.5); 
   btempgrow2sex_g ~ normal(0, 0.5);  
