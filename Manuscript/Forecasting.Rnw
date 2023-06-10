@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+\usepackage[sc]{mathpazo} 
+\usepackage{fullpage}
+\usepackage{natbib}
+\linespread{1.7}
+\usepackage[utf8]{inputenc}
+\usepackage{lineno}
+\usepackage{titlesec}
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\Large\itshape\filcenter}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[block]{\large\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}[runin]{\itshape}{\theparagraph}{1em}{}[. ]\renewcommand{\refname}{Literature Cited}
+% my addnl packages
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{authblk}
+\usepackage{setspace}
+\usepackage{amsfonts,amssymb,amsmath,hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[usenames,dvipsnames]{xcolor}
+\newcommand{\revise}[1]{{\color{Mahogany}{#1}}}
+\usepackage[normalem]{ulem}
+\newcommand{\tom}[2]{{\color{red}{#1}}\footnote{\textit{\color{red}{#2}}}}
+
+\doublespacing
+
+<<setup,echo=F, message=F, warning=F>>=
+knitr::opts_chunk$set(echo = F,
+                      message = F,
+                      warning = F,
+                      fig.pos = 'H')
+library(tidyverse)
+library(xtable)
+
+@
+
+%-------------------------------------------------------------------------
+\title{Dioecious range-limited species response to climate change}
+
+\author[a]{Jacob K. Moutouama}
+\author[b]{Aldo Compagnoni}
+\author[a]{Tom E.X. Miller}
+\affil[a]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
+\affil[b]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
+
+%-------------------------------------------------------------------------
+
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+\maketitle
+\noindent{} $\ast$ Corresponding author: jmoutouama@gmail.com\\
+\noindent{} Submitted to \textit{Ecological Monographs}\\
+\noindent{} Manuscript type: Article\\
+\noindent{} Open Research statement: All of our data and code are available during peer review at \url{https://github.com/jmoutouama/POAR-Forecasting}. This manuscript and its contents can be reproduced from this file: \url{https://github.com/jmoutouama/POAR-Forecasting/Manuscript/Forescasting.Rnw}. Upon acceptance, all data will be provided via creation and publication of an Environmental Data Initiative (EDI) data package, and code will be archived via Zenodo.
+%\SweaveOpts{concordance=TRUE}
+
+\linenumbers
+
+%-------------------------------------------------------------------------
+\newpage
+\section*{Abstract}
+Gender-specific response to rising temperature and drought raises the questions of whether global change could lead to a drastic change in the sex ratio and whether that change in the sex ratio could drive population extinction. 
+Answering these questions requires an understanding of the mechanism by which a change in vital rates under future climate conditions for each sex, could be translated into a significant change in population dynamics.
+Here, we took the first step toward building a forecast model for dioecious plants by understanding sex-specific demographic responses to environmental change. 
+Combining a demographic data set for a dioecious species with a Bayesian hierarchical modeling approach, we fit models in which vital rates are driven by seasonal precipitation and temperature. 
+
+
+
+%-------------------------------------------------------------------------
+\section*{Keywords}
+
+
+%--------------------------------------------------------------------
+\newpage
+\section*{Introduction}
+Rising temperatures and extreme drought events have already caused broad-scale vulnerability of native species, leading to increased concern about how species will redistribute across the globe under future climate conditions.
+Dioecious species might be particularly vulnerable to climate change because they often display skewed sex ratios that are reinforced by differentiation of sexual niches \textcolor{red}{(Source)}. 
+Accounting for such a niche differentiation between male and female within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population dynamics \textcolor{red}{(Source)}. 
+As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are hampered by limited mechanistic research on the demographic response of these species to climate change.
+
+The effect of climate conditions on species distributions is currently derived by correlative relationships between species occurrence record or abundance patterns and current climate conditions \textcolor{red}{(Source)}.  
+These established relationships serve as the basis for predicting how species will redistribute across the globe in a changing world. 
+However, the responsiveness of species abundance patterns often lags behind environmental change, which can lead to pronounced mismatches in current and future climate conditions and colonization-extinction dynamics \citep{a2022species}. 
+\textcolor{blue} {Additionally, due to the difficulty in experimentally addressing how dioecious species respond demographically to climate change, most studies often focused only on how climate change affects the sex ratio and rarely on the impact of climate change on the population dynamics of dioecious species and its implications for range shifts }.  
+
+Theory predicts that if cost of reproduction for each sex is equal and if males and females differ in reproductive fitness equality with increasing size, then natural selection will act to balance a population sex ratio at 1:1 \citep{Fisher1930}.  However, deviances from those assumptions have been observed.
+In several plant species, females are more sensitive to stress-related resource availability conditions than males, leading to high female mortality and, therefore, to a male bias sex ratio \citep{hultine2016climate}. 
+Furthermore, the lower cost of reproduction of males may allow them to invest their energy in other functions that produce higher growth rates, higher clonality, or even higher survival rates compared to females \citep{bruijning2017surviving}, causing a skew sex ratio.
+
+Climate change could therefore magnify skewed sex ratios and potentially reduced population growth rate if individuals are unable to find a mate and reproduce \citep{morrison2016causes}.
+Furthermore, as the drier, warmer climate moves “up slope”, so will adapt arid males shift the sex ratios (Petry and al., 2016).
+Because of this, populations in which males are rare under current climatic conditions could experience less mate limitation, allowing females to successfully produce more seed under warmer conditions \citep{petry2016sex} and favor range shifts. 
+
+Our ability to track the impact of climate change on the population dynamics of dioecious plants depends on our ability to build mechanistic models that take into account the spatial and temporal context in which survival, reproduction, and growth occur due to the sessile nature of these plants.
+Several studies found that climate change affects demographic processes in distinctive and potentially contrasting ways \citep{dalgleish2011climate}. For example, while climate has a significant effect on the probability of survival and growth, it has no effect on the probability of flowering \citep{greiser2020climate}. Additionally, under warmer conditions, some native species will fail to establish reproductive populations due to the extremely low germination rate and seedling survival \citep{Reed2021}. Therefore, climate change will reduce the population growth rate and the range size of these species \citep{reed2021climate}. 
+Other species will persist or even increase their range in response to climate change \citep{williams2015life,merow2017climate}. 
+In seabird populations, climate change by increasing the survival rate of both sexes favored their population growth rate \citep{gianuca2019sex}.
+
+In this study, we combined a demographic survey and a Bayesian hierarchical model to understand the demographic response of dioecious species to climate change and its implications on range dynamics.
+Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along an aridity gradient. 
+A previous study on the system showed that, despite the differentiation of the niche between sexes, the female niche mattered the most in driving the environmental limits of the viability of \textit {Poa arachnifera} populations \citep{miller2022two}. 
+Thus, under current climate conditions, we hypothesized that a high value of the growing temperature and a lower value of precipitation have negative effects on the population growth rate through a reduction in the growth of female survival and the flowering rate.
+Under future climate will, we hypothesized that  
+
+%--------------------------------------------------------------------
+\section*{Materials and methods}
+
+\subsection*{Study system}
+Texas blue grass (\textit{Poa arachnifera}) is a perennial cool season plant. 
+The species occurs in Texas, Oklahoma, and Southern Kansas. 
+Texas blue produces a dark green ground cover throughout the summer between October and May, with onset of Dormancy often from June to September.
+When flowering, males often have anthers, and females have stigmas. The species is pollinated by wind. 
+
+We studied n populations along the distribution of these species in the United States in 2014 and 2015. 
+
+\bibliographystyle{ecology}
+\bibliography{Forecasting}
+\end{document}
