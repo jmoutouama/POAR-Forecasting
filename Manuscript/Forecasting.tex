@@ -32,17 +32,14 @@
 
 
 %-------------------------------------------------------------------------
-\title{Dioecious range-limited species response to climate change}
+\title{Using mechanistic insights to predict climate-induced expansion/contraction for a dioecious range-limited species}
 
-\author[a]{Jacob K. Moutouama}
-\author[b]{Aldo Compagnoni}
-\author[a]{Tom E.X. Miller}
-\affil[a]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
-\affil[b]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
-
+\author[1]{Jacob K. Moutouama}
+\author[2]{Aldo Compagnoni}
+\author[1]{Tom E.X. Miller}
+\affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
+\affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 %-------------------------------------------------------------------------
-
-
 \usepackage{Sweave}
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
@@ -54,7 +51,6 @@
 %\SweaveOpts{concordance=TRUE}
 
 \linenumbers
-
 %-------------------------------------------------------------------------
 \newpage
 \section*{Abstract}
@@ -73,22 +69,29 @@ Combining a demographic data set for a dioecious species with a Bayesian hierarc
 \newpage
 \section*{Introduction}
 Rising temperatures and extreme drought events have already caused broad-scale vulnerability of native species, leading to increased concern about how species will redistribute across the globe under future climate conditions.
-Dioecious species might be particularly vulnerable to climate change because they often display skewed sex ratios that are reinforced by differentiation of sexual niches \textcolor{red}{(Source)}. 
-Accounting for such a niche differentiation between male and female within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population dynamics \textcolor{red}{(Source)}. 
+Dioecious species might be particularly vulnerable to climate change because they often display skewed sex ratios that are reinforced by differentiation of sexual niches \citep{Tognetti2012}. 
+Accounting for such a niche differentiation between male and female within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population dynamics \citep{jones1999sex}. 
 As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are hampered by limited mechanistic research on the demographic response of these species to climate change.
 
-The effect of climate conditions on species distributions is currently derived by correlative relationships between species occurrence record or abundance patterns and current climate conditions \textcolor{red}{(Source)}.  
+The effect of climate conditions on species distributions is often derived by correlative relationships between species occurrence record or abundance patterns and current climate conditions \citep{elith2009species}.  
 These established relationships serve as the basis for predicting how species will redistribute across the globe in a changing world. 
-However, the responsiveness of species abundance patterns often lags behind environmental change, which can lead to pronounced mismatches in current and future climate conditions and colonization-extinction dynamics \citep{a2022species}. 
-\textcolor{blue} {Additionally, due to the difficulty in experimentally addressing how dioecious species respond demographically to climate change, most studies often focused only on how climate change affects the sex ratio and rarely on the impact of climate change on the population dynamics of dioecious species and its implications for range shifts }.  
+However, the responsiveness of species abundance patterns often lags behind environmental change, which can lead to pronounced mismatches in current and future climate conditions and colonization-extinction dynamics \citep{a2022species}. In addition, most of these models do not take into account niche difference between male and female because they rely on species occurrence.
+%\textcolor{blue} {Additionally, due to the difficulty in experimentally addressing how dioecious species respond demographically to climate change, most studies often focused only on how climate change affects the sex ratio and rarely on the impact of climate change on the population dynamics of dioecious species and its implications for range shifts }.  
+More recently, "mechanistic approaches" of  species distribution model (SDM) using species physiology have been proposed as an alternative to the correlative approach of SDM. 
+Although the application of these approaches have been successful for some species, these approaches have several limitations. 
+First, “mechanistic approaches" of SDM require details information that is not often available for most species.
+For example, getting information such as individual physiological parameters (thermal conductivity, oxygen extraction efficiency, body posture change,diet) is often difficult.  
+Second, this information if available; are often derived from allometric relation from related species. 
+Thirdly, scaling up individual physiological information to the population or landscape level is very challenging.
+Finally, most of species distribution models do not take into account differentiation of sexes distribution base due to resource acquisition. 
 
 Theory predicts that if cost of reproduction for each sex is equal and if males and females differ in reproductive fitness equality with increasing size, then natural selection will act to balance a population sex ratio at 1:1 \citep{Fisher1930}.  However, deviances from those assumptions have been observed.
-In several plant species, females are more sensitive to stress-related resource availability conditions than males, leading to high female mortality and, therefore, to a male bias sex ratio \citep{hultine2016climate}. 
+In several plant species, females are more sensitive to stress-related resource availability conditions than males, leading to high female mortality and, therefore, to a male bias sex ratio \citep{hultine2016climate,freeman1976differential}. 
 Furthermore, the lower cost of reproduction of males may allow them to invest their energy in other functions that produce higher growth rates, higher clonality, or even higher survival rates compared to females \citep{bruijning2017surviving}, causing a skew sex ratio.
 
 Climate change could therefore magnify skewed sex ratios and potentially reduced population growth rate if individuals are unable to find a mate and reproduce \citep{morrison2016causes}.
-Furthermore, as the drier, warmer climate moves “up slope”, so will adapt arid males shift the sex ratios (Petry and al., 2016).
-Because of this, populations in which males are rare under current climatic conditions could experience less mate limitation, allowing females to successfully produce more seed under warmer conditions \citep{petry2016sex} and favor range shifts. 
+Furthermore, as the drier, warmer climate moves “up slope”, so will adapt arid males shift the sex ratios \citep{petry2016sex}.
+Because of this, populations in which males are rare under current climatic conditions could experience less mate limitation, allowing females to successfully produce more seed under warmer conditions  and favor range shifts \citep{petry2016sex}. 
 
 Our ability to track the impact of climate change on the population dynamics of dioecious plants depends on our ability to build mechanistic models that take into account the spatial and temporal context in which survival, reproduction, and growth occur due to the sessile nature of these plants.
 Several studies found that climate change affects demographic processes in distinctive and potentially contrasting ways \citep{dalgleish2011climate}. For example, while climate has a significant effect on the probability of survival and growth, it has no effect on the probability of flowering \citep{greiser2020climate}. Additionally, under warmer conditions, some native species will fail to establish reproductive populations due to the extremely low germination rate and seedling survival \citep{Reed2021}. Therefore, climate change will reduce the population growth rate and the range size of these species \citep{reed2021climate}. 

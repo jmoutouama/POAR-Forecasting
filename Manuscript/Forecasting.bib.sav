@@ -169,6 +169,51 @@ year = {1930},
   publisher = {Wiley Online Library},
 }
 
+@Article{petry2016sex,
+  author    = {Petry, William K and Soule, Judith D and Iler, Amy M and Chicas-Mosier, Ana and Inouye, David W and Miller, Tom EX and Mooney, Kailen A},
+  journal   = {Science},
+  title     = {Sex-specific responses to climate change in plants alter population sex ratio and performance},
+  year      = {2016},
+  number    = {6294},
+  pages     = {69--71},
+  volume    = {353},
+  publisher = {American Association for the Advancement of Science},
+}
+
+@Article{Tognetti2012,
+  author  = {Tognetti, Roberto},
+  journal = {Tree Physiology},
+  title   = {{Adaptation to climate change of dioecious plants: does gender balance matter?}},
+  year    = {2012},
+  issn    = {0829-318X},
+  month   = {11},
+  number  = {11},
+  pages   = {1321-1324},
+  volume  = {32},
+  doi     = {10.1093/treephys/tps105},
+  eprint  = {https://academic.oup.com/treephys/article-pdf/32/11/1321/4642632/tps105.pdf},
+  url     = {https://doi.org/10.1093/treephys/tps105},
+}
+
+@Article{jones1999sex,
+  author    = {Jones, Michael H and Macdonald, S Ellen and Henry, Gregory HR},
+  journal   = {Oikos},
+  title     = {Sex-and habitat-specific responses of a high arctic willow, Salix arctica, to experimental climate change},
+  year      = {1999},
+  pages     = {129--138},
+  publisher = {JSTOR},
+}
+
+@Article{elith2009species,
+  author    = {Elith, Jane and Leathwick, John R},
+  journal   = {Annual review of ecology, evolution, and systematics},
+  title     = {Species distribution models: ecological explanation and prediction across space and time},
+  year      = {2009},
+  pages     = {677--697},
+  volume    = {40},
+  publisher = {Annual Reviews},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 @Comment{jabref-meta: fileDirectoryLatex-jm200-W7H2KJQ0RT:/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript;}
