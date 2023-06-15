@@ -62,8 +62,8 @@ library(xtable)
 %-------------------------------------------------------------------------
 \newpage
 \section*{Abstract}
-Gender-specific response to rising temperature and drought raises the questions of whether global change could lead to a drastic change in the sex ratio and whether that change in the sex ratio could drive population extinction. 
-Answering these questions requires an understanding of the mechanism by which a change in vital rates under future climate conditions for each sex, could be translated into a significant change in population dynamics.
+%Gender-specific response to rising temperature and drought raises the questions of whether global change could lead to a drastic change in the sex ratio and whether that change in the sex ratio could drive population extinction. 
+Answering these questions requires an understanding of the mechanism by which a change in vital rates under future climate conditions for each sex, could be translated into a significant change in population dynamics.%
 Here, we took the first step toward building a forecast model for dioecious plants by understanding sex-specific demographic responses to environmental change. 
 Combining a demographic data set for a dioecious species with a Bayesian hierarchical modeling approach, we fit models in which vital rates are driven by seasonal precipitation and temperature. 
 
