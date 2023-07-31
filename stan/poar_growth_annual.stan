@@ -42,15 +42,19 @@ parameters {
   //Growth
   //fixed effects
   real b0_g;    
-  real bsize_g;   
+  real bsize_g;  
+  real bsizesex_g;    
   real bsex_g;   
   real bppt_g;  
   real btemp_g;  
   real bcvppt_g;  
+  real bppttemp_g;
+  real bcvppttemp_g;
   real bpptsex_g;
   real btempsex_g;
   real bcvpptsex_g;
   real bppttempsex_g;
+  real bcvppttempsex_g;
   //random effects
   real<lower=0> block_tau_g; 
   real block_rfx_g[n_blocks_g];  
@@ -74,10 +78,15 @@ transformed parameters {
                 bpptsex_g * ppt_g[igrow] * male_g[igrow] +
                 btempsex_g * temp_g[igrow] * male_g[igrow] +
                 bcvpptsex_g * cvppt_g[igrow] * male_g[igrow] +
+                bsizesex_g * size_g[igrow] * male_g[igrow] +
+                bppttemp_g * temp_g[igrow] * ppt_g[igrow] +
+                bcvppttemp_g * cvppt_g[igrow] * temp_g[igrow] +
+
+
 
                 //3-way interaction
                 bppttempsex_g * temp_g[igrow] * ppt_g[igrow] * male_g[igrow] +
-                
+                bcvppttempsex_g * cvppt_g[igrow] * temp_g[igrow]* male_g[igrow] +
 
                 //random effects
                 block_rfx_g[block_g[igrow]] +
@@ -91,14 +100,18 @@ model {
   // priors on parameters
   // Growth
   b0_g ~ normal(0, 100);    
-  bsize_g ~ normal(0, 100);   
+  bsize_g ~ normal(0, 100); 
+  bsizesex_g ~ normal(0, 100);
   bsex_g ~ normal(0, 100);   
   bppt_g ~ normal(0, 100);  
   btemp_g ~ normal(0, 100);  
   bcvppt_g ~ normal(0, 100);  
+  bcvppttemp_g ~ normal(0, 100);  
   bpptsex_g ~ normal(0, 100);
   btempsex_g ~ normal(0, 100);
+  bppttemp_g ~ normal(0, 100);
   bppttempsex_g ~ normal(0, 100);
+  bcvppttempsex_g ~ normal(0, 100);
   block_tau_g ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_g){
     block_rfx_g[i] ~ normal(0, block_tau_g);

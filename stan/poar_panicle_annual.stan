@@ -31,10 +31,14 @@ parameters {
   real bppt_p;  
   real btemp_p;  
   real bcvppt_p;  
+  real bppttemp_p;
+  real bcvppttemp_p;
+  real bsizesex_p;
   real bpptsex_p;
   real btempsex_p;
   real bcvpptsex_p;
   real bppttempsex_p;
+  real bcvppttempsex_p;
   //random effects
   real<lower=0> block_tau_p; 
   real block_rfx_p[n_blocks_p];  
@@ -58,9 +62,14 @@ transformed parameters {
                 bpptsex_p * ppt_p[ipan] * male_p[ipan] +
                 btempsex_p * temp_p[ipan] * male_p[ipan] +
                 bcvpptsex_p * cvppt_p[ipan] * male_p[ipan] +
+                bsizesex_p * size_p[ipan] * male_p[ipan] +
+                bppttemp_p * temp_p[ipan] * ppt_p[ipan]  +
+                bcvppttemp_p * cvppt_p[ipan] * temp_p[ipan] +
+
 
                 //3-way interaction
                 bppttempsex_p * temp_p[ipan] * ppt_p[ipan] * male_p[ipan] +
+                bcvppttempsex_p * cvppt_p[ipan] * temp_p[ipan]* male_p[ipan] +
 
 
                 //random effects
@@ -82,6 +91,11 @@ model {
   btemp_p ~ normal(0, 100);  
   bcvppt_p ~ normal(0, 100);  
   bpptsex_p ~ normal(0, 100);
+  bsizesex_p ~ normal(0, 100);
+  bppttemp_p ~ normal(0, 100);
+  bcvppttemp_p ~ normal(0, 100);
+  bppttempsex_p ~ normal(0, 100); 
+  bcvppttempsex_p ~ normal(0, 100);
   btempsex_p ~ normal(0, 100);
   bppttempsex_p ~ normal(0, 100);
   block_tau_p ~ inv_gamma(0.2, 0.2);

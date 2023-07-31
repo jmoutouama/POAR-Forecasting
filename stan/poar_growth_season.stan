@@ -41,12 +41,15 @@ parameters {
   //Growth
   //fixed effects
   real b0_g;    
-  real bsize_g;   
+  real bsize_g;  
+  real bsizesex_g;    
   real bsex_g;   
   real bpptgrow_g;  
   real bpptdorm_g;  
   real btempgrow_g;  
   real btempdorm_g;  
+  real btempdormpptdorm_g;  
+  real btempgrowpptgrow_g;  
   real bpptgrowsex_g;  
   real bpptdormsex_g; 
   real btempgrowsex_g;  
@@ -78,6 +81,9 @@ transformed parameters {
                 bpptdormsex_g * pptdorm_g[igrow] * male_g[igrow] +
                 btempgrowsex_g * tempgrow_g[igrow] * male_g[igrow] +
                 btempdormsex_g * tempdorm_g[igrow] * male_g[igrow] +
+                bsizesex_g * size_g[igrow] * male_g[igrow] +
+                btempdormpptdorm_g * tempdorm_g[igrow] * pptdorm_g[igrow] +
+                btempgrowpptgrow_g * tempgrow_g[igrow] * tempgrow_g[igrow] +
 
                 //3-way interaction
                 btempdormpptdormsex_g * tempdorm_g[igrow] * pptdorm_g[igrow] * male_g[igrow] +
@@ -96,11 +102,14 @@ model {
   // Growth
   b0_g ~ normal(0, 100);    
   bsize_g ~ normal(0, 100);   
+  bsizesex_g ~ normal(0, 100);  
   bsex_g ~ normal(0, 100);   
   bpptgrow_g ~ normal(0, 100);  
   bpptdorm_g ~ normal(0, 100);  
   btempgrow_g ~ normal(0, 100);  
   btempdorm_g ~ normal(0, 100);
+  btempdormpptdorm_g ~ normal(0, 100);  
+  btempgrowpptgrow_g ~ normal(0, 100);  
   bpptgrowsex_g ~ normal(0, 100);
   bpptdormsex_g ~ normal(0, 100);
   btempgrowsex_g ~ normal(0, 100);

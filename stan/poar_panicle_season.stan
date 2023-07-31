@@ -32,6 +32,9 @@ parameters {
   real bpptdorm_p;  
   real btempgrow_p;  
   real btempdorm_p;  
+  real btempdormpptdorm_p;
+  real btempgrowpptgrow_p;
+  real bsizesex_p;
   real bpptgrowsex_p;  
   real bpptdormsex_p; 
   real btempgrowsex_p;  
@@ -66,6 +69,9 @@ transformed parameters {
                 bpptdormsex_p * pptdorm_p[ipan] * male_p[ipan] +
                 btempgrowsex_p * tempgrow_p[ipan] * male_p[ipan] +
                 btempdormsex_p * tempdorm_p[ipan] * male_p[ipan] +
+                bsizesex_p * size_p[ipan] * male_p[ipan] +
+                btempdormpptdorm_p * tempdorm_p[ipan] * pptdorm_p[ipan] +
+                btempgrowpptgrow_p * tempgrow_p[ipan] * tempgrow_p[ipan] +
 
                 //3-way interaction
                 btempdormpptdormsex_p * tempdorm_p[ipan] * pptdorm_p[ipan] * male_p[ipan] +
@@ -85,6 +91,7 @@ model {
   // fertility
   b0_p ~ normal(0, 500);    
   bsize_p ~ normal(0, 100);   
+  bsizesex_p ~ normal(0, 100);   
   bsex_p ~ normal(0, 100);   
   bpptgrow_p ~ normal(0, 100);  
   bpptdorm_p ~ normal(0, 100);  
@@ -94,6 +101,8 @@ model {
   bpptdormsex_p ~ normal(0, 100);
   btempgrowsex_p ~ normal(0, 100);
   btempdormsex_p ~ normal(0, 100);
+  btempdormpptdorm_p ~ normal(0, 100);
+  btempgrowpptgrow_p ~ normal(0, 100);
   btempdormpptdormsex_p ~ normal(0, 100);
   btempgrowpptgrowsex_p ~ normal(0, 100);
   block_tau_p ~ inv_gamma(0.2, 0.2);

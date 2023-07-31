@@ -28,10 +28,14 @@ parameters {
   real bppt_s;  
   real btemp_s;  
   real bcvppt_s;  
+  real bsizesex_s;
+  real bppttemp_s;
   real bpptsex_s;
   real btempsex_s;
   real bcvpptsex_s;
   real bppttempsex_s;
+  real bcvppttemp_s;
+  real bcvppttempsex_s;
   real bppt2_s;  
   real btemp2_s;
   real bcvppt2_s;
@@ -61,9 +65,13 @@ transformed parameters {
                 bpptsex_s * ppt_s[isurv] * male_s[isurv] +
                 btempsex_s * temp_s[isurv] * male_s[isurv] +
                 bcvpptsex_s * cvppt_s[isurv] * male_s[isurv] +
+                bsizesex_s * size_s[isurv] * male_s[isurv] +
+                bppttemp_s * temp_s[isurv] * ppt_s[isurv] + 
+                bcvppttemp_s * cvppt_s[isurv] * temp_s[isurv] + 
                 
                 //3-way interaction
                 bppttempsex_s * temp_s[isurv] * ppt_s[isurv] * male_s[isurv] +
+                bcvppttempsex_s * temp_s[isurv] * cvppt_s[isurv] * male_s[isurv] +
                 
                 //polynomial 2
 
@@ -94,6 +102,11 @@ model {
   bpptsex_s ~ normal(0, 100);
   btempsex_s ~ normal(0, 100);
   bppttempsex_s ~ normal(0, 100);
+  bcvppttempsex_s ~ normal(0, 100);
+  bsizesex_s ~ normal(0, 100);
+  bppttemp_s ~ normal(0, 100);
+  bcvppttemp_s ~ normal(0, 100);
+
   bppt2_s ~ normal(0, 100);
   btemp2_s ~ normal(0, 100);
   bcvppt2_s ~ normal(0, 100);

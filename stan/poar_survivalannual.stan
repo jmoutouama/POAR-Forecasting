@@ -24,6 +24,9 @@ parameters {
   //fixed effects
   real b0_s;    
   real bsize_s;   
+  real bsizesex_s;
+  real bppttemp_s;
+  real bcvpptemp_s;
   real bsex_s;   
   real bppt_s;  
   real btemp_s;  
@@ -32,6 +35,7 @@ parameters {
   real btempsex_s;
   real bcvpptsex_s;
   real bppttempsex_s;
+  real bcvpptempsex_s;
   //random effects
   real<lower=0> block_tau_s; 
   real block_rfx_s[n_blocks_s];  
@@ -54,9 +58,13 @@ transformed parameters {
                 bpptsex_s * ppt_s[isurv] * male_s[isurv] +
                 btempsex_s * temp_s[isurv] * male_s[isurv] +
                 bcvpptsex_s * cvppt_s[isurv] * male_s[isurv] +
+                bsizesex_s * size_s[isurv] * male_s[isurv] +
+                bppttemp_s * ppt_s[isurv] * temp_s[isurv] +
+                bcvpptemp_s * cvppt_s[isurv] * temp_s[isurv] +
                 
                 //3-way interaction
                 bppttempsex_s * temp_s[isurv] * ppt_s[isurv] * male_s[isurv] +
+                bcvpptempsex_s * cvppt_s[isurv] * temp_s[isurv] * male_s[isurv] +
                
 
                 //random effects
@@ -78,6 +86,10 @@ model {
   bpptsex_s ~ normal(0, 100);
   btempsex_s ~ normal(0, 100);
   bppttempsex_s ~ normal(0, 100);
+  bsizesex_s ~ normal(0, 100);
+  bppttemp_s ~ normal(0, 100);
+  bcvpptemp_s ~ normal(0, 100);
+  bcvpptempsex_s ~ normal(0, 100);
   block_tau_s ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_s){
     block_rfx_s[i] ~ normal(0, block_tau_s);

@@ -23,15 +23,19 @@ parameters {
   //Flowering
   //fixed effects
   real b0_f;    
-  real bsize_f;   
+  real bsize_f;  
+  real bsizesex_f;  
   real bsex_f;   
   real bppt_f;  
   real btemp_f;  
   real bcvppt_f;  
+  real bcvpptemp_f;
   real bpptsex_f;
   real btempsex_f;
   real bcvpptsex_f;
+  real bppttemp_f;
   real bppttempsex_f;
+  real bcvpptempsex_f;
   //random effects
   real<lower=0> block_tau_f; 
   real block_rfx_f[n_blocks_f];  
@@ -53,9 +57,13 @@ transformed parameters {
                 bpptsex_f * ppt_f[iflow] * male_f[iflow] +
                 btempsex_f * temp_f[iflow] * male_f[iflow] +
                 bcvpptsex_f * cvppt_f[iflow] * male_f[iflow] +
+                bsizesex_f * size_f[iflow] * male_f[iflow] +
+                bppttemp_f * ppt_f[iflow] * temp_f[iflow] +
+                bcvpptemp_f * cvppt_f[iflow] * temp_f[iflow] +
                
                 //3-way interaction
                 bppttempsex_f * temp_f[iflow] * ppt_f[iflow] * male_f[iflow] +
+                bcvpptempsex_f * cvppt_f[iflow] * temp_f[iflow] * male_f[iflow] +
              
 
                 //random effects
@@ -72,13 +80,17 @@ model {
   // Flowering
   b0_f ~ normal(0, 500);    
   bsize_f ~ normal(0, 100);   
+  bsizesex_f ~ normal(0, 100);  
   bsex_f ~ normal(0, 100);   
   bppt_f ~ normal(0, 100);  
   btemp_f ~ normal(0, 100);  
   bcvppt_f ~ normal(0, 100);  
   bpptsex_f ~ normal(0, 100);
   btempsex_f ~ normal(0, 100);
+  bppttemp_f ~ normal(0, 100);
   bppttempsex_f ~ normal(0, 100);
+  bcvpptempsex_f ~ normal(0, 100);
+  bcvpptemp_f ~ normal(0, 100);
   block_tau_f ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_f){
     block_rfx_f[i] ~ normal(0, block_tau_f);

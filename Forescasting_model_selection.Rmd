@@ -54,7 +54,7 @@ library(LaplacesDemon)
 # if (!require("BiocManager", quietly = TRUE))
 #     install.packages("BiocManager")
 # BiocManager::install("scater")
-library(scater)
+# library(scater)
 ```
 
 # Demography data 
@@ -72,57 +72,6 @@ poar_ppt <- read.csv("https://www.dropbox.com/s/kkga2hf9k1w9ht1/Poa_pr.csv?dl=1"
 poar_temp <- read.csv("https://www.dropbox.com/s/n0vrn8q5ma49rc9/Poa_tas.csv?dl=1", stringsAsFactors = F) # monthly temperature)
 poar_ppt$census.year<-ifelse(poar_ppt$month<5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from May to December of the previous year and precipitation of the current year.  
 poar_temp$census.year<-ifelse(poar_temp$month<5,poar_temp$year-1,poar_temp$year)
-```
-
-## Climatic data for the model with annual data (precipitation, annual mean temprature and their coefficient of variation) 
-```{r}
-poar_ppt %>% 
-  dplyr::select(Longitude, Latitude, census.year, ppt,site) %>% 
-  filter(census.year %in% (2015:2016)) %>%
-  group_by(site,census.year) %>%
-	summarise(mean_ppt=sum(ppt),sd_ppt=sd(ppt),cv_ppt=sd_ppt/mean_ppt,Longitude=unique(Longitude),Latitude=unique(Latitude))->poar_pptann 
-
-poar_temp %>% 
-  dplyr::select(Longitude, Latitude, census.year, temp,site) %>% 
-  filter(census.year %in% (2015:2016)) %>%
-  group_by(site,census.year) %>%
-	summarise(mean_temp = mean(temp),sd_temp=sd(temp),cv_temp=sd_temp/mean_temp,Longitude=unique(Longitude),Latitude=unique(Latitude))->poar_tempann 
-
-poar_climann<- merge(x = poar_pptann, y = poar_tempann) # merge temperature and precipitation data
-```
-
-
-
-## Match annual climatic data with demographic data
-
-```{r}
-poar_allsites.clim <- left_join(x = poar_allsites_2015_2016 ,y =poar_climann,by=c("site","census.year","Longitude","Latitude")) # merge the demographic data with climatic data for each site
-```
-
-## Check for correlation between predictors ( precipitation and seasonality of precipitation,  temperature and seasonality of temperature )
-
-```{r,eval=FALSE}
-figppt <- ggpubr::ggscatter(poar_allsites.clim, x = "mean_ppt", y = "cv_ppt", color = '#0072B2',shape = 19, size=4,xlab="Annual mean precipitation",
-  ylab="CV precipitation",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
-figppt<-figppt + ggpubr::stat_cor(method = "pearson", label.x = 1200, label.y = 0.04)
-
-fitemp <- ggpubr::ggscatter(poar_allsites.clim, x = "mean_temp", y = "cv_temp",color = '#0072B2',shape = 19,size=4,xlab="Annual mean temperature ",ylab="CV temperature",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
-fitemp<-fitemp + ggpubr::stat_cor(method = "pearson", label.x = 14, label.y = 0.2)
-
-
-(figppttemp<-ggpubr::ggarrange(plotlist = list(figppt, fitemp)))
-
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/Correlationannualclimate.pdf",useDingbats = F,height=5,width=8)
-# print(figppttemp)
-# dev.off()
 ```
 
 ## Climatic data for the model with seasonal data  (growing and dormant season temp and precip) 
@@ -172,28 +121,30 @@ poar.clim_seasonal<- cbind(poar_allsites.clim_season_grow,tempdorm=poar_allsites
 ## Check for correlation between predictors for the seasonal data
 
 ```{r,eval=FALSE}
-figgrow <- ggpubr::ggscatter(poar.clim_seasonal, x = "tempgrow", y = "pptgrow", color = '#0072B2',shape = 19, size=4,xlab="Annual mean temperature",
-  ylab="Annual mean precipitation",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
-figgrow<-figgrow + ggpubr::stat_cor(method = "pearson")
+figgrow <-ggplot(data=poar.clim_seasonal, aes(x=scale(tempgrow), y=scale(pptgrow))) +
+        geom_smooth(method="lm",color = "#0072B2") +
+        geom_point(color = '#0072B2',shape = 19, size=4) +
+        labs (x="Temperature of growing season",y="Precipitation of growing season") +
+        ggpubr::stat_cor(aes(label=..rr.label..)) +
+        theme_bw()
 
 
+figdorm <- ggplot(data=poar.clim_seasonal, aes(x=scale(tempdorm), y=scale(pptdorm))) +
+        geom_smooth(method="lm",color = "#0072B2") +
+        geom_point(color = '#0072B2',shape = 19, size=4) +
+        labs (x="Temperature of dormant season",y="Precipitation of dormant season") +
+        ggpubr::stat_cor(aes(label=..rr.label..)) +
+        theme_bw()
+  
+  
+  
 
-figdorm <- ggpubr::ggscatter(poar.clim_seasonal, x = "tempdorm", y = "pptdorm",color = '#0072B2',shape = 19,size=4,xlab="Annual mean temperature ",ylab="Annual mean precipitation",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "#0072B2", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
-figdorm<-figdorm + ggpubr::stat_cor(method = "pearson")
 
 
 (figgrowdorm<-ggpubr::ggarrange(plotlist = list(figgrow, figdorm)))
 
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/Correlationannualclimate.pdf",useDingbats = F,height=5,width=8)
-# print(figppttemp)
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/Varianceexplained.pdf",useDingbats = F,height=5,width=8)
+# print(figgrowdorm)
 # dev.off()
 ```
 
@@ -255,59 +206,7 @@ poar_sites_annual.surv <- list( n_sites    = poar_allsites.surv$site %>% n_disti
 
 
 ### Running the  stan model
-```{r , eval=FALSE}
-fit_allsites_surv_annual <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survivalannual.stan",
- data = poar_sites_annual.surv,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-# saveRDS(fit_allsites_surv_annual, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_survivalannual.rds')
-
-```
-
-```{r}
-traceplot(fit_allsites_surv_annual, pars = c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s"), inc_warmup = TRUE, nrow =9 )
-```
-
-```{r}
-log_lik_surv_annual <- loo::extract_log_lik(fit_allsites_surv_annual, merge_chains = FALSE)
-r_eff_surv_annual <- loo::relative_eff(exp(log_lik_surv_annual))
-loo_surv_annual <- loo(log_lik_surv_annual, r_eff = r_eff_surv_annual, cores = 2)
-# print(loo_surv_annual)
-# plot(loo_surv_annual)
-```
-
-## Second  model: annual data with polynomial 2 order
-
-### Running the stan model
-```{r}
-fit_allsites_surv_annual_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survivalannualpolynomial.stan",
- data = poar_sites_annual.surv,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-# saveRDS(fit_allsites_surv_annual_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_survivalannualpolynomial.rds')
-```
-
-```{r}
-traceplot(fit_allsites_surv_annual_polyn, pars = c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bppt2_s","btemp2_s","bcvppt2_s","bppt2sex_s","btemp2sex_s","bcvppt2sex_s"), inc_warmup = TRUE, nrow =12 )
-```
-
-```{r}
-log_lik_surv_annual_polyn <- loo::extract_log_lik(fit_allsites_surv_annual_polyn, merge_chains = FALSE)
-r_eff_surv_annual_polyn <- loo::relative_eff(exp(log_lik_surv_annual_polyn))
-loo_surv_annual_polyn <- loo(log_lik_surv_annual_polyn, r_eff = r_eff_surv_annual_polyn, cores = 2)
-# print(loo_surv_annual_polyn)
-# plot(loo_surv_annual)
-```
-
-## Third  model: seasonnal data 
+## First  model: seasonnal data 
 ### Reshape the data
 ```{r}
 # Survival
@@ -351,20 +250,24 @@ poar_sites_season.surv <- list( n_sites    = poarclim_seasonal.surv$site %>% n_d
 
 ### Running the stan model
 ```{r , eval=FALSE}
-fit_allsites_surv_season <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survival_season.stan",
- data = poar_sites_season.surv,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_surv_season <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survival_season.stan",
+#  data = poar_sites_season.surv,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
 
-# saveRDS(fit_allsites_surv_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_survival_season.rds')
+# saveRDS(fit_allsites_surv_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_survival_season.rds')
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_surv_season <- readRDS(url("https://www.dropbox.com/s/ixv0rn7k6yi3bzm/poar_survival_season.rds?dl=1"))
+#ignore warning from readRDS
 ```
 
 ```{r}
-traceplot(fit_allsites_surv_season, pars = c("b0_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"), inc_warmup = TRUE, nrow =9 )
+traceplot(fit_allsites_surv_season, pars = c("b0_s","bsizesex_s","btempdormpptdorm_s","btempgrowpptgrow_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"), inc_warmup = TRUE, nrow =9 )
 ```
 
 ```{r}
@@ -379,27 +282,32 @@ loo_surv_season <- loo(log_lik_surv_season, r_eff = r_eff_surv_season, cores = 2
 ## Fourth  model: seasonnal data with polynomial second order
 ### Running the stan model
 ```{r , eval=FALSE}
-fit_allsites_surv_season_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survival_seasonpolynomial.stan",
- data = poar_sites_season.surv,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_surv_season_polyn <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_survival_seasonpolynomial.stan",
+#  data = poar_sites_season.surv,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
-# saveRDS(fit_allsites_surv_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_survival_seasonpolynomial.rds')
+
+# saveRDS(fit_allsites_surv_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_survival_seasonpolynomial.rds')
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_surv_season_polyn <- readRDS(url("https://www.dropbox.com/s/xr3zrapbwimsfa5/poar_survival_seasonpolynomial.rds?dl=1"))
+#ignore warning from readRDS
 ```
 
 ```{r}
-traceplot(fit_allsites_surv_season_polyn, pars = c("b0_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s","bpptgrow2_s","bpptdorm2_s","btempgrow2_s","btempdorm2_s","bpptgrow2sex_s","bpptdorm2sex_s","btempgrow2sex_s","btempdorm2sex_s"), inc_warmup = TRUE, nrow =15 )
+traceplot(fit_allsites_surv_season_polyn, pars = c("b0_s","bsizesex_s","btempdormpptdorm_s","btempgrowpptgrow_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s","bpptgrow2_s","bpptdorm2_s","btempgrow2_s","btempdorm2_s","bpptgrow2sex_s","bpptdorm2sex_s","btempgrow2sex_s","btempdorm2sex_s"), inc_warmup = TRUE, nrow =15 )
 ```
 
 ```{r}
 log_lik_surv_season_polyn <- loo::extract_log_lik(fit_allsites_surv_season_polyn, merge_chains = FALSE)
 r_eff_surv_season_polyn <- loo::relative_eff(exp(log_lik_surv_season_polyn))
 loo_surv_season_polyn <- loo(log_lik_surv_season_polyn, r_eff = r_eff_surv_season_polyn, cores = 2)
-# print(loo_surv_season_polyn)
-# plot(loo_surv_season_polyn)
+print(loo_surv_season_polyn)
+plot(loo_surv_season_polyn)
 ```
 ## Model comparaison based on epdl/looic 
 ```{r}
@@ -414,43 +322,39 @@ print(comp_surv)
 ```{r}
 posteriorsurvannual <- as.array(fit_allsites_surv_annual)
 color_scheme_set("blue")
-mcmc_intervals(posteriorsurvannual, pars = c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorsurvannual, pars = c("b0_s","bsizesex_s","bppttemp_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bcvpptempsex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 ```{r}
 posteriorsurvannual_polyn <- as.array(fit_allsites_surv_annual_polyn)
 color_scheme_set("blue")
-mcmc_intervals(posteriorsurvannual_polyn, pars = c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bppt2_s","btemp2_s","bcvppt2_s","bppt2sex_s","btemp2sex_s","bcvppt2sex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorsurvannual_polyn, pars = c("b0_s","bsizesex_s","bppttemp_s","bcvppttemp_s","bcvppttempsex_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bppt2_s","btemp2_s","bcvppt2_s","bppt2sex_s","btemp2sex_s","bcvppt2sex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 ```{r}
 posteriorsurv_season <- as.array(fit_allsites_surv_season)
 color_scheme_set("blue")
-mcmc_intervals(posteriorsurv_season, pars = c("b0_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorsurv_season, pars = c("b0_s","bsizesex_s","btempdormpptdorm_s","btempgrowpptgrow_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 ```{r}
 posteriorsurv_season_polyn <- as.array(fit_allsites_surv_season_polyn)
 color_scheme_set("blue")
-mcmc_intervals(posteriorsurv_season_polyn, pars = c("b0_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s","bpptgrow2_s","bpptdorm2_s","btempgrow2_s","btempdorm2_s","bpptgrow2sex_s","bpptdorm2sex_s","btempgrow2sex_s","btempdorm2sex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorsurv_season_polyn, pars = c("b0_s","bsizesex_s","btempdormpptdorm_s","btempgrowpptgrow_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s","bpptgrow2_s","bpptdorm2_s","btempgrow2_s","btempdorm2_s","bpptgrow2sex_s","bpptdorm2sex_s","btempgrow2sex_s","btempdorm2sex_s"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 # Posterior predictive check for survival
 
 ```{r}
 #pull out parameter posterior distributions
-predSA <- rstan::extract(fit_allsites_surv_annual, pars = c("predS"))$predS
-predSPA <- rstan::extract(fit_allsites_surv_annual_polyn, pars = c("predS"))$predS
 predSS <- rstan::extract(fit_allsites_surv_season, pars = c("predS"))$predS
 predSSP <- rstan::extract(fit_allsites_surv_season_polyn, pars = c("predS"))$predS
 
 
 #draw 500 random samples from the joint posterior
 n_post_draws <- 500
-post_draws <- sample.int(dim(predSA)[1], n_post_draws)
+post_draws <- sample.int(dim(predSS)[1], n_post_draws)
 #set up simulation output
-y_sa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.surv$y_s))
-y_spa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.surv$y_s))
 y_ss_sim <- matrix(NA,n_post_draws,length(poar_sites_season.surv$y_s))
 y_sps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.surv$y_s))
 
@@ -458,40 +362,67 @@ y_sps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.surv$y_s))
 #loop over the posterior and generate new observations
 for(i in 1:n_post_draws){
   print(i)
-  ## sample survival data (bernoulli)
-  y_sa_sim [i,] <- rbinom(n=length(poar_sites_annual.surv$y_s), size=1, prob = invlogit(predSA[i,]))
-  ## sample flowering data (bernoulli)
-  y_spa_sim[i,] <- rbinom(n=length(poar_sites_annual.surv$y_s), size=1, prob = invlogit(predSPA[i,]))
-  ## sample survival data (bernoulli)
+  ## sample survival data linear (bernoulli)
   y_ss_sim [i,] <- rbinom(n=length(poar_sites_season.surv$y_s), size=1, prob = invlogit(predSS[i,]))
-  ## sample flowering data (bernoulli)
+  ## sample survival data  polynomial (bernoulli)
   y_sps_sim [i,] <- rbinom(n=length(poar_sites_season.surv$y_s), size=1, prob = invlogit(predSSP[i,]))
 
 }
 ```
 # plot ppc overlay for survival
+
 ```{r}
-ppc_dens_overlay(poar_sites_annual.surv$y_s, y_sa_sim)+
-  xlab("Survival status")+ylab("Density")+
-  ggtitle(("Annual"))+theme(legend.position = "none")->ppc_surv_annual
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
 
-ppc_dens_overlay(poar_sites_annual.surv$y_s, y_spa_sim)+
-  xlab("Survival status")+ylab("Density")+
-  ggtitle(("Annual Polynomial"))+theme(legend.position = "none")->ppc_surv_annualpolyn
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
 
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+```{r}
 
 ppc_dens_overlay(poar_sites_season.surv$y_s, y_ss_sim)+
   xlab("Survival status")+ylab("Density")+
-  ggtitle(("Seasonal"))+theme(legend.position = "none")->ppc_surv_season
+  ggtitle(("Seasonal linear"))+theme(legend.position = "none")+theme_bw()->ppc_surv_season
 
 
 ppc_dens_overlay(poar_sites_season.surv$y_s, y_sps_sim)+
   xlab("Survival status")+ylab("Density")+
-  ggtitle(("Seasonal Polynomial"))+theme(legend.position = "none")->ppc_surv_season_polyn
+  ggtitle(("Seasonal Polynomial"))+theme(legend.position = "none")+theme_bw()->ppc_surv_season_polyn
 
-#print figure
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/PPCSurvival.pdf",useDingbats = F,height=7,width=6)
-# multiplot(ppc_surv_annual,ppc_surv_annualpolyn,ppc_surv_season,
+# print figure
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/PPCSurvival.pdf",useDingbats = F,height=3,width=6)
+# multiplot(ppc_surv_season,
 #           ppc_surv_season_polyn,cols=2)
 # dev.off()
 ```
@@ -499,13 +430,13 @@ ppc_dens_overlay(poar_sites_season.surv$y_s, y_sps_sim)+
 # pull out stan coefficients for survival
 
 ```{r}
-surv_coefsa <- rstan::extract(fit_allsites_surv_annual, c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s"))
+surv_coefsa <- rstan::extract(fit_allsites_surv_annual, c("b0_s","bsizesex_s","bppttemp_s","bcvpptemp_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bcvpptempsex_s"))
 
-surv_coefsp <- rstan::extract(fit_allsites_surv_annual_polyn, c("b0_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bppt2_s","btemp2_s","bcvppt2_s","bppt2sex_s","btemp2sex_s","bcvppt2sex_s"))
+surv_coefsp <- rstan::extract(fit_allsites_surv_annual_polyn, c("b0_s","bsizesex_s","bppttemp_s","bcvppttemp_s","bcvppttempsex_s", "bsize_s","bsex_s","bppt_s","btemp_s","bcvppt_s","bpptsex_s","btempsex_s","bcvpptsex_s","bppttempsex_s","bppt2_s","btemp2_s","bcvppt2_s","bppt2sex_s","btemp2sex_s","bcvppt2sex_s"))
 
-surv_coefss <- rstan::extract(fit_allsites_surv_season, c("b0_s","bsex_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"))
+surv_coefss <- rstan::extract(fit_allsites_surv_season, c("b0_s","bsizesex_s","btempdormpptdorm_s","btempgrowpptgrow_s","bsex_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s"))
 
-surv_coefssp <- rstan::extract(fit_allsites_surv_season_polyn, c("b0_s","bsex_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s","bpptgrow2_s","bpptdorm2_s","btempgrow2_s","btempdorm2_s","bpptgrow2sex_s","bpptdorm2sex_s","btempgrow2sex_s","btempdorm2sex_s"))
+surv_coefssp <- rstan::extract(fit_allsites_surv_season_polyn, c("b0_s","bsizesex_s","btempdormpptdorm_s","btempgrowpptgrow_s","bsex_s", "bsize_s","bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s","bpptgrowsex_s","bpptdormsex_s","btempgrowsex_s","btempdormsex_s","btempdormpptdormsex_s","btempgrowpptgrowsex_s","bpptgrow2_s","bpptdorm2_s","btempgrow2_s","btempdorm2_s","bpptgrow2sex_s","bpptdorm2sex_s","btempgrow2sex_s","btempdorm2sex_s"))
 
 ```
 
@@ -544,8 +475,8 @@ cvppt_seq <- seq(min(zpoar_surv_plot_annual$cv_ppt),max(zpoar_surv_plot_annual$c
 ## Plot for annual survival 
 
 ```{r}
-sex_cols <- c("#FDAE61", # Orange
-            "#66BD63") # Darker green
+sex_cols <- c("#00AFBB", # Orange
+            "#FF9999") # Darker green
 
 
 par(mfrow = c(2, 3))
@@ -564,7 +495,11 @@ with(zpoar_surv_plot_annual,{
                         mean(surv_coefsa$bpptsex_s) * ppt_seq * (s-1) +
                         mean(surv_coefsa$btempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s] * (s-1) +
                         mean(surv_coefsa$bcvpptsex_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
-                        mean(surv_coefsa$bppttempsex_s) * ppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s] * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) 
+                        mean(surv_coefsa$bsizesex_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] * (s-1) +
+                        mean(surv_coefsa$bppttemp_s) * ppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
+                        mean(surv_coefsa$bcvpptemp_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
+                        mean(surv_coefsa$bcvpptempsex_s)* surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * surv_mean_temp$temp[surv_mean_temp$Sex==s] *  (s-1) +
+                        mean(surv_coefsa$bppttempsex_s) * ppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * (s-1) 
       ),col= sex_cols[s],lwd=3)
     }
 })
@@ -577,6 +512,9 @@ with(zpoar_surv_plot_annual,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(temp_seq,invlogit(mean(surv_coefsa$b0_s) + 
                         mean(surv_coefsa$bsize_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] +
+                        mean(surv_coefsa$bsizesex_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s]*(s-1)  +
+                        mean(surv_coefsa$bppttemp_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * temp_seq +
+                        mean(surv_coefsa$bcvpptemp_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * temp_seq +
                         mean(surv_coefsa$bsex_s) * (s-1) +
                         mean(surv_coefsa$bppt_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s]  +
                         mean(surv_coefsa$btemp_s) * temp_seq +
@@ -584,7 +522,8 @@ with(zpoar_surv_plot_annual,{
                         mean(surv_coefsa$bpptsex_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) +
                         mean(surv_coefsa$btempsex_s) * temp_seq * (s-1) +
                         mean(surv_coefsa$bcvpptsex_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
-                        mean(surv_coefsa$bppttempsex_s) * temp_seq * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) 
+                        mean(surv_coefsa$bcvpptempsex_s) * temp_seq * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1)+ 
+                        mean(surv_coefsa$bppttempsex_s) * temp_seq * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) 
       ),col= sex_cols[s],lwd=3)
     }
 })
@@ -598,13 +537,17 @@ with(zpoar_surv_plot_annual,{
       lines(cvppt_seq,invlogit(mean(surv_coefsa$b0_s) + 
                         mean(surv_coefsa$bsize_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] +
                         mean(surv_coefsa$bsex_s) * (s-1) +
+                        mean(surv_coefsa$bsizesex_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] * (s-1) +
                         mean(surv_coefsa$bppt_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s]  +
                         mean(surv_coefsa$btemp_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]+
                         mean(surv_coefsa$bcvppt_s) * cvppt_seq  +
                         mean(surv_coefsa$bpptsex_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) +
                         mean(surv_coefsa$btempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s] * (s-1) +
                         mean(surv_coefsa$bcvpptsex_s) * cvppt_seq * (s-1) +
-                        mean(surv_coefsa$bppttempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * cvppt_seq * (s-1) 
+                        mean(surv_coefsa$bcvpptemp_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * cvppt_seq  +
+                        mean(surv_coefsa$bppttemp_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s]  +
+                        mean(surv_coefsa$bcvpptempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * cvppt_seq * (s-1) +
+                        mean(surv_coefsa$bppttempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) 
       ),col= sex_cols[s],lwd=3)
     }
 })
@@ -618,13 +561,17 @@ with(zpoar_surv_plot_annual,{
       lines(ppt_seq,invlogit(mean(surv_coefsp$b0_s) + 
                         mean(surv_coefsp$bsize_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] +
                         mean(surv_coefsp$bsex_s) * (s-1) +
+                        mean(surv_coefsa$bsizesex_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] * (s-1) +
                         mean(surv_coefsp$bppt_s) * ppt_seq +
                         mean(surv_coefsp$btemp_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
                         mean(surv_coefsp$bcvppt_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] +
                         mean(surv_coefsp$bpptsex_s) * ppt_seq * (s-1) +
                         mean(surv_coefsp$btempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s] * (s-1) +
                         mean(surv_coefsp$bcvpptsex_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
-                        mean(surv_coefsp$bppttempsex_s) * ppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s] * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
+                        mean(surv_coefsa$bppttemp_s) * ppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
+                        mean(surv_coefsa$bcvpptemp_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
+                        mean(surv_coefsa$bcvpptempsex_s)* surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * surv_mean_temp$temp[surv_mean_temp$Sex==s] *  (s-1) +
+                        mean(surv_coefsp$bppttempsex_s) * ppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * (s-1) +
                         mean(surv_coefsp$bppt2_s) * (ppt_seq^2) +
                         mean(surv_coefsp$btemp2_s) * (surv_mean_temp$temp[surv_mean_temp$Sex==s])^2 +
                         mean(surv_coefsp$bcvppt2_s) * (surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s])^2 +
@@ -645,13 +592,17 @@ with(zpoar_surv_plot_annual,{
       lines(temp_seq,invlogit(mean(surv_coefsp$b0_s) + 
                         mean(surv_coefsp$bsize_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] +
                         mean(surv_coefsp$bsex_s) * (s-1) +
+                        mean(surv_coefsa$bsizesex_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] * (s-1) +
                         mean(surv_coefsp$bppt_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s]  +
                         mean(surv_coefsp$btemp_s) * temp_seq +
                         mean(surv_coefsp$bcvppt_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] +
                         mean(surv_coefsp$bpptsex_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) +
                         mean(surv_coefsp$btempsex_s) * temp_seq * (s-1) +
                         mean(surv_coefsp$bcvpptsex_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
-                        mean(surv_coefsp$bppttempsex_s) * temp_seq * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
+                        mean(surv_coefsp$bcvppttempsex_s) * temp_seq * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * (s-1) +
+                        mean(surv_coefsp$bppttempsex_s) * temp_seq * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) +
+                        mean(surv_coefsa$bppttemp_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * temp_seq +
+                        mean(surv_coefsa$bcvpptemp_s) * surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s] * temp_seq +
                         mean(surv_coefsp$bppt2_s) * (surv_mean_ppt$ppt[surv_mean_ppt$Sex==s])^2 +
                         mean(surv_coefsp$btemp2_s) * (temp_seq^2) +
                         mean(surv_coefsp$bcvppt2_s) * (surv_mean_cv_ppt$cv_ppt[surv_mean_cv_ppt$Sex==s])^2 +
@@ -670,14 +621,18 @@ with(zpoar_surv_plot_annual,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(cvppt_seq,invlogit(mean(surv_coefsa$b0_s) + 
                         mean(surv_coefsa$bsize_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s] +
-                        mean(surv_coefsa$bsex_s) * (s-1) +
+                        mean(surv_coefsa$bsex_s) * surv_mean_sizes$size[surv_mean_sizes$Sex==s]*(s-1) +
+                        mean(surv_coefsa$bsizesex_s) * (s-1) +
                         mean(surv_coefsa$bppt_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s]  +
                         mean(surv_coefsa$btemp_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]+
                         mean(surv_coefsa$bcvppt_s) * cvppt_seq  +
                         mean(surv_coefsa$bpptsex_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) +
                         mean(surv_coefsa$btempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s] * (s-1) +
                         mean(surv_coefsa$bcvpptsex_s) * cvppt_seq * (s-1) +
-                        mean(surv_coefsa$bppttempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * cvppt_seq * (s-1) +
+                        mean(surv_coefsa$bppttemp_s) * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
+                        mean(surv_coefsa$bcvpptemp_s) * cvppt_seq * surv_mean_temp$temp[surv_mean_temp$Sex==s] +
+                        mean(surv_coefsa$bcvpptempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * cvppt_seq * (s-1) +
+                        mean(surv_coefsa$bppttempsex_s) * surv_mean_temp$temp[surv_mean_temp$Sex==s]  * surv_mean_ppt$ppt[surv_mean_ppt$Sex==s] * (s-1) +
                         mean(surv_coefsp$bppt2_s) * (surv_mean_ppt$ppt[surv_mean_ppt$Sex==s])^2 +
                         mean(surv_coefsp$btemp2_s) * (surv_mean_temp$temp[surv_mean_temp$Sex==s])^2 +
                         mean(surv_coefsp$bcvppt2_s) * (cvppt_seq^2) +
@@ -743,11 +698,14 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(pptgrow_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * pptgrow_seq +
                         mean(surv_coefss$bpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
                         mean(surv_coefss$btempgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefss$btempdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        mean(surv_coefss$btempdormpptdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s]* surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                        mean(surv_coefss$btempgrowpptgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * pptgrow_seq +
                         mean(surv_coefss$bpptgrowsex_s) * pptgrow_seq * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
                         mean(surv_coefss$btempgrowsex_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
@@ -766,11 +724,14 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(tempgrow_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
                         mean(surv_coefss$bpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
                         mean(surv_coefss$btempgrow_s) * tempgrow_seq +
                         mean(surv_coefss$btempdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        mean(surv_coefss$btempdormpptdorm_s)*surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                        mean(surv_coefss$btempgrowpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * tempgrow_seq +
                         mean(surv_coefss$bpptgrowsex_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
                         mean(surv_coefss$btempgrowsex_s) * tempgrow_seq * (s-1) +
@@ -789,11 +750,14 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(pptdorm_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1)  +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
                         mean(surv_coefss$bpptdorm_s) * pptdorm_seq +
                         mean(surv_coefss$btempgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefss$btempdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        mean(surv_coefss$btempdormpptdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * pptdorm_seq +
+                        mean(surv_coefss$btempgrowpptgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
                         mean(surv_coefss$bpptgrowsex_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * pptdorm_seq  * (s-1) +
                         mean(surv_coefss$btempgrowsex_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
@@ -812,11 +776,14 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(tempdorm_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
                         mean(surv_coefss$bpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
                         mean(surv_coefss$btempgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefss$btempdorm_s) * tempdorm_seq +
+                        mean(surv_coefss$btempdormpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * tempdorm_seq  +
+                        mean(surv_coefss$btempgrowpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] + 
                         mean(surv_coefss$bpptgrowsex_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
                         mean(surv_coefss$btempgrowsex_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
@@ -836,6 +803,7 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(pptgrow_seq,invlogit(mean(surv_coefssp$b0_s) + 
                         mean(surv_coefssp$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefssp$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefssp$bsex_s) * (s-1) +
                         mean(surv_coefssp$bpptgrow_s) * pptgrow_seq +
                         mean(surv_coefssp$bpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
@@ -845,6 +813,8 @@ with(zpoar_surv_plot_season,{
                         mean(surv_coefssp$bpptdormsex_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
                         mean(surv_coefssp$btempgrowsex_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
                         mean(surv_coefssp$btempdormsex_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                        mean(surv_coefssp$btempdormpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] + 
+                        mean(surv_coefssp$btempgrowpptgrow_s) * pptgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefssp$btempdormpptdormsex_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
                         mean(surv_coefssp$btempgrowpptgrowsex_s) * pptgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s]  * (s-1) +
                         mean(surv_coefssp$bpptgrow2_s) * (pptgrow_seq^2) +
@@ -867,6 +837,7 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(tempgrow_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
                         mean(surv_coefss$bpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
@@ -874,6 +845,8 @@ with(zpoar_surv_plot_season,{
                         mean(surv_coefss$btempdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
                         mean(surv_coefss$bpptgrowsex_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
+                        mean(surv_coefss$btempdormpptdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                        mean(surv_coefss$btempgrowpptgrow_s) * tempgrow_seq * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
                         mean(surv_coefss$btempgrowsex_s) * tempgrow_seq * (s-1) +
                         mean(surv_coefss$btempdormsex_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
                         mean(surv_coefss$btempdormpptdormsex_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
@@ -899,11 +872,14 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(pptdorm_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
                         mean(surv_coefss$bpptdorm_s) * pptdorm_seq +
                         mean(surv_coefss$btempgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefss$btempdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        mean(surv_coefss$btempdormpptdorm_s) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * pptdorm_seq  +
+                        mean(surv_coefss$btempgrowpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefss$bpptgrowsex_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * pptdorm_seq  * (s-1) +
                         mean(surv_coefss$btempgrowsex_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
@@ -931,11 +907,14 @@ with(zpoar_surv_plot_season,{
              bg=sex_cols[s],pch=21,cex=2)
       lines(tempdorm_seq,invlogit(mean(surv_coefss$b0_s) + 
                         mean(surv_coefss$bsize_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] +
+                        mean(surv_coefss$bsizesex_s) * surv_mean_sizesseason$size[surv_mean_sizesseason$Sex==s] * (s-1) +
                         mean(surv_coefss$bsex_s) * (s-1) +
                         mean(surv_coefss$bpptgrow_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
                         mean(surv_coefss$bpptdorm_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
                         mean(surv_coefss$btempgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
                         mean(surv_coefss$btempdorm_s) * tempdorm_seq +
+                        mean(surv_coefss$btempdormpptdorm_s) * tempdorm_seq * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                        mean(surv_coefss$btempgrowpptgrow_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
                         mean(surv_coefss$bpptgrowsex_s) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
                         mean(surv_coefss$bpptdormsex_s) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
                         mean(surv_coefss$btempgrowsex_s) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
@@ -960,96 +939,8 @@ with(zpoar_surv_plot_season,{
 
 
 # Growth 
-## First model: annual data 
-### Reshape the data
-```{r}
-poar_allsites.clim %>% 
-  subset( tillerN_t0 > 0 & tillerN_t1 > 0)%>%
-  dplyr::select( year, Code, site, Block, Sex, 
-          Longitude, Latitude, 
-          tillerN_t0, tillerN_t1,surv_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
-  na.omit %>% 
-  mutate( site         = site %>% as.factor %>% as.numeric,
-          Block = Block %>% as.factor %>% as.numeric,
-          Sex          = Sex %>% as.factor %>% as.numeric,
-          source = Code %>% as.factor %>% as.numeric ) %>%
-  mutate( z_size_t0   = tillerN_t0 %>% scale %>% .[,1],
-          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
-          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
-          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.grow
 
-poar_sites_annual.grow <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
-                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
-                  # growth data
-                  n_blocks_g = poar_allsites.grow$Block %>% n_distinct,
-                  site_g   = poar_allsites.grow$site,
-                  source_g =  poar_allsites.grow$source,
-                  block_g  = poar_allsites.grow$Block,
-                  ppt_g=poar_allsites.grow$z_ppt_t1_z,
-                  cvppt_g=poar_allsites.grow$z_cvppt_t1_z,
-                  temp_g=poar_allsites.grow$z_temp_t1_z,
-                  site_block_g = data.frame( site_i  = poar_allsites.grow$site,
-                                             block_i = poar_allsites.grow$Block ) %>%
-                    unique %>% .$site_i,
-                  male_g   = poar_allsites.grow$Sex-1,
-                  size_g   = poar_allsites.grow$z_size_t0,
-                  y_g      = poar_allsites.grow$tillerN_t1,
-                  n_g      = nrow(poar_allsites.grow))
-```
-
-### Running the stan model
-```{r , eval=FALSE}
-fit_allsites_grow_annual <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_annual.stan",
- data = poar_sites_annual.grow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-
-# saveRDS(fit_allsites_grow_annual, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_growth_annual.rds')
-```
-
-```{r}
-traceplot(fit_allsites_grow_annual, pars = c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g"), inc_warmup = TRUE, nrow =9 )
-```
-
-```{r}
-log_lik_grow_annual <- loo::extract_log_lik(fit_allsites_grow_annual, merge_chains = FALSE)
-r_eff_grow_annual <- loo::relative_eff(exp(log_lik_grow_annual))
-loo_grow_annual <- loo::loo(log_lik_grow_annual, r_eff = r_eff_grow_annual, cores = 2)
-# print(loo_grow_annual)
-# plot(loo_grow_annual)
-```
-
-## Second  model: annual data with polynomial 2 order
-### Running the stan model
-```{r , eval=FALSE}
-fit_allsites_grow_annual_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_annualpolynomial.stan",
- data = poar_sites_annual.grow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-# saveRDS(fit_allsites_grow_annual_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_growth_annualpolynomial.rds')
-```
-
-```{r}
-traceplot(fit_allsites_grow_annual_polyn, pars = c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g","bppt2_g","btemp2_g","bcvppt2_g","bppt2sex_g","btemp2sex_g","bcvppt2sex_g"), inc_warmup = TRUE, nrow =9 )
-```
-
-```{r}
-log_lik_grow_annual_polyn <- loo::extract_log_lik(fit_allsites_grow_annual_polyn, merge_chains = FALSE)
-r_eff_grow_annual_polyn <- loo::relative_eff(exp(log_lik_grow_annual_polyn))
-loo_grow_annual_polyn <- loo::loo(log_lik_grow_annual_polyn, r_eff = r_eff_grow_annual_polyn, cores = 2)
-# print(loo_grow_annual_polyn)
-# plot(loo_grow_annual_polyn)
-```
-
-## Third  model: seasonnal data 
+## First  model: seasonnal data 
 ### Reshape the data
 ```{r}
 # growth
@@ -1092,19 +983,23 @@ poar_sites_season.grow <- list( n_sites    = poarclim_seasonal.surv$site %>% n_d
 
 ### Running the stan model
 ```{r , eval=FALSE}
-fit_allsites_grow_season <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_season.stan",
- data = poar_sites_season.grow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_grow_season <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_season.stan",
+#  data = poar_sites_season.grow,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
-# saveRDS(fit_allsites_grow_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_growth_season.rds')
+# saveRDS(fit_allsites_grow_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_growth_season.rds')
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_grow_season <- readRDS(url("https://www.dropbox.com/s/3h9x43ku3f58up9/poar_growth_season.rds?dl=1"))
+#ignore warning from readRDS
 ```
 
 ```{r}
-traceplot(fit_allsites_grow_season, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"), inc_warmup = TRUE, nrow =9 )
+traceplot(fit_allsites_grow_season, pars = c("b0_g","bsizesex_g","btempdormpptdorm_g","btempgrowpptgrow_g","bsex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"), inc_warmup = TRUE, nrow =9 )
 ```
 
 ```{r}
@@ -1112,26 +1007,34 @@ log_lik_grow_season <- loo::extract_log_lik(fit_allsites_grow_season, merge_chai
 r_eff_grow_season <- loo::relative_eff(exp(log_lik_grow_season))
 loo_grow_season <- loo(log_lik_grow_season, r_eff = r_eff_grow_season, cores = 2)
 print(loo_grow_season)
+plot(loo_grow_season)
 ```
 
 
 ## Fourth  model: seasonnal data with polynomial second order
 ### Running the stan model
 ```{r , eval=FALSE}
-fit_allsites_grow_season_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_seasonpolynomial.stan",
- data = poar_sites_season.grow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_grow_season_polyn <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_growth_seasonpolynomial.stan",
+#  data = poar_sites_season.grow,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
-# saveRDS(fit_allsites_grow_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_growth_seasonpolynomial.rds')
+# saveRDS(fit_allsites_grow_season_polyn, '/Users/jm200/Desktop/Manuscript/poar_growth_seasonpolynomial.rds')
+
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_grow_season_polyn <- readRDS(url("https://www.dropbox.com/s/onie8qtrzer8cme/poar_growth_seasonpolynomial.rds?dl=1"))
+#ignore warning from readRDS
 ```
 
 ```{r}
-traceplot(fit_allsites_grow_season_polyn, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g","bpptgrow2_g","bpptdorm2_g","btempgrow2_g","btempdorm2_g","bpptgrow2sex_g","bpptdorm2sex_g","btempgrow2sex_g","btempdorm2sex_g"), inc_warmup = TRUE, nrow =15 )
+traceplot(fit_allsites_grow_season_polyn, pars = c("b0_g","btempdormpptdorm_g","btempgrowpptgrow_g","bsizesex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g","bpptgrow2_g","bpptdorm2_g","btempgrow2_g","btempdorm2_g","bpptgrow2sex_g","bpptdorm2sex_g","btempgrow2sex_g","btempdorm2sex_g"), inc_warmup = TRUE, nrow =9 )
+
 # summary(fit_allsites_grow_season_polyn)
+stan_dens(fit_allsites_grow_season_polyn,pars = c("b0_g","btempdormpptdorm_g","btempgrowpptgrow_g","bsizesex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g","bpptgrow2_g","bpptdorm2_g","btempgrow2_g","btempdorm2_g","bpptgrow2sex_g","bpptdorm2sex_g","btempgrow2sex_g","btempdorm2sex_g")) 
 ```
 
 
@@ -1139,8 +1042,8 @@ traceplot(fit_allsites_grow_season_polyn, pars = c("b0_g", "bsize_g","bpptgrow_g
 log_lik_grow_season_polyn <- loo::extract_log_lik(fit_allsites_grow_season_polyn, merge_chains = FALSE)
 r_eff_grow_season_polyn <- loo::relative_eff(exp(log_lik_grow_season_polyn))
 loo_grow_season_polyn <- loo(log_lik_grow_season_polyn, r_eff = r_eff_grow_season_polyn, cores = 2)
-# print(loo_grow_season_polyn)
-# plot(loo_grow_season_polyn)
+print(loo_grow_season_polyn)
+plot(loo_grow_season_polyn)
 ```
 
 ## Comparaison between models
@@ -1154,13 +1057,13 @@ print(comp_grow)
 ```{r}
 posteriorgrowannual <- as.array(fit_allsites_grow_annual)
 color_scheme_set("blue")
-mcmc_intervals(posteriorgrowannual, pars = c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorgrowannual, pars = c("b0_g","bsizesex_g","bppttemp_g","bcvppttempsex_g","bcvppttemp_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 ```{r}
 posteriorgrowannual_polyn <- as.array(fit_allsites_grow_annual_polyn)
 color_scheme_set("blue")
-mcmc_intervals(posteriorgrowannual_polyn, pars = c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g","bppt2_g","btemp2_g","bcvppt2_g","bppt2sex_g","btemp2sex_g","bcvppt2sex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorgrowannual_polyn, pars = c("b0_g","bppttemp_g","bcvppttempsex_g","bcvppttemp_g","bsizesex_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g","bppt2_g","btemp2_g","bcvppt2_g","bppt2sex_g","btemp2sex_g","bcvppt2sex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 ```{r}
@@ -1172,29 +1075,26 @@ mcmc_intervals(posteriorgrow_season, pars = c("b0_g", "bsize_g","bpptgrow_g","bp
 ```{r}
 posteriorgrow_season_polyn <- as.array(fit_allsites_grow_season_polyn)
 color_scheme_set("blue")
-mcmc_intervals(posteriorgrow_season_polyn, pars = c("b0_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g","bpptgrow2_g","bpptdorm2_g","btempgrow2_g","btempdorm2_g","bpptgrow2sex_g","bpptdorm2sex_g","btempgrow2sex_g","btempdorm2sex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
+mcmc_intervals(posteriorgrow_season_polyn, pars = c("b0_g","btempdormpptdorm_g","btempgrowpptgrow_g","bsizesex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g","bpptgrow2_g","bpptdorm2_g","btempgrow2_g","btempdorm2_g","bpptgrow2sex_g","bpptdorm2sex_g","btempgrow2sex_g","btempdorm2sex_g"))+ geom_vline(xintercept = 0, linetype = 2)+theme_bw()
 ```
 
 ## Posterior predictive check for growth
 
 ```{r}
 #pull out parameter posterior distributions
-predGA <- rstan::extract(fit_allsites_grow_annual, pars = c("predG"))$predG
-predGPA <- rstan::extract(fit_allsites_grow_annual_polyn, pars = c("predG"))$predG
+
 predGS <- rstan::extract(fit_allsites_grow_season, pars = c("predG"))$predG
 predGSP <- rstan::extract(fit_allsites_grow_season_polyn, pars = c("predG"))$predG
 
-sigmaGA <- rstan::extract(fit_allsites_grow_annual, pars = c("sigma"))$sigma
-sigmaGPA <- rstan::extract(fit_allsites_grow_annual_polyn, pars = c("sigma"))$sigma
+
 sigmaGS <- rstan::extract(fit_allsites_grow_season, pars = c("sigma"))$sigma
 sigmaGSP <- rstan::extract(fit_allsites_grow_season_polyn, pars = c("sigma"))$sigma
 
 #draw 500 random samples from the joint posterior
 n_post_draws <- 500
-post_draws <- sample.int(dim(predGA)[1], n_post_draws)
+post_draws <- sample.int(dim(predGS)[1], n_post_draws)
 #set up simulation output
-y_ga_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.grow$y_g))
-y_gpa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.grow$y_g))
+
 y_gs_sim <- matrix(NA,n_post_draws,length(poar_sites_season.grow$y_g))
 y_gps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.grow$y_g))
 
@@ -1202,22 +1102,6 @@ y_gps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.grow$y_g))
 #loop over the posterior and generate new observations
 for(i in 1:n_post_draws){
   print(i)
-  ## sample growth data (zero-truncated PIG) -- generates data as legit PIG
-    for(j in 1:length(poar_sites_annual.grow$y_g)){
-      ## the pig function appears numerically unstable at low probabilities, so here is a hacky solution
-      pig<-dpoisinvgauss(0:1000,mean=predGA[i,j],shape=(sigmaGA[i]*predGA[i,j]))
-      pig[is.nan(pig) | is.infinite(pig)] <- 0
-      pig_trunc_prob <- pig[2:1001] / (1 - ((1 - sum(pig)) + pig[1]))
-      y_ga_sim[i,j] <- sample(x=1:1000,size=1,replace=T,prob=pig_trunc_prob)
-    } 
-  ## sample growth data (zero-truncated PIG) -- generates data as legit PIG
-    for(j in 1:length(poar_sites_annual.grow$y_g)){
-      ## the pig function appears numerically unstable at low probabilities, so here is a hacky solution
-      pig<-dpoisinvgauss(0:1000,mean=predGPA[i,j],shape=(sigmaGPA[i]*predGPA[i,j]))
-      pig[is.nan(pig) | is.infinite(pig)] <- 0
-      pig_trunc_prob <- pig[2:1001] / (1 - ((1 - sum(pig)) + pig[1]))
-      y_gpa_sim[i,j] <- sample(x=1:1000,size=1,replace=T,prob=pig_trunc_prob)
-    } 
   ## sample growth data (zero-truncated PIG) -- generates data as legit PIG
     for(j in 1:length(poar_sites_season.grow$y_g)){
       ## the pig function appears numerically unstable at low probabilities, so here is a hacky solution
@@ -1239,23 +1123,16 @@ for(i in 1:n_post_draws){
 ```
 ## plot ppc overlay for  growth
 ```{r}
-ppc_dens_overlay(poar_sites_annual.grow$y_g, y_ga_sim)+
-  xlab("Growth  status")+ylab("Density")+
-  ggtitle(("Annual"))+theme(legend.position = "none")->ppc_grow_annual
-
-ppc_dens_overlay(poar_sites_annual.grow$y_g, y_gpa_sim)+
-  xlab("Growth status")+ylab("Density")+
-  ggtitle(("Annual Polynomial"))+theme(legend.position = "none")->ppc_grow_annualpolyn
 
 
 ppc_dens_overlay(poar_sites_season.grow$y_g, y_gs_sim)+
   xlab("Growth status")+ylab("Density")+
-  ggtitle(("Seasonal"))+theme(legend.position = "none")->ppc_grow_season
+  ggtitle((""))+theme(legend.position = "none")+theme_bw()->ppc_grow_season
 
 
 ppc_dens_overlay(poar_sites_season.grow$y_g, y_gps_sim)+
   xlab("Growth status")+ylab("Density")+
-  ggtitle(("Seasonal Polynomial"))+theme(legend.position = "none")->ppc_grow_season_polyn
+  ggtitle((""))+theme(legend.position = "none")+theme_bw()->ppc_grow_season_polyn
 
 # print figure
 # pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/PPCGrowth.pdf",useDingbats = F,height=7,width=6)
@@ -1271,7 +1148,7 @@ grow_coefga <- rstan::extract(fit_allsites_grow_annual, c("b0_g", "bsize_g","bse
 
 grow_coefgp <- rstan::extract(fit_allsites_grow_annual_polyn, c("b0_g", "bsize_g","bsex_g","bppt_g","btemp_g","bcvppt_g","bpptsex_g","btempsex_g","bcvpptsex_g","bppttempsex_g","bppt2_g","btemp2_g","bcvppt2_g","bppt2sex_g","btemp2sex_g","bcvppt2sex_g"))
 
-grow_coefgs <- rstan::extract(fit_allsites_grow_season, c("b0_g","bsex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"))
+grow_coefgs <- rstan::extract(fit_allsites_grow_season, c("b0_g","bsizesex_g","btempdormpptdorm_g","btempgrowpptgrow_g","bsex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g"))
 
 grow_coefgsp <- rstan::extract(fit_allsites_grow_season_polyn, c("b0_g","bsex_g", "bsize_g","bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g","bpptgrowsex_g","bpptdormsex_g","btempgrowsex_g","btempdormsex_g","btempdormpptdormsex_g","btempgrowpptgrowsex_g","bpptgrow2_g","bpptdorm2_g","btempgrow2_g","btempdorm2_g","bpptgrow2sex_g","bpptdorm2sex_g","btempgrow2sex_g","btempdorm2sex_g"))
 
@@ -1712,98 +1589,8 @@ with(zpoar_grow_plot_season,{
 
 
 
-#Flowering
-## First model: annual data 
-### Reshape the data
-```{r}
-poar_allsites.clim %>% 
-  subset( tillerN_t1 > 0 )%>%
-  dplyr::select( year, Code, site, Block, Sex, 
-          Longitude, Latitude, 
-          tillerN_t1, flowerN_t1,flow_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
-  na.omit %>% 
-  mutate( site         = site %>% as.factor %>% as.numeric,
-          Block = Block %>% as.factor %>% as.numeric,
-          Sex          = Sex %>% as.factor %>% as.numeric,
-          source = Code %>% as.factor %>% as.numeric ) %>%
-  mutate( z_size_t1   = tillerN_t1 %>% scale %>% .[,1],
-          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
-          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
-          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.flow
-
-poar_sites_annual.flow <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
-                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
-                  
-                  # flowering data
-                   n_blocks_f = poar_allsites.flow$Block %>% n_distinct,
-                  site_f   = poar_allsites.flow$site,
-                  source_f =  poar_allsites.flow$source,
-                  block_f  = poar_allsites.flow$Block,
-                  ppt_f=poar_allsites.flow$z_ppt_t1_z,
-                  cvppt_f=poar_allsites.flow$z_cvppt_t1_z,
-                  temp_f=poar_allsites.flow$z_temp_t1_z,
-                  site_block_f = data.frame( site_i  = poar_allsites.flow$site,
-                                             block_i = poar_allsites.flow$Block ) %>%
-                    unique %>% .$site_i,
-                  male_f   = poar_allsites.flow$Sex-1,
-                  size_f   = poar_allsites.flow$z_size_t1,
-                  y_f      = poar_allsites.flow$flow_t1,
-                  n_f      = nrow(poar_allsites.flow))
-```
-
-### Running the stan model
-```{r , eval=FALSE}
-fit_allsites_flow_annual <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_annual.stan",
- data = poar_sites_annual.flow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-
-# saveRDS(fit_allsites_flow_annual, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_flow_annual.rds')
-
-```
-
-```{r}
-traceplot(fit_allsites_flow_annual, pars = c("b0_f", "bsize_f","bsex_f","bppt_f","btemp_f","bcvppt_f","bpptsex_f","btempsex_f","bcvpptsex_f","bppttempsex_f"), inc_warmup = TRUE, nrow =9 )
-```
-
-```{r}
-log_lik_flow_annual <- loo::extract_log_lik(fit_allsites_flow_annual, merge_chains = FALSE)
-r_eff_flow_annual <- loo::relative_eff(exp(log_lik_flow_annual))
-loo_flow_annual <- loo::loo(log_lik_flow_annual, r_eff = r_eff_flow_annual, cores = 2)
-print(loo_flow_annual)
-```
-
-## Second  model: annual data with polynomial 2 order
-### Running the stan model
-```{r , eval=FALSE}
-fit_allsites_flow_annual_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_annualpolynomial.stan",
- data = poar_sites_annual.flow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-# saveRDS(fit_allsites_flow_annual_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_flow_annualpolynomial.rds')
-```
-
-```{r}
-traceplot(fit_allsites_flow_annual_polyn, pars = c("b0_f", "bsize_f","bsex_f","bppt_f","btemp_f","bcvppt_f","bpptsex_f","btempsex_f","bcvpptsex_f","bppttempsex_f","bppt2_f","btemp2_f","bcvppt2_f","bppt2sex_f","btemp2sex_f","bcvppt2sex_f"), inc_warmup = TRUE, nrow =9 )
-```
-
-```{r}
-log_lik_flow_annual_polyn <- loo::extract_log_lik(fit_allsites_flow_annual_polyn, merge_chains = FALSE)
-r_eff_flow_annual_polyn <- loo::relative_eff(exp(log_lik_flow_annual_polyn))
-loo_flow_annual_polyn <- loo(log_lik_flow_annual_polyn, r_eff = r_eff_flow_annual_polyn, cores = 2)
-# print(loo_flow_annual_polyn)
-# plot(loo_surv_annual)
-```
-
-## Third  model: seasonnal data 
+# Flowering
+## First  model: seasonnal data 
 ### Reshape the data
 ```{r}
 poar.clim_seasonal %>% 
@@ -1844,20 +1631,24 @@ poar_sites_season.flow <- list( n_sites    = poarclim_seasonal.surv$site %>% n_d
 ```
 
 ```{r , eval=FALSE}
-fit_allsites_flow_season <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_season.stan",
- data = poar_sites_season.flow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_flow_season <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_season.stan",
+#  data = poar_sites_season.flow,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
 
-# saveRDS(fit_allsites_flow_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_flow_season.rds')
+# saveRDS(fit_allsites_flow_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_flow_season.rds')
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_flow_season <- readRDS(url("https://www.dropbox.com/s/esq822z7cbie4os/poar_flow_season.rds?dl=1"))
+#ignore warning from readRDS
 ```
 
 ```{r}
-traceplot(fit_allsites_flow_season, pars = c("b0_f", "bsize_f","bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f","bpptgrowsex_f","bpptdormsex_f","btempgrowsex_f","btempdormsex_f","btempdormpptdormsex_f","btempgrowpptgrowsex_f"), inc_warmup = TRUE, nrow =9 )
+traceplot(fit_allsites_flow_season, pars = c("b0_f","bsizesex_f","bsex_f", "bsize_f","bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f","bpptgrowsex_f","bpptdormsex_f","btempgrowsex_f","btempdormsex_f","btempdormpptdorm_f","btempgrowpptgrow_f","btempdormpptdormsex_f","btempgrowpptgrowsex_f"), inc_warmup = TRUE, nrow =9 )
 
 ```
 
@@ -1866,26 +1657,31 @@ traceplot(fit_allsites_flow_season, pars = c("b0_f", "bsize_f","bpptgrow_f","bpp
 log_lik_flow_season <- loo::extract_log_lik(fit_allsites_flow_season, merge_chains = FALSE)
 r_eff_flow_season <- loo::relative_eff(exp(log_lik_flow_season))
 loo_flow_season <- loo(log_lik_flow_season, r_eff = r_eff_flow_season, cores = 2)
-# print(loo_flow_season)
-# plot(loo_flow_season)
+print(loo_flow_season)
+plot(loo_flow_season)
 ```
 
 ## Fourth  model: seasonnal data with polynomial second order
 ### Running the stan model
 ```{r , eval=FALSE}
-fit_allsites_flow_season_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_seasonpolynomial.stan",
- data = poar_sites_season.flow,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_flow_season_polyn <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_flow_seasonpolynomial.stan",
+#  data = poar_sites_season.flow,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
-# saveRDS(fit_allsites_flow_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_flow_seasonpolynomial.rds')
+# saveRDS(fit_allsites_flow_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_flow_seasonpolynomial.rds')
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_flow_season_polyn <- readRDS(url("https://www.dropbox.com/s/o5r2hijb256fmb7/poar_flow_seasonpolynomial.rds?dl=1"))
+#ignore warning from readRDS
+
 ```
 
 ```{r}
-traceplot(fit_allsites_flow_season_polyn, pars = c("b0_f", "bsize_f","bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f","bpptgrowsex_f","bpptdormsex_f","btempgrowsex_f","btempdormsex_f","btempdormpptdormsex_f","btempgrowpptgrowsex_f","bpptgrow2_f","bpptdorm2_f","btempgrow2_f","btempdorm2_f","bpptgrow2sex_f","bpptdorm2sex_f","btempgrow2sex_f","btempdorm2sex_f"), inc_warmup = TRUE, nrow =15 )
+traceplot(fit_allsites_flow_season_polyn, pars = c("b0_f","bsizesex_f","bsex_f", "bsize_f","bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f","bpptgrowsex_f","bpptdormsex_f","btempgrowsex_f","btempdormsex_f","btempdormpptdorm_f","btempgrowpptgrow_f","btempdormpptdormsex_f","btempgrowpptgrowsex_f","bpptgrow2_f","bpptdorm2_f","btempgrow2_f","btempdorm2_f","bpptgrow2sex_f","bpptdorm2sex_f","btempgrow2sex_f","btempdorm2sex_f"), inc_warmup = TRUE, nrow =15 )
 
 
 ```
@@ -1894,8 +1690,8 @@ traceplot(fit_allsites_flow_season_polyn, pars = c("b0_f", "bsize_f","bpptgrow_f
 log_lik_flow_season_polyn <- loo::extract_log_lik(fit_allsites_flow_season_polyn, merge_chains = FALSE)
 r_eff_flow_season_polyn <- loo::relative_eff(exp(log_lik_flow_season_polyn))
 loo_flow_season_polyn <- loo(log_lik_flow_season_polyn, r_eff = r_eff_flow_season_polyn, cores = 2)
-# print(loo_flow_season_polyn)
-# plot(loo_flow_season_polyn)
+print(loo_flow_season_polyn)
+plot(loo_flow_season_polyn)
 ```
 
 
@@ -1933,8 +1729,7 @@ mcmc_intervals(posteriorflow_season_polyn, pars = c("b0_f", "bsize_f","bpptgrow_
 
 ```{r}
 #pull out parameter posterior distributions
-predFA <- rstan::extract(fit_allsites_flow_annual, pars = c("predF"))$predF
-predFPA <- rstan::extract(fit_allsites_flow_annual_polyn, pars = c("predF"))$predF
+
 predFS <- rstan::extract(fit_allsites_flow_season, pars = c("predF"))$predF
 predFSP <- rstan::extract(fit_allsites_flow_season_polyn, pars = c("predF"))$predF
 
@@ -1943,8 +1738,7 @@ predFSP <- rstan::extract(fit_allsites_flow_season_polyn, pars = c("predF"))$pre
 n_post_draws <- 500
 # post_draws <- sample.int(dim(predSA)[1], n_post_draws)
 #set up simulation output
-y_fa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.flow$y_f))
-y_fpa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.flow$y_f))
+
 y_fs_sim <- matrix(NA,n_post_draws,length(poar_sites_season.flow$y_f))
 y_fps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.flow$y_f))
 
@@ -1952,11 +1746,8 @@ y_fps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.flow$y_f))
 #loop over the posterior and generate new observations
 for(i in 1:n_post_draws){
   print(i)
-  ## sample survival data (bernoulli)
-  y_fa_sim [i,] <- rbinom(n=length(poar_sites_annual.flow$y_f), size=1, prob = invlogit(predFA[i,]))
+  
   ## sample flowering data (bernoulli)
-  y_fpa_sim[i,] <- rbinom(n=length(poar_sites_annual.flow$y_f), size=1, prob = invlogit(predFPA[i,]))
-  ## sample survival data (bernoulli)
   y_fs_sim [i,] <- rbinom(n=length(poar_sites_season.flow$y_f), size=1, prob = invlogit(predFS[i,]))
   ## sample flowering data (bernoulli)
   y_fps_sim [i,] <- rbinom(n=length(poar_sites_season.flow$y_f), size=1, prob = invlogit(predFSP[i,]))
@@ -1965,23 +1756,16 @@ for(i in 1:n_post_draws){
 ```
 # plot ppc overlay for survival
 ```{r}
-ppc_dens_overlay(poar_sites_annual.flow$y_f, y_fa_sim)+
-  xlab("Flowering status")+ylab("Density")+
-  ggtitle(("Annual"))+theme(legend.position = "none")->ppc_flow_annual
-
-ppc_dens_overlay(poar_sites_annual.flow$y_f, y_fpa_sim)+
-  xlab("Flowering status")+ylab("Density")+
-  ggtitle(("Annual Polynomial"))+theme(legend.position = "none")->ppc_flow_annualpolyn
 
 
 ppc_dens_overlay(poar_sites_season.flow$y_f, y_fs_sim)+
   xlab("Flowering status")+ylab("Density")+
-  ggtitle(("Seasonal"))+theme(legend.position = "none")->ppc_flow_season
+  ggtitle((""))+theme(legend.position = "none")+theme_bw()->ppc_flow_season
 
 
 ppc_dens_overlay(poar_sites_season.flow$y_f, y_fps_sim)+
   xlab("Flowering status")+ylab("Density")+
-  ggtitle(("Seasonal Polynomial"))+theme(legend.position = "none")->ppc_flow_season_polyn
+  ggtitle((""))+theme(legend.position = "none")+theme_bw()->ppc_flow_season_polyn
 
 #print figure
 # pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/PPCFlowering.pdf",useDingbats = F,height=7,width=6)
@@ -2007,6 +1791,11 @@ flow_coeffsp <- rstan::extract(fit_allsites_flow_season_polyn, c("b0_f","bsex_f"
 ## Re-format data for plotting 
 
 ```{r}
+sex_cols <- c("#FDAE61", # Orange
+            "#66BD63") # Darker green
+
+# sex_cols <- c("#00AFBB", "#E7B800") 
+
 poar_allsites.flow %>% 
   group_by(site,Sex) %>% 
   summarise(mean_flow = mean(flow_t1),
@@ -2035,7 +1824,7 @@ cvppt_seq <- seq(min(zpoar_flow_plot_annual$cv_ppt),max(zpoar_flow_plot_annual$c
 ```
 
 
-## Plot for annual survival 
+## Plot for annual  flowering 
 
 ```{r}
 par(mfrow = c(2, 3))
@@ -2094,7 +1883,7 @@ with(zpoar_flow_plot_annual,{
                         mean(flow_coeffa$bpptsex_f) * flow_mean_ppt$ppt[flow_mean_ppt$Sex==s] * (s-1) +
                         mean(flow_coeffa$btempsex_f) * flow_mean_temp$temp[flow_mean_temp$Sex==s] * (s-1) +
                         mean(flow_coeffa$bcvpptsex_f) * cvppt_seq * (s-1) +
-                        mean(flow_coeffa$bppttempsex_f) * flow_mean_temp$temp[flow_mean_temp$Sex==s]  * flow_mean_ppt$ppt[surv_mean_ppt$Sex==s] * cvppt_seq * (s-1) 
+                        mean(flow_coeffa$bppttempsex_f) * flow_mean_temp$temp[flow_mean_temp$Sex==s]  * flow_mean_ppt$ppt[flow_mean_ppt$Sex==s] * cvppt_seq * (s-1) 
       ),col= sex_cols[s],lwd=3)
     }
 })
@@ -2216,7 +2005,7 @@ pptdorm_seq <- seq(min(zpoar_flow_plot_season$pptdorm),max(zpoar_flow_plot_seaso
 tempdorm_seq <- seq(min(zpoar_flow_plot_season$tempdorm),max(zpoar_flow_plot_season$tempdorm),0.1)
 ```
 
-## Plot for seasonnal survival 
+## Plot for seasonnal flowering 
 
 
 ```{r}
@@ -2450,101 +2239,8 @@ with(zpoar_flow_plot_season,{
 
 
 # Fertility
-## First model: annual data 
-### Reshape the data
-```{r}
-# Panicles
-poar_allsites.clim %>% 
-  subset( flowerN_t1 > 0 & tillerN_t1 > 0 )%>%
-  dplyr::select( year, Code, site, Block, Sex, 
-          Longitude, Latitude, 
-          tillerN_t1, flowerN_t1,mean_ppt,cv_ppt,mean_temp,site)%>% 
-  na.omit %>% 
-  mutate( site         = site %>% as.factor %>% as.numeric,
-          Block = Block %>% as.factor %>% as.numeric,
-          Sex          = Sex %>% as.factor %>% as.numeric,
-          source = Code %>% as.factor %>% as.numeric,
-          panic_t1 = flowerN_t1) %>%
-  mutate( z_size_t1   = tillerN_t1 %>% scale %>% .[,1],
-          z_ppt_t1_z = mean_ppt %>% scale %>% .[,1],
-          z_cvppt_t1_z = cv_ppt %>% scale %>% .[,1],
-          z_temp_t1_z = mean_temp %>% scale %>% .[,1])->poar_allsites.panic
 
-poar_sites_annual.panic <- list( n_sites    = poar_allsites.surv$site %>% n_distinct,
-                  n_sources  = poar_allsites.surv$source %>% n_distinct(),
-                  
-                  # panicle data
-                   n_blocks_p = poar_allsites.panic$Block %>% n_distinct,
-                  site_p   = poar_allsites.panic$site,
-                  source_p =  poar_allsites.panic$source,
-                  block_p  = poar_allsites.panic$Block,
-                  ppt_p=poar_allsites.panic$z_ppt_t1_z,
-                  cvppt_p=poar_allsites.panic$z_cvppt_t1_z,
-                  temp_p=poar_allsites.panic$z_temp_t1_z,
-                  site_block_p = data.frame( site_i  = poar_allsites.panic$site,
-                                             block_i = poar_allsites.panic$Block ) %>%
-                    unique %>% .$site_i,
-                  male_p   = poar_allsites.panic$Sex-1,
-                  size_p   = poar_allsites.panic$z_size_t1,
-                  y_p      = poar_allsites.panic$panic_t1,
-                  n_p      = nrow(poar_allsites.panic))
-```
-
-### Running the stan model
-```{r , eval=FALSE}
-fit_allsites_panic_annual <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_annual.stan",
- data = poar_sites_annual.panic,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-
-# saveRDS(fit_allsites_panic_annual, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_panicle_annual.rds')
-```
-
-```{r}
-traceplot(fit_allsites_panic_annual, pars = c("b0_p", "bsize_p","bsex_p","bppt_p","btemp_p","bcvppt_p","bpptsex_p","btempsex_p","bcvpptsex_p","bppttempsex_p"), inc_warmup = TRUE, nrow = 4)
-```
-
-
-```{r}
-log_lik_panic_annual <- loo::extract_log_lik(fit_allsites_panic_annual, merge_chains = FALSE)
-r_eff_panic_annual <- loo::relative_eff(exp(log_lik_panic_annual))
-loo_panic_annual <- loo::loo(log_lik_panic_annual, r_eff = r_eff_panic_annual, cores = 2)
-# print(loo_panic_annual)
-# plot(loo_panic_annual)
-```
-
-## Second  model: annual data with polynomial 2 order
-### Running the stan model
-
-```{r , eval=FALSE}
-fit_allsites_panic_annual_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_annualpolynomial.stan",
- data = poar_sites_annual.panic,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
-
-# saveRDS(fit_allsites_panic_annual_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_panicle_annualpolynomial.rds')
-```
-
-```{r}
-traceplot(fit_allsites_panic_annual_polyn, pars = c("b0_p", "bsize_p","bsex_p","bppt_p","btemp_p","bcvppt_p","bpptsex_p","btempsex_p","bcvpptsex_p","bppttempsex_p","bppt2_p","btemp2_p","bcvppt2_p","bppt2sex_p","btemp2sex_p","bcvppt2sex_p"), inc_warmup = TRUE, nrow = 5)
-```
-
-```{r}
-log_lik_panic_annual_polyn <- loo::extract_log_lik(fit_allsites_panic_annual_polyn, merge_chains = FALSE)
-r_eff_panic_annual_polyn <- loo::relative_eff(exp(log_lik_panic_annual_polyn))
-loo_panic_annual_polyn <- loo::loo(log_lik_panic_annual_polyn, r_eff = r_eff_panic_annual_polyn, cores = 2)
-# print(loo_panic_annual_polyn)
-# plot(loo_panic_annual_polyn)
-```
-
-## Third  model: seasonnal data 
+## first  model: seasonnal data 
 ### Reshape the data
 
 ```{r}
@@ -2588,20 +2284,24 @@ poar_sites_season.panic <- list( n_sites    = poarclim_seasonal.surv$site %>% n_
 
 ### Running the stan model
 ```{r , eval=FALSE}
-fit_allsites_panic_season <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_season.stan",
- data = poar_sites_season.panic,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_panic_season <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_season.stan",
+#  data = poar_sites_season.panic,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
-# saveRDS(fit_allsites_panic_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_panicle_season.rds')
+# saveRDS(fit_allsites_panic_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_panicle_season.rds')
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_panic_season <- readRDS(url("https://www.dropbox.com/s/v7h35imi9u7rveo/poar_panicle_season.rds?dl=1"))
+#ignore warning from readRDS
 
 ```
 
 ```{r}
-traceplot(fit_allsites_panic_season, pars = c("b0_p", "bsize_p","bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p","bpptgrowsex_p","bpptdormsex_p","btempgrowsex_p","btempdormsex_p","btempdormpptdormsex_p","btempgrowpptgrowsex_p"), inc_warmup = TRUE, nrow =5 )
+traceplot(fit_allsites_panic_season, pars = c("b0_p","bsizesex_p","btempdormpptdorm_p","btempgrowpptgrow_p", "bsize_p","bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p","bpptgrowsex_p","bpptdormsex_p","btempgrowsex_p","btempdormsex_p","btempdormpptdormsex_p","btempgrowpptgrowsex_p"), inc_warmup = TRUE, nrow =5 )
 ```
 
 
@@ -2617,20 +2317,25 @@ loo_panic_season <- loo(log_lik_panic_season, r_eff = r_eff_panic_season, cores 
 ### Running the stan model
 
 ```{r , eval=FALSE}
-fit_allsites_panic_season_polyn <- stan(
- file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_seasonpolynomial.stan",
- data = poar_sites_season.panic,
- warmup = sim_pars$warmup,
- iter = sim_pars$iter,
- thin = sim_pars$thin,
- chains = sim_pars$chains)
+# fit_allsites_panic_season_polyn <- stan(
+#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/stan/poar_panicle_seasonpolynomial.stan",
+#  data = poar_sites_season.panic,
+#  warmup = sim_pars$warmup,
+#  iter = sim_pars$iter,
+#  thin = sim_pars$thin,
+#  chains = sim_pars$chains)
 
-# saveRDS(fit_allsites_panic_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Modeloutput/poar_panicle_seasonpolynomial.rds')
+# saveRDS(fit_allsites_panic_season_polyn, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Current conditions/poar_panicle_seasonpolynomial.rds')
+
+
+#load stan output -- this will also take a while, but not as long as running the model from scratch
+fit_allsites_panic_season_polyn <- readRDS(url("https://www.dropbox.com/s/ydtzwurgf7s58lt/poar_panicle_seasonpolynomial.rds?dl=1"))
+#ignore warning from readRDS
 
 ```
 
 ```{r}
-traceplot(fit_allsites_panic_season_polyn, pars = c("b0_p", "bsize_p","bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p","bpptgrowsex_p","bpptdormsex_p","btempgrowsex_p","btempdormsex_p","btempdormpptdormsex_p","btempgrowpptgrowsex_p","bpptgrow2_p","bpptdorm2_p","btempgrow2_p","btempdorm2_p","bpptgrow2sex_p","bpptdorm2sex_p","btempgrow2sex_p","btempdorm2sex_p"), inc_warmup = TRUE, nrow =6 )
+traceplot(fit_allsites_panic_season_polyn, pars = c("b0_p","bsizesex_p","btempdormpptdorm_p","btempgrowpptgrow_p", "bsize_p","bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p","bpptgrowsex_p","bpptdormsex_p","btempgrowsex_p","btempdormsex_p","btempdormpptdormsex_p","btempgrowpptgrowsex_p","bpptgrow2_p","bpptdorm2_p","btempgrow2_p","btempdorm2_p","bpptgrow2sex_p","bpptdorm2sex_p","btempgrow2sex_p","btempdorm2sex_p"), inc_warmup = TRUE, nrow =6 )
 ```
 
 
@@ -2638,8 +2343,8 @@ traceplot(fit_allsites_panic_season_polyn, pars = c("b0_p", "bsize_p","bpptgrow_
 log_lik_panic_season_polyn <- loo::extract_log_lik(fit_allsites_panic_season_polyn, merge_chains = FALSE)
 r_eff_panic_season_polyn <- loo::relative_eff(exp(log_lik_panic_season_polyn))
 loo_panic_season_polyn <- loo(log_lik_panic_season_polyn, r_eff = r_eff_panic_season_polyn, cores = 2)
-# print(loo_panic_season_polyn)
-# plot(loo_panic_season_polyn)
+print(loo_panic_season_polyn)
+plot(loo_panic_season_polyn)
 ```
 
 # Model comparaison
@@ -2679,13 +2384,9 @@ mcmc_intervals(posteriorpanic_season_polyn, pars = c("b0_p", "bsize_p","bpptgrow
 
 ```{r}
 #pull out parameter posterior distributions
-predPA <- rstan::extract(fit_allsites_panic_annual, pars = c("predP"))$predP
-predPPA <- rstan::extract(fit_allsites_panic_annual_polyn, pars = c("predP"))$predP
 predPS <- rstan::extract(fit_allsites_panic_season, pars = c("predP"))$predP
 predPSP <- rstan::extract(fit_allsites_panic_season_polyn, pars = c("predP"))$predP
 
-phi_PA <- rstan::extract(fit_allsites_panic_annual, pars = c("phi_p"))$phi_p
-phi_PPA <- rstan::extract(fit_allsites_panic_annual_polyn, pars = c("phi_p"))$phi_p
 phi_PS <- rstan::extract(fit_allsites_panic_season, pars = c("phi_p"))$phi_p
 phi_PSP <- rstan::extract(fit_allsites_panic_season_polyn, pars = c("phi_p"))$phi_p
 
@@ -2694,8 +2395,7 @@ phi_PSP <- rstan::extract(fit_allsites_panic_season_polyn, pars = c("phi_p"))$ph
 n_post_draws <- 500
 # post_draws <- sample.int(dim(predPA)[1], n_post_draws)
 #set up simulation output
-y_pa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.panic$y_p))
-y_ppa_sim <- matrix(NA,n_post_draws,length(poar_sites_annual.panic$y_p))
+
 y_ps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.panic$y_p))
 y_pps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.panic$y_p))
 
@@ -2703,14 +2403,6 @@ y_pps_sim <- matrix(NA,n_post_draws,length(poar_sites_season.panic$y_p))
 #loop over the posterior and generate new observations
 for(i in 1:n_post_draws){
   print(i)
-  ## sample panicle data (zero-truncated NB)
-  for(j in 1:length(poar_sites_annual.panic$y_p)){
-    y_pa_sim[i,j] <- sample(x=1:1000,size=1,replace=T,prob=dnbinom(1:1000, mu = exp(predPA[i,j]), size=phi_PA[i]) / (1 - dnbinom(0, mu = exp(predPA[i,j]), size=phi_PA[i])))
-  }
-  ## sample panicle data (zero-truncated NB)
-  for(j in 1:length(poar_sites_annual.panic$y_p)){
-    y_ppa_sim[i,j] <- sample(x=1:1000,size=1,replace=T,prob=dnbinom(1:1000, mu = exp(predPPA[i,j]), size=phi_PPA[i]) / (1 - dnbinom(0, mu = exp(predPPA[i,j]), size=phi_PPA[i])))
-  }
   ## sample panicle data (zero-truncated NB)
   for(j in 1:length(poar_sites_season.panic$y_p)){
     y_ps_sim[i,j] <- sample(x=1:1000,size=1,replace=T,prob=dnbinom(1:1000, mu = exp(predPS[i,j]), size=phi_PS[i]) / (1 - dnbinom(0, mu = exp(predPS[i,j]), size=phi_PS[i])))
@@ -2723,29 +2415,25 @@ for(i in 1:n_post_draws){
 ```
 ## plot ppc overlay for  growth
 ```{r}
-ppc_dens_overlay(poar_sites_annual.panic$y_p, y_pa_sim)+
-  xlab("Number of panicles")+ylab("Density")+
-  ggtitle(("Annual"))+theme(legend.position = "none")->ppc_panic_annual
-
-ppc_dens_overlay(poar_sites_annual.panic$y_p, y_ppa_sim)+
-  xlab("Number of panicles")+ylab("Density")+
-  ggtitle(("Annual Polynomial"))+theme(legend.position = "none")->ppc_panic_annualpolyn
-
 
 ppc_dens_overlay(poar_sites_season.panic$y_p, y_ps_sim)+
   xlab("Number of panicles")+ylab("Density")+
-  ggtitle(("Seasonal"))+theme(legend.position = "none")->ppc_panic_season
+  ggtitle(("linear")) +
+  theme(legend.position = "none",plot.title = element_text(size = 40,hjust = 0.5)) +
+  theme_bw()->ppc_panic_season
 
 
 ppc_dens_overlay(poar_sites_season.panic$y_p, y_pps_sim)+
   xlab("Number of panicles")+ylab("Density")+
-  ggtitle(("Seasonal Polynomial"))+theme(legend.position = "none")->ppc_panic_season_polyn
+  ggtitle((""))+theme(legend.position = "none")+theme_bw()->ppc_panic_season_polyn
 
 # print figure
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/PPCFertility.pdf",useDingbats = F,height=7,width=6)
-# multiplot(ppc_panic_annual,ppc_panic_annualpolyn,ppc_panic_season,
-#           ppc_panic_season_polyn,cols=2)
-# dev.off()
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Figures/PPC.pdf",useDingbats = F,height=7,width=6)
+multiplot(ppc_surv_season,ppc_grow_season,
+          ppc_flow_season,ppc_panic_season,
+          ppc_surv_season_polyn,ppc_grow_season_polyn,
+          ppc_flow_season_polyn,ppc_panic_season_polyn,cols=2)
+dev.off()
 ```
 
 # pull out stan coefficients for fertility
@@ -2829,7 +2517,7 @@ with(zpoar_panic_plot_annual,{
                         mean(panic_coefpa$bpptsex_p) * panic_mean_ppt$ppt[panic_mean_ppt$Sex==s] * (s-1) +
                         mean(panic_coefpa$btempsex_p) * temp_seq * (s-1) +
                         mean(panic_coefpa$bcvpptsex_p) * panic_mean_cv_ppt$cv_ppt[panic_mean_cv_ppt$Sex==s] * (s-1) +
-                        mean(panic_coefpa$bppttempsex_p) * temp_seq * grow_mean_ppt$ppt[panic_mean_ppt$Sex==s] * panic_mean_cv_ppt$cv_ppt[panic_mean_cv_ppt$Sex==s] * (s-1) 
+                        mean(panic_coefpa$bppttempsex_p) * temp_seq * panic_mean_ppt$ppt[panic_mean_ppt$Sex==s] * panic_mean_cv_ppt$cv_ppt[panic_mean_cv_ppt$Sex==s] * (s-1) 
       ),col= sex_cols[s],lwd=3)
     }
 })
@@ -3183,7 +2871,7 @@ with(zpoar_panic_plot_season,{
                         mean(panic_coefpsp$btempgrowpptgrowsex_p) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s]   * (s-1) +
                         mean(panic_coefpsp$bpptgrow2_p) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
                         mean(panic_coefpsp$bpptdorm2_p) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
-                        mean(panic_coefpsp$btempgrow2_p) * (grow_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                        mean(panic_coefpsp$btempgrow2_p) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
                         mean(panic_coefpsp$btempdorm2_p) * (tempdorm_seq^2) +
                         mean(panic_coefpsp$bpptgrow2sex_p) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
                         mean(panic_coefpsp$bpptdorm2sex_p) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +

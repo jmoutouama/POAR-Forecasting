@@ -26,11 +26,14 @@ parameters {
   //fixed effects
   real b0_f;    
   real bsize_f;   
+  real bsizesex_f;   
   real bsex_f;   
   real bpptgrow_f;  
   real bpptdorm_f;  
   real btempgrow_f;  
   real btempdorm_f;  
+  real btempdormpptdorm_f;  
+  real btempgrowpptgrow_f; 
   real bpptgrowsex_f;  
   real bpptdormsex_f; 
   real btempgrowsex_f;  
@@ -62,10 +65,13 @@ transformed parameters {
                 bpptdormsex_f * pptdorm_f[iflow] * male_f[iflow] +
                 btempgrowsex_f * tempgrow_f[iflow] * male_f[iflow] +
                 btempdormsex_f * tempdorm_f[iflow] * male_f[iflow] +
+                bsizesex_f * size_f[iflow] * male_f[iflow] +
+                btempdormpptdorm_f * tempdorm_f[iflow] * pptdorm_f[iflow] +
+                btempgrowpptgrow_f * tempgrow_f[iflow] * pptgrow_f[iflow] +
                
                 //3-way interaction
                 btempdormpptdormsex_f * tempdorm_f[iflow] * pptdorm_f[iflow] * male_f[iflow] +
-                btempgrowpptgrowsex_f * tempgrow_f[iflow] * tempgrow_f[iflow] * male_f[iflow] +
+                btempgrowpptgrowsex_f * tempgrow_f[iflow] * pptgrow_f[iflow] * male_f[iflow] +
              
 
                 //random effects
@@ -82,11 +88,14 @@ model {
   // Flowering
   b0_f ~ normal(0, 500);    
   bsize_f ~ normal(0, 100);   
+  bsizesex_f ~ normal(0, 100);   
   bsex_f ~ normal(0, 100);   
   bpptgrow_f ~ normal(0, 100);  
   bpptdorm_f ~ normal(0, 100);  
   btempgrow_f ~ normal(0, 100);  
   btempdorm_f ~ normal(0, 100);
+  btempdormpptdorm_f ~ normal(0, 100);
+  btempgrowpptgrow_f ~ normal(0, 100);
   bpptgrowsex_f ~ normal(0, 100);
   bpptdormsex_f ~ normal(0, 100);
   btempgrowsex_f ~ normal(0, 100);
