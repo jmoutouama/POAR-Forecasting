@@ -92,13 +92,14 @@ poar_ppt %>%
 	dplyr::summarise(site=unique(site),Longitude=unique(Longitude),Latitude=unique(Latitude),ppt_season = sum(ppt))->poar_pptseason 
 
 poar_climseason<- merge(x = poar_tempseason, y = poar_pptseason) # merge temperature and precipitation data
+###
 
 ```
 
 ## Match seasonnal data with demographic data
 
 ```{r}
-poar_allsites.clim_season <- left_join(x = poar_allsites_2015_2016 ,y =poar_climseason,by=c("site","census.year","Longitude","Latitude")) # merge the demographic data with climatic data for each site
+poar_allsites.clim_season <- left_join(x = poar_allsites_2015_2016 ,y =poar_climseason,by=c("site","census.year")) # merge the demographic data with climatic data for each site
 poar_allsites.clim_season %>% 
   filter(Season=="growing") %>% 
   mutate(tempgrow=temp_season,pptgrow=ppt_season)->poar_allsites.clim_season_grow
