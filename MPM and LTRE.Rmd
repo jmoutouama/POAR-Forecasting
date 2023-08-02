@@ -81,14 +81,14 @@ poar_temp %>%
   dplyr::select(site,Longitude, Latitude,census.year,temp,month) %>% 
   dplyr::filter(census.year %in% (2015:2016)) %>%
   dplyr::mutate(Season=ifelse((month >= 6) & (month <= 9), "dormant", "growing")) %>% 
-  group_by(site,Season) %>%
+  group_by(site,census.year,Season) %>%
 	dplyr::summarise(site=unique(site),Longitude=unique(Longitude),Latitude=unique(Latitude),temp_season = mean(temp))->poar_tempseason 
 
 poar_ppt %>% 
   dplyr::select(site,Longitude, Latitude,census.year,ppt,month) %>% 
   dplyr::filter(census.year %in% (2015:2016)) %>%
   dplyr::mutate(Season=ifelse((month >= 6) & (month <= 9), "dormant", "growing")) %>% 
-  group_by(site,Season) %>%
+  group_by(site,census.year,Season) %>%
 	dplyr::summarise(site=unique(site),Longitude=unique(Longitude),Latitude=unique(Latitude),ppt_season = sum(ppt))->poar_pptseason 
 
 poar_climseason<- merge(x = poar_tempseason, y = poar_pptseason) # merge temperature and precipitation data
@@ -98,7 +98,7 @@ poar_climseason<- merge(x = poar_tempseason, y = poar_pptseason) # merge tempera
 ## Match seasonnal data with demographic data
 
 ```{r}
-poar_allsites.clim_season <- left_join(x = poar_allsites_2015_2016 ,y =poar_climseason,by=c("site","Longitude","Latitude")) # merge the demographic data with climatic data for each site
+poar_allsites.clim_season <- left_join(x = poar_allsites_2015_2016 ,y =poar_climseason,by=c("site","census.year","Longitude","Latitude")) # merge the demographic data with climatic data for each site
 poar_allsites.clim_season %>% 
   filter(Season=="growing") %>% 
   mutate(tempgrow=temp_season,pptgrow=ppt_season)->poar_allsites.clim_season_grow
@@ -134,7 +134,8 @@ fit_viability<-readRDS(url("https://www.dropbox.com/scl/fi/ig1c0vf2sxq2qmsncs9sm
 
 ```{r}
 # source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/twosexMPM.R")
-source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/twosexMPMLTRE.R")
+#source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/twosexMPMLTRE.R")
+source("C:/Users/tm9/Dropbox/github/POAR-Forecasting/twosexMPMLTRE.R")
 
 ```
 ## read in the seedling survival data from Poa autumnalis
@@ -370,6 +371,42 @@ poar.clim_seasonal %>%
           mean_tempdorm_panic = mean(na.omit(tempdorm)),
           sd_tempdorm_panic = sd (na.omit(tempdorm)))->poarclim_seasonal.panic_mean_sd
 ```
+
+```{r}
+## evaluate lambda at mean climate
+## female-dominant:
+Fdom_meanclim_mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           pptgrow=mean(poar.clim_seasonal$pptgrow),
+                           tempgrow=mean(poar.clim_seasonal$tempgrow),
+                           pptdorm=mean(poar.clim_seasonal$pptdorm),
+                           tempdorm=mean(poar.clim_seasonal$tempdorm),
+                           rfx=rfx_fun())$MEGAmat
+popbio::lambda(Fdom_meanclim_mat) ## this is unrealistically high
+
+twosex_meanclim_mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=T,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           pptgrow=mean(poar.clim_seasonal$pptgrow),
+                           tempgrow=mean(poar.clim_seasonal$tempgrow),
+                           pptdorm=mean(poar.clim_seasonal$pptdorm),
+                           tempdorm=mean(poar.clim_seasonal$tempdorm),
+                           rfx=rfx_fun())$MEGAmat
+## this throws an error
+
+```
+
 
 ```{r}
 ## extend the climatic  to bounds and beyond of observed distribution
