@@ -1,5 +1,6 @@
 
 # vital rate and megamatrix functions ---------------------------------------------------
+invlogit<-function(x){exp(x)/(1+exp(x))}
 
 #SURVIVAL AT SIZE X.
 sx<-function(x,params,pptgrow,pptdorm,tempgrow,tempdorm,rfx,surv_perturb=0){
