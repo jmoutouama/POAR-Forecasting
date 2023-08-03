@@ -103,7 +103,7 @@ When available, these common gardens allow the estimation of traits that are rel
 
 Theory predicts that if the cost of reproduction for each sex is equal and if males and females differ in reproductive fitness equality with increasing size, then natural selection will act to balance a population sex ratio at 1:1 \citep{Fisher1930}. However, deviances from those assumptions have been observed.
 In several plant species, females are more sensitive to stress-related resource availability conditions than males, leading to high female mortality and, therefore, to a male bias sex ratio \citep{hultine2016climate}. 
-Furthermore, the lower cost of reproduction of males may allow them to invest their energy in other functions that produce higher growth rates, higher clonality, or even higher survival rates compared to females \citep{bruijning2017surviving}, causing a skew sex ratio.
+Furthermore, the lower cost of reproduction of males may allow them to invest their energy in other functions that produce higher growth rates, higher clonality, or even higher survival rates compared to females \citep{cipollini1994sexual, bruijning2017surviving}, causing a skew sex ratio.
 
 Climate change could therefore magnify skewed sex ratios and potentially reduced population growth rate if individuals are unable to find a mate and reproduce \citep{morrison2016causes}.
 In reverse, dioecious species could also adapt to climate change. 
@@ -111,7 +111,7 @@ For instance, as the drier, warmer climate moves “up slope”, so will adapt a
 Because of this, populations in which males are rare under current climatic conditions could experience less mate limitation, allowing females to successfully produce more seed under warmer conditions  and favor range shifts in response \citep{petry2016sex}.
 However, due to the difficulty in experimentally addressing how dioecious species respond demographically to climate change, most studies often focused only on how climate change affects the sex ratio and rarely on the impact of climate change on the population dynamics of dioecious species and its implications for range shifts.
 
-Our ability to track the impact of climate change on the population dynamics of dioecious plants depends on our ability to build mechanistic models that take into account the spatial and temporal context in which survival, reproduction, and growth occur due to the sessile nature of these plants \citep{czachura2020demographic}.
+Our ability to track the impact of climate change on the population dynamics of dioecious plants depends on our ability to build mechanistic models that take into account the spatial and temporal context in which survival, reproduction, and growth occur due to the sessile nature of these plants \citep{evans2016towards,czachura2020demographic}.
 Several studies found that climate change affects demographic processes in distinctive and potentially contrasting ways \citep{dalgleish2011climate}. For example, while climate has a significant effect on the probability of survival and growth, it has no effect on the probability of flowering \citep{greiser2020climate}. Additionally, under warmer conditions, some native species will fail to establish reproductive populations due to the extremely low germination rate and seedling survival \citep{Reed2021}. Therefore, climate change will reduce the population growth rate and the range size of these species \citep{reed2021climate}. 
 Other species will persist or even increase their range in response to climate change \citep{williams2015life,merow2017climate}. 
 In seabird populations, climate change by increasing the survival rate of both sexes favored their population growth rate \citep{gianuca2019sex}.
@@ -173,7 +173,7 @@ However, we applied a different link function ($f(\mu)$) depending on the distri
 We modeled survival and flowering data with a Bernoulli distribution.
 We modeled the growth (tiller number) with a zero-truncated Poisson inverse Gaussian distribution. Fertility (panicle count) was model as zero-truncated negative binomial. 
 We fit all models in Stan \citep{rstan}, with weakly informative priors for coefficients ($\mu = 0, \sigma = 100$) and variances ($\gamma [0.001, 0.001]$). We ran three chains for 1000 samples for warmup and 40000 for interactions, with a thinning rate of 3.
-We accessed the quality of the models using trace plots and predictive check graphs \textcolor{blue}{(Appendix S1: Figure S1)}.
+We accessed the quality of the models using trace plots and predictive check graphs \citep{piironen2017comparison} \textcolor{blue}{(Appendix S1: Figure S1)}.
 Then, we used approximate Bayesian leave-one-out cross-validation (LOOIC) to select the best model describing the effect of climate variable on vital rate. The final model was the model with the lowest LOOIC \citep{vehtari2017practical}. 
 
 To understand the effect of climate on vital rates, we used the 95 \% credible interval of the final model for each vital rate. When the 95 \% credible interval of the coefficient of a given climatic variable did not include zero, we concluded that there is a strong effect of that variable on the vital rate. 
