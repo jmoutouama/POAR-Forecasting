@@ -59,6 +59,7 @@ library(LaplacesDemon)
 
 # Demography data 
 ```{r}
+##
 poar_allsites <- read.csv("https://www.dropbox.com/s/xk4225mn8btqhbm/demography_allsites.csv?dl=1", stringsAsFactors = F)#common garden data
 poar_allsites$census.year<-poar_allsites$year-1 #Add census year to match with climate data
 poar_allsites %>% 
