@@ -13,7 +13,7 @@ data {
   int<lower=0> site_p[n_p];  // site index
   int<lower=0> block_p[n_p];  // block index
   int<lower=0> source_p[n_p];  // source index
-  int<lower=1> y_p[n_p]; // # panicles at time t.
+  int<lower=1> y_p[n_p]; //  number panicles at time t.
   vector[n_p] size_p;  // log size at time t
   vector[n_p] male_p;  // sex (male=1, fem=0)
   vector[n_p] pptgrow_p;  // precipitation of growing season 

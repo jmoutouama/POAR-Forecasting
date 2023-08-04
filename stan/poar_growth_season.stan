@@ -27,8 +27,8 @@ data {
   int<lower=0> site_g[n_g];  // site index
   int<lower=0> block_g[n_g];  // block index
   int<lower=0> source_g[n_g];  // source index
-  int<lower=1> y_g[n_g]; // # tillers at time t+1.
-  vector[n_g] size_g;  // log size at time t
+  int<lower=1> y_g[n_g]; // number of tillers at time t+1.
+  vector[n_g] size_g;  // scale size at time t
   vector[n_g] male_g;  // sex (male=1, fem=0)
   vector[n_g] pptgrow_g;  // precipitation of growing season 
   vector[n_g] pptdorm_g;  // precipitation of dormant season
