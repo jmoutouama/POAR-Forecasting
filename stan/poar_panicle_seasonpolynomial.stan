@@ -85,6 +85,16 @@ transformed parameters {
                 btempdormpptdormsex_p * tempdorm_p[ipan] * pptdorm_p[ipan] * male_p[ipan] +
                 btempgrowpptgrowsex_p * tempgrow_p[ipan] * tempgrow_p[ipan] * male_p[ipan] +
 
+                //polynomial 2
+                bpptgrow2_p * pow(pptgrow_p[ipan],2) + 
+                bpptdorm2_p * pow(pptdorm_p[ipan],2) + 
+                btempgrow2_p * pow(tempgrow_p[ipan],2) + 
+                btempdorm2_p * pow(tempdorm_p[ipan],2) + 
+                bpptgrow2sex_p * male_p[ipan] * pow(pptgrow_p[ipan],2) + 
+                bpptdorm2sex_p * male_p[ipan] * pow(pptdorm_p[ipan],2) + 
+                btempgrow2sex_p *  male_p[ipan] * pow(tempgrow_p[ipan],2) + 
+                btempdorm2sex_p * male_p[ipan] * pow(tempdorm_p[ipan],2) + 
+
 
                 //random effects
                 block_rfx_p[block_p[ipan]] +
