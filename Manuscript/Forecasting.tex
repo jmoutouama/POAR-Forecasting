@@ -57,10 +57,18 @@
 \newpage
 \section*{Abstract}
 
-% Gender-specific response to rising temperature and drought raises the questions of whether global change could lead to a drastic change in the sex ratio and whether that change in the sex ratio could drive population extinction.
+Sex-specific response to rising temperature and drought raises the questions of whether global change could lead to a drastic change in the sex ratio and whether that change in the sex ratio could drive population extinction or population range shift.
 % Answering these questions requires an understanding of the mechanism by which a change in vital rates under future climate conditions for both male and female, could be translated into a significant change in population dynamics.
-% Here, we took the first step toward building a forecast model for dioecious plants by understanding sex-specific demographic responses to climate change.
-% Combining a demographic data set for a dioecious species with a Bayesian hierarchical modeling approach, we fit models in which vital rates are driven by seasonal precipitation and temperature.
+% The geographic ranges of most species are limited by climatic factors, including temperature and precipitation. 
+% Any change in the magnitude of these factors in a given location will impact the organisms that live there. 
+% Females and males tend to respond differently to climate change.
+% This sex-specific response to climate change could have implications on range shift (warmer climate leading to species moving to cooler locations). 
+% Although the response to warming is generally understood, it is difficult to disentangle the interaction between sex and climate drivers to understand their relative contribution and effects on population dynamics and the consequence of such effect on range shift. 
+
+% Disentangle the relative effect of sex ratio and climate drivers on population fitness and the implications of such  effect on species range shift is crucial step toward building forecast models for dioecious plants. 
+% Here, we built a forecast model for dioecious plants by understanding sex-specific demographic responses to climate change.
+% Combining a demographic data set for a dioecious species with a Bayesian hierarchical modeling approach, we fit models in which vital rates are driven by precipitation and temperature of the growing season.
+We developed a forecasting model using hierarchical Bayesian matrix models for Texas bluegrass (Poa arachnifera) to project its potential range shifts in response to climate change. 
 
 
 %-------------------------------------------------------------------------
@@ -76,27 +84,23 @@ Accounting for such a niche differentiation between male and female within a pop
 The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure \citep{pottier2021sexual,ellis2017does}.
 As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited. 
 
-There is a vast literature from animal, plant and insect documenting the effect of climate change on sex ratio in dioecious species \citep{gissi2023exploring,gissi2023sex}. 
-Experiment manipulation revealed that photosynthetic responses to elevated CO2 and elevated temperature are sex-specific in ways that could help males to succeed in extreme climatic conditions rather than females \citep{zhao2012sex, burli2022environmental}.
-Additionally, the lower cost of reproduction of males may allow them to invest their energy in other functions that produce higher growth rates, higher clonality, or even higher survival rates compared to females \citep{cipollini1994sexual, bruijning2017surviving}.
-%Several studies reported female bias sex ratio. 
-As a result, more often there is a sex ratio skewness in a significant number of populations \citep{hultine2016climate}. 
-Climate change could magnify skewed sex ratios and potentially affect population viability and, therefore, species distribution across their geographical ranges \citep{davis2001range, pease1989model}. 
-However, the demographic consequence of skewness of the sex ratio in response to global warming and how the change in the sex ratio under global warming will lead to range shift is unclear because most studies on dioecious species infer range shift from one vital rate (e.g., survival or reproduction), ignoring life history trade-off \citep{gianuca2019sex, petry2016sex}.
+Females and males respond differently to climate change, especially in species where the two sexes have different energetic requirements or habitat preferences \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
+This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions rather than the other sex \citep{zhao2012sex, burli2022environmental}.
+Experimentation manipulation revealed that when exposed to increasing temperatures, for example, in two populations of Atlantic marine copepods (\textit{Acartia tonsa}), males showed significantly lower survival than females \citep{sasaki2019complex}. 
+High male mortality drives low reproductive success due to sperm limitation that may lead to population decline.
+Furthermore, the lower cost of reproduction of males could allow them to invest their energy in other functions that produce higher growth rates, higher clonality, or even higher survival rates compared to females \citep{cipollini1994sexual, bruijning2017surviving}. 
+In some species, such as the Asutralian flying fox, females showed lower survival than males in response to extreme temperature  \citep{welbergen2008climate}.
 
-Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex ratio biased affect survival, reproduction,  growth and population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
+The geographic range of most dioecious species is limited by climatic factors, including temperature, precipitation. 
+Any shift in the magnitude of these factors in a given location will impact the populating viability, with potential implication on range shift \citep{davis2001range, pease1989model}. 
+For instance, a reduction in water availability due to climate change means that male valarians (\textit{Valeriana edulis}) are likely to move upslope, which reduces pollen limitation and increases seedset \citep{petry2016sex}.
+Although the response to warming is generally understood, it is difficult to disentangle the interaction between sex and climate drivers to understand their relative contribution and effects on population dynamics and the consequence of such population dynamics on range dynamic. 
+
+Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
 Sex ratio bias could affect population viability by reducing the survival rate of limiting sex or by reducing the probability of female flowering \citep{eberhart2017sex,miller2022two}.
-Thus, at their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
+At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
-
-%Our ability to track the impact of climate change on the population dynamics of dioecious plants depends on our ability to build mechanistic models that take into account the spatial and temporal context in which survival, reproduction, and growth occur due to the sessile nature of these plants \citep{evans2016towards,czachura2020demographic}.
-%Several studies found that climate change affects demographic processes in distinctive and potentially contrasting ways \citep{dalgleish2011climate}. 
-%For example, while climate has a significant effect on the probability of survival and growth, it has no effect on the probability of flowering \citep{greiser2020climate}. 
-%\tom{Additionally, under warmer conditions, some species will fail to establish reproductive populations due to the extremely low germination rate and seedling survival \citep{Reed2021}. }{I am not sure why you are specifically identifying germination and seedling survival here. There are many pathways of population decline under warming.}
-%Therefore, climate change will reduce the population growth rate and the range size of these species \citep{reed2021climate}. 
-%Other species will persist or even increase their range in response to climate change \citep{williams2015life,merow2017climate}. 
-%\tom{In seabird populations, climate change favored population growth by increasing the survival rate of both sexes \citep{gianuca2019sex}.}{This is an example of a problem throughout the introduction, which is that you switch between talking about effects on population growth (as in this example) and effects on range dynamics -- these are related but different, and I think you need to clarify that relationship.}
 
 In this study, we used a matrix projection model to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
 Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude (MAP). 

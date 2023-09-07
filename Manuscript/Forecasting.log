@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  26 AUG 2023 17:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  5 SEP 2023 12:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -646,86 +646,87 @@ LaTeX Font Info:    Trying to load font information for T1+cmss on input line 5
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2022/07/10 v2.5l Standard LaTeX font definitions
-) [2] [3]
+) [2] [3] [4]
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 106.
+(Font)              scaled to size 5.21004pt on input line 110.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 106.
- [4]
+(Font)              scaled to size 5.21004pt on input line 110.
+
 [5] [6] [7] [8] [9] [10] [11]
 <Figures/Varianceexplained.pdf, id=241, 578.16pt x 361.35pt>
 File: Figures/Varianceexplained.pdf Graphic file (type pdf)
 <use Figures/Varianceexplained.pdf>
-Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 236.
+Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 240.
 
 (pdftex.def)             Requested size: 430.00462pt x 268.75119pt.
-<Figures/PPC.pdf, id=242, 433.62pt x 505.89pt>
+ [12]
+<Figures/PPC.pdf, id=248, 433.62pt x 722.7pt>
 File: Figures/PPC.pdf Graphic file (type pdf)
 <use Figures/PPC.pdf>
-Package pdftex.def Info: Figures/PPC.pdf  used on input line 242.
-(pdftex.def)             Requested size: 430.00462pt x 501.69719pt.
- [12 <./Figures/Varianceexplained.pdf>]
-Overfull \vbox (9.62064pt too high) has occurred while \output is active []
+Package pdftex.def Info: Figures/PPC.pdf  used on input line 246.
+(pdftex.def)             Requested size: 430.00462pt x 716.71028pt.
+ [13 <./Figures/Varianceexplained.pdf>]
+Overfull \vbox (224.63373pt too high) has occurred while \output is active []
 
 
-[13 <./Figures/PPC.pdf>]
+[14 <./Figures/PPC.pdf>]
 pdfTeX warning (ext4): destination with the same identifier (name{equation.0.1}
 ) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.247 \begin{subequations}
+l.251 \begin{subequations}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.0.2}
 ) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.255 \begin{subequations}
+l.259 \begin{subequations}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
 ) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.263 \begin{equation}
+l.267 \begin{equation}
                        \label{eq:f_rate}
 pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
 ) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.263 \begin{equation}
+l.267 \begin{equation}
                        \label{eq:f_rate}
 pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
 ) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.263 \begin{equation}
+l.267 \begin{equation}
                        \label{eq:f_rate}
 pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
 ) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.263 \begin{equation}
-                       \label{eq:f_rate} (./Forecasting.bbl [14] [15]
+l.267 \begin{equation}
+                       \label{eq:f_rate} (./Forecasting.bbl [15] [16]
 Underfull \hbox (badness 1248) in paragraph at lines 86--94
 []\T1/pplx/m/n/10.95 Eberhart-Phillips, L. J., C. Küp-per, T. E. Miller, M. Cru
 z-López, K. H. Ma-her,
  []
 
-[16] [17] [18]) [19] (./Forecasting.aux)
+[17] [18] [19]) [20] (./Forecasting.aux)
 Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  )
 (\end occurred inside a group at level 1)
 
-### simple group (level 1) entered at line 144 ({)
+### simple group (level 1) entered at line 148 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 14721 strings out of 476025
- 233128 string characters out of 5790018
+ 14726 strings out of 476025
+ 233256 string characters out of 5790018
  1863388 words of memory out of 5000000
- 34809 multiletter control sequences out of 15000+600000
+ 34812 multiletter control sequences out of 15000+600000
  569782 words of font info for 146 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,76p,591b,726s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,76p,591b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -736,10 +737,10 @@ fb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb
 /usr/local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/lo
 cal/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/tex
 live/2023/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (19 pages, 9004724 bytes).
+Output written on Forecasting.pdf (20 pages, 13295208 bytes).
 PDF statistics:
- 384 PDF objects out of 1000 (max. 8388607)
- 335 compressed objects within 4 object streams
- 92 named destinations out of 1000 (max. 500000)
+ 388 PDF objects out of 1000 (max. 8388607)
+ 338 compressed objects within 4 object streams
+ 94 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

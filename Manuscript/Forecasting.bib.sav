@@ -522,6 +522,39 @@ year = {1930},
   publisher = {Nature Publishing Group UK London},
 }
 
+@Article{ellis2017does,
+  author    = {Ellis, Robert P and Davison, William and Queir{\'o}s, Ana M and Kroeker, Kristy J and Calosi, Piero and Dupont, Sam and Spicer, John I and Wilson, Rod W and Widdicombe, Steve and Urbina, Mauricio A},
+  journal   = {Biology letters},
+  title     = {Does sex really matter? Explaining intraspecies variation in ocean acidification responses},
+  year      = {2017},
+  number    = {2},
+  pages     = {20160761},
+  volume    = {13},
+  publisher = {The Royal Society},
+}
+
+@Article{pottier2021sexual,
+  author    = {Pottier, Patrice and Burke, Samantha and Drobniak, Szymon M and Lagisz, Malgorzata and Nakagawa, Shinichi},
+  journal   = {Functional Ecology},
+  title     = {Sexual (in) equality? A meta-analysis of sex differences in thermal acclimation capacity across ectotherms},
+  year      = {2021},
+  number    = {12},
+  pages     = {2663--2678},
+  volume    = {35},
+  publisher = {Wiley Online Library},
+}
+
+@Article{sasaki2019complex,
+  author    = {Sasaki, Matthew and Hedberg, Sydney and Richardson, Kailin and Dam, Hans G},
+  journal   = {Royal Society open science},
+  title     = {Complex interactions between local adaptation, phenotypic plasticity and sex affect vulnerability to warming in a widespread marine copepod},
+  year      = {2019},
+  number    = {3},
+  pages     = {182115},
+  volume    = {6},
+  publisher = {The Royal Society},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 @Comment{jabref-meta: fileDirectoryLatex-jm200-W7H2KJQ0RT:/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript;}
