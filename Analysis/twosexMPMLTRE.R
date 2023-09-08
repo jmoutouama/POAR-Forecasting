@@ -51,7 +51,6 @@ gxy<-function(x,y,params,pptgrow,pptdorm,tempgrow,tempdorm,rfx,grow_perturb=0){
     params$grow_tempgrow2*(tempgrow_scaled_g^2) + 
     params$grow_tempdorm2*(tempdorm_scaled_g^2) +
     rfx["grow","site"] + rfx["grow","block"] + rfx["grow","source"]) + grow_perturb
-  
   # grow<-dpoisinvgauss(x=y,mean=grow_mean,shape=grow_mean*params$sigma_g)
   # truncZero<-dpoisinvgauss(x=0,mean=grow_mean,shape=grow_mean*params$sigma_g)
   # return(grow/(1-truncZero))
@@ -67,10 +66,6 @@ gxy<-function(x,y,params,pptgrow,pptdorm,tempgrow,tempdorm,rfx,grow_perturb=0){
  
 # sum(gxy(100,1:120,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx))
 # sum(gxy(F_params$max_size,1:1000,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx))
-
-# plot(gxy(x,y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx))
-# # t(outer(y,y,gxy,params=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,grow_perturb=grow_perturb))
-
 # y=1:40
 # plot(gxy(x=y,y=y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx=rfx,grow_perturb=0))
 
@@ -81,8 +76,6 @@ pxy<-function(x,y,params,pptgrow,pptdorm,tempgrow,tempdorm,rfx,surv_perturb=0,gr
 
 # y=1:40
 # plot(pxy(x=y,y=y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx=rfx,surv_perturb=0))
-
-
 
 # PROBABILITY OF FLOWERING
 pfx<-function(x,params, pptgrow,pptdorm,tempgrow,tempdorm,rfx,flow_perturb=0){
@@ -219,7 +212,7 @@ lambdaSim_delay<-function(F_params,M_params,pptgrow,pptdorm,tempgrow,tempdorm,rf
     flowering_females<-n0[2:(matdim+1)]*pfx(x=y,param=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,flow_perturb=flow_perturb) ## scalar multiplication to weight females by flowering prob
     F_panicles<-flowering_females%*%nfx(x=y,param=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,fert_perturb=fert_perturb) ##Vector operation to sum female panicles
     flowering_males<-n0[(matdim+3):((matdim+1)*2)]*pfx(x=y,param=M_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,flow_perturb=flow_perturb)
-    M_panicles<-flowering_males%*%nfx(x=y,param=M_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,fert_perturb=fert_perturb)
+    M_panicles<-flowering_males %*% nfx(x=y,param=M_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,fert_perturb=fert_perturb)
     OSRtracker[t]<-F_panicles/(F_panicles+M_panicles) ##Panicle sex ratio (proportion female)
     SRtracker[t]<-sum(n0[1:(matdim+1)])
     #assmble matrix
