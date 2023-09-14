@@ -555,6 +555,17 @@ year = {1930},
   publisher = {The Royal Society},
 }
 
+@Article{welbergen2008climate,
+  author    = {Welbergen, Justin A and Klose, Stefan M and Markus, Nicola and Eby, Peggy},
+  journal   = {Proceedings of the Royal Society B: Biological Sciences},
+  title     = {Climate change and the effects of temperature extremes on Australian flying-foxes},
+  year      = {2008},
+  number    = {1633},
+  pages     = {419--425},
+  volume    = {275},
+  publisher = {The Royal Society London},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 @Comment{jabref-meta: fileDirectoryLatex-jm200-W7H2KJQ0RT:/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript;}

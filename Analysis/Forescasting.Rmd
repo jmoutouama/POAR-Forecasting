@@ -3046,9 +3046,9 @@ cbPalette <- RColorBrewer::brewer.pal(8, "Dark2")[c(2,1)]
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_precipitation_Fdom_2sex.pdf",useDingbats = F,height=5,width=6)
 par(mar=c(5,5,1,1))
 plot(climat_ppt$pptgrow_seq_extend,lambda_pptgrow_mean,type="l",lwd=2,col=cbPalette[1],
-     xlab="Precipitation growing season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,5))
+     xlab="Precipitation growing season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,8))
 lines(climat_ppt$pptgrow_seq_extend,lambda_pptgrow_mean_2sex,type="l",lwd=2,col=cbPalette[2])
-legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1.2)
+legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1)
 dev.off()
 
 
@@ -3066,7 +3066,7 @@ plot(climat_ppt$pptgrow_seq_extend,OSR_pptgrow_mean,type="l",ylim=c(0,1),lwd=4,
 ## note that length of this vector has a big effect on how fast/slow the following code runs
 tempgrow_seq_extend <- seq(min(poar.clim_seasonal$tempgrow),max(poar.clim_seasonal$tempgrow),length.out=20)
 
-climat_temp<-data.frame(pptgrow_seq_extend=rep(mean(poar.clim_seasonal$pptgrow),length(pptgrow_seq_extend)),tempgrow_seq_extend=tempgrow_seq_extend,pptdorm_seq_extend=rep(mean(poar.clim_seasonal$pptdorm),length(pptgrow_seq_extend)),tempdorm_seq_extend=rep(mean(poar.clim_seasonal$tempdorm),length(pptgrow_seq_extend)))
+climat_temp<-data.frame(pptgrow_seq_extend=rep(mean(poar.clim_seasonal$pptgrow),length(pptgrow_seq_extend)),tempgrow_seq_extend=tempgrow_seq_extend,pptdorm_seq_extend=rep(mean(poar.clim_seasonal$pptdorm),length(tempgrow_seq_extend)),tempdorm_seq_extend=rep(mean(poar.clim_seasonal$tempdorm),length(tempgrow_seq_extend)))
 
 lambda_tempgrow_mean<-lambda_tempgrow_mean_2sex<-SR_tempgrow_mean<-OSR_tempgrow_mean<-c()
 ssd_tempgrow<-matrix(NA,(F_params$max_size+1)*2,nrow(climat_temp))
@@ -3114,9 +3114,9 @@ for (i in 1:nrow(climat_temp)) {
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_temperature_Fdom_2sex.pdf",useDingbats = F,height=5,width=6)
 par(mar=c(5,5,1,1))
 plot(climat_temp$tempgrow_seq_extend,lambda_tempgrow_mean,type="l",lwd=2,col=cbPalette[1],
-     xlab="Temperature growing season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,2.7))
+     xlab="Temperature growing season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,2.9))
 lines(climat_temp$tempgrow_seq_extend,lambda_tempgrow_mean_2sex,type="l",lwd=2,col=cbPalette[2])
-legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1.2)
+legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1)
 dev.off()
 ```
 
@@ -3128,7 +3128,7 @@ pptdorm_seq_extend <- seq(min(poar.clim_seasonal$pptdorm),max(poar.clim_seasonal
 climat_pptdorm<-data.frame(pptgrow_seq_extend=rep(mean(poar.clim_seasonal$pptgrow),length(pptdorm_seq_extend)),tempgrow_seq_extend=rep(mean(poar.clim_seasonal$tempgrow),length(pptdorm_seq_extend)),pptdorm_seq_extend=pptdorm_seq_extend,tempdorm_seq_extend=rep(mean(poar.clim_seasonal$tempdorm),length(pptdorm_seq_extend)))
 
 lambda_pptdorm_mean<-lambda_pptdorm_mean_2sex<-SR_pptdorm_mean<-OSR_pptdorm_mean<-c()
-ssd_pptdorm<-matrix(NA,(F_params$max_size+1)*2,nrow(climat_ppt))
+ssd_pptdorm<-matrix(NA,(F_params$max_size+1)*2,nrow(climat_pptdorm))
 max_yrs <- 20
 
 for (i in 1:nrow(climat_pptdorm)) {
@@ -3175,9 +3175,9 @@ for (i in 1:nrow(climat_pptdorm)) {
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_precipitation_dorm.pdf",useDingbats = F,height=5,width=6)
 par(mar=c(5,5,1,1))
 plot(climat_pptdorm$pptdorm_seq_extend,lambda_pptdorm_mean,type="l",lwd=2,col=cbPalette[1],
-     xlab="Precipitation dormant season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,5))
+     xlab="Precipitation dormant season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,10))
 lines(climat_pptdorm$pptdorm_seq_extend,lambda_pptdorm_mean_2sex,type="l",lwd=2,col=cbPalette[2])
-legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1.2)
+legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1)
 dev.off()
 ```
 
@@ -3191,7 +3191,7 @@ climat_tempdorm<-data.frame(pptgrow_seq_extend=rep(mean(poar.clim_seasonal$pptgr
 
 lambda_tempdorm_mean<-lambda_tempdorm_mean_2sex<-SR_tempdorm_mean<-OSR_tempdorm_mean<-c()
 ssd_tempdorm<-matrix(NA,(F_params$max_size+1)*2,nrow(climat_temp))
-max_yrs <- 10
+max_yrs <- 20
 
 for (i in 1:nrow(climat_tempdorm)) {
     #linear model for comparison
@@ -3235,15 +3235,15 @@ for (i in 1:nrow(climat_tempdorm)) {
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_tem_dorm.pdf",useDingbats = F,height=5,width=6)
 par(mar=c(5,5,1,1))
 plot(climat_tempdorm$tempdorm_seq_extend,lambda_tempdorm_mean,type="l",lwd=2,col=cbPalette[1],
-     xlab="Temperature dormant season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,2.7))
+     xlab="Temperature dormant season",ylab=expression(paste(lambda)),cex.lab=1.3,ylim=c(0,4))
 lines(climat_tempdorm$tempdorm_seq_extend,lambda_tempdorm_mean_2sex,type="l",lwd=2,col=cbPalette[2])
-legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1.2)
+legend("topright",legend=c("Female-dominant","Two-sex"),lwd=2,col =cbPalette ,bty="n",cex=1)
 dev.off()
 ```
 
 
 ## Projection on the niche space 
-
+### Growing season data 
 ```{r}
 pptgrow_seq_extend <- seq(min(poar.clim_seasonal$pptgrow),max(poar.clim_seasonal$pptgrow),length.out=10)
 tempgrow_seq_extend <- seq(min(poar.clim_seasonal$tempgrow),max(poar.clim_seasonal$tempgrow),length.out=10)
@@ -3298,7 +3298,6 @@ library(RColorBrewer)
 library(lattice)
 cls <- colorRampPalette(rev(brewer.pal(11, 'RdYlBu')))(100)
 # trellis.par.set("axis.line",list(col=NA,lty=1,lwd=1))
-par(mfrow = c(1, 2))
 wireframe(lambda_mean_grow ~ climat_grow_3D$pptgrow_seq_extend + climat_grow_3D$tempgrow_seq_extend,
           # subset = lambda_grow_mean < 5, 
           zlab = list(expression(paste(lambda)), rot=90),
@@ -3310,8 +3309,135 @@ wireframe(lambda_mean_grow ~ climat_grow_3D$pptgrow_seq_extend + climat_grow_3D$
 ```
 
 ```{r}
-mtrx_ <- matrix(datplot$lambda, nrow = 9, dimnames = list(datplot$pptdorm,
-               datplot$tempdorm))
+mtrx_grow <- matrix(lambda_mean_grow, nrow = 10, dimnames = list(pptgrow_seq_extend,
+               tempgrow_seq_extend))
+
+filled.contour(x=tempgrow_seq_extend,y=pptgrow_seq_extend,z=mtrx_grow)
+
+filled.contour(mtrx_grow, plot.axes = {
+  axis(1)
+  axis(2)
+  contour(mtrx_grow, add = TRUE, lwd = 1)
+  }
+)
+
 ```
 
+### dormant season data 
+```{r}
+pptdorm_seq_extend <- seq(min(poar.clim_seasonal$pptdorm),max(poar.clim_seasonal$pptdorm),length.out=10)
+tempdorm_seq_extend <- seq(min(poar.clim_seasonal$tempdorm),max(poar.clim_seasonal$tempdorm),length.out=10)
+climat_dorm<-expand.grid(pptdorm_seq_extend=pptdorm_seq_extend,tempdorm_seq_extend=tempdorm_seq_extend)
+climat_grow_mean<-data.frame(pptgrow_seq_extend=rep(mean(poar.clim_seasonal$pptgrow),nrow(climat_dorm)),tempgrow_seq_extend=rep(mean(poar.clim_seasonal$tempgrow),nrow(climat_grow)))
+climat_dorm_3D<-data.frame(climat_grow_mean,climat_dorm)
+
+lambda_mean_dorm<-lambda_mean_dorm_2sex<-SR_dorm_mean<-OSR_dorm_mean<-c()
+ssd_dorm<-matrix(NA,(F_params$max_size+1)*2,nrow(climat_dorm_3D))
+max_yrs <- 20
+
+for (i in 1:nrow(climat_dorm_3D)) {
+    #linear model for comparison
+  mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           pptgrow=climat_dorm_3D[i,1],
+                           tempgrow=climat_dorm_3D[i,2],
+                           pptdorm = climat_dorm_3D[i,3],
+                           tempdorm = climat_dorm_3D[i,4],
+                           rfx=rfx_fun())$MEGAmat
+  lambda_mean_dorm[i] <- popbio::lambda(mat)
+  # 2-sex model
+  lambda_run <- lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 pptgrow=climat_dorm_3D[i,1],
+                                 tempgrow=climat_dorm_3D[i,2],
+                                 pptdorm = climat_dorm_3D[i,3],
+                                 tempdorm = climat_dorm_3D[i,4],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)
+  lambda_mean_dorm_2sex[i] <- lambda_run$lambdatracker[max_yrs]
+  SR_dorm_mean[i] <- lambda_run$SRtracker[max_yrs]
+  OSR_dorm_mean[i] <- lambda_run$OSRtracker[max_yrs]
+  ssd_dorm[,i] <- lambda_run$n0
+}
+
+```
+
+```{r}
+library(RColorBrewer)
+library(lattice)
+cls <- colorRampPalette(rev(brewer.pal(11, 'RdYlBu')))(100)
+# trellis.par.set("axis.line",list(col=NA,lty=1,lwd=1))
+par(mfrow = c(1, 2))
+wireframe(lambda_mean_dorm ~ climat_dorm_3D$pptdorm_seq_extend + climat_dorm_3D$tempdorm_seq_extend,
+          # subset = lambda_grow_mean < 5, 
+          zlab = list(expression(paste(lambda)), rot=90),
+    drape = TRUE, col.regions = cls, scales = list(arrows = FALSE), 
+    par.settings = list(axis.line = list(col = 'transparent')),
+    main='', xlab='Precipitation', ylab='Temperature', screen=list(z = 120, x = -70, y = 3))
+
+
+```
+
+```{r}
+mtrx_dorm <- matrix(lambda_mean_dorm, nrow = 10, dimnames = list(pptdorm_seq_extend,
+               tempgdorm_seq_extend))
+
+persp(mtrx_dorm,xlab="Precipitation",ylab="Temperature",zlab=expression(paste(lambda)),
+                     theta = 30, phi = 30,col=cls, ticktype = "simple")
+```
+
+# Life Table Response Experiment
+```{r}
+## LTRE parameters:
+# these are the indices of the intercepts and slopes
+#LTRE_params <- c(1,2,7,8,14,15,20,21)
+# these are the effects of precipitation of growing season the intercepts and slopes
+betas_pptgrow <- c(F_params[c("surv_pptgrow","surv_size","grow_pptgrow","flow_pptgrow","panic_pptgrow")],
+               M_params[c("surv_pptgrow","surv_size","grow_pptgrow","flow_pptgrow","panic_pptgrow")])
+# these are the effects of precipitation^2 on the intercepts and slopes
+betas_pptgrow2 <- c(F_params[c("surv_pptgrow2","surv_size2","grow_pptgrow2","flow_pptgrow2","panic_pptgrow2")],
+                M_params[c("surv_pptgrow2","surv_size2","grow_pptgrow2","flow_pptgrow2","panic_pptgrow2")])
+
+## Sensitivity of parameters to  precipitation of the grwoing season -- this is just the derivative of a second-order polynomial
+dp_dpptgrow_fun <- function(betas_pptgrow,betas_pptgrow2,pptgrow){return(betas_pptgrow + 2*betas_pptgrow2*pptgrow)}
+
+## loop over pptgrow and calculated dp_dpptgrow and dlambda_dp
+dp_dpptgrow <- dlambda_dp <- matrix(NA,nrow=length(LTRE_params)*2,ncol=length(pptgrow_seq_extend))
+lambda_pptgrow <- c()
+perturbation <- 0.01
+for(l in 1:length(pptgrow_seq_extend)){
+ lambda_pptgrow[l] <- lambdaSim_delay(F_params=F_params,M_params=M_params,pptgrow=pptgrow_seq_extend[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+ dp_dlong[,l] <- dp_dlong_fun(beta_long = unlist(betas_long),
+                              beta_long2 = unlist(betas_long2),
+                              long = long_seq_extend[l])
+# cannot vectorize this part unfortunately
+ for(p in 1:8){
+   F_params_perturb <- F_params; M_params_perturb <- M_params;
+   F_params_perturb[LTRE_params[p]] <- unlist(F_params[LTRE_params[p]]) + perturbation
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,long=long_seq_extend[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   dlambda_dp[p,l] <- (lambda_perturb - lambda_long[l]) / perturbation
+ }
+ for(p in 9:16){
+   F_params_perturb <- F_params; M_params_perturb <- M_params;
+   M_params_perturb[LTRE_params[p-8]] <- unlist(M_params[LTRE_params[p-8]]) + perturbation
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,long=long_seq_extend[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   dlambda_dp[p,l] <- (lambda_perturb - lambda_long[l]) / perturbation
+ }
+ print(l)
+}
+## write LTRE output based on posterior mean parameters
+#write_rds(list(dp_dlong=dp_dlong,dlambda_dp=dlambda_dp),paste0(dir,"/Experiment/Demography/POAR-range-limits/results/POAR_LTRE.rds"))
+
+```
 

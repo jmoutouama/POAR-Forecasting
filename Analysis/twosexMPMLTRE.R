@@ -162,9 +162,7 @@ megamatrix_delay<-function(F_params,M_params,pptgrow,pptdorm,tempgrow,tempdorm,t
   
   ## F-to-F (growth/survival transition)
   F.Tmat<-matrix(0,matdim+1,matdim+1)
-  F.Tmat[2:(matdim+1),2:(matdim+1)]
-  test<-t(outer(y,y,pxy,params=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,surv_perturb=surv_perturb, grow_perturb=grow_perturb))
-  test<-t(outer(y,y,gxy,params=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,grow_perturb=grow_perturb))
+  F.Tmat[2:(matdim+1),2:(matdim+1)]<-t(outer(y,y,pxy,params=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,surv_perturb=surv_perturb, grow_perturb=grow_perturb))
   # surviving seedlings emerge in continuous population
   F.Tmat[2:(matdim+1),1] <- gxy(x=1,y=y,params=F_params,pptgrow=pptgrow,pptdorm=pptdorm,tempgrow=tempgrow,tempdorm=tempdorm,rfx=rfx,grow_perturb=grow_perturb) * (M_params$sdlg_surv + surv_perturb)
   
