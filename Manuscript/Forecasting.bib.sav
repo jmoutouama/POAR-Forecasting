@@ -566,6 +566,49 @@ year = {1930},
   publisher = {The Royal Society London},
 }
 
+@Misc{schwinning2022common,
+  author    = {Schwinning, Susanne and Lortie, Christopher J and Esque, Todd C and DeFalco, Lesley A},
+  title     = {What common-garden experiments tell us about climate responses in plants},
+  year      = {2022},
+  journal   = {Journal of Ecology},
+  number    = {5},
+  pages     = {986--996},
+  publisher = {Wiley Online Library},
+  volume    = {110},
+}
+
+@Article{sanderson2015representative,
+  author    = {Sanderson, Benjamin M and Knutti, Reto and Caldwell, Peter},
+  journal   = {Journal of Climate},
+  title     = {A representative democracy to reduce interdependency in a multimodel ensemble},
+  year      = {2015},
+  number    = {13},
+  pages     = {5171--5194},
+  volume    = {28},
+  publisher = {American Meteorological Society},
+}
+
+@Article{karger2020high,
+  author    = {Karger, Dirk Nikolaus and Schmatz, Dirk R and Dettling, Gabriel and Zimmermann, Niklaus E},
+  journal   = {Scientific data},
+  title     = {High-resolution monthly precipitation and temperature time series from 2006 to 2100},
+  year      = {2020},
+  number    = {1},
+  pages     = {248},
+  volume    = {7},
+  publisher = {Nature Publishing Group UK London},
+}
+
+@Article{thomson2011rcp4,
+  author    = {Thomson, Allison M and Calvin, Katherine V and Smith, Steven J and Kyle, G Page and Volke, April and Patel, Pralit and Delgado-Arias, Sabrina and Bond-Lamberty, Ben and Wise, Marshall A and Clarke, Leon E and others},
+  journal   = {Climatic change},
+  title     = {RCP4. 5: a pathway for stabilization of radiative forcing by 2100},
+  year      = {2011},
+  pages     = {77--94},
+  volume    = {109},
+  publisher = {Springer},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 @Comment{jabref-meta: fileDirectoryLatex-jm200-W7H2KJQ0RT:/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript;}
