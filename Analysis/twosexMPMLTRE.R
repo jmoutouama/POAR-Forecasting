@@ -20,10 +20,6 @@ sx<-function(x,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,surv_perturb=0){
   return(invlogit(surv_mean)+ surv_perturb)
 }
 
-# plot(sx(x=1:40,
-#    params=M_params,
-#    pptgrow,pptdorm,tempgrow,tempdorm,rfx))
-
 
 #PROBABILITY OF GROWTH FROM SIZE X TO Y
 #This function truncates the density asscociation with x==0 and x>x.max
@@ -41,9 +37,6 @@ gxy<-function(x,y,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,grow_perturb=
     params$grow_tempgrow2*(ztempgrow^2) + 
     params$grow_tempdorm2*(ztempdorm^2) +
     rfx["grow","site"] + rfx["grow","block"] + rfx["grow","source"]) + grow_perturb
-  # grow<-dpoisinvgauss(x=y,mean=grow_mean,shape=grow_mean*params$sigma_g)
-  # truncZero<-dpoisinvgauss(x=0,mean=grow_mean,shape=grow_mean*params$sigma_g)
-  # return(grow/(1-truncZero))
   grow<-dpoisinvgauss(x=y,mean=grow_mean,shape=(grow_mean*params$sigma_g))
   grow<-ifelse(is.nan(grow) | is.infinite(grow),0,grow)
   truncLower<-dpoisinvgauss(x=0,mean=grow_mean,shape=(grow_mean*params$sigma_g))
@@ -52,20 +45,11 @@ gxy<-function(x,y,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,grow_perturb=
   return(grow/(1-(truncLower+truncUpper)))
 }
 
-
- 
-# sum(gxy(100,1:120,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx))
-# sum(gxy(F_params$max_size,1:1000,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx))
-# y=1:40
-# plot(gxy(x=y,y=y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx=rfx,grow_perturb=0))
-
 #SURVIVAL*GROWTH 
 pxy<-function(x,y,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,surv_perturb=0,grow_perturb=0){
   sx(x,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,surv_perturb) * gxy(x,y,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,grow_perturb)
 }
 
-# y=1:40
-# plot(pxy(x=y,y=y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx=rfx,surv_perturb=0))
 
 # PROBABILITY OF FLOWERING
 pfx<-function(x,params, zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,flow_perturb=0){
@@ -84,9 +68,6 @@ pfx<-function(x,params, zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,flow_perturb=0
     rfx["flow","site"] + rfx["flow","block"] + rfx["flow","source"]
   return(invlogit(flow_mean) + flow_perturb )
 }
-
-# y=1:40
-# plot(pfx(x=y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx=rfx,flow_perturb=0))
 
 #NUMBER OF PANICLES
 nfx<-function(x,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,fert_perturb=0){
@@ -107,8 +88,6 @@ nfx<-function(x,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,fert_perturb=0)
   return(exp(panic_mean) + fert_perturb)
 }
 
-# y=1:40
-# plot(pfx(x=y,params=F_params,pptgrow,pptdorm,tempgrow,tempdorm,rfx=rfx,flow_perturb=0))
 
 #SEED VIABILITY
 viab<-function(params,twosex,OSR=NULL,viab_perturb=0){
@@ -123,18 +102,12 @@ fertx_F<-function(x,params,rfx,zpptgrow,zpptdorm,ztempgrow,ztempdorm,twosex,OSR=
   return(seedlings)
 }
 
-# y=1:40
-# plot(fertx_F(x=y,params=F_params,rfx=rfx,twosex=F,OSR=NULL,pptgrow,pptdorm,tempgrow,tempdorm,flow_perturb=0,fert_perturb=0,viab_perturb=0))
-
 
 ##Male offspring
 fertx_M<-function(x,params,rfx,zpptgrow,zpptdorm,ztempgrow,ztempdorm,twosex,OSR=NULL,flow_perturb=0,fert_perturb=0,viab_perturb=0){
   seedlings<-pfx(x,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,flow_perturb)*nfx(x,params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,rfx,fert_perturb)*params$ov_per_inf*viab(params,twosex,OSR,viab_perturb)*params$germ*(1-params$PSR)
   return(seedlings)
 }
-
-# y=1:40
-# plot(fertx_M(x=y,params=F_params,rfx=rfx,twosex=F,OSR=NULL,pptgrow,pptdorm,tempgrow,tempdorm,flow_perturb=0,fert_perturb=0,viab_perturb=0))
 
 megamatrix_delay<-function(F_params,M_params,zpptgrow,zpptdorm,ztempgrow,ztempdorm,twosex,OSR=NULL,rfx,
                            surv_perturb=0,grow_perturb=0,flow_perturb=0,fert_perturb=0,viab_perturb=0){  

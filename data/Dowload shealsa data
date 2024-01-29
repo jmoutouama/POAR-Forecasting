@@ -1,0 +1,8 @@
+Dowload shealsa data
+1. Install Miniconda ( a smaller version of Python)(https://docs.conda.io/projects/miniconda/en/latest/)
+On Mac: Use the terminal (https://opensourceoptions.com/how-to-install-gdal-with-anaconda/)
+gdalinfo ---version # to active the minconda 
+gdalinfo https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_cmip5_ts/CHELSAcmip5ts_pr_ACCESS1-3_historical_1850-1869_V1.1.nc
+ 
+Run this code in R: /Users/jm200/miniconda3/envs/pygdal/bin/gdallocationinfo.exe -wgs84 -valonly /vsicurl/https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V2/GLOBAL/monthly/clt/CHELSA_clt_12_2019_V.2.1.tif
+ /Users/jm200/miniconda3/envs/pygdal/bin/gdallocationinfo -wgs84 -valonly /vsicurl/https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V2/GLOBAL/monthly/clt/CHELSA_clt_12_2019_V.2.1.tif

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  3 DEC 2023 18:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  25 JAN 2024 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -474,7 +474,11 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count308
 \l__pdf_internal_box=\box63
 )
-(./Forecasting.aux)
+(./Forecasting.aux
+
+LaTeX Warning: Label `fig:vital_rates' multiply defined.
+
+)
 \openout1 = `Forecasting.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
@@ -647,100 +651,90 @@ LaTeX Font Info:    Trying to load font information for T1+cmss on input line 5
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 ) [2] [3] [4]
-[5] [6]
+[5] [6] [7] [8] [9] [10] [11]
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 137.
+(Font)              scaled to size 5.21004pt on input line 221.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 137.
- [7] [8] [9] [10] [11]
-<Figures/Varianceexplained.pdf, id=218, 578.16pt x 361.35pt>
+(Font)              scaled to size 5.21004pt on input line 221.
+ [12] [13]
+<Figures/vital_rates.pdf, id=233, 939.51pt x 1011.78pt>
+File: Figures/vital_rates.pdf Graphic file (type pdf)
+<use Figures/vital_rates.pdf>
+Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 255.
+(pdftex.def)             Requested size: 408.50307pt x 439.92004pt.
+
+
+LaTeX Warning: Float too large for page by 27.84352pt on input line 263.
+
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./Figures/all_lambda.pdf): P
+DF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Figures/all_lambda.pdf, id=234, 361.35pt x 505.89pt>
+File: Figures/all_lambda.pdf Graphic file (type pdf)
+<use Figures/all_lambda.pdf>
+Package pdftex.def Info: Figures/all_lambda.pdf  used on input line 271.
+(pdftex.def)             Requested size: 408.50307pt x 571.91148pt.
+
+LaTeX Warning: Float too large for page by 51.03491pt on input line 275.
+
+[14] [15 <./Figures/vital_rates.pdf>] [16 <./Figures/all_lambda.pdf>]
+<Figures/Varianceexplained.pdf, id=273, 578.16pt x 361.35pt>
 File: Figures/Varianceexplained.pdf Graphic file (type pdf)
 <use Figures/Varianceexplained.pdf>
-Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 238.
+Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 286.
 
 (pdftex.def)             Requested size: 430.00462pt x 268.75119pt.
- [12]
-<Figures/PPC22_10_23.pdf, id=225, 433.62pt x 722.7pt>
-File: Figures/PPC22_10_23.pdf Graphic file (type pdf)
-<use Figures/PPC22_10_23.pdf>
-Package pdftex.def Info: Figures/PPC22_10_23.pdf  used on input line 244.
+<Figures/PPCtmax_tmin.pdf, id=274, 433.62pt x 722.7pt>
+File: Figures/PPCtmax_tmin.pdf Graphic file (type pdf)
+<use Figures/PPCtmax_tmin.pdf>
+Package pdftex.def Info: Figures/PPCtmax_tmin.pdf  used on input line 292.
 (pdftex.def)             Requested size: 216.80946pt x 361.3491pt.
- [13 <./Figures/Varianceexplained.pdf>]
+ [17 <./Figures/Varianceexplained.pdf>]
 Overfull \vbox (81.33687pt too high) has occurred while \output is active []
 
 
-[14 <./Figures/PPC22_10_23.pdf>]
-pdfTeX warning (ext4): destination with the same identifier (name{equation.0.1}
-) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.249 \begin{subequations}
-                          
-pdfTeX warning (ext4): destination with the same identifier (name{equation.0.2}
-) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.257 \begin{subequations}
-                          
-pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
-) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.265 \begin{equation}
-                       \label{eq:f_rate}
-pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
-) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.265 \begin{equation}
-                       \label{eq:f_rate}
-pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
-) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.265 \begin{equation}
-                       \label{eq:f_rate}
-pdfTeX warning (ext4): destination with the same identifier (name{equation.0.3}
-) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.265 \begin{equation}
-                       \label{eq:f_rate} (./Forecasting.bbl [15]
+[18 <./Figures/PPCtmax_tmin.pdf>]
+<Figures/Posterior_mean.pdf, id=304, 650.43pt x 578.16pt>
+File: Figures/Posterior_mean.pdf Graphic file (type pdf)
+<use Figures/Posterior_mean.pdf>
+Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 299.
+(pdftex.def)             Requested size: 2926.92783pt x 2601.71362pt.
+ (./Forecasting.bbl [19 <./Figures/Posterior_mean.pdf>]
 Underfull \hbox (badness 1248) in paragraph at lines 62--70
 []\T1/pplx/m/n/10.95 Eberhart-Phillips, L. J., C. Küp-per, T. E. Miller, M. Cru
 z-López, K. H. Ma-her,
  []
 
-[16] [17] [18] [19]) [20] (./Forecasting.aux)
+[20] [21] [22] [23]) [24] (./Forecasting.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
- )
-(\end occurred inside a group at level 1)
-
-### simple group (level 1) entered at line 146 ({)
-### bottom level 
+ ) 
 Here is how much of TeX's memory you used:
- 14720 strings out of 476025
- 233328 string characters out of 5790018
- 1863388 words of memory out of 5000000
- 34816 multiletter control sequences out of 15000+600000
- 569782 words of font info for 146 fonts, out of 8000000 for 9000
+ 14736 strings out of 476025
+ 234023 string characters out of 5790018
+ 1865388 words of memory out of 5000000
+ 34841 multiletter control sequences out of 15000+600000
+ 568138 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,76p,591b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/mathpazo/fpl
-mr.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/mathpazo/fplmri.p
-fb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb
-></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb><
-/usr/local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/lo
-cal/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/tex
-live/2023/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (20 pages, 13289552 bytes).
+ 75i,14n,76p,922b,634s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
+></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
+/usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
+usr/local/texlive/2023/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></usr/l
+ocal/texlive/2023/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local
+/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb></usr/local/t
+exlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/tex
+live/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/20
+23/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2023/texm
+f-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on Forecasting.pdf (24 pages, 13337854 bytes).
 PDF statistics:
- 363 PDF objects out of 1000 (max. 8388607)
- 313 compressed objects within 4 object streams
- 84 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 414 PDF objects out of 1000 (max. 8388607)
+ 351 compressed objects within 4 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
