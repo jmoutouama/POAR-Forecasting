@@ -1,4 +1,54 @@
-\documentclass[11pt]{article}
+\documentclass[11pt]{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage[sc]{mathpazo} 
 \usepackage{fullpage}
 \usepackage{natbib}
@@ -33,6 +83,7 @@
 \doublespacing
 
 
+
 %-------------------------------------------------------------------------
 \title{Forecasting range shifts of a dioecious plant species under climate change}
 
@@ -42,7 +93,7 @@
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 %-------------------------------------------------------------------------
-\usepackage{Sweave}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
 \maketitle
@@ -69,63 +120,76 @@ climate change, demography, forecasting, matrix projection model, mechanistic mo
 \newpage
 \section*{Introduction}
 Rising temperatures and extreme drought events associated with global climate change are leading to increased concern about how species will become redistributed across the globe under future climate conditions \citep{bertrand2011changes,gamelon2017interactions,smith2024extreme}.
-Dioecious species might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
-Accounting for such a niche differentiation between male and female within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population dynamics \citep{jones1999sex,gissi2023exploring}. 
+Dioecious species (most animals and many plants) might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
+Accounting for such a niche differentiation within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population viability and range shifts \citep{jones1999sex,gissi2023exploring}. 
 The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure \citep{pottier2021sexual,ellis2017does}.
-As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited. 
+As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited. \tom{}{This is a great opening paragraph!} 
 
-Climate change can influence dioecious populations via shifts in sex ratio. 
-Females and males respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
-This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions more than the other sex leading to a skewness in the operational sex ratio (relative number of males and females who are ready to mate) \citep{eberhart2017sex,zhao2012sex, burli2022environmental} .
-Experimentation manipulation revealed that when exposed to increasing temperatures, for example, in two populations of Atlantic marine copepods (\textit{Acartia tonsa}), males showed significantly lower survival than females \citep{sasaki2019complex}.
-However, in some species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}.
+\tom{Climate change can influence dioecious populations via shifts in sex ratio.}{This paragraph is really good but notice that the topic sentence (and much that follows) is largely redundant with the first paragraph. I would suggest creating clearer distinction between paragraphs.} 
+Females and males may respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
+This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions rather than the other sex \citep{zhao2012sex, burli2022environmental} leading to a skewness in the operational sex ratio (relative number of males and females as available mates) \citep{eberhart2017sex}.
+For example, experiments in two populations of Atlantic marine copepods (\textit{Acartia tonsa}) revealed that male survival was more sensitive to increasing temperatures than female survival \citep{sasaki2019complex}.
+In other species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}. 
+Sex-specific responses to climate drivers have the potential to influence population viability under global change because skew in the operational sex ratio can limit reproduction through mate scarcity \citep{petry2016sex}.
 
-Species's range limits, when not driven by dispersal limitation, should generally reflect the limits of the ecological niche. 
-For most species, niches and geographic ranges are often limited by climatic factors including temperature, precipitation \citep{sexton2009evolution}. 
-Therefore, any substantial changes in the magnitude of these climatic factors in a given location across the range could impact population viability  with potential implication on range shift \citep{davis2001range, pease1989model}. 
-This is particularly true for dioecious species in which each sex has a different sensitivity to climate variation\citep{pottier2021sexual,morrison2016causes}.
-Populations in which males are rare under current climatic conditions could experience low reproductive success due to sperm or pollen limitation that may lead to population decline in response to climate change \citep{eberhart2017sex}.
-In contrast, climate change could lead to male moving to more suitable areas (e.g. upslope), which might favor range expansion \citep{petry2016sex}.
-Although the response of species to warming is generally understood, it is difficult to disentangle the interaction between sex and climate drivers to understand their relative contribution and effect on population dynamics and the consequence of such effect on range  shift. 
+Species's range limits, when not driven by dispersal limitation, should generally \tom{reflect the limits of the ecological niche}{cite -- there is a relevant paper by Julie Lee-Yaw and Amy Angert, and lots of related literature}. 
+For most species, niches and geographic ranges are often limited by climatic factors including temperature and precipitation \citep{sexton2009evolution}. 
+Therefore, any substantial changes in the magnitude of these climatic factors in a given location across the range could impact population viability, with implications for range shifts based on which regions become more or less suitable  \citep{davis2001range, pease1989model}. 
+Forecasting range shifts for dioecious species is complicated by the potential for each sex to respond differently to climate variation \citep{pottier2021sexual,morrison2016causes}.
+Populations in which males are rare under current climatic conditions could experience low reproductive success due to sperm or pollen limitation that may lead to population decline in response to climate change that disproportionately favors females \citep{eberhart2017sex}.
+In contrast, climate change could expand male habitat suitability (e.g. upslope movement), which might increases seed set for pollen-limited females and favor range expansion \citep{petry2016sex}.
+Although the response of species to climate warming is an urgent and active area of research, few studies have disentangled the interaction between sex and climate drivers to understand their combined effects on population dynamics and range shifts.  
 
-Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
+\tom{Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.}{This is a great topic sentence and an important point, but the paragraph does not really expand upon this point about mechanistic models. The next few sentences do not really say anything new. I think it would be stronger to discuss the value and challenges of mechanistic models for species' range shifts.}
 At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
-In this study, we used a mechanistic approach by combining field experiment and matrix projection modelling, to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
-Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude (MAP). 
+In this study, we used a mechanistic approach by combining geographically-distributed field experiments, hierarchical statistical modeling, and two-sex population projection modeling to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
+Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude (MAP). \tom{}{I would include a few more sentences of context about the study before jumping to the questions. For example it seems relevant to acknowledge the previous study and highlight that our previous approach used proxy variables, so could not be used to forecast responses to environmental change.}
 % A previous study showed that, despite the differentiation of the climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability \citep{miller2022two}. 
-Here, we asked three questions: (1) What is the sex-specific demographic response to rising temperature and precipitation ?
-(2) How that sex-specific demographic response affects populations dynamics under current and future climatic conditions ?
-(3) What are the implications of population dynamics on range dynamics ?   
+Here, we asked four questions: 
+\begin{enumerate}
+	\item What are the sex-specific vital rate responses to variation in temperature and precipitation across the species' range?
+	\item How sex-specific vital rates combine to determine the influence of climate variation on population viability ($\lambda$)?
+	\item What are the historical and projected changes in climate across the species range?
+	\item What are the back-casted and fore-casted dynamics of this species' geographic niche ($\lambda \geq 1$) and how does accountind for sex structure modify these predictions?
+\end{enumerate}
 
 %--------------------------------------------------------------------
 \section*{Materials and methods}
 
 \subsection*{Study species}
-Texas bluegrass (\textit{Poa arachnifera}) is a perennial, summer-dormant cool-season (C3) grass. 
-The species occurs in Texas, Oklahoma, and southern Kansas, USA \citep{hitchcock1971manual}. 
-Texas bluegrass grows during cool months between October and May, with onset of dormancy often from June to September \citep{kindiger2004interspecific}.
-Flowering occurs in May and the species is pollinated by wind \citep{hitchcock1971manual}.
+Texas bluegrass (\textit{Poa arachnifera}) is a perennial, summer-dormant cool-season (C3) grass that occurs in Texas, Oklahoma, and southern Kansas, USA \citep{hitchcock1971manual}. 
+Texas bluegrass grows between October and May, with onset of dormancy often from June to September \citep{kindiger2004interspecific}.
+Flowering occurs in May and the species is pollinated by wind \citep{hitchcock1971manual}.\tom{}{I think you need to say more about the geographic region and its climate. It will be important to motivate the split of growing and dormant seasons based on the natural history. You also need to describe the reproductive biology including dioecy and wind-pollination.}
 
 \subsection*{Common garden experiment}
-We set up a common garden experiment to manipulate climatic factors (e.g.,temperature and precipitation) to detect mechanisms underlying sex-specific demographic response to climate and the implication of such a response on range limitation \citep{merow2017climate,schwinning2022common}. 
-At this end, we collected vegetative tillers from flowering individuals of each sex in eight natural (sources) populations of the focal species.
-We then propagated these tillers in ProMix plotting soil and supplemented them with Osmocote slow-release fertilizer at $75^\circ$F to $85^\circ$F under natural climatic conditions at the Rice University Greenhouse. 
-The common experiment was installed on 14 sites across a precipitation gradient (FigX). At each site, we established 14 blocks. Each block was selected so that they resemble the natural environment of the species. For each block we planted three females and three males individuals. We spared the individuals, provided \~ 1 L  of water, and removed surrounding vegetation to avoid competition and promote establishment. 
+We set up a common garden experiment throughout and beyond the range of Texas bluegrass to enable study of sex-specific demographic responses to climate and the implications for range shifts \tom{\citep{merow2017climate,schwinning2022common}. }{I am not sure why you cite these studies here. They would be more appropriate for the Intro if you expand the paragraph about mechanistic modeling.}
+Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
 
-\subsection*{Demographic and climatic data collection}
-To  parametrize the demographic models, we first collected individual demographic data including survival (alive or dead), growth (number of tillers), flowers (reproductive or vegetative), and fertility (number of panicles) in each site for two censuses (2015 and 2016). 
-Secondly, we downloaded monthly temperature and precipitation from Chelsa to describe observed climate conditions \citep{karger2017climatologies}.
-These climate data were used as covariates in vital rate regressions, which allowed us to forecast and back-cast the effect of climate change on population dynamics and map species’ niche and distribution under future and past climate change. 
-We prefer temperature and precipitation because they capture the most the climate in the study region \colorbox{BurntOrange}{Source}. 
-Since our experiment was installed in November, we aligned the climatic years to match demographic transition years rather than calendar years.
-Then we used the monthly data to estimate seasonal data (dormant and growing season), since our study species is a seasonal cool grass. 
-We define June to September as the dormant season of the year and the rest of the year as the growing season. 
-To back-cast and forecast the effect of future climate on species population dynamics, we downloaded climatic projection data for past climatic conditions (901-1930), current conditions (1990-2019) and future conditions (2070-2100).
-These climatic conditions (past, present and future) were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
+The common experiment was installed at 14 sites across a \tom{precipitation gradient}{While the Am Nat paper focused on precipitation, the actual design spans both temperature and precip, whch is a feature you can exploit for your analysis, and would be worth highlighting as a source of novelty of this paper relative to the previous one. Some reviewers will be skeptical that we are publishing another paper from the same experiment, so the distinction should be made clear.} (FigX). 
+At each site, we established 14 blocks. 
+For each block we planted three female and three male individuals that were clonally propagated from eight natural source populations of Texas bluegrass. 
+The experiment was established in November 2013 and was census annually through 2016, providing both spatial and inter-annual variation in climate. 
+
+Each May (2014-2016), we collected individual demographic data including survival (alive or dead), growth (number of tillers), flowering status (reproductive or vegetative), and fertility (number of panicles, conditional on flowering). 
+For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions years.
+
+\subsection*{Climatic data collection}
+We downloaded monthly temperature and precipitation from Chelsa to describe observed climate conditions during our study period \citep{karger2017climatologies}.
+These climate data were used as covariates in vital rate regressions, which allowed us to forecast and back-cast demographic responses to climate change based on observations across the common garden experiment. 
+%We prefer temperature and precipitation because they capture the most the climate in the study region \colorbox{BurntOrange}{Source}. 
+We aligned the climatic years to match demographic transition years \tom{(May 1 -- April 30)}{I am not sure if these are actually the right dates.} rather than calendar years.
+Based on the natural history of this summer-dormant cool-season species, we divided each transition year into growing and dormant seasons. 
+We define June through September as the dormant season and the rest of the year as the growing season. 
+Across years and sites, the experiment included substantial variation in growing and dormant season temperature and precipitation (\tom{Figure}{I think we should have a figure, maybe just for the appendix, that visualizes this.}).
+
+To back-cast and forecast changes in climate, we downloaded projection data for three 30-year periods: past (1901-1930), current (1990-2019) and future (2070-2100).
+Data for these climatic periods were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
 The GCMs are MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM  and were downloaded from chelsa \citep{sanderson2015representative}.
 We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing to amount to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which project a radiative forcing to amount to 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}.
+
+\tom{Tom stopped here Monday evening. Generall impressions: really good! Need more hypotheses regarding sex-specific responses. Also need to say a little more about prev study (including what is known about sex-specific niches), and lean into the natural history at the end of intro and start of methods. }{}
 
 \subsection*{Sex ratio experiment}
 
