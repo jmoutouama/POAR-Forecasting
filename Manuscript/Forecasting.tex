@@ -42,7 +42,7 @@
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 %-------------------------------------------------------------------------
-\usepackage{Sweave}
+%\usepackage{Sweave}
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
 \maketitle
@@ -78,33 +78,39 @@
 \newpage
 \section*{Introduction}
 Rising temperatures and extreme drought events associated with global climate change are leading to increased concern about how species will become redistributed across the globe under future climate conditions \citep{bertrand2011changes,gamelon2017interactions}.
-Dioecious species might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
-Accounting for such a niche differentiation between male and female within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population dynamics \citep{jones1999sex,gissi2023exploring}. 
+Dioecious species (most animals and many plants) might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
+Accounting for such a niche differentiation between males and females within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population viability and range shifts \citep{jones1999sex,gissi2023exploring}. 
 The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure \citep{pottier2021sexual,ellis2017does}.
-As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited. 
+As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited.\tom{}{This is a great opening paragraph!} 
 
-Females and males respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
-This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions rather than the other sex \citep{zhao2012sex, burli2022environmental} leading to a skewness in the operational sex ratio (relative number of males and females who are ready to mate) \citep{eberhart2017sex} .
-Experimentation manipulation revealed that when exposed to increasing temperatures, for example, in two populations of Atlantic marine copepods (\textit{Acartia tonsa}), males showed significantly lower survival than females \citep{sasaki2019complex}.
-However, in some species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}.
+\tom{Females and males may respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}.}{This paragraph is really good but notice that the topic sentence (and much that follows) is largely redundant with the first paragraph. I would suggest creating clearer distinction between paragraphs.} 
+This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions rather than the other sex \citep{zhao2012sex, burli2022environmental} leading to a skewness in the operational sex ratio (relative number of males and females as available mates) \citep{eberhart2017sex}.
+For example, experiments in two populations of Atlantic marine copepods (\textit{Acartia tonsa}) revealed that male survival was more sensitive to increasing temperatures than female survival \citep{sasaki2019complex}.
+In other species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}. 
+Sex-specific responses to climate drivers have the potential to influence population viability under global change because skew in the operational sex ratio can limit reproduction through mate scarcity \citep{petry2016sex}.
 
 The geographic range of most species may be limited by climatic factors, including temperature, precipitation. 
-Any substantial changes in the magnitude of these climatic factors in a given location could impact species population viability, with potential implication on range shift \citep{davis2001range, pease1989model}. 
-This is particularly true for dioecious species in which each sex has a different sensitivity to climate variation.
-Populations in which males are rare under current climatic conditions could experience low reproductive success due to sperm or pollen limitation that may lead to population decline in response to climate change \citep{eberhart2017sex}.
-In contrast, climate change could lead to male moving to more suitable areas (e.g. upslope), which might reduce pollen limitation, increases seedset and favor range expansion \citep{petry2016sex}.
-Although the response of species to warming is generally understood, it is difficult to disentangle the interaction between sex and climate drivers to understand their relative contribution and effect on population dynamics and the consequence of such effect on range  shift. 
+Any substantial changes in the magnitude of these climatic factors in a given location could impact population viability, with implications for range shifts based on which regions become more or less suitable \citep{davis2001range, pease1989model}. 
+Forecasting range shifts for dioecious species is complicated by the potential for each sex to respond differently to climate variation.
+Populations in which males are rare under current climatic conditions could experience low reproductive success due to sperm or pollen limitation that may lead to population decline in response to climate change that favors females \citep{eberhart2017sex}.
+In contrast, climate change could expand male habitat suitability (e.g. upslope movement), which might increases seed set for pollen-limited females and favor range expansion \citep{petry2016sex}.
+Although the response of species to climate warming is an urgent and active area of research, few studies have disentangled the interaction between sex and climate drivers to understand their combined effects on population dynamics and range shifts. 
 
-Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
+\tom{Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.}{This is a great topic sentence but the paragraph does not really expand upon this point about mechanistic models. The next few sentences do not really say anything new. I think it would be stronger to discuss the value and challenges of mechanistic models for species' range shifts.}
 At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
-In this study, we used a mechanistic approach by combining field experiment and matrix projection modelling, to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
-Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude (MAP). 
+In this study, we used a mechanistic approach by combining geographically-distributed field experiments, hierarchical statistical modeling, and two-sex population projection modeling to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
+Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude (MAP). \tom{}{I would include a few more sentences of context about the study before jumping to the questions. For example it seems relevant to acknowledge the previous study and highlight that our previous approach used proxy variables, so could not be used to forecast responses to environmental change.}
 % A previous study showed that, despite the differentiation of the climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability \citep{miller2022two}. 
-Here, we asked three questions: (1) What is the sex-specific demographic response to rising temperature and precipitation ?
-(2) How that sex-specific demographic response affects populations dynamics under current and future climatic conditions ?
-(3) What are the implications of population dynamics on range dynamics ?   
+Here, we asked three questions: 
+\begin{enumerate}
+	\item What are the sex-specific vital rate responses to variation in temperature and precipitation across the species' range?
+	\item How sex-specific vital rates combine to determine the influence of climate variation on population viability ($\lambda$)?
+	\item What are the historical and projected changes in climate across the species range?
+	\item What are the back-casted and fore-casted dynamics of this species' geographic niche ($\lambda \geq 1$) and how does accountind for sex structure modify these predictions?
+\end{enumerate}
+
 
 %--------------------------------------------------------------------
 \section*{Materials and methods}
