@@ -2,3 +2,13 @@
 .Rhistory
 .RData
 .Ruserdata
+*.aux
+*.bbl
+*.blg
+*.log
+*.log
+*.log
+*.out
+*.gz
+*.log
+Manuscript/Forecasting.log
