@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.2.5)  29 JAN 2024 17:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.2.5)  26 FEB 2024 13:54
 entering extended mode
 **./Forecasting.tex
 (Forecasting.tex
@@ -637,61 +637,70 @@ oe-cious species to cli-mate change
  []
 
 [5] [6] [7] [8] [9] [10] [11] [12] [13] [14]
-<Figures/vital_rates.pdf, id=259, 939.51pt x 1011.78pt>
+<Figures/vital_rates.pdf, id=264, 939.51pt x 1011.78pt>
 File: Figures/vital_rates.pdf Graphic file (type pdf)
 <use Figures/vital_rates.pdf>
-Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 319.
+Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 320.
 (pdftex.def)             Requested size: 408.50307pt x 439.92004pt.
 
 
-LaTeX Warning: Float too large for page by 27.84352pt on input line 327.
+LaTeX Warning: Float too large for page by 27.84352pt on input line 328.
 
 
 
 pdfTeX warning: pdflatex.exe (file ./Figures/all_lambda.pdf): PDF inclusion: fo
 und PDF version <1.7>, but at most version <1.5> allowed
-<Figures/all_lambda.pdf, id=260, 361.35pt x 505.89pt>
+<Figures/all_lambda.pdf, id=265, 361.35pt x 505.89pt>
 File: Figures/all_lambda.pdf Graphic file (type pdf)
 <use Figures/all_lambda.pdf>
-Package pdftex.def Info: Figures/all_lambda.pdf  used on input line 335.
+Package pdftex.def Info: Figures/all_lambda.pdf  used on input line 336.
 (pdftex.def)             Requested size: 408.50307pt x 571.91148pt.
 
-LaTeX Warning: Float too large for page by 51.03491pt on input line 339.
+LaTeX Warning: Float too large for page by 51.03491pt on input line 340.
 
 [15] [16 <./Figures/vital_rates.pdf>] [17 <./Figures/all_lambda.pdf>]
-<Figures/Varianceexplained.pdf, id=299, 578.16pt x 361.35pt>
+<Figures/Varianceexplained.pdf, id=305, 578.16pt x 361.35pt>
 File: Figures/Varianceexplained.pdf Graphic file (type pdf)
 <use Figures/Varianceexplained.pdf>
-Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 350.
+Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 351.
 
 (pdftex.def)             Requested size: 430.00462pt x 268.75119pt.
-<Figures/PPCtmax_tmin.pdf, id=300, 433.62pt x 722.7pt>
+<Figures/PPCtmax_tmin.pdf, id=306, 433.62pt x 722.7pt>
 File: Figures/PPCtmax_tmin.pdf Graphic file (type pdf)
 <use Figures/PPCtmax_tmin.pdf>
-Package pdftex.def Info: Figures/PPCtmax_tmin.pdf  used on input line 356.
+Package pdftex.def Info: Figures/PPCtmax_tmin.pdf  used on input line 357.
 (pdftex.def)             Requested size: 216.80946pt x 361.3491pt.
  [18 <./Figures/Varianceexplained.pdf>]
-<Figures/Posterior_mean.pdf, id=316, 650.43pt x 578.16pt>
+<Figures/Posterior_mean.pdf, id=322, 650.43pt x 578.16pt>
 File: Figures/Posterior_mean.pdf Graphic file (type pdf)
 <use Figures/Posterior_mean.pdf>
-Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 363.
+Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 364.
 (pdftex.def)             Requested size: 2926.92783pt x 2601.71362pt.
 
-Overfull \hbox (2496.9232pt too wide) in paragraph at lines 363--364
+Overfull \hbox (2496.9232pt too wide) in paragraph at lines 364--365
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 2068.83705pt on input line 365.
+LaTeX Warning: Float too large for page by 2068.83705pt on input line 366.
+
+<Figures/site_year_weather.pdf, id=323, 433.62pt x 578.16pt>
+File: Figures/site_year_weather.pdf Graphic file (type pdf)
+<use Figures/site_year_weather.pdf>
+Package pdftex.def Info: Figures/site_year_weather.pdf  used on input line 370.
+
+(pdftex.def)             Requested size: 408.50307pt x 544.69673pt.
+
+LaTeX Warning: Float too large for page by 23.82016pt on input line 374.
 
 (Forecasting.bbl [19 <./Figures/PPCtmax_tmin.pdf>] [20 <./Figures/Posterior_mea
-n.pdf>]
+n.pdf>] [21 <./Figures/site_year_weather.pdf>]
 Underfull \hbox (badness 1248) in paragraph at lines 62--70
 []\T1/pplx/m/n/10.95 Eberhart-Phillips, L. J., C. Küp-per, T. E. Miller, M. Cru
 z-López, K. H. Ma-her,
  []
 
-[21] [22] [23] [24]) [25] (Forecasting.aux)
+[22] [23] [24] [25]) [26] (Forecasting.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -699,10 +708,10 @@ Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 10591 strings out of 479618
- 162194 string characters out of 2865977
- 480754 words of memory out of 3000000
- 27416 multiletter control sequences out of 15000+200000
+ 10603 strings out of 479618
+ 162485 string characters out of 2865977
+ 480790 words of memory out of 3000000
+ 27422 multiletter control sequences out of 15000+200000
  459294 words of font info for 137 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,14n,74p,924b,513s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -718,9 +727,9 @@ e1/public/mathpazo/fplmri.pfb><C:/Users/tm9/AppData/Local/Programs/MiKTeX/fonts
 /type1/urw/palatino/uplb8a.pfb><C:/Users/tm9/AppData/Local/Programs/MiKTeX/font
 s/type1/urw/palatino/uplr8a.pfb><C:/Users/tm9/AppData/Local/Programs/MiKTeX/fon
 ts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (25 pages, 13357098 bytes).
+Output written on Forecasting.pdf (26 pages, 13371084 bytes).
 PDF statistics:
- 474 PDF objects out of 1000 (max. 8388607)
- 92 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 492 PDF objects out of 1000 (max. 8388607)
+ 97 named destinations out of 1000 (max. 500000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
