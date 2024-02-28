@@ -2,10 +2,13 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
 \global\let\oldnewlabel\newlabel
 \gdef\newlabel#1#2{\newlabelxx{#1}#2}
 \gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
 \AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
 \let\newlabel\oldnewlabel
 \fi}
 \fi}
@@ -18,9 +21,11 @@
 \citation{jones1999sex,gissi2023exploring}
 \citation{pottier2021sexual,ellis2017does}
 \citation{gissi2023exploring,gissi2023sex,hultine2016climate}
-\citation{eberhart2017sex,zhao2012sex,burli2022environmental}
+\citation{zhao2012sex,burli2022environmental}
+\citation{eberhart2017sex}
 \citation{sasaki2019complex}
 \citation{welbergen2008climate,zhao2012sex}
+\citation{petry2016sex}
 \citation{sexton2009evolution}
 \citation{davis2001range,pease1989model}
 \citation{pottier2021sexual,morrison2016causes}
@@ -31,36 +36,39 @@
 \citation{kindiger2004interspecific}
 \citation{hitchcock1971manual}
 \citation{merow2017climate,schwinning2022common}
+\citation{miller2022two}
 \citation{karger2017climatologies}
 \citation{sanderson2015representative}
 \citation{thomson2011rcp4,schwalm2020rcp8}
 \citation{compagnoni2017can}
 \citation{miller2022two}
 \citation{compagnoni2017can}
-\newlabel{eq:viab_fn}{{1}{8}{}{equation.0.1}{}}
-\newlabel{eq:mu}{{2}{9}{}{equation.0.2}{}}
+\newlabel{eq:viab_fn}{{1}{9}{}{equation.0.1}{}}
+\newlabel{eq:mu}{{2}{10}{}{equation.0.2}{}}
 \citation{rstan}
 \citation{piironen2017comparison}
-\newlabel{eq:recruits}{{3}{11}{}{equation.0.3}{}}
-\newlabel{eq:viab_MPM}{{5}{11}{}{equation.0.5}{}}
-\newlabel{eq:dynamics}{{6}{11}{}{equation.0.6}{}}
+\newlabel{eq:recruits}{{3}{12}{}{equation.0.3}{}}
+\newlabel{eq:viab_MPM}{{5}{12}{}{equation.0.5}{}}
+\newlabel{eq:dynamics}{{6}{12}{}{equation.0.6}{}}
 \citation{caswell2000matrix}
 \citation{caswell1989analysis}
-\newlabel{eq:ltre}{{8}{12}{}{equation.0.8}{}}
 \citation{RCoreteam}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Sex specific demographic response to climate across species range: A--D, inter-annual probability of survival; E--H, inter-annual growth (change in number of tillers); I--L, probability of flowering; M--P, number of panicles produced given flowering. Points show means by site for females (orange) and males (green). Point size is proportional to the sample size of the mean. Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values. Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.\relax }}{15}{figure.caption.1}\protected@file@percent }
+\newlabel{eq:ltre}{{8}{14}{}{equation.0.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Sex specific demographic response to climate across species range: A--D, inter-annual probability of survival; E--H, inter-annual growth (change in number of tillers); I--L, probability of flowering; M--P, number of panicles produced given flowering. Points show means by site for females (orange) and males (green). Point size is proportional to the sample size of the mean. Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values. Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.\relax }}{16}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:vital_rates}{{1}{15}{Sex specific demographic response to climate across species range: A--D, inter-annual probability of survival; E--H, inter-annual growth (change in number of tillers); I--L, probability of flowering; M--P, number of panicles produced given flowering. Points show means by site for females (orange) and males (green). Point size is proportional to the sample size of the mean. Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values. Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.\relax }{figure.caption.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces XXX\relax }}{16}{figure.caption.2}\protected@file@percent }
-\newlabel{fig:vital_rates}{{2}{16}{XXX\relax }{figure.caption.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A1}{\ignorespaces \textbf  {Relation between precipitation and temperature for each season (growing and dormant).} $R^2$ indicates the value of proportion of explained variance between the temperature and precipitation\relax }}{17}{figure.caption.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {A2}{\ignorespaces \textbf  {Consistency between real data and simulated values suggests that the fitted model accurately describes the data}. Graph shows density curves for the observed data (light blue ) along with the simulated values (dark blue). The first column shows the linear models and the second column shows the 2 degree polynomial models.\relax }}{18}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:vital_rates}{{1}{16}{Sex specific demographic response to climate across species range: A--D, inter-annual probability of survival; E--H, inter-annual growth (change in number of tillers); I--L, probability of flowering; M--P, number of panicles produced given flowering. Points show means by site for females (orange) and males (green). Point size is proportional to the sample size of the mean. Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values. Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.\relax }{figure.caption.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces XXX\relax }}{17}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:vital_rates}{{2}{17}{XXX\relax }{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A1}{\ignorespaces \textbf  {Relation between precipitation and temperature for each season (growing and dormant).} $R^2$ indicates the value of proportion of explained variance between the temperature and precipitation\relax }}{18}{figure.caption.3}\protected@file@percent }
 \bibstyle{ecology}
 \bibdata{Forecasting}
 \bibcite{bertrand2011changes}{{1}{2011}{{Bertrand et~al.}}{{Bertrand, Lenoir, Piedallu, Riofr{\'\i }o-Dillon, De~Ruffray, Vidal, Pierrat, and G{\'e}gout}}}
 \bibcite{burli2022environmental}{{2}{2022}{{B\"{u}rli et~al.}}{{B\"{u}rli, Pannell, and Tonnabel}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A2}{\ignorespaces \textbf  {Consistency between real data and simulated values suggests that the fitted model accurately describes the data}. Graph shows density curves for the observed data (light blue ) along with the simulated values (dark blue). The first column shows the linear models and the second column shows the 2 degree polynomial models.\relax }}{19}{figure.caption.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {A3}{\ignorespaces \textbf  {Posterior mean for each vital rate}. \relax }}{20}{figure.caption.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {A4}{\ignorespaces XXX\relax }}{21}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:site_year_weather}{{A4}{21}{XXX\relax }{figure.caption.6}{}}
 \bibcite{caswell1989analysis}{{3}{1989}{{Caswell}}{{}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A3}{\ignorespaces \textbf  {Posterior mean for each vital rate}. \relax }}{19}{figure.caption.5}\protected@file@percent }
 \bibcite{caswell2000matrix}{{4}{2000}{{Caswell}}{{}}}
 \bibcite{compagnoni2017can}{{5}{2017}{{Compagnoni et~al.}}{{Compagnoni, Steigman, and Miller}}}
 \bibcite{czachura2020demographic}{{6}{2020}{{Czachura and Miller}}{{}}}
@@ -95,4 +103,4 @@
 \bibcite{Tognetti2012}{{35}{2012}{{Tognetti}}{{}}}
 \bibcite{welbergen2008climate}{{36}{2008}{{Welbergen et~al.}}{{Welbergen, Klose, Markus, and Eby}}}
 \bibcite{zhao2012sex}{{37}{2012}{{Zhao et~al.}}{{Zhao, Li, Zhang, Korpelainen, and Li}}}
-\gdef \@abspage@last{24}
+\gdef \@abspage@last{26}
