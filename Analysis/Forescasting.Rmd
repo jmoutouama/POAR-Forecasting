@@ -663,9 +663,20 @@ poar.clim_seasonal <- left_join(x = poar_allsites_2015_2016,y =poar_2015_2016,by
 
 ## Time series plots to visualize climate change
 ```{r}
-precip_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/pr_poar_CRUTS.csv")
-temp_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/tas_poar_CRUTS.csv")
+temp_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/pr_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
+precip_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/tas_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
 ## remember to patch in CHELSA data beginning 1978
+
+## north and south sites
+north_south<-c("ninnescah","lostP")
+east_west<-c("ozona","shsu")
+
+ggplot(temp_ts %>% filter(site%in%east_west))+
+  geom_line(aes(x=year,y=tas,group=site,col=site))+
+  facet_wrap(~season)
+ggplot(precip_ts %>% filter(site%in%east_west))+
+  geom_line(aes(x=year,y=pr,group=site,col=site))+
+  facet_wrap(~season)
 ```
 
 
