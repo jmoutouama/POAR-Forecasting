@@ -152,7 +152,7 @@ poar_temp<-mutate(poar_tempmax,poar_tempmin)
 # head(poar_temp)
 poar_temp$temp<-(poar_temp$tempmax+poar_temp$tempmin)/2
 # head(poar_temp)
-poar_ppt$census.year<-ifelse(poar_ppt$month<=5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from May to December of the previous year and precipitation of the current year.  
+poar_ppt$census.year<-ifelse(poar_ppt$month<=5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from June 1 to December of the previous year and precipitation of the current year up to and including May.  
 poar_temp$census.year<-ifelse(poar_temp$month<=5,poar_temp$year-1,poar_temp$year)
 
 # poar_temp %>% filter(site=="ozona",
@@ -634,19 +634,19 @@ figdorm <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(pptdorm)))
 figppt <-ggplot(data=poar_2015_2016, aes(x=scale(pptdorm), y=scale(pptgrow))) +
         geom_smooth(method="lm",color = "#0072B2") +
         geom_point(color = '#0072B2',shape = 19, size=4) +
-        labs (x="Temperature of growing season",y="Precipitation of growing season") +
+        labs (x="Precipitation of dormant season",y="Precipitation of growing season") +
         ggpubr::stat_cor(method = "pearson", label.x = 1, label.y = 1) +
         theme_bw()
 
 figtemp <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(tempgrow))) +
         geom_smooth(method="lm",color = "#0072B2") +
         geom_point(color = '#0072B2',shape = 19, size=4) +
-        labs (x="Temperature of dormant season",y="Precipitation of dormant season") +
+        labs (x="Temperature of dormant season",y="Temperature of growing season") +
         ggpubr::stat_cor(method = "pearson", label.x = -1.5, label.y = 1) +
         theme_bw()
 
 (figgrowdorm<-ggpubr::ggarrange(plotlist = list(figgrow, figdorm)))
-
+(figppttemp<-ggpubr::ggarrange(plotlist = list(figppt, figtemp)))
 # pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Varianceexplained.pdf",useDingbats = F,height=5,width=8)
 # print(figgrowdorm)
 # dev.off()
