@@ -72,6 +72,7 @@ library(SPEI)
 library(LaplacesDemon)
 library(ggpubr)
 library(raster)
+library(rgdal)
 library(doParallel)
 # if (!require("BiocManager", quietly = TRUE))
 #     install.packages("BiocManager")
@@ -216,7 +217,8 @@ crs(Poa_longlat) <- CRS1
 
 ```{r}
 jacob_path<-"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Future and historical data"
-choose_path<-jacob_path
+tom_path<-"C:/Users/tm9/Dropbox/Miller Lab -- Moutouama/Future and historical data"
+choose_path<-tom_path
 ```
 
 
@@ -659,6 +661,14 @@ poar.clim_seasonal <- left_join(x = poar_allsites_2015_2016,y =poar_2015_2016,by
 # head(poar.clim_seasonal)
 ```
 
+## Time series plots to visualize climate change
+```{r}
+precip_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/pr_poar_CRUTS.csv")
+temp_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/tas_poar_CRUTS.csv")
+## remember to patch in CHELSA data beginning 1978
+```
+
+
 # Mixed effect models (vital rate vs. climate )
 ## Read and format data to build the model
 
@@ -875,7 +885,7 @@ data_sites_season <- list( n_sites    = poarclim_seasonal.surv$site %>% n_distin
 ## Chains convergence
 
 ```{r}
-fit_allsites_season <- readRDS(url("https://www.dropbox.com/scl/fi/usry193v1mgkb1mahp163/fit_allsites_seasons_02_06_24.rds?rlkey=wawum0xovx00kemzt2b7hg204&dl=1"))
+fit_allsites_season <- readRDS("C:/Users/tm9/Dropbox/Miller Lab -- Moutouama/Forecasting Models output/fit_allsites_seasons_02_06_24.rds")
 #ignore warning from readRDS
 ```
 
@@ -2359,6 +2369,14 @@ for(p in 1:n_post_draws){
 }
 
 ```
+
+```{r}
+#tom's code to visualize full posteriors of difference functions
+#win.graph()
+#matplot(panic_sex_diff_post_tempgrow[1,,],type="l")
+#quantile(panic_sex_diff_post_tempgrow[1,1,],probs=c(0.05,0.5,0.95))
+```
+
 
 ```{r}
 #define quantiles of posterior samples
