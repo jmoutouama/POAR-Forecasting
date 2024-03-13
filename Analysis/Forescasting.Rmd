@@ -221,7 +221,7 @@ choose_path<-jacob_path
 
 
 ```{r}
-raster_1901_1930_list <- list.files(path = paste0(choose_path,"/Historical/"),pattern=".tif$",full.names = T)# load bioclimatic layers
+raster_1901_1930_list <- list.files(path = paste0(choose_path,"/Historical"),pattern=".tif$",full.names = T)# load bioclimatic layers
 clim_1901_1930 <- raster::stack(raster_1901_1930_list) # put all the rasters together
 names(clim_1901_1930)<-c("pptdorm","tempdorm","pptgrow","tempgrow") # Change the default names
 plot(clim_1901_1930)
@@ -234,7 +234,7 @@ clim_past<-data.frame(Conditions_1901_1930)
 ### Current data (1990-2019)
 
 ```{r}
-raster_1990_2019_list <- list.files(path = paste0(choose_path,"/Present/"),pattern=".tif$",full.names = T)# load bioclimatic layers
+raster_1990_2019_list <- list.files(path = paste0(choose_path,"/Present"),pattern=".tif$",full.names = T)# load bioclimatic layers
 clim_1990_2019 <- raster::stack(raster_1990_2019_list) # put all the rasters together
 names(clim_1990_2019)<-c("pptdorm","tempdorm","pptgrow","tempgrow") # Change the default names
 plot(clim_1990_2019)
@@ -414,7 +414,7 @@ hist((clim_access45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$te
 hist((clim_access85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#0072B2",add=T)
 hist((clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="green",add=T)
 
-hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-2,3),main="")
+hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-2,3),ylim=c(0,10),main="")
 hist((clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="pink",add=T)
 hist((clim_access45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#F0E442",add=T)
 hist((clim_access85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#0072B2",add=T)
@@ -479,7 +479,7 @@ hist(clim_current$pptdorm,col="green",add=T)
 legend("topright",legend=c("Observed","Present","Past","MIROC45","MIROC85"),lwd=6,col =c("green","grey","pink","#F0E442","#0072B2") ,bty="n",cex=0.75)
 
 
-hist(poar_2015_2016$tempdorm,xlab="Temperature dormant",xlim=c(20,35),ylim=c(0,6),main="",col="grey")
+hist(poar_2015_2016$tempdorm,xlab="Temperature dormant",xlim=c(20,35),ylim=c(0,8),main="",col="grey")
 hist(clim_past$tempdorm,col="pink",add=T)
 hist(clim_cmcc45$tempdorm,col="#F0E442",add=T)
 hist(clim_cmcc85$tempdorm,col="#0072B2",add=T)
@@ -551,7 +551,7 @@ clim_cesm85<-data.frame(Conditions_cesm_85)
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/CESM1.pdf",height = 7,width = 7,useDingbats = F)
 
 par(mfrow=c(2,2))
-hist(poar_2015_2016$pptgrow,xlab="Precipitation growing",xlim=c(10,1500),ylim=c(0,5),main="",col="grey")
+hist(poar_2015_2016$pptgrow,xlab="Precipitation growing",xlim=c(10,1500),ylim=c(0,10),main="",col="grey")
 hist(clim_past$pptgrow,col="pink",add=T)
 hist(clim_cesm45$pptgrow,col="#F0E442",add=T)
 hist(clim_cesm85$pptgrow,col="#0072B2",add=T)
@@ -570,7 +570,7 @@ hist(clim_cesm85$pptdorm,col="#0072B2",add=T)
 hist(clim_current$pptdorm,col="green",add=T)
 legend("topright",legend=c("Observed","Present","Past","MIROC45","MIROC85"),lwd=6,col =c("green","grey","pink","#F0E442","#0072B2") ,bty="n",cex=0.75)
 
-hist(poar_2015_2016$tempdorm,xlab="Temperature dormant",xlim=c(20,35),ylim=c(0,6),main="",col="grey")
+hist(poar_2015_2016$tempdorm,xlab="Temperature dormant",xlim=c(20,35),ylim=c(0,8),main="",col="grey")
 hist(clim_past$tempdorm,col="pink",add=T)
 hist(clim_cesm45$tempdorm,col="#F0E442",add=T)
 hist(clim_cesm85$tempdorm,col="#0072B2",add=T)
@@ -598,7 +598,7 @@ hist((clim_cesm45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$temp
 hist((clim_cesm85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#0072B2",add=T)
 hist((clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="green",add=T)
 
-hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-3,3),main="",col="grey")
+hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-3,3),ylim=c(0,10),main="",col="grey")
 hist((clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="pink",add=T)
 hist((clim_cesm45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#F0E442",add=T)
 hist((clim_cesm85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#0072B2",add=T)
@@ -854,22 +854,22 @@ data_sites_season <- list( n_sites    = poarclim_seasonal.surv$site %>% n_distin
 
 ```{r , eval=FALSE}
 
-# sim_pars <- list(
-#   warmup = 1000,
-#   iter = 4000,
-#   thin = 3,
-#   chains = 3
-# )
-# 
-# fit_allsites_season <- stan(
-#  file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_season.stan",
-#  data = data_sites_season,
-#  warmup = sim_pars$warmup,
-#  iter = sim_pars$iter,
-#  thin = sim_pars$thin,
-#  chains = sim_pars$chains)
+sim_pars <- list(
+  warmup = 1000,
+  iter = 4000,
+  thin = 3,
+  chains = 3
+)
 
-# saveRDS(fit_allsites_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/fit_allsites_seasons_10_22_23.rds')
+fit_allsites_season <- stan(
+ file = "/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_season.stan",
+ data = data_sites_season,
+ warmup = sim_pars$warmup,
+ iter = sim_pars$iter,
+ thin = sim_pars$thin,
+ chains = sim_pars$chains)
+
+saveRDS(fit_allsites_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/fit_1.5_0.5.rds')
 ```
 
 ## Chains convergence
@@ -996,10 +996,10 @@ ppc_dens_overlay(data_sites_season$y_m, y_m_sim)+
   ggtitle(("Seed germination"))+theme(legend.position = "none")->ppc_germ
 
 #print figure
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/PPC22_10_23.pdf",useDingbats = F,height=10,width=6)
-# multiplot(ppc_surv,ppc_flow,ppc_viab,
-#           ppc_grow,ppc_panic,ppc_germ,cols=2)
-# dev.off()
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/PPC.pdf",useDingbats = F,height=10,width=6)
+multiplot(ppc_surv,ppc_flow,ppc_viab,
+          ppc_grow,ppc_panic,ppc_germ,cols=2)
+dev.off()
 ```
 
 # Posterior mean values for each vital rate
@@ -1123,7 +1123,7 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
   labs(color = "Interaction type:")+
   xlab("Posterior estimates (Panicles)")+
   ylab(NULL) +
-  xlim(-2,2)+
+  xlim(-1,1)+
   ggtitle("D") +
   geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
@@ -1142,7 +1142,7 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
 ```
 
 ```{r,eval=FALSE}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean_vital.pdf",useDingbats = F,height=8,width=9)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean.pdf",useDingbats = F,height=8,width=9)
 ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
 dev.off()
 ```
@@ -1338,7 +1338,7 @@ via_coef <- rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d))
 ```{r}
 # sample vital rate functions from the join posterior
 pptgrow_seq <- seq(min(poar_surv_binned$pptgrow),max(poar_surv_binned$pptgrow),length.out=30)
-n_post_draws <- 1000
+n_post_draws <- 2000
 post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
 surv_sex_diff_post_pptgrow <- grow_sex_diff_post_pptgrow <- flow_sex_diff_post_pptgrow <- panic_sex_diff_post_pptgrow <- array(NA,dim=c(size_bin_num,length(pptgrow_seq),n_post_draws))
 for(p in 1:n_post_draws){
@@ -1606,7 +1606,7 @@ for(s in 1:size_bin_num){
 ```{r}
 # sample vital rate functions from the join posterior
 tempgrow_seq <- seq(min(poar_surv_binned$tempgrow),max(poar_surv_binned$tempgrow),length.out=30)
-n_post_draws <- 1000
+n_post_draws <- 2000
 post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
 surv_sex_diff_post_tempgrow <- grow_sex_diff_post_tempgrow <- flow_sex_diff_post_tempgrow <- panic_sex_diff_post_tempgrow <- array(NA,dim=c(size_bin_num,length(tempgrow_seq),n_post_draws))
 for(p in 1:n_post_draws){
@@ -1870,7 +1870,7 @@ for(s in 1:size_bin_num){
 ```{r}
 # sample vital rate functions from the join posterior
 pptdorm_seq <- seq(min(poar_surv_binned$pptdorm),max(poar_surv_binned$pptdorm),length.out=30)
-n_post_draws <- 1000
+n_post_draws <- 2000
 post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
 surv_sex_diff_post_pptdorm <- grow_sex_diff_post_pptdorm <- flow_sex_diff_post_pptdorm <- panic_sex_diff_post_pptdorm <- array(NA,dim=c(size_bin_num,length(pptdorm_seq),n_post_draws))
 for(p in 1:n_post_draws){
@@ -2136,7 +2136,7 @@ for(s in 1:size_bin_num){
 ```{r}
 # sample vital rate functions from the join posterior
 tempdorm_seq <- seq(min(poar_surv_binned$tempdorm),max(poar_surv_binned$tempdorm),length.out=30)
-n_post_draws <- 1000
+n_post_draws <- 2000
 post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
 surv_sex_diff_post_tempdorm <- grow_sex_diff_post_tempdorm <- flow_sex_diff_post_tempdorm <- panic_sex_diff_post_tempdorm <- array(NA,dim=c(size_bin_num,length(tempdorm_seq),n_post_draws))
 for(p in 1:n_post_draws){
@@ -2412,7 +2412,7 @@ layout.matrix <- rbind(matrix(1:8, nrow = 2, ncol = 4, byrow = F),
                        matrix(17:24, nrow = 2, ncol = 4, byrow = F),
                        matrix(25:32, nrow = 2, ncol = 4, byrow = F))
 #print figure
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/vital_rates.pdf",height = 14,width = 13,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/vital_rates1.50.5.pdf",height = 14,width = 13,useDingbats = F)
 layout(mat = layout.matrix,
        heights = rep(c(2, 1),4), # Heights of the two rows
        widths = c(2, 2, 2,2))
@@ -3832,7 +3832,7 @@ fig4<-ggplot() +
 
 
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_observed.pdf",width=5,height=5,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda.pdf",width=5,height=5,useDingbats = F)
 (figure1 <- ggarrange(fig1, fig2,fig3,fig4,
                      hjust = -2, labels = c("A", "B","C","D"), common.legend = TRUE, legend = "right", font.label = list(size = 10, color = "black", face = "plain", family = NULL), vjust = 2, widths = c(2, 2), heights = 0.5, align = "hv",
                      ncol = 2, nrow = 2
@@ -4805,6 +4805,164 @@ for(l in 1:length(tempdorm_seq)){
 
 ```
 
+# Life Table Response Experiment (LTRE)
+```{r}
+# Z score
+zclim_current = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_current)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_current$zpptgrow<-(clim_current$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_current$ztempgrow<-(clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_current$zpptdorm<-(clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_current$ztempdorm<-(clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+### Past
+```{r}
+zclim_past = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_past)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_past$zpptgrow<-(clim_past$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_past$ztempgrow<-(clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_past$zpptdorm<-(clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_past$ztempdorm<-(clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+## MIROC45
+```{r}
+zclim_miroc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_miroc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_miroc45$zpptgrow<-(clim_miroc45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_miroc45$ztempgrow<-(clim_miroc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_miroc45$zpptdorm<-(clim_miroc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_miroc45$ztempdorm<-(clim_miroc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+## ACCESS45 
+```{r}
+zclim_acc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_acc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_acc45$zpptgrow<-(clim_access45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_acc45$ztempgrow<-(clim_access45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_acc45$zpptdorm<-(clim_access45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_acc45$ztempdorm<-(clim_access45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+## CMC45 
+```{r}
+zclim_cmc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_cmc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_cmc45$zpptgrow<-(clim_cmcc45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_cmc45$ztempgrow<-(clim_cmcc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_cmc45$zpptdorm<-(clim_cmcc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_cmc45$ztempdorm<-(clim_cmcc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+## CES45 
+```{r}
+zclim_ces45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_ces45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_ces45$zpptgrow<-(clim_cesm45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_ces45$ztempgrow<-(clim_cesm45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_ces45$zpptdorm<-(clim_cesm45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_ces45$ztempdorm<-(clim_cesm45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+
+```{r}
+data_site_pptgrow45<-data.frame(zclim_miroc45$zpptgrow,zclim_acc45$zpptgrow,zclim_cmc45$zpptgrow,zclim_ces45$zpptgrow)
+data_site_tempgrow45<-data.frame(zclim_miroc45$ztempgrow,zclim_acc45$ztempgrow,zclim_cmc45$ztempgrow,zclim_ces45$ztempgrow)
+data_site_pptdorm45<-data.frame(zclim_miroc45$zpptdorm,zclim_acc45$zpptdorm,zclim_cmc45$zpptdorm,zclim_ces45$zpptdorm)
+data_site_tempdorm45<-data.frame(zclim_miroc45$ztempdorm,zclim_acc45$ztempdorm,zclim_cmc45$ztempdorm,zclim_ces45$ztempdorm)
+data_site_45<-data.frame(zpptgrow=rowMeans(data_site_pptgrow45),ztempgrow=rowMeans(data_site_tempgrow45),zpptdorm=rowMeans(data_site_pptdorm45),ztempdorm=rowMeans(data_site_tempdorm45))
+```
+
+```{r}
+data_past_present_45<-rbind(zclim_past,zclim_current,data_site_45)
+```
+
+```{r}
+lambda_pp45<-lambda_pp45_2sex<-SR_pp45<-OSR_pp45<-c()
+ssd_pp45<-matrix(NA,(F_params$max_size+1)*2,nrow(data_past_present_45))
+max_yrs <- 30
+
+for (i in 1:nrow(data_past_present_45)) {
+    #linear model for comparison
+  mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           zpptgrow=data_past_present_45[i,1],
+                           ztempgrow=data_past_present_45[i,2],
+                           zpptdorm=data_past_present_45[i,3],
+                           ztempdorm=data_past_present_45[i,4],
+                           rfx=rfx_fun())$MEGAmat
+  lambda_pp45[i] <- popbio::lambda(mat)
+  # 2-sex model
+  lambda_run <- lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=data_past_present_45[i,1],
+                                 ztempgrow=data_past_present_45[i,2],
+                                 zpptdorm=data_past_present_45[i,3],
+                                 ztempdorm=data_past_present_45[i,4],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)
+  lambda_pp45_2sex[i] <- lambda_run$lambdatracker[max_yrs]
+  SR_pp45[i] <- lambda_run$SRtracker[max_yrs]
+  OSR_pp45[i] <- lambda_run$OSRtracker[max_yrs]
+  ssd_pp45[,i] <- lambda_run$n0
+}
+```
+
+```{r}
+Time<-c(rep("Past",14),rep("Present",14),rep("Future",14))
+datltre45<-data.frame(data_past_present_45,lambda=lambda_pp45_2sex,Time=Time)
+# modrf45<-MixRF::MixRF(Y=datltre45$lambda, X=as.data.frame(datltre45[,-c(5,6)]), random="(1|Time)", data=datltre45, initialRandomEffects = 0, ErrorTolerance = 0.001, MaxIterations = 1000)
+# summary(modrf45)
+```
+```{r}
+ou45<-tuneRF(y=datltre45$lambda, x=as.data.frame(datltre45[,-c(5,6)]),stepFactor = 1,improve = 0.02)
+plot(ou45)
+modrf45<-randomForest::randomForest(y=datltre45$lambda, x=as.data.frame(datltre45[,-c(5,6)]),ntree=500,importance=TRUE,mtry=1)
+plot(modrf45$rsq,type="l")
+randomForest::varImpPlot(modrf45,type = 1,scale = FALSE,main="")
+```
+
+```{r}
+# Get importance values as a data frame
+library(randomForest)
+imp45 = as.data.frame(importance(modrf45))
+row.names(imp45)<-NULL
+imp45$vars<-c("pptgrow","tempgrow","pptdorm","tempdorm")
+imp45<-imp45[,-2]
+colnames(imp45)<-c("Importance","vars")
+p<-ggplot(data=imp45, aes(x=vars, y=Importance)) +
+  geom_bar(stat="identity",fill="steelblue")+
+  coord_flip()+
+  theme_minimal()
+p
+```
+
+
+
+
+```{r}
+zclim_miroc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_miroc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_miroc85$zpptgrow<-(clim_miroc85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_miroc85$ztempgrow<-(clim_miroc85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_miroc85$zpptdorm<-(clim_miroc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_miroc85$ztempdorm<-(clim_miroc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+
+
+```{r}
+
+```
+
 ```{r}
 polygon_col <- "#E6AB02"
 polygon_alpha <- 0.25
@@ -4835,6 +4993,7 @@ dev.off()
 
 # Projection over time (Past,Present, and Future (Miroc 5))
 ## Present
+
 
 ```{r}
 # Z score
@@ -4882,16 +5041,12 @@ zclim_miroc85$ztempdorm<-(clim_miroc85$tempdorm-mean(poar_2015_2016$tempdorm))/s
 ### Precipitation growing season
 
 ```{r}
-all_pptgrow<-c(clim_current$pptgrow,clim_past$pptgrow,clim_miroc45$pptgrow,clim_miroc85$pptgrow)
+all_pptgrow<-c(zclim_current$zpptgrow,zclim_past$zpptgrow,zclim_miroc45$zpptgrow,zclim_miroc85$zpptgrow)
 all_pptgrow_seq <- seq(min(all_pptgrow),max(all_pptgrow),length.out=30)
 
 lambda_pptgrow_all<-lambda_pptgrow_all_2sex<-SR_pptgrow_all<-OSR_pptgrow_all<-c()
 ssd_pptgrow_all<-matrix(NA,(F_params$max_size+1)*2,length(all_pptgrow_seq))
 max_yrs <- 30
-
-obs_mean_pptgrow = mean(poar_2015_2016$pptgrow)
-obs_sd_pptgrow = sd(poar_2015_2016$pptgrow)
-stand_fun_pptgrow<-function(x){(x-obs_mean_pptgrow)/obs_sd_pptgrow}
 
 for (i in 1:length(all_pptgrow_seq)) {
     #linear model for comparison
@@ -4903,7 +5058,7 @@ for (i in 1:length(all_pptgrow_seq)) {
                            flow_perturb=0,
                            fert_perturb=0,
                            viab_perturb=0,
-                           zpptgrow=stand_fun_pptgrow(all_pptgrow_seq[i]),
+                           zpptgrow=all_pptgrow_seq[i],
                            ztempgrow=0,
                            zpptdorm=0,
                            ztempdorm=0,
@@ -4917,7 +5072,7 @@ for (i in 1:length(all_pptgrow_seq)) {
                                  flow_perturb=0,
                                  fert_perturb=0,
                                  viab_perturb=0,
-                                 zpptgrow=stand_fun_pptgrow(all_pptgrow_seq[i]),
+                                 zpptgrow=all_pptgrow_seq[i],
                                  ztempgrow=0,
                                  zpptdorm=0,
                                  ztempdorm=0,
@@ -4933,7 +5088,7 @@ for (i in 1:length(all_pptgrow_seq)) {
 ```{r}
 # par(mar=c(5,5,1,1))
 plot(all_pptgrow_seq,lambda_pptgrow_all_2sex,type="l",lwd=2,col=cbPalette[1],
-     xlab="Precipitation  of the growing season",ylab=expression(paste(lambda)),cex.lab=1,ylim=c(0.75,7.5))
+     xlab="Precipitation  of the growing season",ylab=expression(paste(lambda)),cex.lab=1)
 abline(h=1,col="blue")
 abline(v=c(min(clim_current$pptgrow),max(clim_current$pptgrow)),col="green")
 abline(v=c(min(clim_past$pptgrow),max(clim_past$pptgrow)),col="brown")
@@ -4944,16 +5099,12 @@ abline(v=c(min(clim_miroc85$pptgrow),max(clim_miroc85$pptgrow)),col="purple")
 ### Temperature growing season
 
 ```{r}
-all_tempgrow<-c(clim_current$tempgrow,clim_past$tempgrow,clim_miroc45$tempgrow,clim_miroc85$tempgrow)
-all_tempgrow_seq <- seq(min(all_tempgrow),max(all_tempgrow),length.out=30)
+all_tempgrow<-c(zclim_current$ztempgrow,zclim_past$ztempgrow,zclim_miroc45$ztempgrow,zclim_miroc85$ztempgrow)
+all_tempgrow_seq <- seq(min(all_tempgrow),max(all_tempgrow),length.out=20)
 
 lambda_tempgrow_all<-lambda_tempgrow_all_2sex<-SR_tempgrow_all<-OSR_tempgrow_all<-c()
 ssd_tempgrow_all<-matrix(NA,(F_params$max_size+1)*2,length(all_tempgrow_seq))
 max_yrs <- 30
-
-obs_mean_tempgrow = mean(poar_2015_2016$tempgrow)
-obs_sd_tempgrow = sd(poar_2015_2016$tempgrow)
-stand_fun_tempgrow<-function(x){(x-obs_mean_tempgrow)/obs_sd_tempgrow}
 
 for (i in 1:length(all_tempgrow_seq)) {
     #linear model for comparison
@@ -4966,9 +5117,9 @@ for (i in 1:length(all_tempgrow_seq)) {
                            fert_perturb=0,
                            viab_perturb=0,
                            zpptgrow=0,
-                           ztempgrow=0,
+                           ztempgrow=all_tempgrow_seq[i],
                            zpptdorm=0,
-                           ztempdorm=stand_fun_tempgrow(all_tempgrow_seq[i]),
+                           ztempdorm=0,
                            rfx=rfx_fun())$MEGAmat
   lambda_tempgrow_all[i] <- popbio::lambda(mat)
   # 2-sex model
@@ -4980,9 +5131,9 @@ for (i in 1:length(all_tempgrow_seq)) {
                                  fert_perturb=0,
                                  viab_perturb=0,
                                  zpptgrow=0,
-                                 ztempgrow=0,
+                                 ztempgrow=all_tempgrow_seq[i],
                                  zpptdorm=0,
-                                 ztempdorm=stand_fun_tempgrow(all_tempgrow_seq[i]),
+                                 ztempdorm=0,
                                  rfx = rfx_fun(),
                                  max.yrs = max_yrs)
   lambda_tempgrow_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
@@ -4996,7 +5147,7 @@ for (i in 1:length(all_tempgrow_seq)) {
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/all_years.pdf",width=3,height=3,useDingbats = F)
 # par(mar=c(5,5,1,1))
 plot(all_tempgrow_seq,lambda_tempgrow_all_2sex,type="l",lwd=2,col=cbPalette[1],
-     xlab="Temperature of growing season",ylab=expression(paste(lambda)),cex.lab=1,ylim=c(0.75,3.5))
+     xlab="Temperature of growing season",ylab=expression(paste(lambda)),cex.lab=1)
 abline(h=1,col="blue")
 abline(v=c(min(clim_current$tempgrow),max(clim_current$tempgrow)),col="green")
 abline(v=c(min(clim_past$tempgrow),max(clim_past$tempgrow)),col="brown")
@@ -5009,16 +5160,13 @@ dev.off()
 ### Precipitation dormant season
 
 ```{r}
-all_pptdorm<-c(clim_current$pptdorm,clim_past$pptdorm,clim_miroc45$pptdorm,clim_miroc85$pptdorm)
-all_pptdorm_seq <- seq(min(all_pptdorm),max(all_pptdorm),length.out=30)
+all_pptdorm<-c(zclim_current$zpptdorm,zclim_past$zpptdorm,zclim_miroc45$zpptdorm,zclim_miroc85$zpptdorm)
+all_pptdorm_seq <- seq(min(all_pptdorm),max(all_pptdorm),length.out=20)
 
 lambda_pptdorm_all<-lambda_pptdorm_all_2sex<-SR_pptdorm_all<-OSR_pptdorm_all<-c()
 ssd_pptdorm_all<-matrix(NA,(F_params$max_size+1)*2,length(all_pptdorm_seq))
 max_yrs <- 30
 
-obs_mean_pptdorm = mean(poar_2015_2016$pptdorm)
-obs_sd_pptdorm = sd(poar_2015_2016$pptdorm)
-stand_fun_pptdorm<-function(x){(x-obs_mean_pptdorm)/obs_sd_pptdorm}
 
 for (i in 1:length(all_pptdorm_seq)) {
     #linear model for comparison
@@ -5032,8 +5180,8 @@ for (i in 1:length(all_pptdorm_seq)) {
                            viab_perturb=0,
                            zpptgrow=0,
                            ztempgrow=0,
-                           zpptdorm=0,
-                           ztempdorm=stand_fun_pptdorm(all_pptdorm_seq[i]),
+                           zpptdorm=all_pptdorm_seq[i],
+                           ztempdorm=0,
                            rfx=rfx_fun())$MEGAmat
   lambda_pptdorm_all[i] <- popbio::lambda(mat)
   # 2-sex model
@@ -5046,8 +5194,8 @@ for (i in 1:length(all_pptdorm_seq)) {
                                  viab_perturb=0,
                                  zpptgrow=0,
                                  ztempgrow=0,
-                                 zpptdorm=0,
-                                 ztempdorm=stand_fun_pptdorm(all_pptdorm_seq[i]),
+                                 zpptdorm=all_pptdorm_seq[i],
+                                 ztempdorm=0,
                                  rfx = rfx_fun(),
                                  max.yrs = max_yrs)
   lambda_pptdorm_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
@@ -5063,7 +5211,7 @@ pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecastin
 par(mar=c(5,5,1,1))
 par(mar=c(5,5,1,1))
 plot(all_pptdorm_seq,lambda_pptdorm_all_2sex,type="l",lwd=2,col=cbPalette[1],
-     xlab="Precipitation of dormant season",ylab=expression(paste(lambda)),cex.lab=1,ylim=c(0.75,3.5))
+     xlab="Precipitation of dormant season",ylab=expression(paste(lambda)),cex.lab=1)
 abline(h=1,col="blue")
 abline(v=c(min(clim_current$pptdorm),max(clim_current$pptdorm)),col="green")
 abline(v=c(min(clim_past$pptdorm),max(clim_past$pptdorm)),col="brown")
@@ -5076,16 +5224,13 @@ dev.off()
 ### Temperature of the dormant season
 
 ```{r}
-all_tempdorm<-c(clim_current$tempdorm,clim_past$tempdorm,clim_miroc45$tempdorm,clim_miroc85$tempdorm)
+all_tempdorm<-c(zclim_current$ztempdorm,zclim_past$ztempdorm,zclim_miroc45$ztempdorm,zclim_miroc85$ztempdorm)
 all_tempdorm_seq <- seq(min(all_tempdorm),max(all_tempdorm),length.out=30)
+
 
 lambda_tempdorm_all<-lambda_tempdorm_all_2sex<-SR_tempdorm_all<-OSR_tempdorm_all<-c()
 ssd_tempdorm_all<-matrix(NA,(F_params$max_size+1)*2,length(all_tempdorm_seq))
 max_yrs <- 30
-
-obs_mean_tempdorm = mean(poar_2015_2016$tempdorm)
-obs_sd_tempdorm = sd(poar_2015_2016$tempdorm)
-stand_fun_tempdorm<-function(x){(x-obs_mean_tempdorm)/obs_sd_tempdorm}
 
 for (i in 1:length(all_tempdorm_seq)) {
     #linear model for comparison
@@ -5100,7 +5245,7 @@ for (i in 1:length(all_tempdorm_seq)) {
                            zpptgrow=0,
                            ztempgrow=0,
                            zpptdorm=0,
-                           ztempdorm=stand_fun_tempdorm(all_tempdorm_seq[i]),
+                           ztempdorm=all_tempdorm_seq[i],
                            rfx=rfx_fun())$MEGAmat
   lambda_tempdorm_all[i] <- popbio::lambda(mat)
   # 2-sex model
@@ -5114,7 +5259,7 @@ for (i in 1:length(all_tempdorm_seq)) {
                                  zpptgrow=0,
                                  ztempgrow=0,
                                  zpptdorm=0,
-                                 ztempdorm=stand_fun_tempdorm(all_tempdorm_seq[i]),
+                                 ztempdorm=all_tempdorm_seq[i],
                                  rfx = rfx_fun(),
                                  max.yrs = max_yrs)
   lambda_tempdorm_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
@@ -5130,7 +5275,7 @@ pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecastin
 par(mar=c(5,5,1,1))
 par(mar=c(5,5,1,1))
 plot(all_tempdorm_seq,lambda_tempdorm_all_2sex,type="l",lwd=2,col=cbPalette[1],
-     xlab="Temperature of dormant season",ylab=expression(paste(lambda)),cex.lab=1,ylim=c(0.75,5))
+     xlab="Temperature of dormant season",ylab=expression(paste(lambda)),cex.lab=1)
 abline(h=1,col="blue")
 abline(v=c(min(clim_current$tempdorm),max(clim_current$tempdorm)),col="green")
 abline(v=c(min(clim_past$tempdorm),max(clim_past$tempdorm)),col="brown")
@@ -5184,9 +5329,8 @@ plot(coordinates_study_area,add=T)
 ```
 
 ```{r}
-clim_miroc_temp_85_values<-terra::extract(clim_miroc_temp_85,coordinates_study_area)
-clim_miroc_ppt_85_values<-terra::extract(clim_miroc_ppt_85,coordinates_study_area)
-climate_miroc85_values<-data.frame(clim_miroc_ppt_85_values,clim_miroc_temp_85_values)
+clim_miroc_85_values<-terra::extract(clim_miroc_85,coordinates_study_area)
+climate_miroc85_values<-data.frame(clim_miroc_85_values)
 climate_miroc85_values$zpptgrow<-(climate_miroc85_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
 climate_miroc85_values$ztempgrow<-(climate_miroc85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_miroc85_values$zpptdorm<-(climate_miroc85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
@@ -5195,10 +5339,10 @@ climate_miroc85_values$ztempdorm<-(climate_miroc85_values$tempdorm-mean(poar_201
 
 ```{r}
 max_yrs<-30
-P_miroc85 <- system.time({
+P_miroc85 <- system.time(
   lambda_2sex_miroc85<- foreach::foreach(i=1:nrow(climate_miroc85_values), 
                .combine = 'c'
-  ) %dopar% (lambdaSim_delay( F_params=F_params,
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
                                  M_params=M_params,
                                  grow_perturb=0,
                                  surv_perturb=0,
@@ -5210,13 +5354,18 @@ P_miroc85 <- system.time({
                                  zpptdorm=climate_miroc85_values[i,7],
                                  ztempdorm=climate_miroc85_values[i,8],
                                  rfx = rfx_fun(),
-                                 max.yrs = max_yrs)$lambdatracker[max_yrs])
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
 })
 ```
+```{r}
+max(lambda_2sex_miroc85)
+```
+
+
 
 ```{r}
 clim_lambda_miroc85<-data.frame(coordinates_study_area,lambda=lambda_2sex_miroc85)
-write.csv(clim_lambda_miroc85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_miroc8510m.csv")
+# write.csv(clim_lambda_miroc85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_miroc8510m.csv",row.names = F)
 ```
 
 ```{r}
@@ -5250,13 +5399,12 @@ P_current <- system.time(
 
 ```{r}
 clim_lambba_current<-data.frame(coordinates_study_area,lambda=lambda_2sex_current)
-write.csv(clim_lambba_current,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_current.csv")
+# write.csv(clim_lambba_current,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_current.csv",row.names = F)
 ```
 
 ```{r}
-clim_miroc_ppt_45_values<-terra::extract(clim_miroc_ppt_45,coordinates_study_area)
-clim_miroc_temp_45_values<-terra::extract(clim_miroc_temp_45,coordinates_study_area)
-climate_miroc5_values<-data.frame(clim_miroc_ppt_45_values,clim_miroc_temp_45_values)
+clim_miroc_45_values<-terra::extract(clim_miroc_45,coordinates_study_area)
+climate_miroc5_values<-data.frame(clim_miroc_45_values)
 climate_miroc5_values$zpptgrow<-(climate_miroc5_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
 climate_miroc5_values$ztempgrow<-(climate_miroc5_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_miroc5_values$zpptdorm<-(climate_miroc5_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
@@ -5264,10 +5412,10 @@ climate_miroc5_values$ztempdorm<-(climate_miroc5_values$tempdorm-mean(poar_2015_
 ```
 
 ```{r}
-P_miroc45 <- system.time({
+P_miroc45 <- system.time(
   lambda_2sex_miroc45<- foreach::foreach(i=1:nrow(climate_miroc5_values), 
                .combine = 'c'
-  ) %dopar% (lambdaSim_delay( F_params=F_params,
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
                                  M_params=M_params,
                                  grow_perturb=0,
                                  surv_perturb=0,
@@ -5279,13 +5427,13 @@ P_miroc45 <- system.time({
                                  zpptdorm=climate_miroc5_values[i,7],
                                  ztempdorm=climate_miroc5_values[i,8],
                                  rfx = rfx_fun(),
-                                 max.yrs = max_yrs)$lambdatracker[max_yrs])
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
 })
 ```
 
 ```{r}
 clim_lambda<-data.frame(coordinates_study_area,lambda=lambda_2sex_miroc45)
-write.csv(clim_lambda,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_10mmiroc45.csv")
+# write.csv(clim_lambda,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_10mmiroc45.csv")
 ```
 
 ```{r}
@@ -5298,10 +5446,10 @@ clim_past_values$ztempdorm<-(clim_past_values$tempdorm-mean(poar_2015_2016$tempd
 ```
 
 ```{r}
-P_past <- system.time({
+P_past <- system.time(
   lambda_2sex_past<- foreach::foreach(i=1:nrow(clim_past_values), 
                .combine = 'c'
-  ) %dopar% (lambdaSim_delay( F_params=F_params,
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
                                  M_params=M_params,
                                  grow_perturb=0,
                                  surv_perturb=0,
@@ -5313,20 +5461,266 @@ P_past <- system.time({
                                  zpptdorm=clim_past_values[i,7],
                                  ztempdorm=clim_past_values[i,8],
                                  rfx = rfx_fun(),
-                                 max.yrs = max_yrs)$lambdatracker[max_yrs])
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
 })
 ```
 
 ```{r}
 clim_lambda_past<-data.frame(coordinates_study_area,lambda=lambda_2sex_past)
-write.csv(clim_lambda_past,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/clim_lambda_past.csv")
+# write.csv(clim_lambda_past,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/clim_lambda_past.csv",row.names = F)
+```
+
+## ACCESS
+```{r}
+clim_acc_85_values<-terra::extract(clim_access_85,coordinates_study_area)
+climate_acc_85_values<-data.frame(clim_acc_85_values)
+climate_acc_85_values$zpptgrow<-(climate_acc_85_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+climate_acc_85_values$ztempgrow<-(climate_acc_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+climate_acc_85_values$zpptdorm<-(climate_acc_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+climate_acc_85_values$ztempdorm<-(climate_acc_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+```{r}
+max_yrs<-30
+P_acce85 <- system.time(
+  lambda_2sex_acc85<- foreach::foreach(i=1:nrow(climate_acc_85_values), 
+               .combine = 'c'
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=climate_acc_85_values[i,5],
+                                 ztempgrow=climate_acc_85_values[i,6],
+                                 zpptdorm=climate_acc_85_values[i,7],
+                                 ztempdorm=climate_acc_85_values[i,8],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
+})
+```
+
+```{r}
+clim_lambda_acc85<-data.frame(coordinates_study_area,lambda=lambda_2sex_acc85)
+# write.csv(clim_lambda_acc85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_access85.csv",row.names = F)
+```
+
+```{r}
+clim_acc_45_values<-terra::extract(clim_access_45,coordinates_study_area)
+climate_acc_45_values<-data.frame(clim_acc_45_values)
+climate_acc_45_values$zpptgrow<-(climate_acc_45_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+climate_acc_45_values$ztempgrow<-(climate_acc_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+climate_acc_45_values$zpptdorm<-(climate_acc_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+climate_acc_45_values$ztempdorm<-(climate_acc_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+```{r}
+max_yrs<-30
+P_acce45 <- system.time(
+  lambda_2sex_acc45<- foreach::foreach(i=1:nrow(climate_acc_45_values), 
+               .combine = 'c'
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=climate_acc_45_values[i,5],
+                                 ztempgrow=climate_acc_45_values[i,6],
+                                 zpptdorm=climate_acc_45_values[i,7],
+                                 ztempdorm=climate_acc_45_values[i,8],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
+})
+```
+
+```{r}
+clim_lambda_acc45<-data.frame(coordinates_study_area,lambda=lambda_2sex_acc45)
+# write.csv(clim_lambda_acc45,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_access45.csv",row.names = F)
+```
+
+## CMCM
+```{r}
+clim_cmc_85_values<-terra::extract(clim_cmcc_85,coordinates_study_area)
+climate_cmc_85_values<-data.frame(clim_cmc_85_values)
+climate_cmc_85_values$zpptgrow<-(climate_cmc_85_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+climate_cmc_85_values$ztempgrow<-(climate_cmc_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+climate_cmc_85_values$zpptdorm<-(climate_cmc_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+climate_cmc_85_values$ztempdorm<-(climate_cmc_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+```{r}
+max_yrs<-30
+P_cmc85 <- system.time(
+  lambda_2sex_cmc85<- foreach::foreach(i=1:nrow(climate_cmc_85_values), 
+               .combine = 'c'
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=climate_cmc_85_values[i,5],
+                                 ztempgrow=climate_cmc_85_values[i,6],
+                                 zpptdorm=climate_cmc_85_values[i,7],
+                                 ztempdorm=climate_cmc_85_values[i,8],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
+})
+```
+
+```{r}
+clim_lambda_cmc85<-data.frame(coordinates_study_area,lambda=lambda_2sex_cmc85)
+# write.csv(clim_lambda_cmc85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_cmc85.csv",row.names = F)
+```
+
+```{r}
+clim_cmc_45_values<-terra::extract(clim_cmcc_45,coordinates_study_area)
+climate_cmc_45_values<-data.frame(clim_cmc_45_values)
+climate_cmc_45_values$zpptgrow<-(climate_cmc_45_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+climate_cmc_45_values$ztempgrow<-(climate_cmc_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+climate_cmc_45_values$zpptdorm<-(climate_cmc_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+climate_cmc_45_values$ztempdorm<-(climate_cmc_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+```{r}
+max_yrs<-30
+P_cmc45 <- system.time(
+  lambda_2sex_cmc45<- foreach::foreach(i=1:nrow(climate_cmc_45_values), 
+               .combine = 'c'
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=climate_cmc_45_values[i,5],
+                                 ztempgrow=climate_cmc_45_values[i,6],
+                                 zpptdorm=climate_cmc_45_values[i,7],
+                                 ztempdorm=climate_cmc_45_values[i,8],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
+})
+```
+
+```{r}
+clim_lambda_cmc45<-data.frame(coordinates_study_area,lambda=lambda_2sex_cmc45)
+# write.csv(clim_lambda_cmc45,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_cmc45.csv",row.names = F)
+```
+
+## CES
+```{r}
+clim_ces_85_values<-terra::extract(clim_cesm_85,coordinates_study_area)
+climate_ces_85_values<-data.frame(clim_ces_85_values)
+climate_ces_85_values$zpptgrow<-(climate_ces_85_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+climate_ces_85_values$ztempgrow<-(climate_ces_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+climate_ces_85_values$zpptdorm<-(climate_ces_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+climate_ces_85_values$ztempdorm<-(climate_ces_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+```{r}
+max_yrs<-30
+P_ces85 <- system.time(
+  lambda_2sex_ces85<- foreach::foreach(i=1:nrow(climate_ces_85_values), 
+               .combine = 'c'
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=climate_ces_85_values[i,5],
+                                 ztempgrow=climate_ces_85_values[i,6],
+                                 zpptdorm=climate_ces_85_values[i,7],
+                                 ztempdorm=climate_ces_85_values[i,8],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
+})
+```
+
+```{r}
+clim_lambda_ces85<-data.frame(coordinates_study_area,lambda=lambda_2sex_ces85)
+# write.csv(clim_lambda_ces85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_ces85.csv",row.names = F)
+```
+
+```{r}
+clim_ces_45_values<-terra::extract(clim_cesm_45,coordinates_study_area)
+climate_ces_45_values<-data.frame(clim_ces_45_values)
+climate_ces_45_values$zpptgrow<-(climate_ces_45_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+climate_ces_45_values$ztempgrow<-(climate_ces_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+climate_ces_45_values$zpptdorm<-(climate_ces_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+climate_ces_45_values$ztempdorm<-(climate_ces_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+```
+
+```{r}
+max_yrs<-30
+P_ces45 <- system.time(
+  lambda_2sex_ces45<- foreach::foreach(i=1:nrow(climate_ces_45_values), 
+               .combine = 'c'
+  ) %dopar% {lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=climate_ces_45_values[i,5],
+                                 ztempgrow=climate_ces_45_values[i,6],
+                                 zpptdorm=climate_ces_45_values[i,7],
+                                 ztempdorm=climate_ces_45_values[i,8],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)$lambdatracker[max_yrs]
+})
+```
+
+```{r}
+clim_lambda_ces45<-data.frame(coordinates_study_area,lambda=lambda_2sex_ces45)
+# write.csv(clim_lambda_cmc45,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_ces45.csv",row.names = F)
+```
+
+```{r}
+stopCluster(my.cluster)
+```
+
+# Put the future projection together
+```{r}
+lambda_future = data.frame(matrix(nrow = 3972, ncol = 10)) 
+colnames(lambda_future)<-c("x","y","miroc45","miroc85","access45","access85","cmcc45","cmcc85","ces45","ces85")
+lambda_future$x<-clim_lambda_miroc85$x
+lambda_future$y<-clim_lambda_miroc85$y
+lambda_future$miroc45<-clim_lambda$lambda
+lambda_future$miroc85<-clim_lambda_miroc85$lambda
+lambda_future$access45<-clim_lambda_acc45$lambda
+lambda_future$access85<-clim_lambda_acc85$lambda
+lambda_future$cmcc45<-clim_lambda_cmc45$lambda
+lambda_future$cmcc85<-clim_lambda_cmc85$lambda
+lambda_future$ces45<-clim_lambda_ces45$lambda
+lambda_future$ces85<-clim_lambda_ces85$lambda
+# write.csv(lambda_future,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_future.csv",row.names = F)
 ```
 
 ```{r}
 lambda_past<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/clim_lambda_past.csv")
 lambda_current<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_current.csv")
-lambdamicroc45<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_10mmiroc45.csv")
-lambdamiroc85<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_miroc8510m.csv")
+lambda_future<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_future.csv")
+```
+
+
+```{r}
+lambda_future %>% 
+  dplyr::select(miroc45,access45,cmcc45,ces45)-> lambda_future45
+mean_lambda_45<-rowMeans(lambda_future45)
+lambda_future %>% 
+  dplyr::select(miroc85,access85,cmcc85,ces85)-> lambda_future85
+mean_lambda_85<-rowMeans(lambda_future85)
+median_lambda_45<-rowMeans(lambda_future45)
+geo45<-data.frame(coordinates_study_area,mean_lambda_45)
+geo85<-data.frame(coordinates_study_area,mean_lambda_85)
 ```
 
 ```{r}
@@ -5339,14 +5733,14 @@ outline_map <- map_data("world")
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
   geom_tile(data = lambda_past, aes(x = x, y = y, fill = lambda))+
   annotate(geom="text", x=-100, y=41, label="Past",
-              color="grey")+
+              color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
+    colours = terrain.colors(7))+
   theme_light()+
   theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="A") )
+  labs(x = "", y = "Latitude",title="A") )
 
 ```
 
@@ -5356,27 +5750,27 @@ outline_map <- map_data("world")
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
   geom_tile(data = lambda_current, aes(x = x, y = y, fill = lambda))+
   annotate(geom="text", x=-100, y=41, label="Current",
-              color="grey")+
+              color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
+    colours = terrain.colors(7))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="B") )
+  labs(x = "", y = "",title="B") )
 
 ```
 
 ```{r}
-(lambda_map_miroc45 <- ggplot()+
+(lambda_map_45 <- ggplot()+
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = lambdamicroc45, aes(x = x, y = y, fill = lambda))+
-  annotate(geom="text", x=-100, y=41, label="Miroc45",
-              color="grey")+
+  geom_tile(data = geo45, aes(x = x, y = y, fill = mean_lambda_45))+
+  annotate(geom="text", x=-100, y=41, label="Future 4.5",
+              color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
+    colours = terrain.colors(7))+
   theme_light()+
 theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -5385,135 +5779,26 @@ theme(strip.background = element_blank(),
 ```
 
 ```{r}
-(lambda_map_miroc85 <- ggplot()+
- #  geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
- # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = lambdamiroc85, aes(x = x, y = y, fill = lambda))+
-  annotate(geom="text", x=-100, y=41, label="Miroc85",
-              color="grey")+
-  scale_fill_gradientn(
-    name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
-  theme_light()+
-  theme(strip.background = element_blank(),
-        strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="D") )
-
-```
-
-```{r}
-ggarrange(lambda_map_past, lambda_map_current, lambda_map_miroc45, lambda_map_miroc85,common.legend = TRUE)
-```
-
-```{r}
-lambda_past$lambdabinary<-ifelse(lambda_past$lambda<1,0,1)
-(lambda_map_past_binary <- ggplot()+
+(lambda_map_85 <- ggplot()+
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = lambda_past, aes(x = x, y = y, fill = lambdabinary))+
-  annotate(geom="text", x=-100, y=41, label="Past",
-              color="grey")+
+  geom_tile(data = geo85, aes(x = x, y = y, fill = mean_lambda_85))+
+  annotate(geom="text", x=-100, y=41, label="Future 8.5",
+              color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
-  theme_light()+
-  theme(strip.background = element_blank(),
-        strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="A") )
-
-```
-
-```{r}
-lambda_current$lambdabinary<-ifelse(lambda_current$lambda<1,0,1)
-(lambda_map_current_binary <- ggplot()+
-  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
-  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = lambda_current, aes(x = x, y = y, fill = lambdabinary))+
-  annotate(geom="text", x=-100, y=41, label="Current",
-              color="grey")+
-  scale_fill_gradientn(
-    name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
-  theme_light()+
- theme(strip.background = element_blank(),
-        strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="B") )
-
-```
-
-```{r}
-lambdamicroc45$lambdabinary<-ifelse(lambdamicroc45$lambda<1,0,1)
-(lambda_map_miroc45_binary <- ggplot()+
-  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
-  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = lambdamicroc45, aes(x = x, y = y, fill = lambdabinary))+
-  annotate(geom="text", x=-100, y=41, label="Miroc45",
-              color="grey")+
-  scale_fill_gradientn(
-    name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
+    colours = terrain.colors(7))+
   theme_light()+
 theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="C") )
+  labs(x = "Longitude", y = "",title="D") )
 
 ```
 
-```{r}
-lambdamiroc85$lambdabinary<-ifelse(lambdamiroc85$lambda<1,0,1)
-(lambda_map_miroc85_binary <- ggplot()+
- #  geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
- # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = lambdamiroc85, aes(x = x, y = y, fill = lambdabinary))+
-  annotate(geom="text", x=-100, y=41, label="Miroc85",
-              color="grey")+
-  scale_fill_gradientn(
-    name = expression(paste(lambda)),
-    colours = terrain.colors(10))+
-  theme_light()+
-  theme(strip.background = element_blank(),
-        strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="D") )
-
-```
 
 ```{r}
-ggarrange(lambda_map_past_binary, lambda_map_current_binary, lambda_map_miroc45_binary, lambda_map_miroc85_binary,common.legend = TRUE)
-```
-
-```{r}
-clim_acc_85_values<-terra::extract(clim_access_45,coordinates_study_area)
-climate_acc_85_values<-data.frame(clim_acc_85_values)
-climate_acc_85_values$zpptgrow<-(climate_acc_85_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
-climate_acc_85_values$ztempgrow<-(climate_acc_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
-climate_acc_85_values$zpptdorm<-(climate_acc_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
-climate_acc_85_values$ztempdorm<-(climate_acc_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-```
-
-```{r}
-max_yrs<-30
-P_miroc85 <- system.time({
-  lambda_2sex_miroc85<- foreach::foreach(i=1:nrow(climate_miroc85_values), 
-               .combine = 'c'
-  ) %dopar% (lambdaSim_delay( F_params=F_params,
-                                 M_params=M_params,
-                                 grow_perturb=0,
-                                 surv_perturb=0,
-                                 flow_perturb=0,
-                                 fert_perturb=0,
-                                 viab_perturb=0,
-                                 zpptgrow=climate_miroc85_values[i,5],
-                                 ztempgrow=climate_miroc85_values[i,6],
-                                 zpptdorm=climate_miroc85_values[i,7],
-                                 ztempdorm=climate_miroc85_values[i,8],
-                                 rfx = rfx_fun(),
-                                 max.yrs = max_yrs)$lambdatracker[max_yrs])
-})
-```
-
-```{r}
-clim_lambda_miroc85<-data.frame(coordinates_study_area,lambda=lambda_2sex_miroc85)
-write.csv(clim_lambda_miroc85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_miroc8510m.csv")
+Fig_geoprojection<-ggarrange(lambda_map_past, lambda_map_current, lambda_map_45, lambda_map_85,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoprojection.pdf", Fig_geoprojection, width = 5, height = 7)
 ```
 
 ### Niche Projection

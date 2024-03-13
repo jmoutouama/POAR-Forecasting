@@ -275,7 +275,7 @@ transformed parameters {
                 btempgrowpptgrow_s * tempgrow_s[isurv] * pptgrow_s[isurv] +
                 //3-way interaction
                 btempdormpptdormsex_s * tempdorm_s[isurv] * pptdorm_s[isurv] * male_s[isurv] +
-                btempgrowpptgrowsex_s * tempgrow_s[isurv] * tempgrow_s[isurv] * male_s[isurv] +
+                btempgrowpptgrowsex_s * tempgrow_s[isurv] * pptgrow_s[isurv] * male_s[isurv] +
                 //polynomial 2
                 bpptgrow2_s * pow(pptgrow_s[isurv],2) + 
                 bpptdorm2_s * pow(pptdorm_s[isurv],2) + 
@@ -364,10 +364,10 @@ transformed parameters {
                 btempdormsex_p * tempdorm_p[ipan] * male_p[ipan] +
                 bsizesex_p * size_p[ipan] * male_p[ipan] +
                 btempdormpptdorm_p * tempdorm_p[ipan] * pptdorm_p[ipan] +
-                btempgrowpptgrow_p * tempgrow_p[ipan] * tempgrow_p[ipan] +
+                btempgrowpptgrow_p * tempgrow_p[ipan] * pptgrow_p[ipan] +
                 //3-way interaction
                 btempdormpptdormsex_p * tempdorm_p[ipan] * pptdorm_p[ipan] * male_p[ipan] +
-                btempgrowpptgrowsex_p * tempgrow_p[ipan] * tempgrow_p[ipan] * male_p[ipan] +
+                btempgrowpptgrowsex_p * tempgrow_p[ipan] * pptgrow_p[ipan] * male_p[ipan] +
                 //polynomial 2
                 bpptgrow2_p * pow(pptgrow_p[ipan],2) + 
                 bpptdorm2_p * pow(pptdorm_p[ipan],2) + 
@@ -402,30 +402,30 @@ transformed parameters {
 model {
   // priors on parameters
   //Survival
-  b0_s ~ normal(0, 100);    
-  bsize_s ~ normal(0, 100);   
-  bsex_s ~ normal(0, 100);   
-  bpptgrow_s ~ normal(0, 100);  
-  bpptdorm_s ~ normal(0, 100);  
-  btempgrow_s ~ normal(0, 100); 
-  bsizesex_s ~ normal(0, 100); 
-  btempdormpptdorm_s ~ normal(0, 100); 
-  btempgrowpptgrow_s ~ normal(0, 100); 
-  btempdorm_s ~ normal(0, 100);
-  bpptgrowsex_s ~ normal(0, 100);
-  bpptdormsex_s ~ normal(0, 100);
-  btempgrowsex_s ~ normal(0, 100);
-  btempdormsex_s ~ normal(0, 100);
-  btempdormpptdormsex_s ~ normal(0, 100);
-  btempgrowpptgrowsex_s ~ normal(0, 100);
-  bpptgrow2sex_s ~ normal(0, 1);  
-  bpptdorm2sex_s ~ normal(0, 1); 
-  btempgrow2sex_s ~ normal(0, 1);  
-  btempdorm2sex_s ~ normal(0, 1); 
-  bpptgrow2_s ~ normal(0, 1); 
-  bpptdorm2_s ~ normal(0, 1); 
-  btempgrow2_s ~ normal(0, 1); 
-  btempdorm2_s ~ normal(0, 1); 
+  b0_s ~ normal(0,1.5);    
+  bsize_s ~ normal(0,1.5);   
+  bsex_s ~ normal(0,1.5);   
+  bpptgrow_s ~ normal(0,1.5);  
+  bpptdorm_s ~ normal(0,1.5);  
+  btempgrow_s ~ normal(0,1.5); 
+  bsizesex_s ~ normal(0,1.5); 
+  btempdormpptdorm_s ~ normal(0,1.5); 
+  btempgrowpptgrow_s ~ normal(0,1.5); 
+  btempdorm_s ~ normal(0,1.5);
+  bpptgrowsex_s ~ normal(0,1.5);
+  bpptdormsex_s ~ normal(0,1.5);
+  btempgrowsex_s ~ normal(0,1.5);
+  btempdormsex_s ~ normal(0,1.5);
+  btempdormpptdormsex_s ~ normal(0,1.5);
+  btempgrowpptgrowsex_s ~ normal(0,1.5);
+  bpptgrow2sex_s ~ normal(0,1.5);  
+  bpptdorm2sex_s ~ normal(0,1.5); 
+  btempgrow2sex_s ~ normal(0,1.5);  
+  btempdorm2sex_s ~ normal(0,1.5); 
+  bpptgrow2_s ~ normal(0,1.5); 
+  bpptdorm2_s ~ normal(0,1.5); 
+  btempgrow2_s ~ normal(0,1.5); 
+  btempdorm2_s ~ normal(0,1.5); 
   block_tau_s ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_s){
     block_rfx_s[i] ~ normal(0, block_tau_s);
@@ -440,30 +440,30 @@ model {
   }
 
   // Growth
-  b0_g ~ normal(0, 100);    
-  bsize_g ~ normal(0, 100);   
-  bsex_g ~ normal(0, 100);   
-  bpptgrow_g ~ normal(0, 100);  
-  bpptdorm_g ~ normal(0, 100);  
-  btempgrow_g ~ normal(0, 100);  
-  btempdorm_g ~ normal(0, 100);
-  bsizesex_g ~ normal(0, 100);
-  btempdormpptdorm_g ~ normal(0, 100);
-  btempgrowpptgrow_g ~ normal(0, 100);
-  bpptgrowsex_g ~ normal(0, 100);
-  bpptdormsex_g ~ normal(0, 100);
-  btempgrowsex_g ~ normal(0, 100);
-  btempdormsex_g ~ normal(0, 100);
-  btempdormpptdormsex_g ~ normal(0, 100);
-  btempgrowpptgrowsex_g ~ normal(0, 100);
-  bpptgrow2sex_g ~ normal(0, 0.5);  
-  bpptdorm2sex_g ~ normal(0, 0.5); 
-  btempgrow2sex_g ~ normal(0, 0.5);  
-  btempdorm2sex_g ~ normal(0, 0.5); 
-  bpptgrow2_g ~ normal(0, 0.5); 
-  bpptdorm2_g ~ normal(0, 0.5); 
-  btempgrow2_g ~ normal(0, 0.5); 
-  btempdorm2_g ~ normal(0, 0.5); 
+  b0_g ~ normal(0,1.5);    
+  bsize_g ~ normal(0,1.5);   
+  bsex_g ~ normal(0,1.5);   
+  bpptgrow_g ~ normal(0,1.5);  
+  bpptdorm_g ~ normal(0,1.5);  
+  btempgrow_g ~ normal(0,1.5);  
+  btempdorm_g ~ normal(0,1.5);
+  bsizesex_g ~ normal(0,1.5);
+  btempdormpptdorm_g ~ normal(0,1.5);
+  btempgrowpptgrow_g ~ normal(0,1.5);
+  bpptgrowsex_g ~ normal(0,1.5);
+  bpptdormsex_g ~ normal(0,1.5);
+  btempgrowsex_g ~ normal(0,1.5);
+  btempdormsex_g ~ normal(0,1.5);
+  btempdormpptdormsex_g ~ normal(0,1.5);
+  btempgrowpptgrowsex_g ~ normal(0,1.5);
+  bpptgrow2sex_g ~ normal(0,1.5);  
+  bpptdorm2sex_g ~ normal(0,1.5); 
+  btempgrow2sex_g ~ normal(0,1.5);  
+  btempdorm2sex_g ~ normal(0,1.5); 
+  bpptgrow2_g ~ normal(0,1.5); 
+  bpptdorm2_g ~ normal(0,1.5); 
+  btempgrow2_g ~ normal(0,1.5); 
+  btempdorm2_g ~ normal(0,1.5); 
   block_tau_g ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_g){
     block_rfx_g[i] ~ normal(0, block_tau_g);
@@ -481,30 +481,30 @@ model {
   }
 
   // Flowering
-  b0_f ~ normal(0, 500);    
-  bsize_f ~ normal(0, 100);  
-  bsizesex_f ~ normal(0, 100);  
-  bsex_f ~ normal(0, 100);   
-  bpptgrow_f ~ normal(0, 100);  
-  bpptdorm_f ~ normal(0, 100);  
-  btempgrow_f ~ normal(0, 100);  
-  btempdorm_f ~ normal(0, 100);
-  bpptgrowsex_f ~ normal(0, 100);
-  bpptdormsex_f ~ normal(0, 100);
-  btempgrowsex_f ~ normal(0, 100);
-  btempdormsex_f ~ normal(0, 100);
-  btempdormpptdorm_f ~ normal(0, 100);
-  btempgrowpptgrow_f ~ normal(0, 100);
-  btempdormpptdormsex_f ~ normal(0, 1);
-  btempgrowpptgrowsex_f ~ normal(0, 1);
-  bpptgrow2_f ~ normal(0, 1); 
-  bpptdorm2_f ~ normal(0, 1);
-  btempgrow2_f ~ normal(0, 1);
-  btempdorm2_f ~ normal(0, 1);
-  bpptgrow2sex_f ~ normal(0, 1);
-  bpptdorm2sex_f ~ normal(0, 1); 
-  btempgrow2sex_f ~ normal(0, 1); 
-  btempdorm2sex_f ~ normal(0, 1); 
+  b0_f ~ normal(0,1.5);    
+  bsize_f ~ normal(0,1.5);  
+  bsizesex_f ~ normal(0,1.5);  
+  bsex_f ~ normal(0,1.5);   
+  bpptgrow_f ~ normal(0,1.5);  
+  bpptdorm_f ~ normal(0,1.5);  
+  btempgrow_f ~ normal(0,1.5);  
+  btempdorm_f ~ normal(0,1.5);
+  bpptgrowsex_f ~ normal(0,1.5);
+  bpptdormsex_f ~ normal(0,1.5);
+  btempgrowsex_f ~ normal(0,1.5);
+  btempdormsex_f ~ normal(0,1.5);
+  btempdormpptdorm_f ~ normal(0,1.5);
+  btempgrowpptgrow_f ~ normal(0,1.5);
+  btempdormpptdormsex_f ~ normal(0,1.5);
+  btempgrowpptgrowsex_f ~ normal(0,1.5);
+  bpptgrow2_f ~ normal(0,1.5); 
+  bpptdorm2_f ~ normal(0,1.5);
+  btempgrow2_f ~ normal(0,1.5);
+  btempdorm2_f ~ normal(0,1.5);
+  bpptgrow2sex_f ~ normal(0,1.5);
+  bpptdorm2sex_f ~ normal(0,1.5); 
+  btempgrow2sex_f ~ normal(0,1.5); 
+  btempdorm2sex_f ~ normal(0,1.5); 
   block_tau_f ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_f){
     block_rfx_f[i] ~ normal(0, block_tau_f);
@@ -518,39 +518,39 @@ model {
     site_rfx_f[i] ~ normal(0, site_tau_f);
   }
   // fertility
-  b0_p ~ normal(0, 500);    
-  bsize_p ~ normal(0, 100);   
-  bsex_p ~ normal(0, 100);   
-  bpptgrow_p ~ normal(0, 100);  
-  bpptdorm_p ~ normal(0, 100);  
-  btempgrow_p ~ normal(0, 100);  
-  btempdorm_p ~ normal(0, 100);
-  bsizesex_p ~ normal(0, 100);
-  btempdormpptdorm_p ~ normal(0, 100);
-  btempgrowpptgrow_p ~ normal(0, 100);
-  bpptgrowsex_p ~ normal(0, 100);
-  bpptdormsex_p ~ normal(0, 100);
-  btempgrowsex_p ~ normal(0, 100);
-  btempdormsex_p ~ normal(0, 100);
-  btempdormpptdormsex_p ~ normal(0, 100);
-  btempgrowpptgrowsex_p ~ normal(0, 100);
-  bpptgrow2sex_p ~ normal(0, 1);  
-  bpptdorm2sex_p ~ normal(0, 1); 
-  btempgrow2sex_p ~ normal(0, 1);  
-  btempdorm2sex_p ~ normal(0, 1); 
-  bpptgrow2_p ~ normal(0, 1); 
-  bpptdorm2_p ~ normal(0, 1); 
-  btempgrow2_p ~ normal(0, 1); 
-  btempdorm2_p ~ normal(0, 1); 
-  block_tau_p ~ inv_gamma(0.2, 0.2);
+  b0_p ~ normal(0, 0.15);    
+  bsize_p ~ normal(0, 0.15);   
+  bsex_p ~ normal(0, 0.15);   
+  bpptgrow_p ~ normal(0, 0.15);  
+  bpptdorm_p ~ normal(0, 0.15);  
+  btempgrow_p ~ normal(0, 0.15);  
+  btempdorm_p ~ normal(0, 0.15);
+  bsizesex_p ~ normal(0, 0.15);
+  btempdormpptdorm_p ~ normal(0,0.15);
+  btempgrowpptgrow_p ~ normal(0, 0.15);
+  bpptgrowsex_p ~ normal(0, 0.15);
+  bpptdormsex_p ~ normal(0, 0.15);
+  btempgrowsex_p ~ normal(0, 0.15);
+  btempdormsex_p ~ normal(0, 0.15);
+  btempdormpptdormsex_p ~ normal(0,0.15);
+  btempgrowpptgrowsex_p ~ normal(0, 0.15);
+  bpptgrow2sex_p ~ normal(0,0.15);  
+  bpptdorm2sex_p ~ normal(0, 0.15); 
+  btempgrow2sex_p ~ normal(0, 0.15);  
+  btempdorm2sex_p ~ normal(0, 0.15); 
+  bpptgrow2_p ~ normal(0, 0.15); 
+  bpptdorm2_p ~ normal(0,0.15); 
+  btempgrow2_p ~ normal(0, 0.15); 
+  btempdorm2_p ~ normal(0, 0.15); 
+  block_tau_p ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_blocks_p){
     block_rfx_p[i] ~ normal(0, block_tau_p);
   }
-  source_tau_p ~ inv_gamma(0.2, 0.2);
+  source_tau_p ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_sources){
     source_rfx_p[i] ~ normal(0, source_tau_p);
   }
-  site_tau_p ~ inv_gamma(0.2, 0.2);
+  site_tau_p ~ inv_gamma(0.1, 0.1);
   for (i in 1:n_sites){
     site_rfx_p[i] ~ normal(0, site_tau_p);
   }
