@@ -72,6 +72,7 @@ library(SPEI)
 library(LaplacesDemon)
 library(ggpubr)
 library(raster)
+library(rgdal)
 library(doParallel)
 # if (!require("BiocManager", quietly = TRUE))
 #     install.packages("BiocManager")
@@ -152,7 +153,7 @@ poar_temp<-mutate(poar_tempmax,poar_tempmin)
 # head(poar_temp)
 poar_temp$temp<-(poar_temp$tempmax+poar_temp$tempmin)/2
 # head(poar_temp)
-poar_ppt$census.year<-ifelse(poar_ppt$month<=5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from May to December of the previous year and precipitation of the current year.  
+poar_ppt$census.year<-ifelse(poar_ppt$month<=5,poar_ppt$year-1,poar_ppt$year) # data were collected in May. Thus, the precipitation for the census year is both the precipitation from June 1 to December of the previous year and precipitation of the current year up to and including May.  
 poar_temp$census.year<-ifelse(poar_temp$month<=5,poar_temp$year-1,poar_temp$year)
 
 # poar_temp %>% filter(site=="ozona",
@@ -216,7 +217,8 @@ crs(Poa_longlat) <- CRS1
 
 ```{r}
 jacob_path<-"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Future and historical data"
-choose_path<-jacob_path
+tom_path<-"C:/Users/tm9/Dropbox/Miller Lab -- Moutouama/Future and historical data"
+choose_path<-tom_path
 ```
 
 
@@ -634,19 +636,19 @@ figdorm <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(pptdorm)))
 figppt <-ggplot(data=poar_2015_2016, aes(x=scale(pptdorm), y=scale(pptgrow))) +
         geom_smooth(method="lm",color = "#0072B2") +
         geom_point(color = '#0072B2',shape = 19, size=4) +
-        labs (x="Temperature of growing season",y="Precipitation of growing season") +
+        labs (x="Precipitation of dormant season",y="Precipitation of growing season") +
         ggpubr::stat_cor(method = "pearson", label.x = 1, label.y = 1) +
         theme_bw()
 
 figtemp <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(tempgrow))) +
         geom_smooth(method="lm",color = "#0072B2") +
         geom_point(color = '#0072B2',shape = 19, size=4) +
-        labs (x="Temperature of dormant season",y="Precipitation of dormant season") +
+        labs (x="Temperature of dormant season",y="Temperature of growing season") +
         ggpubr::stat_cor(method = "pearson", label.x = -1.5, label.y = 1) +
         theme_bw()
 
 (figgrowdorm<-ggpubr::ggarrange(plotlist = list(figgrow, figdorm)))
-
+(figppttemp<-ggpubr::ggarrange(plotlist = list(figppt, figtemp)))
 # pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Varianceexplained.pdf",useDingbats = F,height=5,width=8)
 # print(figgrowdorm)
 # dev.off()
@@ -658,6 +660,25 @@ figtemp <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(tempgrow))
 poar.clim_seasonal <- left_join(x = poar_allsites_2015_2016,y =poar_2015_2016,by=c("site","census.year","Longitude","Latitude")) # merge the demographic data with climatic data for each site
 # head(poar.clim_seasonal)
 ```
+
+## Time series plots to visualize climate change
+```{r}
+temp_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/pr_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
+precip_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/tas_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
+## remember to patch in CHELSA data beginning 1978
+
+## north and south sites
+north_south<-c("ninnescah","lostP")
+east_west<-c("ozona","shsu")
+
+ggplot(temp_ts %>% filter(site%in%east_west))+
+  geom_line(aes(x=year,y=tas,group=site,col=site))+
+  facet_wrap(~season)
+ggplot(precip_ts %>% filter(site%in%east_west))+
+  geom_line(aes(x=year,y=pr,group=site,col=site))+
+  facet_wrap(~season)
+```
+
 
 # Mixed effect models (vital rate vs. climate )
 ## Read and format data to build the model
@@ -875,7 +896,7 @@ saveRDS(fit_allsites_season, '/Users/jm200/Library/CloudStorage/Dropbox/Miller L
 ## Chains convergence
 
 ```{r}
-fit_allsites_season <- readRDS(url("https://www.dropbox.com/scl/fi/usry193v1mgkb1mahp163/fit_allsites_seasons_02_06_24.rds?rlkey=wawum0xovx00kemzt2b7hg204&dl=1"))
+fit_allsites_season <- readRDS("C:/Users/tm9/Dropbox/Miller Lab -- Moutouama/Forecasting Models output/fit_allsites_seasons_02_06_24.rds")
 #ignore warning from readRDS
 ```
 
@@ -2359,6 +2380,14 @@ for(p in 1:n_post_draws){
 }
 
 ```
+
+```{r}
+#tom's code to visualize full posteriors of difference functions
+#win.graph()
+#matplot(panic_sex_diff_post_tempgrow[1,,],type="l")
+#quantile(panic_sex_diff_post_tempgrow[1,1,],probs=c(0.05,0.5,0.95))
+```
+
 
 ```{r}
 #define quantiles of posterior samples
