@@ -282,10 +282,11 @@ Counter-intuitively, there was no significant sex growth advantage in all season
 \end{figure}
 
 \subsection*{Population growth rate response to climate change}
-Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on the population growth rate.
-There was a physiological tolerance to the temperature of the growing season.
-Across the range of species, populations were not viable when the temperature of the growing season reached more than 20 degrees Celsius. 
-Furthermore, precipitation of the growing season negatively influences the population growth rate, while precipitation and temperature of the dormant season increased the population growth rate.
+We estimated the predicted response to population fitness to seasonal climate gradients using a model assuming a female dominant model and another model using the two sexes. 
+Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness. 
+For both models (female dominant and two sexes), population fitness decreases with an increase of precipitation of growing season. 
+Furthermore, population fitness was maximized between 23 and 17 degrees Celsius and decreases to zero just beyond 20 degrees Celsius during the growing season.
+Population fitness increases with temperature and precipitation of the dormant season. 
 
 \begin{figure}%[h!]
   \begin{center}
@@ -297,11 +298,11 @@ Furthermore, precipitation of the growing season negatively influences the popul
 
 
 
-\subsection*{Geographic projection}
+\subsection*{Climatic niches and range predictions}
 \begin{figure}%[h!]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/Fig_geoprojection.pdf}
-  \caption{XXX ($\lambda$ = 1)}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoprojection.pdf}
+  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
   \label{fig:geoproj}
   \end{center}
 \end{figure}
@@ -319,21 +320,40 @@ Furthermore, precipitation of the growing season negatively influences the popul
 		\caption{\textbf{Relation between precipitation and temperature for each season (growing and dormant).} $R^2$ indicates the value of proportion of explained variance between the temperature and precipitation}
 		\label{Sup:Correlation}
 	\end{figure}
-	
   \begin{figure}[H]
 		\centering
 		\includegraphics[scale = 0.5]{Figures/PPC.pdf}
 		\caption{\textbf{Consistency between real data and simulated values suggests that the fitted model accurately describes the data}. Graph shows density curves for the observed data (light blue ) along with the simulated values (dark blue). The first column shows the linear models and the second column shows the 2 degree polynomial models.}
 		\label{Sup:PPC}
 	\end{figure}
-	
 	\begin{figure}%[h!]
 		\centering
 		\includegraphics[width=0.95\linewidth]{Figures/Posterior_mean.pdf}
 		\caption{\textbf{Mean parameter values and 95\% credible intervals for all vital rates}. }
 		\label{Sup:Posterior}
 	\end{figure}
-	
+	\begin{figure}%[h!]
+  \begin{center}
+    \includegraphics[width=0.85\linewidth]{Figures/lambda_CI.pdf}
+  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+  \label{Sup:lambda2sex}
+  \end{center}
+\end{figure}
+\begin{figure}%[h!]
+  \begin{center}
+    \includegraphics[width=0.85\linewidth]{Figures/lambdapredcited45.pdf}
+  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+  \label{Sup:lambda45}
+  \end{center}
+\end{figure}
+\begin{figure}%[h!]
+  \begin{center}
+    \includegraphics[width=0.85\linewidth]{Figures/lambdapredcited85.pdf}
+  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+  \label{Sup:lambda5}
+  \end{center}
+\end{figure}
+
 
 \bibliographystyle{ecology}
 \bibliography{Forecasting}

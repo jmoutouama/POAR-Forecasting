@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  12 MAR 2024 17:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  17 MAR 2024 17:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -676,52 +676,74 @@ LaTeX Warning: Float too large for page by 27.84352pt on input line 274.
 <Figures/lambda.pdf, id=266, 361.35pt x 361.35pt>
 File: Figures/lambda.pdf Graphic file (type pdf)
 <use Figures/lambda.pdf>
-Package pdftex.def Info: Figures/lambda.pdf  used on input line 284.
+Package pdftex.def Info: Figures/lambda.pdf  used on input line 285.
 (pdftex.def)             Requested size: 365.50655pt x 365.50648pt.
 <Figures/Fig_geoprojection.pdf, id=267, 361.35pt x 505.89pt>
 File: Figures/Fig_geoprojection.pdf Graphic file (type pdf)
 <use Figures/Fig_geoprojection.pdf>
-Package pdftex.def Info: Figures/Fig_geoprojection.pdf  used on input line 295.
+Package pdftex.def Info: Figures/Fig_geoprojection.pdf  used on input line 296.
 
-(pdftex.def)             Requested size: 365.50655pt x 511.70906pt.
+(pdftex.def)             Requested size: 335.40308pt x 469.56967pt.
+
+LaTeX Warning: Float too large for page by 30.29314pt on input line 300.
+
 [15] [16 <./Figures/vital_rates.pdf>] [17 <./Figures/lambda.pdf>] [18 <./Figure
 s/Fig_geoprojection.pdf>]
-<Figures/Varianceexplained.pdf, id=310, 578.16pt x 361.35pt>
+<Figures/Varianceexplained.pdf, id=314, 578.16pt x 361.35pt>
 File: Figures/Varianceexplained.pdf Graphic file (type pdf)
 <use Figures/Varianceexplained.pdf>
-Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 310.
+Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 311.
 
 (pdftex.def)             Requested size: 430.00462pt x 268.75119pt.
-<Figures/PPC.pdf, id=311, 433.62pt x 722.7pt>
+<Figures/PPC.pdf, id=315, 433.62pt x 722.7pt>
 File: Figures/PPC.pdf Graphic file (type pdf)
 <use Figures/PPC.pdf>
 Package pdftex.def Info: Figures/PPC.pdf  used on input line 317.
 (pdftex.def)             Requested size: 216.80946pt x 361.3491pt.
+<Figures/Posterior_mean.pdf, id=316, 650.43pt x 578.16pt>
+File: Figures/Posterior_mean.pdf Graphic file (type pdf)
+<use Figures/Posterior_mean.pdf>
+Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 323.
+(pdftex.def)             Requested size: 408.50307pt x 363.12233pt.
  [19 <./Figures/Varianceexplained.pdf>]
 Overfull \vbox (81.33687pt too high) has occurred while \output is active []
 
 
 [20 <./Figures/PPC.pdf>]
-<Figures/Posterior_mean.pdf, id=340, 650.43pt x 578.16pt>
-File: Figures/Posterior_mean.pdf Graphic file (type pdf)
-<use Figures/Posterior_mean.pdf>
-Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 324.
-(pdftex.def)             Requested size: 408.50307pt x 363.12233pt.
- (./Forecasting.bbl [21 <./Figures/Posterior_mean.pdf>]
+<Figures/lambda_CI.pdf, id=345, 542.025pt x 578.16pt>
+File: Figures/lambda_CI.pdf Graphic file (type pdf)
+<use Figures/lambda_CI.pdf>
+Package pdftex.def Info: Figures/lambda_CI.pdf  used on input line 329.
+(pdftex.def)             Requested size: 365.50655pt x 389.88828pt.
+<Figures/lambdapredcited45.pdf, id=346, 361.35pt x 361.35pt>
+File: Figures/lambdapredcited45.pdf Graphic file (type pdf)
+<use Figures/lambdapredcited45.pdf>
+Package pdftex.def Info: Figures/lambdapredcited45.pdf  used on input line 336.
+
+(pdftex.def)             Requested size: 365.50655pt x 365.50648pt.
+<Figures/lambdapredcited85.pdf, id=347, 361.35pt x 361.35pt>
+File: Figures/lambdapredcited85.pdf Graphic file (type pdf)
+<use Figures/lambdapredcited85.pdf>
+Package pdftex.def Info: Figures/lambdapredcited85.pdf  used on input line 343.
+
+(pdftex.def)             Requested size: 365.50655pt x 365.50648pt.
+ (./Forecasting.bbl [21 <./Figures/Posterior_mean.pdf>] [22 <./Figures/lambda_C
+I.pdf>] [23 <./Figures/lambdapredcited45.pdf>] [24 <./Figures/lambdapredcited85
+.pdf>]
 Underfull \hbox (badness 1248) in paragraph at lines 62--70
 []\T1/pplx/m/n/10.95 Eberhart-Phillips, L. J., C. Küp-per, T. E. Miller, M. Cru
 z-López, K. H. Ma-her,
  []
 
-[22] [23] [24] [25]) [26] (./Forecasting.aux)
+[25] [26] [27] [28]) [29] (./Forecasting.aux)
 Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 14764 strings out of 476025
- 234413 string characters out of 5790018
+ 14794 strings out of 476025
+ 235219 string characters out of 5790018
  1865388 words of memory out of 5000000
- 34851 multiletter control sequences out of 15000+600000
+ 34872 multiletter control sequences out of 15000+600000
  568138 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,14n,76p,922b,632s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -735,10 +757,10 @@ exlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/tex
 live/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/20
 23/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2023/texm
 f-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (26 pages, 13503096 bytes).
+Output written on Forecasting.pdf (29 pages, 13536144 bytes).
 PDF statistics:
- 452 PDF objects out of 1000 (max. 8388607)
- 387 compressed objects within 4 object streams
- 94 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 503 PDF objects out of 1000 (max. 8388607)
+ 428 compressed objects within 5 object streams
+ 100 named destinations out of 1000 (max. 500000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 
