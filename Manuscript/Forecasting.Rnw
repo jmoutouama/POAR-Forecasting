@@ -1,36 +1,45 @@
-\documentclass[11pt]{article}
-\usepackage[sc]{mathpazo} 
-\usepackage{fullpage}
-\usepackage{natbib}
-\linespread{1.5}
-\usepackage[utf8]{inputenc}
-\usepackage{lineno}
-\usepackage{titlesec}
-\titleformat{\section}[block]{\Large\bfseries\filcenter}{\thesection}{1em}{}
-\titleformat{\subsection}[block]{\Large\itshape\filcenter}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}[block]{\large\itshape}{\thesubsubsection}{1em}{}
-\titleformat{\paragraph}[runin]{\itshape}{\theparagraph}{1em}{}[. ]\renewcommand{\refname}{Literature Cited}
-% my addnl packages
-\usepackage{geometry}
-\usepackage{graphicx}
-\usepackage[T1]{fontenc}
-\usepackage{authblk}
-\usepackage{setspace}
-\usepackage{amsfonts,amssymb,amsmath,hyperref}
-\usepackage{float}
-\usepackage{caption}
-\usepackage{multirow}
+\documentclass[12pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,authblk}
+\usepackage[font={footnotesize,singlespacing},labelfont=bf]{caption}
+\usepackage{titlesec,blkarray, bm} 
+\usepackage{float,afterpage}
+\usepackage[running,mathlines]{lineno}
+\usepackage[vmargin=1in,hmargin=1in]{geometry}
+\usepackage[authoryear,sort]{natbib}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{hyperref}
-\usepackage{wrapfig}
-\usepackage{rotating}
-\usepackage[usenames,dvipsnames]{xcolor}
-\newcommand{\revise}[1]{{\color{Mahogany}{#1}}}
-\usepackage[normalem]{ulem}
+\usepackage[section]{placeins}
+
+\usepackage{enumitem}
+\setlist{topsep=.125em,itemsep=-0.15em,leftmargin=0.75cm}
+\setlength{\parindent}{0.35in}
+
+\usepackage[sc]{mathpazo} %Like Palatino with extensive math support
+\usepackage[nodisplayskipstretch]{setspace} 
+\usepackage[subtle]{savetrees}
+
+\usepackage{lineno}
+%\renewcommand{\refname}{Literature Cited}
+%\renewcommand{\floatpagefraction}{0.9}
+%\renewcommand{\topfraction}{0.99}
+%\renewcommand{\textfraction}{0.05}
+
+\clubpenalty = 10000
+\widowpenalty = 10000
+
+\sloppy 
+
+\usepackage{ifpdf}
+\ifpdf
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{epstopdf}
+\else
+\DeclareGraphicsExtensions{.eps}
+\fi
+
 \graphicspath{{/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/}}
 \newcommand{\tom}[2]{{\color{red}{#1}}\footnote{\textit{\color{red}{#2}}}}
-
-
-\doublespacing
+%\doublespacing
 
 <<setup,echo=F, message=F, warning=F>>=
 knitr::opts_chunk$set(echo = F,
@@ -44,34 +53,57 @@ library(xtable)
 
 %-------------------------------------------------------------------------
 \title{Forecasting range shifts of a dioecious plant species under climate change}
-
-\author[1]{Jacob K. Moutouama}
+\author[1]{Jacob K. Moutouama \thanks{Corresponding author: jmoutouama@.gmail.com}}
 \author[2]{Aldo Compagnoni}
 \author[1]{Tom E.X. Miller}
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
+\date{} % clear date
+%\renewcommand\Authands{ and }
+
+\sloppy
+
+
 %-------------------------------------------------------------------------
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
+\renewcommand{\baselinestretch}{1.2}
 \maketitle
-\noindent{} $\ast$ Corresponding author: jmoutouama@gmail.com\\
-\noindent{} Submitted to \textit{Ecology letters}\\
-\noindent{} Manuscript type: Article\\
-\noindent{} Open Research statement: All of our data and code are available during peer review at \url{https://github.com/jmoutouama/POAR-Forecasting}. This manuscript and its contents can be reproduced from this file: \url{https://github.com/jmoutouama/POAR-Forecasting/Manuscript/Forescasting.Rnw}. All data are provided at \url{https://github.com/jmoutouama/POAR-Forecasting/tree/main/data}.
-%\SweaveOpts{concordance=TRUE}
 
+\bigskip 
+%45 character limit on running head
+\noindent\textbf{Running header:} Forecasting range shifts
+
+\bigskip 
+\noindent\textbf{Keywords:} climate change, demography, forecasting, matrix projection model, mechanistic models, sex ratio, range limits
+
+\bigskip 
+\noindent\textbf{Acknowledgements:} This research was supported by  XX.
+
+\bigskip
+\noindent\textbf{Authorship statement:} XXXXX.  
+
+\bigskip 
+\noindent\textbf{Data accessibility statement:} All data \citep{dryaddata} used in this paper are  publicly avaialbale. Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. During peer review, our data and code are available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
+
+\bigskip 
+\noindent\textbf{Conflict of interest statement:} None.
+\newpage
+%\SweaveOpts{concordance=TRUE}
 \linenumbers
 %-------------------------------------------------------------------------
-\newpage
+\spacing{1.25}
 \section*{Abstract}
-Sex-specific response to rising temperature and drought raises the questions of whether global change could lead to a drastic change in the sex ratio and whether that change in the sex ratio could drive population extinction or population range shift in dioecious species.
-Answering these questions requires an understanding of the mechanism by which a change in vital rates under future climate conditions for both male and female, could be translated into a significant change in population dynamics.
-We forecast range shift for a dioecious species using matrix models. 
-
-
-%-------------------------------------------------------------------------
-\section*{Keywords}
-climate change, demography, forecasting, matrix projection model, mechanistic models, sex ratio, range limits
+%200 word limit for Ecology letter
+Rising temperatures and extreme drought events associated with global climate change has triggered an urgent need for predicting species response to climate change.
+Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure. 
+To address this issue, we developed a climate-driven population matrix model using
+demographic data of dioecious species (Texas bluegrass), past and future climate (different gas emission scenarios) to forecast and backcast the effect of climate change on range shifts.
+Our results show a sex specific demographic response to climate change.
+Female individuals have a demographic advantage (higher vital rate) over males. 
+Female demographic advantage led to a slight decline in population viability under  future climate assuming moderate gas emission and a drastic reduction in population viability under future climate assuming high gas emission. 
+Despite a change in species range, climate change can alter population viability in dioecious species. 
+Overall, our work provides a framework for predicting the impact of climate on dioecious species using population demography. 
 
 %--------------------------------------------------------------------
 \newpage
@@ -80,7 +112,7 @@ Rising temperatures and extreme drought events associated with global climate ch
 Dioecious species (most animals and many plants) might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
 Accounting for such a niche differentiation within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population viability and range shifts \citep{jones1999sex,gissi2023exploring}. 
 The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure \citep{pottier2021sexual,ellis2017does}.
-As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited. \tom{}{This is a great opening paragraph!} 
+As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited.
 
 \tom{Climate change can influence dioecious populations via shifts in sex ratio.}{This paragraph is really good but notice that the topic sentence (and much that follows) is largely redundant with the first paragraph. I would suggest creating clearer distinction between paragraphs.} 
 Females and males may respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
@@ -89,7 +121,7 @@ For example, experiments in two populations of Atlantic marine copepods (\textit
 In other species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}. 
 Sex-specific responses to climate drivers have the potential to influence population viability under global change because skew in the operational sex ratio can limit reproduction through mate scarcity \citep{petry2016sex}.
 
-Species's range limits, when not driven by dispersal limitation, should generally \tom{reflect the limits of the ecological niche}{cite -- there is a relevant paper by Julie Lee-Yaw and Amy Angert, and lots of related literature}. 
+Species's range limits, when not driven by dispersal limitation, should generally reflect the limits of the ecological niche \citep{lee2016synthesis}. 
 For most species, niches and geographic ranges are often limited by climatic factors including temperature and precipitation \citep{sexton2009evolution}. 
 Therefore, any substantial changes in the magnitude of these climatic factors in a given location across the range could impact population viability, with implications for range shifts based on which regions become more or less suitable  \citep{davis2001range, pease1989model}. 
 Forecasting range shifts for dioecious species is complicated by the potential for each sex to respond differently to climate variation \citep{pottier2021sexual,morrison2016causes}.
@@ -97,13 +129,18 @@ Populations in which males are rare under current climatic conditions could expe
 In contrast, climate change could expand male habitat suitability (e.g. upslope movement), which might increases seed set for pollen-limited females and favor range expansion \citep{petry2016sex}.
 Although the response of species to climate warming is an urgent and active area of research, few studies have disentangled the interaction between sex and climate drivers to understand their combined effects on population dynamics and range shifts.  
 
-\tom{Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.}{This is a great topic sentence and an important point, but the paragraph does not really expand upon this point about mechanistic models. The next few sentences do not really say anything new. I think it would be stronger to discuss the value and challenges of mechanistic models for species' range shifts.}
-At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
-In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
+Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
+For example, structured models that are built from long-term demographic data collected from common garden experiments have emerged as powerful technic to study the impact of climate change on species range shift \citep{merow2017climate,schwinning2022common}.
+These structured models are increasingly utilized for two reasons. 
+First, they enable the manipulation of climatic factors (temperature, precipitation) and the measurement of species response to such a manipulation \citep{leicht2007comparative}. 
+Second, they link individual-level demographic trait to population dynamics in response to climate variation \citep{louthan2022climate,dahlgren2016demography}. 
+% At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
+% In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
 In this study, we used a mechanistic approach by combining geographically-distributed field experiments, hierarchical statistical modeling, and two-sex population projection modeling to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
-Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude (MAP). \tom{}{I would include a few more sentences of context about the study before jumping to the questions. For example it seems relevant to acknowledge the previous study and highlight that our previous approach used proxy variables, so could not be used to forecast responses to environmental change.}
-% A previous study showed that, despite the differentiation of the climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability \citep{miller2022two}. 
+Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude. 
+A previous study on the same system showed that, despite a differentiation of climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability \citep{miller2022two}.
+However that study did not use climate variables preventing us from backcasting and forecasting the impact of climate change on dioecious species.
 Here, we asked four questions: 
 \begin{enumerate}
 	\item What are the sex-specific vital rate responses to variation in temperature and precipitation across the species' range?
@@ -121,7 +158,7 @@ Texas bluegrass grows between October and May, with onset of dormancy often from
 Flowering occurs in May and the species is pollinated by wind \citep{hitchcock1971manual}.\tom{}{I think you need to say more about the geographic region and its climate. It will be important to motivate the split of growing and dormant seasons based on the natural history. You also need to describe the reproductive biology including dioecy and wind-pollination.}
 
 \subsection*{Common garden experiment}
-We set up a common garden experiment throughout and beyond the range of Texas bluegrass to enable study of sex-specific demographic responses to climate and the implications for range shifts \tom{\citep{merow2017climate,schwinning2022common}. }{I am not sure why you cite these studies here. They would be more appropriate for the Intro if you expand the paragraph about mechanistic modeling.}
+We set up a common garden experiment throughout and beyond the range of Texas bluegrass to enable study of sex-specific demographic responses to climate and the implications for range shifts. 
 Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
 
 The common experiment was installed at 14 sites across a \tom{precipitation gradient}{While the Am Nat paper focused on precipitation, the actual design spans both temperature and precip, whch is a feature you can exploit for your analysis, and would be worth highlighting as a source of novelty of this paper relative to the previous one. Some reviewers will be skeptical that we are publishing another paper from the same experiment, so the distinction should be made clear.} (FigX). 
@@ -240,14 +277,15 @@ Because the two-sex MPM is nonlinear (vital rates affect and are affected by pop
 
 \subsection*{Identifying the mechanisms of population growth rate sensitivity to climate }
 \tom{}{I don't think the LTRE analysis is adequately motivated by the Intro.}
-To identify the mechanism by which climate affects population growth rate, we decomposed the effect of each climate variable (here Climate) on population growth rate ($\lambda$) into contribution arising from the effect on each stage-specific vital rate \citep{caswell2000matrix}.
-At this end we used a life table response experiment (LTRE) with a regression designs. 
-The LTRE approximates the change in $\lambda$ with climate  as the product of the sensitivity of $\lambda$ to the parameters times the sensitivity of the parameters to climate, summed over all parameters \citep{caswell1989analysis}:
+To identify which aspect of climate is most important for population viability, we use a "random design" Life Table Response Experiment (LTRE). 
+We used the RandomForest package to fit a regression model with $\theta$ as predictors  and $\lambda_{c}$ as response \citep{ellner2016data,liaw2002classification}.
+The LTRE approximates the variation in $\lambda$ in response to climate covariates and their interaction \citep{caswell2000matrix,hernandez2023exact}:
 \begin{align}\label{eq:ltre}
-\frac{\partial \lambda}{\partial Climate} \approx \sum_{i} \frac{\partial \lambda}{\partial \theta^{F}_{i}} \frac{\partial \theta^{F}_{i}}{\partial Climate} + \frac{\partial \lambda}{\partial \theta^{M}_{i}} \frac{\partial \theta^{M}_{i}}{\partial Climate}
+Var(\lambda_{c})\approx \sum_{i=-1}^{n}\sum_{j=1}^{n} Cov(\theta_{i},\theta_{j},\theta_{ij}) + Var (\epsilon)
 \end{align}
 
-\noindent where, $\theta^{F}_{i}$ and $\theta^{M}_{i}$ represent sex-specific parameters: the regression coefficients for the intercepts and slopes of size-dependent vital rate functions. 
+\noindent where, $\theta_{i}$, $\theta_{j}$, $\theta_{ij}$  represent respectively the fitted regression slope for the covariate of the dormant season,j the covariate of the growing season and ij the covariate of their interactions. 
+
 Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. 
 
 \subsection*{Implication on range shifts}
@@ -267,7 +305,6 @@ The growing season has a positive effect of the probability of survival, a negat
 Further, there was a female survival and flowering advantage across both climatic seasons (Figures. 3A-3D, 3I-3K). 
 On the contrary, there was a male panicle advantage across all climatic variables (Figure3X-Y). 
 Counter-intuitively, there was no significant sex growth advantage in all season climatic variables (Figures. 3E-3H). 
-
 
 \begin{figure}%[h!]
   \begin{center}
@@ -290,15 +327,23 @@ Population fitness increases with temperature and precipitation of the dormant s
 
 \begin{figure}%[h!]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/lambda.pdf}
-  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+    \includegraphics[width=0.90\linewidth]{Figures/lambdapredcited.pdf}
+  \caption{Population growth rate ($\lambda$) as a function of climate (past climate, present and predicted future climates). For future climate, we show a Representation Concentration Pathways 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs. The solid bold curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization. The bold dashed curve represents the prediction by the female dominant matrix projection model. The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
   \label{fig:lambda}
   \end{center}
 \end{figure}
 
-
-
 \subsection*{Climatic niches and range predictions}
+We detected a strong effect of the past and future climate on population growth rate. However, for future climate, the magnitude of that effect was different between gas-scenario emissions. 
+A moderate emission gas scenario (RCP4.5) has a moderate effect on the population growth rate, while a high emission scenario (RCP8.5) has a strong effect on the population growth rate. 
+High-emission scenario (RCP8.5) will lead to an alteration of population viability. 
+Under past climate conditions, population growth rate decreased below one for temperature of the growing season and the dormant season. 
+Our demographically based range predictions broadly captured the known distribution of the species (Fig. 1). 
+More specifically, the predicted population viable ($\lambda>1$) matches the presence and absence of the species. 
+Furthermore, viable populations of \emph{P. arichnifera} were only predicted at the center of the range for current climatic conditions (Fig1).
+Future and past projections of climate change showed a north-west range shift compared to current distributions. 
+Although \emph{P. arichnifera} was predicted to have suitable habitat in the center of the range under the current climate, future warming is predicted to reduce much of the suitable habitat in the southern part (Figure). 
+
 \begin{figure}%[h!]
   \begin{center}
     \includegraphics[width=0.78\linewidth]{Figures/Fig_geoprojection.pdf}
@@ -307,54 +352,67 @@ Population fitness increases with temperature and precipitation of the dormant s
   \end{center}
 \end{figure}
 
+\section*{Discussion}
 
+
+
+
+\newpage
+\bibliographystyle{apalike}
+\bibliography{Forecasting}
 %--------------------------------------------------------------------
 \newpage
-\section*{Supporting Information}
-\renewcommand{\thefigure}{S\arabic{figure}}\setcounter{figure}{0}
-\renewcommand{\thetable}{S\arabic{table}}\setcounter{table}{0}
-\renewcommand{\theequation}{S\arabic{equation}}\setcounter{equation}{0}
-	\begin{figure}[H]
+\clearpage 
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{section}{0}
+\setcounter{table}{0}
+\renewcommand{\theequation}{S.\arabic{equation}}
+\renewcommand{\thetable}{S-\arabic{table}}
+\renewcommand{\thefigure}{S-\arabic{figure}}
+\renewcommand{\thesection}{S.\arabic{section}}
+
+\centerline{\Large{\textbf{Supporting Information}}}
+
+\section {XX}	
+\begin{figure}[h!]
 		\centering
-		\includegraphics[width = \linewidth]{Figures/Varianceexplained.pdf}
+		\includegraphics[width=0.95\linewidth]{Figures/Varianceexplained.pdf}
 		\caption{\textbf{Relation between precipitation and temperature for each season (growing and dormant).} $R^2$ indicates the value of proportion of explained variance between the temperature and precipitation}
 		\label{Sup:Correlation}
-	\end{figure}
-  \begin{figure}[H]
+\end{figure}
+	
+  \begin{figure}[h!]
 		\centering
-		\includegraphics[scale = 0.5]{Figures/PPC.pdf}
+		\includegraphics[width=0.75\linewidth]{Figures/PPC.pdf}
 		\caption{\textbf{Consistency between real data and simulated values suggests that the fitted model accurately describes the data}. Graph shows density curves for the observed data (light blue ) along with the simulated values (dark blue). The first column shows the linear models and the second column shows the 2 degree polynomial models.}
 		\label{Sup:PPC}
 	\end{figure}
-	\begin{figure}%[h!]
+	
+	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.95\linewidth]{Figures/Posterior_mean.pdf}
+		\includegraphics[width=0.55\linewidth]{Figures/Posterior_mean.pdf}
 		\caption{\textbf{Mean parameter values and 95\% credible intervals for all vital rates}. }
 		\label{Sup:Posterior}
 	\end{figure}
-	\begin{figure}%[h!]
+	
+	\begin{figure}[h!]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/lambda_CI.pdf}
-  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+    \includegraphics[width=0.55\linewidth]{Figures/lambda_CI.pdf}
+  \caption{Population growth rate ($\lambda$) as a function of seasonal climate (2016-2017), predicted by the two-sex matrix projection model that incorporates sex-specific demographic responses to climate with sex ratio-dependent seed fertilization.
+We show the mean posterior distribution of $\lambda$ in solid lines, and the 5, 25, 50, 75, and 95\% percentiles of parameter uncertainty in shaded gold color.
+The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
   \label{Sup:lambda2sex}
   \end{center}
 \end{figure}
-\begin{figure}%[h!]
+
+\begin{figure}[h!]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/lambdapredcited45.pdf}
-  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
-  \label{Sup:lambda45}
-  \end{center}
-\end{figure}
-\begin{figure}%[h!]
-  \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/lambdapredcited85.pdf}
-  \caption{Population growth response to climate change. Yellow curve represents the prediction from the female dominant matrix projection model. The grey curve was predicted by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
-  \label{Sup:lambda5}
+    \includegraphics[width=0.55\linewidth]{Figures/Fig_LTRE.pdf}
+  \caption{XXX}
+  \label{Sup:LTRE}
   \end{center}
 \end{figure}
 
 
-\bibliographystyle{ecology}
-\bibliography{Forecasting}
 \end{document}
