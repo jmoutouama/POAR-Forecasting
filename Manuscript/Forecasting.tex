@@ -87,7 +87,7 @@
 \spacing{1.25}
 \section*{Abstract}
 %200 word limit for Ecology letter
-Rising temperatures and extreme drought events associated with global climate change has triggered an urgent need for predicting species response to climate change.
+Rising temperatures and extreme drought events associated with global climate change have triggered an urgent need for predicting species response to climate change.
 Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure. 
 To address this issue, we developed a climate-driven population matrix model using
 demographic data of dioecious species (Texas bluegrass), past and future climate (different gas emission scenarios) to forecast and backcast the effect of climate change on range shifts.
@@ -124,8 +124,8 @@ Although the response of species to climate warming is an urgent and active area
 Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
 For example, structured models that are built from long-term demographic data collected from common garden experiments have emerged as powerful technic to study the impact of climate change on species range shift \citep{merow2017climate,schwinning2022common}.
 These structured models are increasingly utilized for two reasons. 
-First, they enable the manipulation of climatic factors (temperature, precipitation) and the measurement of species response to such a manipulation \citep{leicht2007comparative}. 
-Second, they link individual-level demographic trait to population dynamics in response to climate variation \citep{louthan2022climate,dahlgren2016demography}. 
+First, they enable the manipulation of treatments that can isolate spatial and temporal correlations between environmental factors, thus overcoming a main disadvantage with many types of correlative studies \citep{leicht2007comparative}. 
+Second, they link individual-level demographic trait to population demography allowing the investigation of the demographic mechanisms behind vital rates (e.g. survival,fertility, growth and seed germination) response environmental variation \citep{louthan2022climate,dahlgren2016demography}. 
 % At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 % In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
@@ -145,19 +145,21 @@ Here, we asked four questions:
 \section*{Materials and methods}
 
 \subsection*{Study species}
-Texas bluegrass (\textit{Poa arachnifera}) is a perennial, summer-dormant cool-season (C3) grass that occurs in Texas, Oklahoma, and southern Kansas, USA \citep{hitchcock1971manual}. 
-Texas bluegrass grows between October and May, with onset of dormancy often from June to September \citep{kindiger2004interspecific}.
-Flowering occurs in May and the species is pollinated by wind \citep{hitchcock1971manual}.\tom{}{I think you need to say more about the geographic region and its climate. It will be important to motivate the split of growing and dormant seasons based on the natural history. You also need to describe the reproductive biology including dioecy and wind-pollination.}
+Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S.(Texas, Oklahoma, and southern Kansas) \citep{hitchcock1971manual}. 
+Average temperatures along the distribution of the species tend to decrease northward as a result of the influence of latitude: lower latitudes receive more heat from the sun over the course of a year.
+Similarly the average precipitation decrease eastward as a result of the influence of longitude: lower longitudes receive less precipitation over the year.
+Texas bluegrass grows between October and May (growing season), with onset of dormancy often from June to September (dormant season) \citep{kindiger2004interspecific}.
+Flowering occurs in May and the species is wind pollinated \citep{hitchcock1971manual}.
+{\color{blue} The male heads are smooth, while those of the female appear fuzzy.}
 
 \subsection*{Common garden experiment}
 We set up a common garden experiment throughout and beyond the range of Texas bluegrass to enable study of sex-specific demographic responses to climate and the implications for range shifts. 
+The novelty of this study lies in the fact that we use a precise climate variable to build a mechanistic model to forecast the response of species to climate change.
 Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
-
-The common experiment was installed at 14 sites across a \tom{precipitation gradient}{While the Am Nat paper focused on precipitation, the actual design spans both temperature and precip, whch is a feature you can exploit for your analysis, and would be worth highlighting as a source of novelty of this paper relative to the previous one. Some reviewers will be skeptical that we are publishing another paper from the same experiment, so the distinction should be made clear.} (FigX). 
+The common experiment was installed at 14 sites across a climatic gradient (FigX).
 At each site, we established 14 blocks. 
 For each block we planted three female and three male individuals that were clonally propagated from eight natural source populations of Texas bluegrass. 
 The experiment was established in November 2013 and was census annually through 2016, providing both spatial and inter-annual variation in climate. 
-
 Each May (2014-2016), we collected individual demographic data including survival (alive or dead), growth (number of tillers), flowering status (reproductive or vegetative), and fertility (number of panicles, conditional on flowering). 
 For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions years.
 
@@ -174,8 +176,6 @@ To back-cast and forecast changes in climate, we downloaded projection data for 
 Data for these climatic periods were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
 The GCMs are MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM  and were downloaded from chelsa \citep{sanderson2015representative}.
 We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing to amount to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which project a radiative forcing to amount to 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}.
-
-\tom{Tom stopped here Monday evening. Generall impressions: really good! Need more hypotheses regarding sex-specific responses. Also need to say a little more about prev study (including what is known about sex-specific niches), and lean into the natural history at the end of intro and start of methods. }{}
 
 \subsection*{Sex ratio experiment}
 
@@ -225,15 +225,15 @@ f(\mu) = \beta_{0} + \beta_{1}size + \beta_{2}sex + \beta_{3}pptgrow + \beta_{4}
 \noindent where $\beta_{0}$ is the  grand mean intercept, $\beta_{1}$...$\beta_{13}$ represent the size and climate dependent slopes.
 $size$ was on a natural logarithm scale. 
 $pptgrow$ is the precipitation of the growing season (standardized to mean zero and unit variance), $tempgrow$ is the temperature of the growing season (standardized to mean zero and unit variance), $pptdorm$ is the precipitation of the dormant season (standardized to mean zero and unit variance), $tempdorm$ is the temperature of the dormant season (standardized to mean zero and unit variance).
-The model also includes normally distributed random effects for block-to-block variation ($\phi \sim N(0,\sigma_{block})$) and source-to-source variation that is related to the provenence of the seeds used to establish the common garden ($\rho \sim N(0,\sigma_{source})$), site to site variation ($\nu \sim N(0,\sigma_{site})$)
-
-
-We fit all models in Stan \citep{rstan}, with weakly informative priors for coefficients ($\mu = 0, \sigma = 100$) and variances ($\gamma [0.001, 0.001]$). We ran three chains for 1000 samples for warmup and 4000 for interactions, with a thinning rate of 3.
+The model also includes normally distributed random effects for block-to-block variation ($\phi \sim N(0,\ \sigma_{block})$) and source-to-source variation that is related to the provenence of the seeds used to establish the common garden ($\rho \sim N(0,\ \sigma_{source})$), site to site variation ($\nu \sim N(0,\ \sigma_{site})$)
+We fit survival,growth, flowering models with generic weakly informative priors for coefficients ($\mu = 0,\ \sigma = 1.5$) and variances ($\gamma [0.1,\ 0.1]$).
+{\color{blue}We fit fertility model with different generic weakly informative priors for coefficients ($\mu = 0,\ \sigma = 0.15$).} 
+% because the models could not converge with the same priors that was used for he other vital rates.
+We ran three chains for 1000 samples for warmup and 4000 for interactions, with a thinning rate of 3.
 We accessed the quality of the models using trace plots and predictive check graphs \citep{piironen2017comparison} (Supporting Information \ref{Sup:PPC}).
-
 To understand the effect of climate on vital rates, we got the 95 \% credible interval of the posterior distribution.  
 Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
-
+All models were fit in Stan \citep{rstan}. 
 \subsection*{Population growth rate responses to climate}
 To understand the effect of climate on population growth rate, we used the vital rate estimated earlier to build a matrix projection model (MPM) structured by size (number of tillers), sex and climate as covariate.  
 Let $F_{x,z,t}$ and $M_{x,z,t}$ be the number of female and male plants of size $x$ in year $t$ present at a location that has $z$ as climate, where $x \in \{1,2,...,U\}$ and $U$ is the maximum number of tillers a plant can reach (here 95th percentile of observed maximum size).
@@ -280,7 +280,7 @@ Var(\lambda_{c})\approx \sum_{i=-1}^{n}\sum_{j=1}^{n} Cov(\theta_{i},\theta_{j},
 
 Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. 
 
-\subsection*{Implication on range shifts}
+\subsection*{Implication of climate change on range shifts}
 To understand the implication of our study on range, we extrapolate population growth using past, current and future climatic data  across the range to map species distributions. 
 % Because some population growth rate predictions were unrealistic, we limited our population growth rate values to 30\% more or less than the observed maximum and minimum values.  
 Averaging projection of population growth rates was used to reduce uncertainty across climate projections (general circulation models). 
@@ -293,9 +293,9 @@ Most vital rates were strongly climate dependent, but the magnitude of their res
 Survival and flowering were strongly more dependent on climate than growth (number of tillers) and reproduction (number of panicles) (Fig.\ref{fig:vital_rates}; Supporting Information \ref{Sup:Posterior}).
 We found opposite patterns in the direction of the effect on seasonal climate on the probability of survival and flowering. The growing season (precipitation) has a negative effect on the probability of survival, number of tillers, and the probability of flowering, whereas the dormant season has a positive effect on these vital rates. 
 Unlike the other seasonal variables, temperature had different effects on different vital rates.
-The growing season has a positive effect of the probability of survival, a negative effect of the probability of flowering, and the number of tillers, but no significant effect on the number of panicles. 
+Temperature of the growing season has a positive effect of the probability of survival, a negative effect of the probability of flowering, and the number of tillers, but no significant effect on the number of panicles. 
 Further, there was a female survival and flowering advantage across both climatic seasons (Figures. 3A-3D, 3I-3K). 
-On the contrary, there was a male panicle advantage across all climatic variables (Figure3X-Y). 
+On the contrary, there was a male panicle advantage across all climatic variables (Figure3M-3P). 
 Counter-intuitively, there was no significant sex growth advantage in all season climatic variables (Figures. 3E-3H). 
 
 \begin{figure}%[h!]
@@ -311,11 +311,16 @@ Counter-intuitively, there was no significant sex growth advantage in all season
 \end{figure}
 
 \subsection*{Population growth rate response to climate change}
-We estimated the predicted response to population fitness to seasonal climate gradients using a model assuming a female dominant model and another model using the two sexes. 
-Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness. 
-For both models (female dominant and two sexes), population fitness decreases with an increase of precipitation of growing season. 
-Furthermore, population fitness was maximized between 23 and 17 degrees Celsius and decreases to zero just beyond 20 degrees Celsius during the growing season.
-Population fitness increases with temperature and precipitation of the dormant season. 
+We estimated the predicted response to population growth rate (population fitness) to seasonal climate gradients using a model assuming a female dominant model and another model using the two sexes. 
+Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness (Fig.\ref{fig:lambda}). 
+For both models (female dominant and two sexes), population fitness decreased with an increase of precipitation of growing season. 
+In contrast population fitness increased with precipitation of the dormant season.
+Furthermore, population fitness was maximized between 23 and 17 degrees Celsius and decreases to zero just beyond 32 degrees Celsius during the growing season.
+Similarly population fitness was maximized between 13 and 17 degrees Celsius and decreases to zero just beyond 20 degrees Celsius during the growing season.
+We have also detected a strong effect of the past and future climate on population growth rate. However, for future climate, the magnitude of that effect was different between gas-scenario emissions. 
+A moderate emission gas scenario (RCP4.5) has a moderate effect on the population growth rate, while a high emission scenario (RCP8.5) has a strong effect on the population growth rate. 
+High-emission scenario (RCP8.5) will lead to an alteration of population viability. 
+Under past climate conditions, population growth rate decreased below one for temperature of the growing season and the dormant season.
 
 \begin{figure}%[h!]
   \begin{center}
@@ -326,10 +331,6 @@ Population fitness increases with temperature and precipitation of the dormant s
 \end{figure}
 
 \subsection*{Climatic niches and range predictions}
-We detected a strong effect of the past and future climate on population growth rate. However, for future climate, the magnitude of that effect was different between gas-scenario emissions. 
-A moderate emission gas scenario (RCP4.5) has a moderate effect on the population growth rate, while a high emission scenario (RCP8.5) has a strong effect on the population growth rate. 
-High-emission scenario (RCP8.5) will lead to an alteration of population viability. 
-Under past climate conditions, population growth rate decreased below one for temperature of the growing season and the dormant season. 
 Our demographically based range predictions broadly captured the known distribution of the species (Fig. 1). 
 More specifically, the predicted population viable ($\lambda>1$) matches the presence and absence of the species. 
 Furthermore, viable populations of \emph{P. arichnifera} were only predicted at the center of the range for current climatic conditions (Fig1).
