@@ -222,7 +222,6 @@ jacob_path<-"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Future and his
 choose_path<-jacob_path
 ```
 
-
 ```{r}
 raster_1901_1930_list <- list.files(path = paste0(choose_path,"/Historical"),pattern=".tif$",full.names = T)# load bioclimatic layers
 clim_1901_1930 <- raster::stack(raster_1901_1930_list) # put all the rasters together
@@ -247,6 +246,7 @@ clim_current<-data.frame(Conditions_1990_2019)
 ```
 
 ### Future data (2017-2100)
+
 #### MIROC5
 
 ```{r}
@@ -397,7 +397,6 @@ dev.off()
 
 ```
 
-
 *Scaled with present data*
 
 ```{r}
@@ -492,8 +491,8 @@ dev.off()
 
 ```
 
-
 *Scaled with present data*
+
 ```{r,eval=FALSE}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/CMCCscaled_with_current.pdf",height = 7,width = 7,useDingbats = F)
 
@@ -663,6 +662,7 @@ poar.clim_seasonal <- left_join(x = poar_allsites_2015_2016,y =poar_2015_2016,by
 ```
 
 ## Time series plots to visualize climate change
+
 ```{r}
 temp_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/pr_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
 precip_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/tas_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
@@ -680,8 +680,8 @@ ggplot(precip_ts %>% filter(site%in%east_west))+
   facet_wrap(~season)
 ```
 
-
 # Mixed effect models (vital rate vs. climate )
+
 ## Read and format data to build the model
 
 ```{r}
@@ -2388,7 +2388,6 @@ for(p in 1:n_post_draws){
 #quantile(panic_sex_diff_post_tempgrow[1,1,],probs=c(0.05,0.5,0.95))
 ```
 
-
 ```{r}
 #define quantiles of posterior samples
 sex_diff_surv_mean_tempdorm <- sex_diff_grow_mean_tempdorm <- sex_diff_flow_mean_tempdorm <- sex_diff_panic_mean_tempdorm <- matrix(NA,size_bin_num,length(tempdorm_seq))
@@ -3410,6 +3409,7 @@ dev.off()
 ```
 
 # Matrix model (lambda vs climate)
+
 ##load MPM functions
 
 ```{r}
@@ -3871,6 +3871,7 @@ dev.off()
 ```
 
 # Lambda-climate posterior sampling
+
 ```{r}
 library(doParallel)
 library(foreach)
@@ -4205,7 +4206,6 @@ lambda_tempgrow_post_list <- list(lambda_tempgrow_post_rfx=lambda_tempgrow_post)
 
 write_rds(lambda_tempgrow_post_list,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Posterior/lambda_tempgrow_post_list.rds")
 ```
-
 
 ```{r}
 # read in results of the above loop
@@ -4665,6 +4665,7 @@ stopCluster(my.cluster)
 ```
 
 # Life Table Response Experiment (LTRE)
+
 ```{r}
 # Z score
 zclim_current = data.frame(matrix(nrow = 14, ncol = 4)) 
@@ -4674,7 +4675,9 @@ zclim_current$ztempgrow<-(clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/s
 zclim_current$zpptdorm<-(clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_current$ztempdorm<-(clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-### Past
+
+## Past
+
 ```{r}
 zclim_past = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_past)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4683,7 +4686,9 @@ zclim_past$ztempgrow<-(clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar
 zclim_past$zpptdorm<-(clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_past$ztempdorm<-(clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
+
 ## MIROC45
+
 ```{r}
 zclim_miroc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_miroc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4692,7 +4697,9 @@ zclim_miroc45$ztempgrow<-(clim_miroc45$tempgrow-mean(poar_2015_2016$tempgrow))/s
 zclim_miroc45$zpptdorm<-(clim_miroc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_miroc45$ztempdorm<-(clim_miroc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-## ACCESS45 
+
+## ACCESS45
+
 ```{r}
 zclim_acc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_acc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4701,7 +4708,9 @@ zclim_acc45$ztempgrow<-(clim_access45$tempgrow-mean(poar_2015_2016$tempgrow))/sd
 zclim_acc45$zpptdorm<-(clim_access45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_acc45$ztempdorm<-(clim_access45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-## CMC45 
+
+## CMC45
+
 ```{r}
 zclim_cmc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_cmc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4710,7 +4719,9 @@ zclim_cmc45$ztempgrow<-(clim_cmcc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(p
 zclim_cmc45$zpptdorm<-(clim_cmcc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_cmc45$ztempdorm<-(clim_cmcc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-## CES45 
+
+## CES45
+
 ```{r}
 zclim_ces45 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_ces45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4729,6 +4740,7 @@ data_site_45<-data.frame(zpptgrow=rowMeans(data_site_pptgrow45),ztempgrow=rowMea
 ```
 
 ## MIROC85
+
 ```{r}
 zclim_miroc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_miroc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4737,7 +4749,9 @@ zclim_miroc85$ztempgrow<-(clim_miroc85$tempgrow-mean(poar_2015_2016$tempgrow))/s
 zclim_miroc85$zpptdorm<-(clim_miroc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_miroc85$ztempdorm<-(clim_miroc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-## ACCESS85 
+
+## ACCESS85
+
 ```{r}
 zclim_acc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_acc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4746,7 +4760,9 @@ zclim_acc85$ztempgrow<-(clim_access85$tempgrow-mean(poar_2015_2016$tempgrow))/sd
 zclim_acc85$zpptdorm<-(clim_access85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_acc85$ztempdorm<-(clim_access85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-## CMC85 
+
+## CMC85
+
 ```{r}
 zclim_cmc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_cmc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4755,7 +4771,9 @@ zclim_cmc85$ztempgrow<-(clim_cmcc85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(p
 zclim_cmc85$zpptdorm<-(clim_cmcc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 zclim_cmc85$ztempdorm<-(clim_cmcc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
 ```
-## CES85 
+
+## CES85
+
 ```{r}
 zclim_ces85 = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_ces85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -4852,8 +4870,9 @@ geom_bar(stat="identity", color="black",fill="grey80", position=position_dodge()
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_LTRE.pdf", Fig_LTRE, width = 5, height = 3)
 ```
 
-# Projection over time (Past,Present, and Future (Miroc 5))
-# Predicted response of λ to climate change 
+# Projection over time (Past,Present, and Future )
+
+# Predicted response of λ to climate change
 
 ### Precipitation growing season
 
@@ -4944,7 +4963,6 @@ for (i in 1:length(all_pptgrow_seq85)) {
   ssd_pptgrow_all85[,i] <- lambda_run$n0
 }
 ```
-
 
 ### Temperature growing season
 
@@ -5219,7 +5237,6 @@ for (i in 1:length(all_tempdorm_seq85)) {
 
 ```
 
-
 ```{r}
 rect_pptgrow <- data.frame(xmin = c((min(zclim_past$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (min(zclim_current$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (min(data_site_45$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)),
 (min(data_site_85$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow))), xmax = c((max(zclim_past$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (max(zclim_current$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (max(data_site_45$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)),
@@ -5326,7 +5343,6 @@ dev.off()
 
 ```
 
-
 ### Geographic Projection
 
 ```{r}
@@ -5396,7 +5412,6 @@ P_miroc85 <- system.time(
                                  max.yrs = max_yrs)$lambdatracker[max_yrs]
 })
 ```
-
 
 ```{r}
 clim_lambda_miroc85<-data.frame(coordinates_study_area,lambda=lambda_2sex_miroc85)
@@ -5509,6 +5524,7 @@ clim_lambda_past<-data.frame(coordinates_study_area,lambda=lambda_2sex_past)
 ```
 
 ## ACCESS
+
 ```{r}
 clim_acc_85_values<-terra::extract(clim_access_85,coordinates_study_area)
 climate_acc_85_values<-data.frame(clim_acc_85_values)
@@ -5583,6 +5599,7 @@ clim_lambda_acc45<-data.frame(coordinates_study_area,lambda=lambda_2sex_acc45)
 ```
 
 ## CMCM
+
 ```{r}
 clim_cmc_85_values<-terra::extract(clim_cmcc_85,coordinates_study_area)
 climate_cmc_85_values<-data.frame(clim_cmc_85_values)
@@ -5656,6 +5673,7 @@ clim_lambda_cmc45<-data.frame(coordinates_study_area,lambda=lambda_2sex_cmc45)
 ```
 
 ## CES
+
 ```{r}
 clim_ces_85_values<-terra::extract(clim_cesm_85,coordinates_study_area)
 climate_ces_85_values<-data.frame(clim_ces_85_values)
@@ -5733,6 +5751,7 @@ stopCluster(my.cluster)
 ```
 
 # Put the future projection together
+
 ```{r}
 lambda_future = data.frame(matrix(nrow = 3972, ncol = 10)) 
 colnames(lambda_future)<-c("x","y","miroc45","miroc85","access45","access85","cmcc45","cmcc85","ces45","ces85")
@@ -5755,10 +5774,9 @@ lambda_current<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/F
 lambda_future<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_future.csv")
 ```
 
-
 ## Download occurrence data from gbif for *Poa arachnifera*
 
-```{r} 
+```{r}
 library(dismo)
 # dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
 poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
@@ -5799,7 +5817,6 @@ poar_occ_unique %>%
   dplyr::select(lon, lat, year)%>% 
   filter(year %in% (1901:1930) & as.numeric(lon >=-110.374160))->poar_occ_1901_1930 #  filter from 1990 to 2020 to match climatic data.
 ```
-
 
 ```{r}
 lambda_future %>% 
@@ -5887,7 +5904,6 @@ theme(strip.background = element_blank(),
 
 ```
 
-
 ```{r}
 Fig_geoprojection<-ggarrange(lambda_map_past, lambda_map_current, lambda_map_45, lambda_map_85,common.legend = TRUE)
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoprojection.pdf", Fig_geoprojection, width = 5, height = 7)
@@ -5898,10 +5914,10 @@ ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecas
 #### Lambda-temperature posterior sampling to have probability density
 
 ##### Dormant season
+
 ```{r}
 data_niche<-cbind(data_past_present_45_85)
 ```
-
 
 ```{r}
 ## set up data for past, present, future 
@@ -6068,229 +6084,17 @@ write_csv(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller L
 ```
 
 ```{r}
-nichedormant<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.csv")
+nichedormant<-readRDS(url("https://www.dropbox.com/scl/fi/ejueiyu58g96eqlb60js4/data_dormant_niche.rds?rlkey=8xjqn6reelmqtcbzm1na61g2m&dl=1"))
 prob_lambda_dorm_post<-c()
 for(l in 1:ncol(nichedormant)){
   prob_lambda_dorm_post[l]<-mean(nichedormant[,l]>1,na.rm=T)
 }
 
-all_pptdorm_seq<-seq(min(data_niche$zpptdorm),max(data_niche$zpptdorm),length.out=30)
-all_tempdorm_seq<-seq(min(data_niche$ztempdorm),max(data_niche$ztempdorm),length.out=30)
+all_pptdorm_seq<-seq(min(data_niche$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_niche$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
+all_tempdorm_seq<-seq(min(data_niche$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),max(data_niche$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),length.out=30)
 
 mtrx_dorm <- matrix(prob_lambda_dorm_post, nrow = 30, dimnames = list(all_pptdorm_seq,
                all_tempdorm_seq))
-```
-
-```{r}
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main=expression(paste("Pr (", lambda, ">1)"))) 
-contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=1,col="black") 
-
-text(288.4333,23.74667,"*",col="black",cex=1.5)
-text(292.1333,25.67500,"*",col="black",cex=1.5)
-text(288.3667,27.29292,"*",col="black",cex=1.5)
-text(173.8333,27.27250,"*",col="black",cex=1.5)
-text(253.3667,28.11583,"*",col="black",cex=1.5)
-text(197.3667,28.25875,"*",col="black",cex=1.5)
-text(218.9333,24.77292,"*",col="black",cex=1.5)
-text(323.0333,24.46833,"*",col="black",cex=1.5)
-text(161.5667,26.58125,"*",col="black",cex=1.5)
-text(474.4000,24.36167,"*",col="black",cex=1.5)
-text(291.2333,27.28833,"*",col="black",cex=1.5)
-text(232.2000,27.47750,"*",col="black",cex=1.5)
-text(235.3000,27.73083 ,"*",col="black",cex=1.5)
-text(235.7333,25.02083,"*",col="black",cex=1.5)
-
-
-text(265.5227,24.12500,"+",col="black")
-text(346.1123,26.25333,"+",col="black")
-text(393.5793,27.87833,"+",col="black")
-text(206.0957,27.68000,"+",col="black")
-text(258.7293,28.01417,"+",col="black")
-text(264.2930,28.56250,"+",col="black")
-text(213.3117,25.21000,"+",col="black")
-text(378.8613,25.19500,"+",col="black")
-text(208.8080 ,25.19500,"+",col="black")
-text(458.5280,24.92167,"+",col="black")
-text(408.6717,27.52667,"+",col="black")
-text(279.9370,27.85333,"+",col="black")
-text(276.3810,28.15333 ,"+",col="black")
-text(279.9233,25.55750,"+",col="black")
-
-text(267.7669,26.85628,"o",col="black",cex=0.8)
-text(325.2300,29.05751,"o",col="black",cex=0.8)
-text(495.5609,29.67795,"o",col="black",cex=0.8)
-text(288.3080,29.61394,"o",col="black",cex=0.8)
-text(335.5297,31.13587,"o",col="black",cex=0.8)
-text(346.5369,30.69390,"o",col="black",cex=0.8)
-text(244.4995,27.77117,"o",col="black",cex=0.8)
-text(322.3122,28.52362,"o",col="black",cex=0.8)
-text(223.7107,29.10931,"o",col="black",cex=0.8)
-text(405.5963,28.02044,"o",col="black",cex=0.8)
-text(492.8491,29.76620,"o",col="black",cex=0.8)
-text(291.9979,30.56252,"o",col="black",cex=0.8)
-text(301.5463,30.82869 ,"o",col="black",cex=0.8)
-text(257.4402,28.30679,"o",col="black",cex=0.8)
-
-text(264.6753,29.01784,".",col="black",cex=3.5)
-text(298.0957,31.62737,".",col="black",cex=3.5)
-text(356.8553,31.63230,".",col="black",cex=3.5)
-text(242.2674,31.83129,".",col="black",cex=3.5)
-text(274.1124,33.57525,".",col="black",cex=3.5)
-text(242.7836,32.70073,".",col="black",cex=3.5)
-text(245.7669,30.02242,".",col="black",cex=3.5)
-text(306.1977,31.07918,".",col="black",cex=3.5)
-text(209.4090,31.37639,".",col="black",cex=3.5)
-text(396.7742,30.41346,".",col="black",cex=3.5)
-text(361.0364,31.98779,".",col="black",cex=3.5)
-text(264.4433,33.03826,".",col="black",cex=3.5)
-text(265.5193,33.32535 ,".",col="black",cex=3.5)
-text(248.6077,30.76281,".",col="black",cex=3.5)
-
-
-
-
-arrows(288.4333,23.74667,265.5227,24.12500,length = 0.1,col="#D55E00",lw=1,lty=1)
-arrows(265.5227,24.12500,267.7669,26.85628,length = 0.1,col="#D55E00",lty=1,lw=1)
-arrows(265.5227,24.12500,264.6753,29.01784,length = 0.1,col="#D55E00",lty=1,lw=1)
-
-
-
-
-
-
-clim_miroc85
-```
-
-```{r}
-library(RColorBrewer)
-n <- 14
-qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-# pie(rep(1,n), col=sample(col_vector, n))
-# [1] "#BF5B17" "#B3DE69" "#999999" "#E41A1C" "#1B9E77" "#FDDAEC" "#FDC086" "#386CB0"
-#  [9] "#8DA0CB" "#984EA3" "#666666" "#FFD92F" "#B3B3B3" "#A65628"
-
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main=expression(paste("Pr (", lambda, ">1)"))) 
-contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=0.75,col="black") 
-
-text(288.4333,23.74667,"*",col="black",cex=1.5)
-text(265.5227,24.12500,"+",col="black")
-text(267.7669,26.85628,"o",col="black",cex=0.8)
-text(264.6753,29.01784,".",col="black",cex=3.5)
-arrows(288.4333,23.74667,265.5227,24.12500,length = 0.1,col="#BF5B17",lw=1,lty=1)
-arrows(265.5227,24.12500,267.7669,26.85628,length = 0.1,col="#BF5B17",lty=1,lw=1)
-arrows(267.7669,26.85628,264.6753,29.01784,length = 0.1,col="#BF5B17",lty=1,lw=1)
-
-text(292.1333,25.67500,"*",col="black",cex=1.5)
-text(346.1123,26.25333,"+",col="black")
-text(325.2300,29.05751,"o",col="black",cex=0.8)
-text(298.0957,31.62737,".",col="black",cex=3.5)
-arrows(292.1333,25.67500,346.1123,26.25333,length = 0.1,col="#B3DE69",lw=1,lty=1)
-arrows(346.1123,26.25333,325.2300,29.05751,length = 0.1,col="#B3DE69",lty=1,lw=1)
-arrows(325.2300,29.05751,298.0957,31.62737,length = 0.1,col="#B3DE69",lty=1,lw=1)
-
-text(288.3667,27.29292,"*",col="black",cex=1.5)
-text(393.5793,27.87833,"+",col="black")
-text(495.5609,29.67795,"o",col="black",cex=0.8)
-text(356.8553,31.63230,".",col="black",cex=3.5)
-arrows(288.3667,27.29292,393.5793,27.87833,length = 0.1,col="#999999",lw=1,lty=1)
-arrows(393.5793,27.87833,495.5609,29.67795,length = 0.1,col="#999999",lty=1,lw=1)
-arrows(495.5609,29.67795,356.8553,31.63230,length = 0.1,col="#999999",lty=1,lw=1)
-
-text(173.8333,27.27250,"*",col="black",cex=1.5)
-text(206.0957,27.68000,"+",col="black")
-text(288.3080,29.61394,"o",col="black",cex=0.8)
-text(242.2674,31.83129,".",col="black",cex=3.5)
-arrows(173.8333,27.27250,206.0957,27.68000,length = 0.1,col="#E41A1C",lw=1,lty=1)
-arrows(206.0957,27.68000,288.3080,29.61394,length = 0.1,col="#E41A1C",lty=1,lw=1)
-arrows(288.3080,29.61394,242.2674,31.83129,length = 0.1,col="#E41A1C",lty=1,lw=1)
-
-text(253.3667,28.11583,"*",col="black",cex=1.5)
-text(258.7293,28.01417,"+",col="black")
-text(335.5297,31.13587,"o",col="black",cex=0.8)
-text(274.1124,33.57525,".",col="black",cex=3.5)
-arrows(253.3667,28.11583,258.7293,28.01417,length = 0.1,col="#1B9E77",lw=1,lty=1)
-arrows(258.7293,28.01417,335.5297,31.13587,length = 0.1,col="#1B9E77",lty=1,lw=1)
-arrows(335.5297,31.13587,274.1124,33.57525,length = 0.1,col="#1B9E77",lty=1,lw=1)
-
-text(197.3667,28.25875,"*",col="black",cex=1.5)
-text(264.2930,28.56250,"+",col="black")
-text(346.5369,30.69390,"o",col="black",cex=0.8)
-text(242.7836,32.70073,".",col="black",cex=3.5)
-arrows(197.3667,28.25875,264.2930,28.56250,length = 0.1,col="#FDDAEC",lw=1,lty=1)
-arrows(264.2930,28.56250,346.5369,30.69390,length = 0.1,col="#FDDAEC",lty=1,lw=1)
-arrows(346.5369,30.69390,242.7836,32.70073,length = 0.1,col="#FDDAEC",lty=1,lw=1)
-
-text(218.9333,24.77292,"*",col="black",cex=1.5)
-text(213.3117,25.21000,"+",col="black")
-text(244.4995,27.77117,"o",col="black",cex=0.8)
-text(245.7669,30.02242,".",col="black",cex=3.5)
-arrows(218.9333,24.77292,213.3117,25.21000,length = 0.1,col="#FDC086",lw=1,lty=1)
-arrows(213.3117,25.21000,244.4995,27.77117,length = 0.1,col="#FDC086",lty=1,lw=1)
-arrows(244.4995,27.77117,245.7669,30.02242,length = 0.1,col="#FDC086",lty=1,lw=1)
-
-text(323.0333,24.46833,"*",col="black",cex=1.5)
-text(378.8613,25.19500,"+",col="black")
-text(322.3122,28.52362,"o",col="black",cex=0.8)
-text(306.1977,31.07918,".",col="black",cex=3.5)
-arrows(323.0333,24.46833,378.8613,25.19500,length = 0.1,col="#386CB0",lw=1,lty=1)
-arrows(378.8613,25.19500,322.3122,28.52362,length = 0.1,col="#386CB0",lty=1,lw=1)
-arrows(322.3122,28.52362,306.1977,31.07918,length = 0.1,col="#386CB0",lty=1,lw=1)
-
-
-text(161.5667,26.58125,"*",col="black",cex=1.5)
-text(208.8080 ,25.19500,"+",col="black")
-text(223.7107,29.10931,"o",col="black",cex=0.8)
-text(209.4090,31.37639,".",col="black",cex=3.5)
-arrows(161.5667,26.58125,208.8080 ,25.19500,length = 0.1,col="#8DA0CB",lw=1,lty=1)
-arrows(208.8080 ,25.19500,223.7107,29.10931,length = 0.1,col="#8DA0CB",lty=1,lw=1)
-arrows(223.7107,29.10931,209.4090,31.37639,length = 0.1,col="#8DA0CB",lty=1,lw=1)
-
-
-text(474.4000,24.36167,"*",col="black",cex=1.5)
-text(458.5280,24.92167,"+",col="black")
-text(405.5963,28.02044,"o",col="black",cex=0.8)
-text(396.7742,30.41346,".",col="black",cex=3.5)
-arrows(474.4000,24.36167,458.5280,24.92167,length = 0.1,col="#984EA3",lw=1,lty=1)
-arrows(458.5280,24.92167,405.5963,28.02044,length = 0.1,col="#984EA3",lty=1,lw=1)
-arrows(405.5963,28.020447,396.7742,30.41346,length = 0.1,col="#984EA3",lty=1,lw=1)
-
-text(291.2333,27.28833,"*",col="black",cex=1.5)
-text(408.6717,27.52667,"+",col="black")
-text(492.8491,29.76620,"o",col="black",cex=0.8)
-text(361.0364,31.98779,".",col="black",cex=3.5)
-arrows(291.2333,27.28833,408.6717,27.52667,length = 0.1,col="#666666",lw=1,lty=1)
-arrows(408.6717,27.52667,492.8491,29.76620,length = 0.1,col="#666666",lty=1,lw=1)
-arrows(492.8491,29.76620,361.0364,31.98779,length = 0.1,col="#666666",lty=1,lw=1)
-
-text(232.2000,27.47750,"*",col="black",cex=1.5)
-text(279.9370,27.85333,"+",col="black")
-text(291.9979,30.56252,"o",col="black",cex=0.8)
-text(264.4433,33.03826,".",col="black",cex=3.5)
-arrows(232.2000,27.47750,279.9370,27.85333,length = 0.1,col="#FFD92F",lw=1,lty=1)
-arrows(279.9370,27.85333,291.9979,30.56252,length = 0.1,col="#FFD92F",lty=1,lw=1)
-arrows(291.9979,30.56252,264.4433,33.03826,length = 0.1,col="#FFD92F",lty=1,lw=1)
-
-text(235.3000,27.73083 ,"*",col="black",cex=1.5)
-text(276.3810,28.15333 ,"+",col="black")
-text(301.5463,30.82869 ,"o",col="black",cex=0.8)
-text(265.5193,33.32535 ,".",col="black",cex=3.5)
-arrows(235.3000,27.73083,276.3810,28.15333,length = 0.1,col="#B3B3B3",lw=1,lty=1)
-arrows(276.3810,28.15333,301.5463,30.82869,length = 0.1,col="#B3B3B3",lty=1,lw=1)
-arrows(301.5463,30.82869,265.5193,33.32535,length = 0.1,col="#B3B3B3",lty=1,lw=1)
-
-text(235.7333,25.02083,"*",col="black",cex=1.5)
-text(279.9233,25.55750,"+",col="black")
-text(257.4402,28.30679,"o",col="black",cex=0.8)
-text(248.6077,30.76281,".",col="black",cex=3.5)
-arrows(235.7333,25.02083,279.9233,25.55750,length = 0.1,col="#A65628",lw=1,lty=1)
-arrows(279.9233,25.55750,257.4402,28.30679,length = 0.1,col="#A65628",lty=1,lw=1)
-arrows(257.4402,28.30679,248.6077,30.76281,length = 0.1,col="#A65628",lty=1,lw=1)
-
-
-
-
-
 ```
 
 ##### Growing season
@@ -6467,26 +6271,55 @@ for(l in 1:ncol(nichegrowing)){
   prob_lambda_grow_post[l]<-mean(nichegrowing[,l]>1,na.rm=T)
 }
 
-all_pptgrow_seq<-seq(min(data_niche$zpptgrow),max(data_niche$zpptgrow),length.out=30)
-all_tempgrow_seq<-seq(min(data_niche$ztempgrow),max(data_niche$ztempgrow),length.out=30)
+all_pptgrow_seq<-seq(min(data_niche$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),max(data_niche$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),length.out=30)
+all_tempgrow_seq<-seq(min(data_niche$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),max(data_niche$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),length.out=30)
 
 mtrx_grow <- matrix(prob_lambda_grow_post, nrow = 30, dimnames = list(all_pptgrow_seq,
                all_tempgrow_seq))
 
 ```
 
+
 ```{r}
 library(RColorBrewer)
-n <- 14
-qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-# pie(rep(1,n), col=sample(col_vector, n))
-# [1] "#BF5B17" "#B3DE69" "#999999" "#E41A1C" "#1B9E77" "#FDDAEC" "#FDC086" "#386CB0"
-#  [9] "#8DA0CB" "#984EA3" "#666666" "#FFD92F" "#B3B3B3" "#A65628"
+x_current_d<-clim_current$pptdorm
+y_current_d<-clim_current$tempdorm
+x_past_d<-clim_past$pptdorm
+y_past_d<-clim_past$tempdorm
+x_miroc45_d<-clim_miroc45$pptdorm
+y_miroc45_d<-clim_miroc45$tempdorm
+x_miroc85_d<-clim_miroc85$pptdorm
+y_miroc85_d<-clim_miroc85$tempdorm
 
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main=expression(paste("Pr (", lambda, ">1)"))) 
-contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,add=T,labcex=1,col="black") 
+x_current_g<-clim_current$pptgrow
+y_current_g<-clim_current$tempgrow
+x_past_g<-clim_past$pptgrow
+y_past_g<-clim_past$tempgrow
+x_miroc45_g<-clim_miroc45$pptgrow
+y_miroc45_g<-clim_miroc45$tempgrow
+x_miroc85_g<-clim_miroc85$pptgrow
+y_miroc85_g<-clim_miroc85$tempgrow
 
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche.pdf",width=5,height=7,useDingbats = F)
+par(mar=c(5,5,1,1),mfrow=c(2,1))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=0.75,col="black") 
+mtext("A",side = 3, adj = 0,cex=1.4)
+# title(main="A" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"+",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
+contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,add=T,labcex=0.75,col="black") 
+mtext("B",side = 3, adj = 0,cex=1.4)
+# title(main="B" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"+",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"o",col="black",cex=0.8)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=3.5)
+dev.off()
 ```
 
 ## LTRE
