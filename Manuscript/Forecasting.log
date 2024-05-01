@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  3 APR 2024 18:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  1 MAY 2024 17:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -748,70 +748,69 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
  [2] [3] [4]
 [5] [6] [7] [8] [9] [10]
-<Figures/vital_rates.pdf, id=257, 939.51pt x 1011.78pt>
+<Figures/vital_rates.pdf, id=271, 939.51pt x 1011.78pt>
 File: Figures/vital_rates.pdf Graphic file (type pdf)
 <use Figures/vital_rates.pdf>
-Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 303.
+Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 308.
 (pdftex.def)             Requested size: 446.26582pt x 480.58505pt.
-<Figures/lambdapredcited.pdf, id=259, 361.35pt x 361.35pt>
+ [11] [12 <./Figures/vital_rates.pdf>]
+<Figures/lambdapredcited.pdf, id=295, 361.35pt x 361.35pt>
 File: Figures/lambdapredcited.pdf Graphic file (type pdf)
 <use Figures/lambdapredcited.pdf>
-Package pdftex.def Info: Figures/lambdapredcited.pdf  used on input line 327.
+Package pdftex.def Info: Figures/lambdapredcited.pdf  used on input line 332.
 (pdftex.def)             Requested size: 422.77664pt x 422.7778pt.
-<Figures/Fig_geoprojection.pdf, id=260, 361.35pt x 505.89pt>
+ [13 <./Figures/lambdapredcited.pdf>]
+<Figures/Fig_geoprojection.pdf, id=310, 361.35pt x 505.89pt>
 File: Figures/Fig_geoprojection.pdf Graphic file (type pdf)
 <use Figures/Fig_geoprojection.pdf>
-Package pdftex.def Info: Figures/Fig_geoprojection.pdf  used on input line 342.
+Package pdftex.def Info: Figures/Fig_geoprojection.pdf  used on input line 347.
 
 (pdftex.def)             Requested size: 366.40834pt x 512.975pt.
- [11] [12 <./Figures/vital_rates.pdf>] [13 <./Figures/lambdapredcited.pdf>] [14
- <./Figures/Fig_geoprojection.pdf>] [15
-
-]
-(./Forecasting.bbl [16] [17] [18]) [19]
-<Figures/Varianceexplained.pdf, id=333, 578.16pt x 289.08pt>
+ [14] [15 <./Figures/Fig_geoprojection.pdf>] [16]
+(./Forecasting.bbl [17] [18] [19] [20]) [21]
+<Figures/Varianceexplained.pdf, id=357, 578.16pt x 289.08pt>
 File: Figures/Varianceexplained.pdf Graphic file (type pdf)
 <use Figures/Varianceexplained.pdf>
-Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 373.
+Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 378.
 
 (pdftex.def)             Requested size: 446.26582pt x 223.13042pt.
-<Figures/PPC.pdf, id=334, 433.62pt x 722.7pt>
+<Figures/PPC.pdf, id=358, 433.62pt x 722.7pt>
 File: Figures/PPC.pdf Graphic file (type pdf)
 <use Figures/PPC.pdf>
-Package pdftex.def Info: Figures/PPC.pdf  used on input line 380.
+Package pdftex.def Info: Figures/PPC.pdf  used on input line 385.
 (pdftex.def)             Requested size: 352.31625pt x 587.22539pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Figures/Posterior_mean.pdf, id=335, 650.43pt x 578.16pt>
+<Figures/Posterior_mean.pdf, id=359, 650.43pt x 578.16pt>
 File: Figures/Posterior_mean.pdf Graphic file (type pdf)
 <use Figures/Posterior_mean.pdf>
-Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 387.
+Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 392.
 (pdftex.def)             Requested size: 258.36668pt x 229.66312pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Figures/lambda_CI.pdf, id=336, 542.025pt x 578.16pt>
+<Figures/lambda_CI.pdf, id=360, 542.025pt x 578.16pt>
 File: Figures/lambda_CI.pdf Graphic file (type pdf)
 <use Figures/lambda_CI.pdf>
-Package pdftex.def Info: Figures/lambda_CI.pdf  used on input line 394.
+Package pdftex.def Info: Figures/lambda_CI.pdf  used on input line 399.
 (pdftex.def)             Requested size: 258.36668pt x 275.59927pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Figures/Fig_LTRE.pdf, id=337, 361.35pt x 216.81pt>
+<Figures/Fig_LTRE.pdf, id=361, 361.35pt x 216.81pt>
 File: Figures/Fig_LTRE.pdf Graphic file (type pdf)
 <use Figures/Fig_LTRE.pdf>
-Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 404.
+Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 409.
 (pdftex.def)             Requested size: 258.36668pt x 155.02127pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[20
+[22
 
- <./Figures/Varianceexplained.pdf>] [21 <./Figures/PPC.pdf>] [22 <./Figures/Pos
-terior_mean.pdf> <./Figures/lambda_CI.pdf>] [23 <./Figures/Fig_LTRE.pdf>]
+ <./Figures/Varianceexplained.pdf>] [23 <./Figures/PPC.pdf>] [24 <./Figures/Pos
+terior_mean.pdf> <./Figures/lambda_CI.pdf>] [25 <./Figures/Fig_LTRE.pdf>]
 (./Forecasting.aux)
 Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: 1A685A8CAE59C6613133854EAE2853C5;53.
@@ -821,13 +820,13 @@ Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 ### semi simple group (level 1) entered at line 87 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 18852 strings out of 476025
- 306815 string characters out of 5790018
+ 18869 strings out of 476025
+ 307313 string characters out of 5790018
  1873388 words of memory out of 5000000
- 38159 multiletter control sequences out of 15000+600000
- 667081 words of font info for 684 fonts, out of 8000000 for 9000
+ 38174 multiletter control sequences out of 15000+600000
+ 666779 words of font info for 680 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,14n,80p,1008b,779s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,14n,80p,1008b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.4} has been referenced but does not exist
 , replaced by a fixed one
@@ -855,10 +854,10 @@ ive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb></usr/local/texliv
 e/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2023/
 texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2023/texmf-d
 ist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (23 pages, 13539971 bytes).
+Output written on Forecasting.pdf (25 pages, 13543190 bytes).
 PDF statistics:
- 472 PDF objects out of 1000 (max. 8388607)
- 403 compressed objects within 5 object streams
- 93 named destinations out of 1000 (max. 500000)
+ 497 PDF objects out of 1000 (max. 8388607)
+ 426 compressed objects within 5 object streams
+ 100 named destinations out of 1000 (max. 500000)
  196145 words of extra memory for PDF output out of 221844 (max. 10000000)
 

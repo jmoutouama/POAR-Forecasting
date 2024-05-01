@@ -134,6 +134,8 @@ For example, structured models that are built from long-term demographic data co
 These structured models are increasingly utilized for two reasons. 
 First, they enable the manipulation of treatments that can isolate spatial and temporal correlations between environmental factors, thus overcoming a main disadvantage with many types of correlative studies \citep{leicht2007comparative}. 
 Second, they link individual-level demographic trait to population demography allowing the investigation of the demographic mechanisms behind vital rates (e.g. survival,fertility, growth and seed germination) response environmental variation \citep{louthan2022climate,dahlgren2016demography}. 
+Third, these structured models can be used to identify which aspect of climate is more important for population dynamics.
+For example, Life Table Response Experiment (LTRE) build from structured models is an approach that has become widely used to understand how a given treatment (eg. temperature or precipitation) could affect population dynamics \citep {caswell1989analysis,o2024nonlinear,morrison2007demographic,iler2019reproductive}. 
 % At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 % In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
@@ -244,7 +246,7 @@ Then we assumed that there is 95 \% probability that the true (unknown) estimate
 All models were fit in Stan \citep{rstan}. 
 
 \subsection*{Population growth rate responses to climate}
-To understand the effect of climate on population growth rate, we used the vital rate estimated earlier to build a matrix projection model (MPM) structured by size (number of tillers), sex and climate as covariate.  
+To understand the effect of climate on population growth rate, we used the vital rate estimated earlier to build a matrix projection model (MPM) structured by size (number of tillers), sex and climate (dormant and growing) as covariate.  
 Let $F_{x,z,t}$ and $M_{x,z,t}$ be the number of female and male plants of size $x$ in year $t$ present at a location that has $z$ as climate, where $x \in \{1,2,...,U\}$ and $U$ is the maximum number of tillers a plant can reach (here 95th percentile of observed maximum size).
 Let $F^{R}_{t}$ and $M^{R}_{t}$ be the new recruits, which we assume do not reproduce in their first year.
 We assume that the parameters of sex ratio-dependent mating (Eq. \ref{eq:viab_fn}) do not vary with climate.  
@@ -268,13 +270,13 @@ F_{y,t+1} = [ \, \sigma \cdot g^{F}(y,x=1,z) ] \, F^{R}_{t} + \sum_{x=1}^{U} 	[ 
 M_{y,t+1} = [ \, \sigma \cdot g^{M}(y,x=1,z) ] \, M^{R}_{t} + \sum_{x=1}^{U} 	[ \,  s^{M}(x,z) \cdot g^{M}(y,x,z) ] \, M_{x,z,t}
 \end{align}
 
-\noindent In the two formula above, the first term represents seedlings that survived their first year and enter the size distribution of established plants.
+\noindent In the two formula above, the first term indicates seedlings that survived their first year and enter the size distribution of established plants.
 Instead of using \textit{P. arachnifera} survival probability, we used the seedling survival probability ($\sigma$) from demographic studies of the hermaphroditic congener \textit{Poa autumnalis} in east Texas (T.E.X. Miller and J.A. Rudgers, \textit{unpublished data}), and we assume this probability was constant across sexes and climatic variables. 
 We did this because we had little information on the early life cycle transitions of greenhouse-raised transplants.
 We also assume that $g(y,x=1)$ is the probability that a surviving seedlings reach size $y$, the expected future size of 1-tiller plants from the transplant experiment.
 The second term represents survival and size transition of established plants from the previous year, where $s$ and $g$ give the probabilities of surviving at size $x$ and growing from sizes $x$ to $y$, respectively, and superscripts indicate that these functions may be unique to females ($F$) and males ($M$).
 
-Because the two-sex MPM is nonlinear (vital rates affect and are affected by population structure) we estimated the asymptotic geometric growth rate ($\lambda$) by numerical simulation, and repeated this across a range of climate.
+Since the two-sex MPM is nonlinear (vital rates affect and are affected by population structure) we estimated the asymptotic geometric growth rate ($\lambda$) by numerical simulation, and repeated this across a range of climate.
 
 \subsection*{Identifying the mechanisms of population growth rate sensitivity to climate }
 \tom{}{I don't think the LTRE analysis is adequately motivated by the Intro.}
@@ -289,10 +291,12 @@ Var(\lambda_{c})\approx \sum_{i=-1}^{n}\sum_{j=1}^{n} Cov(\theta_{i},\theta_{j},
 
 Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. 
 
-\subsection*{Implication of climate change on range shifts}
-To understand the implication of our study on range, we extrapolate population growth using past, current and future climatic data  across the range to map species distributions. 
+\subsection*{Impact of climate change on niche and range shifts}
+A species' ecological niche can be defined as the range of resources and conditions (physical and environmental) allowing the species to maintain a viable population ($\lambda > 1$).
+To understand the impact of climate change on species niche shifts, we estimated the conditional probability of the population viability being more than one across two environmental axes \citep{diez2014probabilistic}.
+In this study, the environmental axes are temperature and precipitation of the dormant season or temperature and precipitation of the growing season. 
 % Because some population growth rate predictions were unrealistic, we limited our population growth rate values to 30\% more or less than the observed maximum and minimum values.  
-Averaging projection of population growth rates was used to reduce uncertainty across climate projections (general circulation models). 
+Averaging projection of population growth rates was used to reduce uncertainty across climate projections (general circulation models).
 
 All the analysis were performed in R 4.3.1 \citep{RCoreteam}
 

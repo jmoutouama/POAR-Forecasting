@@ -4920,49 +4920,6 @@ for (i in 1:length(all_pptgrow_seq)) {
 }
 ```
 
-```{r}
-all_pptgrow_seq85 <- seq(min(data_past_present_85$zpptgrow),max(data_past_present_85$zpptgrow),length.out=30)
-
-lambda_pptgrow_all85<-lambda_pptgrow_all_2sex85<-SR_pptgrow_all85<-OSR_pptgrow_all85<-c()
-ssd_pptgrow_all85<-matrix(NA,(F_params$max_size+1)*2,length(all_pptgrow_seq85))
-max_yrs <- 30
-
-for (i in 1:length(all_pptgrow_seq85)) {
-    #linear model for comparison
-  mat <- megamatrix_delay( F_params=F_params,
-                           M_params=M_params,
-                           twosex=F,
-                           grow_perturb=0,
-                           surv_perturb=0,
-                           flow_perturb=0,
-                           fert_perturb=0,
-                           viab_perturb=0,
-                           zpptgrow=all_pptgrow_seq85[i],
-                           ztempgrow=0,
-                           zpptdorm=0,
-                           ztempdorm=0,
-                           rfx=rfx_fun())$MEGAmat
-  lambda_pptgrow_all85[i] <- popbio::lambda(mat)
-  # 2-sex model
-  lambda_run <- lambdaSim_delay( F_params=F_params,
-                                 M_params=M_params,
-                                 grow_perturb=0,
-                                 surv_perturb=0,
-                                 flow_perturb=0,
-                                 fert_perturb=0,
-                                 viab_perturb=0,
-                                 zpptgrow=all_pptgrow_seq85[i],
-                                 ztempgrow=0,
-                                 zpptdorm=0,
-                                 ztempdorm=0,
-                                 rfx = rfx_fun(),
-                                 max.yrs = max_yrs)
-  lambda_pptgrow_all_2sex85[i] <- lambda_run$lambdatracker[max_yrs]
-  SR_pptgrow_all85[i] <- lambda_run$SRtracker[max_yrs]
-  OSR_pptgrow_all85[i] <- lambda_run$OSRtracker[max_yrs]
-  ssd_pptgrow_all85[,i] <- lambda_run$n0
-}
-```
 
 ### Temperature growing season
 
@@ -5010,49 +4967,6 @@ for (i in 1:length(all_tempgrow_seq)) {
 }
 ```
 
-```{r}
-all_tempgrow_seq85 <- seq(min(data_past_present_85$ztempgrow),max(data_past_present_85$ztempgrow),length.out=20)
-
-lambda_tempgrow_all85<-lambda_tempgrow_all_2sex85<-SR_tempgrow_all85<-OSR_tempgrow_all85<-c()
-ssd_tempgrow_all85<-matrix(NA,(F_params$max_size+1)*2,length(all_tempgrow_seq85))
-max_yrs <- 30
-
-for (i in 1:length(all_tempgrow_seq85)) {
-    #linear model for comparison
-  mat <- megamatrix_delay( F_params=F_params,
-                           M_params=M_params,
-                           twosex=F,
-                           grow_perturb=0,
-                           surv_perturb=0,
-                           flow_perturb=0,
-                           fert_perturb=0,
-                           viab_perturb=0,
-                           zpptgrow=0,
-                           ztempgrow=all_tempgrow_seq85[i],
-                           zpptdorm=0,
-                           ztempdorm=0,
-                           rfx=rfx_fun())$MEGAmat
-  lambda_tempgrow_all85[i] <- popbio::lambda(mat)
-  # 2-sex model
-  lambda_run <- lambdaSim_delay( F_params=F_params,
-                                 M_params=M_params,
-                                 grow_perturb=0,
-                                 surv_perturb=0,
-                                 flow_perturb=0,
-                                 fert_perturb=0,
-                                 viab_perturb=0,
-                                 zpptgrow=0,
-                                 ztempgrow=all_tempgrow_seq85[i],
-                                 zpptdorm=0,
-                                 ztempdorm=0,
-                                 rfx = rfx_fun(),
-                                 max.yrs = max_yrs)
-  lambda_tempgrow_all_2sex85[i] <- lambda_run$lambdatracker[max_yrs]
-  SR_tempgrow_all85[i] <- lambda_run$SRtracker[max_yrs]
-  OSR_tempgrow_all85[i] <- lambda_run$OSRtracker[max_yrs]
-  ssd_tempgrow_all85[,i] <- lambda_run$n0
-}
-```
 
 ### Precipitation dormant season
 
@@ -5194,50 +5108,6 @@ for (i in 1:length(all_tempdorm_seq)) {
 ```
 
 ```{r}
-all_tempdorm_seq85 <- seq(min(data_past_present_85$ztempdorm),max(data_past_present_85$ztempdorm),length.out=30)
-lambda_tempdorm_all85<-lambda_tempdorm_all_2sex85<-SR_tempdorm_all85<-OSR_tempdorm_all85<-c()
-ssd_tempdorm_all85<-matrix(NA,(F_params$max_size+1)*2,length(all_tempdorm_seq85))
-max_yrs <- 30
-
-for (i in 1:length(all_tempdorm_seq85)) {
-    #linear model for comparison
-  mat <- megamatrix_delay( F_params=F_params,
-                           M_params=M_params,
-                           twosex=F,
-                           grow_perturb=0,
-                           surv_perturb=0,
-                           flow_perturb=0,
-                           fert_perturb=0,
-                           viab_perturb=0,
-                           zpptgrow=0,
-                           ztempgrow=0,
-                           zpptdorm=0,
-                           ztempdorm=all_tempdorm_seq85[i],
-                           rfx=rfx_fun())$MEGAmat
-  lambda_tempdorm_all85[i] <- popbio::lambda(mat)
-  # 2-sex model
-  lambda_run <- lambdaSim_delay( F_params=F_params,
-                                 M_params=M_params,
-                                 grow_perturb=0,
-                                 surv_perturb=0,
-                                 flow_perturb=0,
-                                 fert_perturb=0,
-                                 viab_perturb=0,
-                                 zpptgrow=0,
-                                 ztempgrow=0,
-                                 zpptdorm=0,
-                                 ztempdorm=all_tempdorm_seq85[i],
-                                 rfx = rfx_fun(),
-                                 max.yrs = max_yrs)
-  lambda_tempdorm_all_2sex85[i] <- lambda_run$lambdatracker[max_yrs]
-  SR_tempdorm_all85[i] <- lambda_run$SRtracker[max_yrs]
-  OSR_tempdorm_all85[i] <- lambda_run$OSRtracker[max_yrs]
-  ssd_tempdorm_all85[,i] <- lambda_run$n0
-}
-
-```
-
-```{r}
 rect_pptgrow <- data.frame(xmin = c((min(zclim_past$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (min(zclim_current$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (min(data_site_45$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)),
 (min(data_site_85$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow))), xmax = c((max(zclim_past$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (max(zclim_current$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (max(data_site_45$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)),
 (max(data_site_85$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow))),                               
@@ -5318,7 +5188,7 @@ figcombo4<-ggplot() +
   geom_hline(yintercept = 1, lty=2,color = "black")+
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
                 alpha = 0.1, data = rect_tempdorm, inherit.aes = FALSE) +
-  xlab(" Temperature (grow. season)") +
+  xlab(" Temperature (dorm. season)") +
   ylab(expression(paste("Population growth rate, ", lambda))) +
   ggtitle("")+
   theme_bw() +
@@ -5773,6 +5643,11 @@ lambda_past<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Fore
 lambda_current<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_current.csv")
 lambda_future<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_future.csv")
 ```
+```{r}
+summary(lambda_past)
+summary(lambda_current)
+summary(lambda_future)
+```
 
 ## Download occurrence data from gbif for *Poa arachnifera*
 
@@ -6079,12 +5954,15 @@ lambda_dorm_post<-foreach(p=1:n_post_draws,.combine='rbind') %:%
 
 ## write output as a dataframe
 data_dormant_niche<-data.frame(lambda_dorm_post)
+
 write_rds(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.rds")
 write_csv(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.csv")
 ```
 
 ```{r}
 nichedormant<-readRDS(url("https://www.dropbox.com/scl/fi/ejueiyu58g96eqlb60js4/data_dormant_niche.rds?rlkey=8xjqn6reelmqtcbzm1na61g2m&dl=1"))
+fixr::check_for_negative_values(nichedormant)
+nichedormant[127,884]
 prob_lambda_dorm_post<-c()
 for(l in 1:ncol(nichedormant)){
   prob_lambda_dorm_post[l]<-mean(nichedormant[,l]>1,na.rm=T)
@@ -6266,6 +6144,8 @@ data_growing_niche<-data.frame(lambda_grow_post)
 ```{r}
 # read in results of the above loop
 nichegrowing <- readRDS(url("https://www.dropbox.com/scl/fi/ggxrqzgz2wwmo1mec2d5m/data_growing_niche.rds?rlkey=6uv4l0e2ajovdit7gt778aexw&dl=1"))
+fixr::check_for_negative_values(nichegrowing)
+summary(nichegrowing)
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
   prob_lambda_grow_post[l]<-mean(nichegrowing[,l]>1,na.rm=T)
