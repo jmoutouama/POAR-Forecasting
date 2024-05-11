@@ -132,9 +132,139 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 ```
 
+# Time serie for site 
+
+```{r}
+pr_poar_projections <- read.csv("https://www.dropbox.com/scl/fi/x8qq3c5g86hrheakpf0hf/pr_poar_projections.csv?rlkey=9pg7xd9fi8m0e1bq488ax5vgw&dl=1", stringsAsFactors = F) 
+tas_poar_projections <- read.csv("https://www.dropbox.com/scl/fi/o26xt25t588ii7hd18qge/tas_poar_projections.csv?rlkey=mhb21bx3upr3b5nfm9baytdmi&dl=1", stringsAsFactors = F) 
+
+```
+
+```{r}
+pr_poar_projections %>% 
+  mutate(date=as.numeric(str_sub(transition,6,9))) %>% 
+  filter(date %in% (1901:2100)) %>% 
+  group_by(site,date,season) %>% 
+  dplyr::summarize(site=unique(site),mean_pr = mean(pr,na.rm=T))->pr_past_present_future
+#head(pr_past_present_future)
+```
+
+
+```{r}
+fig_pr_past_present_furure<-ggplot(pr_past_present_future, aes(x = date, y = mean_pr)) +
+  geom_line(aes(color =season )) +
+  geom_smooth(aes(col = season),method="lm") +
+  labs(x = "Year", y = "Precipitation (mm)") +
+  # scale_x_continuous(breaks = c(1901,1920,1940,1960,1990,2010,2040,2070,2100))+
+  xlim(1901,2100)+
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))+
+  facet_wrap(~site,ncol=4,scales = 'free',
+             labeller=labeller(site=
+                                 c("buffalolake"="Amarillo, TX",
+                                   "elreno"="El Reno, OK",
+                                   "Katy"="Waller, TX",
+                                   "llano"="Junction, TX",
+                                   "llela"="Lewisville, TX",
+                                   "lostP"="Bastrop, TX",
+                                   "lubbock"="Lubbock, TX",
+                                   "ninnescah"="Wichita, KS",
+                                   "ozona"="Ozona, TX",
+                                   "psu"="Pittsburgh, KS",
+                                   "shsu"="Huntsville, TX",
+                                   "vernon"="Vernon, TX",
+                                   "wf"="Wichita Falls, TX",
+                                   "woodward"="Woodward, OK"))) +
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.text.x = element_text(
+          size = 12, 
+          color = "black",
+          face = "italic"
+        ),
+        strip.background = element_rect(
+          color="black",
+          fill="pink", 
+          size=0.25, 
+          linetype="solid",
+        ))
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/fig_pr_past_present_future.pdf",useDingbats = F,height=8,width=9)
+print(fig_pr_past_present_furure)
+dev.off()
+```
+
+```{r}
+tas_poar_projections %>% 
+  mutate(date=as.numeric(str_sub(transition,6,9))) %>% 
+  filter(date %in% (1901:2100)) %>% 
+  group_by(site,date,season) %>% 
+  dplyr::summarize(site=unique(site),mean_temp = mean(tas,na.rm=T))->tas_past_present_future
+head(tas_past_present_future)
+
+```
+
+```{r}
+fig_tas_past_present_future<-ggplot(tas_past_present_future, aes(x = date, y = mean_temp)) +
+  geom_line(aes(color =season )) +
+  geom_smooth(aes(col = season),method="lm",full_range = TRUE) +
+  labs(x = "Year", y = "Temperature (°C)") +
+  # scale_x_continuous(breaks = c(1990,2010,2040,2070,2100))+
+  xlim(1901,2100)+
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))+
+  facet_wrap(~site,ncol=4,scales = 'free',
+             labeller=labeller(site=
+                                 c("buffalolake"="Amarillo, TX",
+                                   "elreno"="El Reno, OK",
+                                   "Katy"="Waller, TX",
+                                   "llano"="Junction, TX",
+                                   "llela"="Lewisville, TX",
+                                   "lostP"="Bastrop, TX",
+                                   "lubbock"="Lubbock, TX",
+                                   "ninnescah"="Wichita, KS",
+                                   "ozona"="Ozona, TX",
+                                   "psu"="Pittsburgh, KS",
+                                   "shsu"="Huntsville, TX",
+                                   "vernon"="Vernon, TX",
+                                   "wf"="Wichita Falls, TX",
+                                   "woodward"="Woodward, OK"))) +
+  theme_bw()+
+  theme(legend.position = "bottom",
+        strip.text.x = element_text(
+          size = 12, 
+          color = "black",
+          face = "italic"
+        ),
+        strip.background = element_rect(
+          color="black",
+          fill="pink", 
+          size=0.25, 
+          linetype="solid",
+        ))
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/fig_tas_past_present_future.pdf",useDingbats = F,height=8,width=9)
+print(fig_tas_past_present_future)
+dev.off()
+```
+
+
+```{r,eval=FALSE}
+Location<-readRDS("/Users/jm200/Downloads/poar_ms_quantities.rds")
+surveypo<-Location$survey_site_table[,c(1,2,3,5)]
+surveypo$Population<-c(rep("Natural population survey"))
+exp_pop<-Location$exp_site_table[,c(3,4)]
+exp_pop$Population<-c(rep("Common garden site"))
+
+surveypo %>% 
+  filter(Experimental_source=="yes")->source_pop
+source_pop$Population<-c(rep("Source population"))
+Studysite<-rbind(surveypo[,c(1,2,4)],exp_pop,source_pop[,c(1,2,4)])
+```
+
 # Demography data
 
 ```{r}
+r<-raster::raster("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Future and historical data/studay_area_pr.tif")
+plot(r)
 poar_allsites <- read.csv("https://www.dropbox.com/s/xk4225mn8btqhbm/demography_allsites.csv?dl=1", stringsAsFactors = F)#common garden data
 poar_allsites$census.year<-poar_allsites$year-1 # Add census year to match with climate data
 # unique(poar_allsites$census.year)
@@ -209,7 +339,7 @@ poar_dormant_growing_2015_2016 %>%
 ```{r}
 Poa_coordinate<-data.frame(site=unique(poar_allsites$site),Longitude=unique(poar_allsites$Longitude),Latitude=unique(poar_allsites$Latitude))
 Poa_longlat<-Poa_coordinate[,-1]
-coordinates(Poa_longlat) <- ~ Longitude + Latitude
+sp::coordinates(Poa_longlat) <- ~ Longitude + Latitude
 CRS1 <- CRS("+init=epsg:4326") # WGS 84
 crs(Poa_longlat) <- CRS1
 ```
@@ -620,29 +750,29 @@ dev.off()
 
 ```{r,eval=FALSE}
 figgrow <-ggplot(data=poar_2015_2016, aes(x=scale(tempgrow), y=scale(pptgrow))) +
-        geom_smooth(method="lm",color = "orange") +
-        geom_point(color = 'orange',shape = 19, size=4) +
+        geom_smooth(method="lm",color = "#0072B2") +
+        geom_point(color = '#0072B2',shape = 19, size=4) +
         labs (x="Temperature of growing season",y="Precipitation of growing season") +
         ggpubr::stat_cor(aes(label=..rr.label..)) +
         theme_bw()
 
 figdorm <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(pptdorm))) +
-        geom_smooth(method="lm",color = "orange") +
-        geom_point(color = 'orange',shape = 19, size=4) +
+        geom_smooth(method="lm",color = "#0072B2") +
+        geom_point(color = '#0072B2',shape = 19, size=4) +
         labs (x="Temperature of dormant season",y="Precipitation of dormant season") +
         ggpubr::stat_cor(aes(label=..rr.label..)) +
         theme_bw()
 
 figppt <-ggplot(data=poar_2015_2016, aes(x=scale(pptdorm), y=scale(pptgrow))) +
-        geom_smooth(method="lm",color = "orange") +
-        geom_point(color = 'orange',shape = 19, size=4) +
+        geom_smooth(method="lm",color = "#0072B2") +
+        geom_point(color = '#0072B2',shape = 19, size=4) +
         labs (x="Precipitation of dormant season",y="Precipitation of growing season") +
         ggpubr::stat_cor(method = "pearson", label.x = 1, label.y = 1) +
         theme_bw()
 
 figtemp <- ggplot(data=poar_2015_2016, aes(x=scale(tempdorm), y=scale(tempgrow))) +
-        geom_smooth(method="lm",color = "orange") +
-        geom_point(color = 'orange',shape = 19, size=4) +
+        geom_smooth(method="lm",color = "#0072B2") +
+        geom_point(color = '#0072B2',shape = 19, size=4) +
         labs (x="Temperature of dormant season",y="Temperature of growing season") +
         ggpubr::stat_cor(method = "pearson", label.x = -1.5, label.y = 1) +
         theme_bw()
@@ -5016,50 +5146,6 @@ for (i in 1:length(all_pptdorm_seq)) {
 }
 ```
 
-```{r}
-all_pptdorm_seq85 <- seq(min(data_past_present_85$zpptdorm),max(data_past_present_85$zpptdorm),length.out=20)
-
-lambda_pptdorm_all85<-lambda_pptdorm_all_2sex85<-SR_pptdorm_all85<-OSR_pptdorm_all85<-c()
-ssd_pptdorm_all85<-matrix(NA,(F_params$max_size+1)*2,length(all_pptdorm_seq85))
-max_yrs <- 30
-
-for (i in 1:length(all_pptdorm_seq85)) {
-    #linear model for comparison
-  mat <- megamatrix_delay( F_params=F_params,
-                           M_params=M_params,
-                           twosex=F,
-                           grow_perturb=0,
-                           surv_perturb=0,
-                           flow_perturb=0,
-                           fert_perturb=0,
-                           viab_perturb=0,
-                           zpptgrow=0,
-                           ztempgrow=0,
-                           zpptdorm=all_pptdorm_seq85[i],
-                           ztempdorm=0,
-                           rfx=rfx_fun())$MEGAmat
-  lambda_pptdorm_all85[i] <- popbio::lambda(mat)
-  # 2-sex model
-  lambda_run <- lambdaSim_delay( F_params=F_params,
-                                 M_params=M_params,
-                                 grow_perturb=0,
-                                 surv_perturb=0,
-                                 flow_perturb=0,
-                                 fert_perturb=0,
-                                 viab_perturb=0,
-                                 zpptgrow=0,
-                                 ztempgrow=0,
-                                 zpptdorm=all_pptdorm_seq85[i],
-                                 ztempdorm=0,
-                                 rfx = rfx_fun(),
-                                 max.yrs = max_yrs)
-  lambda_pptdorm_all_2sex85[i] <- lambda_run$lambdatracker[max_yrs]
-  SR_pptdorm_all85[i] <- lambda_run$SRtracker[max_yrs]
-  OSR_pptdorm_all85[i] <- lambda_run$OSRtracker[max_yrs]
-  ssd_pptdorm_all85[,i] <- lambda_run$n0
-}
-
-```
 
 ### Temperature of the dormant season
 
@@ -5113,15 +5199,246 @@ rect_pptgrow <- data.frame(xmin = c((min(zclim_past$zpptgrow)*sd(poar_2015_2016$
 (max(data_site_85$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow))),                               
                       Time = c("Past", "Present", "RCP4.5","RCP8.5"))
 
+rect_tempgrow <- data.frame(xmin = c((min(zclim_past$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (min(zclim_current$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (min(data_site_45$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),
+(min(data_site_85$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow))), xmax = c((max(zclim_past$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (max(zclim_current$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (max(data_site_45$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),
+(max(data_site_85$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow))),                                                                                                  Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+
+rect_pptdorm <- data.frame(xmin = c((min(zclim_past$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (min(zclim_current$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (min(data_site_45$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),
+(min(data_site_85$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm))), xmax = c((max(zclim_past$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (max(zclim_current$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (max(data_site_45$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),                                                        (max(data_site_85$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm))),
+                      Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+
+
+rect_tempdorm <- data.frame(xmin = c((min(zclim_past$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (min(zclim_current$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (min(data_site_45$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),
+(min(data_site_85$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm))), xmax = c((max(zclim_past$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (max(zclim_current$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (max(data_site_45$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),
+(max(data_site_85$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm))),                                                     
+                      Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+colors <- c("Past" = "#009E73", "Present" = "#0072B2", "RCP4.5" = "#D55E00","RCP8.5"="#D81B60")
+
+
+layout.matrix <- rbind(matrix(1:4, nrow = 2, ncol = 2, byrow = F),
+                       matrix(5:8, nrow = 2, ncol = 2, byrow = F))
+#print figure
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_past_present_future.pdf",height = 9,width = 10,useDingbats = F)
+layout(mat = layout.matrix,
+       heights = rep(c(2, 0.25),4), # Heights of the two rows
+       widths = c(2, 2, 2))
+# layout.show(8)
+
+par(oma=c(5,2,1.5,0.5))
+par(mar=c(0,4,1,0))
+plot(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all,ylim=c(0,8),
+         xlab=" ",ylab="",type="n",xaxt="n");box()
+# title(LETTERS[1],adj=0,cex.main=1.75)
+mtext( "A",side = 3, adj = 0,cex=1.25)
+mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1.2)
+abline(h = 1,lty=2,col="black")
+lines (all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all,col="#E69F00", lwd=4)
+lines(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all_2sex, col = "#999999",lwd=4) 
+legend(650, 7.5, legend=c("Female dominant", "Two-sex"),
+       col=c("#E69F00", "#999999"), lty=1:1, cex=1,bty = "n",lwd=4,seg.len =0.5:0.5)
+
+par(mar=c(0,4,0.5,0))
+plot(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all,ylim=c(0,2.5),
+         xlab=" ",ylab="",yaxt="n",type="n")
+mtext(" RCPs",side=2,line=3,cex=1.2)
+mtext("Precipitation (grow. season)",side=1,line=3,cex=1.2)
+segments(x0 = rect_pptgrow[1,1],y0 = 2, x1 = rect_pptgrow[1,2],y1 = 2, col= colors[1]) 
+segments(x0 = rect_pptgrow[2,1],y0 = 1.5, x1 = rect_pptgrow[2,2],y1 =1.5, col = colors[2]) 
+segments(x0 = rect_pptgrow[3,1],y0 = 1, x1 = rect_pptgrow[3,2],y1 =1, col = colors[3]) 
+segments(x0 = rect_pptgrow[4,1],y0 = 0.5, x1 = rect_pptgrow[4,2],y1 = 0.5, col = colors[4]) 
+
+par(mar=c(0,4,1,0))
+plot(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all,ylim=c(0,5),
+         xlab="Precipitation (grow. season) ",ylab=" ",xaxt="n",type="n");box()
+mtext( "B",side = 3, adj = 0,cex=1.25)
+# title(LETTERS[2],adj=0,cex.main=1.75)
+abline(h = 1,lty=2,col="black")
+lines(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all,col="#E69F00", lwd=4)
+lines(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all_2sex, col = "#999999",lwd=4)   
+
+par(mar=c(0,4,0.5,0))
+plot(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all,ylim=c(0,2.5),
+         xlab=" ",ylab=" ",yaxt="n",type="n");box()
+mtext(" Temperature (grow. season)",side=1,line=3,cex=1.2)
+segments(x0 = rect_tempgrow[1,1],y0 = 2, x1 = rect_tempgrow[1,2],y1 = 2, col= colors[1]) 
+segments(x0 = rect_tempgrow[2,1],y0 = 1.5, x1 = rect_tempgrow[2,2],y1 =1.5, col = colors[2]) 
+segments(x0 = rect_tempgrow[3,1],y0 = 1, x1 = rect_tempgrow[3,2],y1 =1, col = colors[3]) 
+segments(x0 = rect_tempgrow[4,1],y0 = 0.5, x1 = rect_tempgrow[4,2],y1 = 0.5, col = colors[4]) 
+
+
+par(mar=c(0,4,5,0))
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all,ylim=c(0,6),
+         xlab=" ",ylab=" ",xaxt="n",type="n");box()
+# title(LETTERS[3],adj=0,cex.main=1.75)
+mtext( "C",side = 3, adj = 0,cex=1.25)
+mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1.2)
+abline(h = 1,lty=2,col="black")
+lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all,col="#E69F00", lwd=4)
+lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all_2sex, col = "#999999",lwd=4)
+
+par(mar=c(0,4,0.5,0))
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all,ylim=c(0,2.5),
+         xlab=" ",ylab=" ",yaxt="n",type="n")
+mtext("Precipitation (dorm. season)",side=1,line=3,cex=1.2)
+mtext(" RCPs",side=2,line=3,cex=1.2)
+segments(x0 = rect_pptdorm[1,1], x1 = rect_pptdorm[1,2], y0 = 2, y1 = 2, col = colors[1])
+segments(x0 = rect_pptdorm[2,1], x1 = rect_pptdorm[2,2], y0 = 1.5, y1 = 1.5, col = colors[2]) 
+segments(x0 = rect_pptdorm[3,1], x1 = rect_pptdorm[3,2], y0 = 1, y1 = 1, col = colors[3])
+segments(x0 = rect_pptdorm[4,1], x1 = rect_pptdorm[4,2], y0 = 0.5, y1 = 0.5, col = colors[4])
+
+par(mar=c(0,4,5,0))
+plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all,ylim=c(0,5),xlab=" ",ylab=" ",xaxt="n",type="n");box()
+# title(LETTERS[4],adj=0,cex.main=1.75)
+mtext( "D",side = 3, adj = 0,cex=1.25)
+abline(h = 1,lty=2,col="black")
+lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all,col="#E69F00", lwd=4)
+lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all_2sex, col = "#999999",lwd=4)
+
+par(mar=c(0,4,0.5,0))
+plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all,ylim=c(0,2.5),
+         xlab=" ",ylab=" ",yaxt="n",type="n")
+mtext("Temperature (dorm. season)",side=1,line=3,cex=1.2)
+segments(x0 = rect_tempdorm[1,1], x1 = rect_tempdorm[1,2], y0 = 2, y1 = 2, col = colors[1])
+segments(x0 = rect_tempdorm[2,1], x1 = rect_tempdorm[2,2], y0 = 1.5, y1 = 1.5, col = colors[2]) 
+segments(x0 = rect_tempdorm[3,1], x1 = rect_tempdorm[3,2], y0 = 1, y1 = 1, col = colors[3])
+segments(x0 = rect_tempdorm[4,1], x1 = rect_tempdorm[4,2], y0 = 0.5, y1 = 0.5, col = colors[4])
+legend(32, 2.5, legend=c("Past", "Present", "RCP4.5","RCP8.5"),
+       col=colors, lty=1:1, seg.len =0.5:0.5,bty ="n",cex=0.5)
+
+dev.off()
+
+
+
+
 figcombo1<-ggplot() +
   geom_line(aes(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all), col = "#000000",size=1) +
   geom_line(aes(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all_2sex), col = "#000000",size=1,lty=2) +
   geom_hline(yintercept = 1, lty=2,color = "black")+
-  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-                alpha = 0.1, data = rect_pptgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptgrow[1,1], xend = rect_pptgrow[1,2], y = 2, yend = 2, color = "Past"), 
+                 data = rect_pptgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptgrow[2,1], xend = rect_pptgrow[2,2], y = 1.90, yend = 1.90, color = "Present"), 
+                 data = rect_pptgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptgrow[3,1], xend = rect_pptgrow[3,2], y = 1.80, yend = 1.80, color = "RCP4.5"), 
+                 data = rect_pptgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptgrow[4,1], xend = rect_pptgrow[4,2], y = 1.70, yend = 1.70, color = "RCP8.5"), 
+                 data = rect_pptgrow, inherit.aes = FALSE) +
   xlab(" Precipitation (grow. season)") +
   ylab(expression(paste("Population growth rate, ", lambda))) +
+  labs(color = "") +
+  scale_color_manual(values = colors)+
   scale_y_continuous(breaks = c(0,1,2,3,4,5,6,7,8))+
+  ggtitle("")+
+  theme_bw() +
+  theme(legend.position=c(0.8, 0.8),
+        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_text(size = 9,color="black"),
+        axis.title.y = element_text(size = 9,color="black"))+
+  scale_linetype_manual("segment legend",values=c("segment legend"=2))
+
+figcombo2<-ggplot() +
+  geom_line(aes(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all), col = "#000000",size=1)+
+  geom_line(aes(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all_2sex), col = "#000000",size=1,lty=2) +
+  geom_hline(yintercept = 1, lty=2,color = "black")+
+  geom_segment(aes(x = rect_tempgrow[1,1], xend = rect_tempgrow[1,2], y = 2, yend = 2, color = "Past"), 
+                 data = rect_tempgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_tempgrow[2,1], xend = rect_tempgrow[2,2], y = 1.75, yend = 1.75, color = "Present"), 
+                 data = rect_tempgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_tempgrow[3,1], xend = rect_tempgrow[3,2], y = 1.5, yend = 1.5, color = "RCP4.5"), 
+                 data = rect_pptgrow, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_tempgrow[4,1], xend = rect_tempgrow[4,2], y = 1.25, yend = 1.25, color = "RCP8.5"), 
+                 data = rect_tempgrow, inherit.aes = FALSE) +
+  xlab(" Temperature (grow. season)") +
+  ylab(expression(paste("Population growth rate, ", lambda))) +
+  scale_color_manual(values = colors)+
+  scale_y_continuous(breaks = c(0,1,2,3,4,5,6,7,8))+
+  ggtitle("")+
+  theme_bw() +
+  theme(legend.position="none",
+        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_text(size = 9,color="black"),
+        axis.title.y = element_text(size = 9,color="black"))
+
+figcombo3<-ggplot() +
+  geom_line(aes(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all), col = "#000000",size=1)+
+  geom_line(aes(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all_2sex), col = "#000000",size=1,lty=2) +
+  geom_hline(yintercept = 1, lty=2,color = "black")+
+  xlab(" Precipitation (dorm. season)") +
+  geom_segment(aes(x = rect_pptdorm[1,1], xend = rect_pptdorm[1,2], y = 2, yend = 2, color = "Past"), 
+                 data = rect_pptdorm, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptdorm[2,1], xend = rect_pptdorm[2,2], y = 1.75, yend = 1.75, color = "Present"), 
+                 data = rect_pptdorm, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptdorm[3,1], xend = rect_pptdorm[3,2], y = 1.5, yend = 1.5, color = "RCP4.5"), 
+                 data = rect_pptdorm, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_pptdorm[4,1], xend = rect_pptdorm[4,2], y = 1.25, yend = 1.25, color = "RCP8.5"), 
+                 data = rect_pptdorm, inherit.aes = FALSE) +
+  ylab(expression(paste("Population growth rate, ", lambda))) +
+  scale_color_manual(values = colors)+
+  ggtitle("")+
+  theme_bw() +
+  theme(legend.position="none",
+        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_text(size = 9,color="black"),
+        axis.title.y = element_text(size = 9,color="black"))
+
+figcombo4<-ggplot() +
+  geom_line(aes(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all), col = "#000000",size=1) +
+  geom_line(aes(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all_2sex), col = "#000000",size=1,lty=2) +
+  geom_hline(yintercept = 1, lty=2,color = "black")+
+  geom_segment(aes(x = rect_tempdorm[1,1], xend = rect_tempdorm[1,2], y = 2, yend = 2, color = "Past"), 
+                 data = rect_tempdorm, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_tempdorm[2,1], xend = rect_tempdorm[2,2], y = 1.75, yend = 1.75, color = "Present"), 
+                 data = rect_tempdorm, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_tempdorm[3,1], xend = rect_tempdorm[3,2], y = 1.5, yend = 1.5, color = "RCP4.5"), 
+                 data = rect_tempdorm, inherit.aes = FALSE) +
+  geom_segment(aes(x = rect_tempdorm[4,1], xend = rect_tempdorm[4,2], y = 1.25, yend = 1.25, color = "RCP8.5"), 
+                 data = rect_tempdorm, inherit.aes = FALSE) +
+  xlab(" Temperature (dorm. season)") +
+  ylab(expression(paste("Population growth rate, ", lambda))) +
+  scale_color_manual(values = colors)+
+  ggtitle("")+
+  theme_bw() +
+  theme(legend.position="none",
+        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_text(size = 9,color="black"),
+        axis.title.y = element_text(size = 9,color="black"))
+
+```
+
+
+
+```{r}
+
+```
+
+```{r}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambdapredcited.pdf",width=5,height=5,useDingbats = F)
+(figurecombo1 <- ggarrange(figcombo1, figcombo2,figcombo3,figcombo4,
+                     hjust = -2, labels = c("A", "B","C","D"), common.legend = TRUE,legend="bottom" ,font.label = list(size = 10, color = "black", face = "plain", family = NULL), vjust = 2, widths = c(2, 2), heights = 0.5, align = "hv",
+                     ncol = 2, nrow = 2
+))
+
+dev.off()
+
+```
+
+
+
+
+```{r}
+figosr1<-ggplot() +
+  geom_line(aes(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),OSR_pptgrow_all), col = "#000000",size=1) +
+  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
+            alpha = 0.1, data = rect_pptgrow, inherit.aes = FALSE) +
+  xlab(" Precipitation (grow. season)") +
+  ylab(expression(paste("Population growth rate, ", lambda))) +
   ggtitle("")+
   theme_bw() +
   theme(legend.position="none",
@@ -5133,15 +5450,10 @@ figcombo1<-ggplot() +
   scale_fill_manual(values = c("blue","green", "yellow", "red"),name="") 
 
 
-rect_tempgrow <- data.frame(xmin = c((min(zclim_past$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (min(zclim_current$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (min(data_site_45$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),
-(min(data_site_85$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow))), xmax = c((max(zclim_past$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (max(zclim_current$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (max(data_site_45$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),
-(max(data_site_85$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow))),                                                                                                  Time = c("Past", "Present", "RCP4.5","RCP8.5"))
-figcombo2<-ggplot() +
-  geom_line(aes(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all), col = "#000000",size=1)+
-  geom_line(aes(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all_2sex), col = "#000000",size=1,lty=2) +
-  geom_hline(yintercept = 1, lty=2,color = "black")+
+figosr2<-ggplot() +
+  geom_line(aes(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),OSR_tempgrow_all), col = "#000000",size=1)+
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-                alpha = 0.1, data = rect_tempgrow, inherit.aes = FALSE) +
+            alpha = 0.1, data = rect_tempgrow, inherit.aes = FALSE) +
   xlab(" Temperature (grow. season)") +
   ylab(expression(paste("Population growth rate, ", lambda))) +
   scale_y_continuous(breaks = c(0,1,2,3,4,5,6,7,8))+
@@ -5155,17 +5467,12 @@ figcombo2<-ggplot() +
         axis.title.y = element_text(size = 9,color="black"))+
   scale_fill_manual(values = c("blue","green", "yellow", "red"),name="") 
 
-rect_pptdorm <- data.frame(xmin = c((min(zclim_past$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (min(zclim_current$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (min(data_site_45$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),
-(min(data_site_85$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm))), xmax = c((max(zclim_past$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (max(zclim_current$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (max(data_site_45$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),                                                        (max(data_site_85$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm))),
-                      Time = c("Past", "Present", "RCP4.5","RCP8.5"))
 
-figcombo3<-ggplot() +
-  geom_line(aes(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all), col = "#000000",size=1)+
-  geom_line(aes(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all_2sex), col = "#000000",size=1,lty=2) +
-  geom_hline(yintercept = 1, lty=2,color = "black")+
+figors3<-ggplot() +
+  geom_line(aes(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),OSR_pptdorm_all), col = "#000000",size=1)+
   xlab(" Precipitation (dorm. season)") +
- geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-                alpha = 0.1, data = rect_pptdorm, inherit.aes = FALSE) +
+  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
+            alpha = 0.1, data = rect_pptdorm, inherit.aes = FALSE) +
   ylab(expression(paste("Population growth rate, ", lambda))) +
   ggtitle("")+
   theme_bw() +
@@ -5177,22 +5484,15 @@ figcombo3<-ggplot() +
         axis.title.y = element_text(size = 9,color="black"))+
   scale_fill_manual(values = c("blue","green", "yellow", "red"),name="") 
 
-rect_tempdorm <- data.frame(xmin = c((min(zclim_past$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (min(zclim_current$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (min(data_site_45$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),
-(min(data_site_85$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm))), xmax = c((max(zclim_past$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (max(zclim_current$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (max(data_site_45$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),
-(max(data_site_85$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm))),                                                     
-                      Time = c("Past", "Present", "RCP4.5","RCP8.5"))
-
 figcombo4<-ggplot() +
-  geom_line(aes(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all), col = "#000000",size=1) +
-  geom_line(aes(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all_2sex), col = "#000000",size=1,lty=2) +
-  geom_hline(yintercept = 1, lty=2,color = "black")+
+  geom_line(aes(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),OSR_tempdorm_all), col = "#000000",size=1) +
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-                alpha = 0.1, data = rect_tempdorm, inherit.aes = FALSE) +
+            alpha = 0.1, data = rect_tempdorm, inherit.aes = FALSE) +
   xlab(" Temperature (dorm. season)") +
   ylab(expression(paste("Population growth rate, ", lambda))) +
   ggtitle("")+
   theme_bw() +
-  theme(legend.position="top",
+  theme(legend.position="none",
         panel.border = element_rect(colour = "black", fill=NA, size=0.5),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -5200,16 +5500,6 @@ figcombo4<-ggplot() +
         axis.title.y = element_text(size = 9,color="black"))+
   scale_fill_manual(values = c("blue","green", "yellow", "red"),name="")
 
-```
-
-```{r}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambdapredcited.pdf",width=5,height=5,useDingbats = F)
-(figurecombo1 <- ggarrange(figcombo1, figcombo2,figcombo3,figcombo4,
-                     hjust = -2, labels = c("A", "B","C","D"), common.legend = TRUE,legend="bottom" ,font.label = list(size = 10, color = "black", face = "plain", family = NULL), vjust = 2, widths = c(2, 2), heights = 0.5, align = "hv",
-                     ncol = 2, nrow = 2
-))
-
-dev.off()
 
 ```
 
