@@ -373,7 +373,7 @@ Although \emph{P. arichnifera} was predicted to have suitable habitat in the cen
 
 \begin{figure}%[h!]
   \begin{center}
-    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoprojection.pdf}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection.pdf}
   \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
   \label{fig:geoproj}
   \end{center}

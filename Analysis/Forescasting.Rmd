@@ -5549,7 +5549,9 @@ climate_miroc85_values$zpptgrow<-(climate_miroc85_values$pptgrow-mean(poar_2015_
 climate_miroc85_values$ztempgrow<-(climate_miroc85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_miroc85_values$zpptdorm<-(climate_miroc85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_miroc85_values$ztempdorm<-(climate_miroc85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_miroc85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_miroc85_values.csv")
+climate_miroc85_values<-data.frame(climate_miroc85_values,coordinates_study_area)
+dim(climate_miroc85_values)
+# write_csv(climate_miroc85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_miroc85_values.csv")
 ```
 
 ```{r}
@@ -5579,13 +5581,17 @@ clim_lambda_miroc85<-data.frame(coordinates_study_area,lambda=lambda_2sex_miroc8
 ```
 
 ```{r}
+data.frame(coordinates_study_area)
 clim_current_values<-terra::extract(clim_1990_2019,coordinates_study_area)
 clim_current_values<-as.data.frame(clim_current_values)
 clim_current_values$zpptgrow<-(clim_current_values$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
 clim_current_values$ztempgrow<-(clim_current_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 clim_current_values$zpptdorm<-(clim_current_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 clim_current_values$ztempdorm<-(clim_current_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(clim_current_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_current_values.csv")
+
+clim_current_values<-data.frame(clim_current_values,coordinates_study_area)
+dim(clim_current_values)
+# write_csv(clim_current_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_current_values.csv")
 ```
 
 ```{r}
@@ -5620,7 +5626,8 @@ climate_miroc45_values$zpptgrow<-(climate_miroc45_values$pptgrow-mean(poar_2015_
 climate_miroc45_values$ztempgrow<-(climate_miroc45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_miroc45_values$zpptdorm<-(climate_miroc45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_miroc45_values$ztempdorm<-(climate_miroc45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_miroc45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_miroc_45_values.csv")
+climate_miroc45_values<-data.frame(climate_miroc45_values,coordinates_study_area)
+# write_csv(climate_miroc45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_miroc_45_values.csv")
 ```
 
 ```{r}
@@ -5655,7 +5662,8 @@ clim_past_values$zpptgrow<-(clim_past_values$pptgrow-mean(poar_2015_2016$pptgrow
 clim_past_values$ztempgrow<-(clim_past_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 clim_past_values$zpptdorm<-(clim_past_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 clim_past_values$ztempdorm<-(clim_past_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(clim_past_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_past_values.csv")
+clim_past_values<-data.frame(clim_past_values,coordinates_study_area)
+# write_csv(clim_past_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_past_values.csv")
 ```
 
 ```{r}
@@ -5933,6 +5941,7 @@ lambda_past<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Fore
 lambda_current<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_current.csv")
 lambda_future<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_future.csv")
 ```
+
 ```{r}
 summary(lambda_past)
 summary(lambda_current)
@@ -5944,8 +5953,8 @@ summary(lambda_future)
 ```{r}
 library(dismo)
 # dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
-poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
-# load("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Herbaruim Project/Data/Occurence/aghy_occ_raw.rdata")
+# poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
+load("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Herbaruim Project/Data/Occurence/aghy_occ_raw.rdata")
 head(poar_occ_raw) # to view the first few records the occurrence dataset use
 ```
 
@@ -5994,6 +6003,8 @@ median_lambda_45<-rowMeans(lambda_future45)
 geo45<-data.frame(coordinates_study_area,mean_lambda_45)
 geo85<-data.frame(coordinates_study_area,mean_lambda_85)
 ```
+
+
 
 ```{r}
 outline_map <- map_data("world")
@@ -6073,6 +6084,186 @@ theme(strip.background = element_blank(),
 Fig_geoprojection<-ggarrange(lambda_map_past, lambda_map_current, lambda_map_45, lambda_map_85,common.legend = TRUE)
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoprojection.pdf", Fig_geoprojection, width = 5, height = 7)
 ```
+
+### Probability of lambda above 1 
+
+```{r}
+lambbacurrent <- read.csv("https://www.dropbox.com/scl/fi/5xl6vxw456m942qbtynqi/poar_current_1-400K.csv?rlkey=y76suoez6xbk21xkh52iaym9k&dl=1", stringsAsFactors = F) 
+lambbapast <- read.csv("https://www.dropbox.com/scl/fi/l1509slfkm5lpecbpscfp/poar_past_1-400K.csv?rlkey=83pxzva68d98qk090kk1kmfkt&dl=1", stringsAsFactors = F)
+lambba45 <- read.csv("https://www.dropbox.com/scl/fi/kq7p7zpnr4n910ed9lf1n/poar_miroc45_1-400K.csv?rlkey=0381obcnwjhzjkcx5kj8krmua&dl=1", stringsAsFactors = F)
+lambba85 <- read.csv("https://www.dropbox.com/scl/fi/tzat8n3x9dgj4mr2kj2a0/poar_miroc85_1-400K.csv?rlkey=yv10l7v2ii4ljossoviebyp59&dl=1", stringsAsFactors = F)
+
+```
+
+```{r}
+lambbapast %>% 
+  unique %>% 
+  pivot_wider(
+    names_from = posterior_id, 
+    values_from = lambda_diff)->pivot_lambda_past
+# Calculate probability of lambda above 1
+prob_lambda_past_post<-c()
+for(l in 1:nrow(pivot_lambda_past)){
+  prob_lambda_past_post[l]<-mean(pivot_lambda_past[l,]>1,na.rm=T)
+}
+lam_prob_past<-data.frame(pivot_lambda_past[,1:8],Prlambda=prob_lambda_past_post)
+```
+
+```{r}
+geo_prlambda_past <- merge(x = lam_prob_past,y =clim_past_values,by=c("pptdorm","tempdorm"), all.x = TRUE) 
+# summary(geo_prlambda_current)
+```
+
+```{r}
+summary(geo_prlambda_past)
+(lambda_map_Prpast <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambda_past, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="Past",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="A") )
+
+```
+
+```{r}
+lambbacurrent %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambda_current
+dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambda_current_post<-c()
+for(l in 1:nrow(pivot_lambda_current)){
+  prob_lambda_current_post[l]<-mean(pivot_lambda_current[l,]>1,na.rm=T)
+}
+lam_prob_current<-data.frame(pivot_lambda_current[,1:8],Prlambda=prob_lambda_current_post)
+dim(lam_prob_current)
+```
+
+```{r}
+summary(geo_prlambda_current)
+geo_prlambda_current <- merge(x =lam_prob_current ,y = clim_current_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+geo_prlambda_current <- geo_prlambda_current[complete.cases(geo_prlambda_current), ]
+
+# sum(is.na(geo_prlambda_current$Prlambda))
+# 
+# %>% 
+#   drop_na("Prlambda","x","y")
+# summary(geo_prlambda_current)
+```
+
+```{r}
+(lambda_map_Prcurrent <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambda_current, aes(x = x, y = y, fill = Prlambda))+
+  geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Current",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="B") )
+```
+
+
+```{r}
+lambba45 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambda_45
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambda_45_post<-c()
+for(l in 1:nrow(pivot_lambda_45)){
+  prob_lambda_45_post[l]<-mean(pivot_lambda_45[l,]>1,na.rm=T)
+}
+lam_prob_45<-data.frame(pivot_lambda_45[,1:8],Prlambda=prob_lambda_45_post)
+```
+
+```{r}
+class(climate_miroc45_values)
+geo_prlambda_45 <- merge(x = lam_prob_45,y =climate_miroc45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+# summary(geo_prlambda_current)
+```
+
+```{r}
+(lambda_map_Prmiroc45 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambda_45, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Future 4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+
+```
+
+
+```{r}
+lambba85 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambda_85
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambda_85_post<-c()
+for(l in 1:nrow(pivot_lambda_85)){
+  prob_lambda_85_post[l]<-mean(pivot_lambda_85[l,]>1,na.rm=T)
+}
+lam_prob_85<-data.frame(pivot_lambda_85[,1:8],Prlambda=prob_lambda_85_post)
+```
+
+```{r}
+geo_prlambda_85 <- merge(x = lam_prob_85,y =climate_miroc85_values,by=c("pptdorm","tempdorm")) # merge the demographic data with climatic data for each
+# summary(geo_prlambda_current)
+```
+
+```{r}
+(lambda_map_Prmiroc85 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambda_85, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Future 8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+
+```
+
+```{r}
+Fig_geoPrlambdaprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection.pdf", Fig_geoPrlambdaprojection, width = 5, height = 7)
+```
+
 
 ### Niche Projection
 
