@@ -263,8 +263,6 @@ Studysite<-rbind(surveypo[,c(1,2,4)],exp_pop,source_pop[,c(1,2,4)])
 # Demography data
 
 ```{r}
-r<-raster::raster("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Future and historical data/studay_area_pr.tif")
-plot(r)
 poar_allsites <- read.csv("https://www.dropbox.com/s/xk4225mn8btqhbm/demography_allsites.csv?dl=1", stringsAsFactors = F)#common garden data
 poar_allsites$census.year<-poar_allsites$year-1 # Add census year to match with climate data
 # unique(poar_allsites$census.year)
@@ -2564,7 +2562,7 @@ sex_lty <- c(1,1)
 bin_shapes <- 15
 diff_col <- RColorBrewer::brewer.pal(8, "Dark2")[6]
 diff_alpha <- 0.35
-
+graph<-list("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P")
 layout.matrix <- rbind(matrix(1:8, nrow = 2, ncol = 4, byrow = F),
                        matrix(9:16, nrow = 2, ncol = 4, byrow = F),
                        matrix(17:24, nrow = 2, ncol = 4, byrow = F),
@@ -2579,11 +2577,12 @@ layout(mat = layout.matrix,
 par(oma=c(3,1,0.5,0.5))
 with(poar_surv_binned,{
   for(i in 1:size_bin_num){
-    par(mar=c(0,4,1,0))
+    par(mar=c(0,4,2,0))
     plot(pptgrow[size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_surv[size_bin==i],type="n",xaxt="n",ylim=c(0,1),
          xlab=" ",ylab=" ");box()
     if(i==1){mtext("Pr(survival)",side=2,line=3,cex=1.5)}
-    title(LETTERS[i],adj=0,cex.main=1.75)
+    mylabel3 <- paste(graph[[1]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(pptgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_surv[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2637,11 +2636,11 @@ with(poar_surv_binned,{
 
 with(poar_surv_binned,{
   for(i in 1:size_bin_num){
-    par(mar=c(0,4,1,0))
+    par(mar=c(0,4,2,0))
     plot(tempgrow[size_bin==i]*sd(poar_2015_2016$tempgrow)+ mean(poar_2015_2016$tempgrow),mean_surv[size_bin==i],type="n",ylim=c(0,1),
          xlab=" ",ylab=" ",xaxt="n");box()
-    # if(i==1){mtext("",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+1],adj=0,cex.main=1.75)
+     mylabel3 <- paste(graph[[2]])
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(tempgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mean_surv[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2696,11 +2695,11 @@ with(poar_surv_binned,{
 
 with(poar_surv_binned,{
   for(i in 1:size_bin_num){
-    par(mar=c(0,4,1,0))
+    par(mar=c(0,4,2,0))
     plot(pptdorm[size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_surv[size_bin==i],type="n",ylim=c(0,1),
          xlab=" ",ylab=" ",xaxt="n");box()
-    # if(i==1){mtext("Pr(survival)",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+2],adj=0,cex.main=1.75)
+     mylabel3 <- paste(graph[[3]])
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(pptdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_surv[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2754,11 +2753,11 @@ with(poar_surv_binned,{
 
 with(poar_surv_binned,{
   for(i in 1:size_bin_num){
-    par(mar=c(0,4,1,0))
+    par(mar=c(0,4,2,0))
     plot(tempdorm[size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mean_surv[size_bin==i],type="n",ylim=c(0,1),
          xlab=" ",ylab=" ",xaxt="n");box()
-    # if(i==1){mtext("Pr(survival)",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+3],adj=0,cex.main=1.75)
+     mylabel3 <- paste(graph[[4]])
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(tempdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mean_surv[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2816,7 +2815,8 @@ with(poar_grow_binned,{
     plot(pptgrow[size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_grow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()    
     if(i==1){mtext("#tillers",side=2,line=3,cex=1.5)}
-    title(LETTERS[i+4],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[5]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(pptgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow) ,mean_grow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2875,8 +2875,8 @@ with(poar_grow_binned,{
     par(mar=c(0,4,1,0))
     plot(tempgrow[size_bin==i]*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),mean_grow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()    
-    # if(i==1){mtext("#tillers",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+5],adj=0,cex.main=1.75)    
+     mylabel3 <- paste(graph[[6]])
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)    
     for(s in 1:2){
       points(tempgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),mean_grow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2938,7 +2938,8 @@ with(poar_grow_binned,{
     plot(pptdorm[size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_grow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()    
     # if(i==1){mtext("#tillers",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+6],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[7]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(pptdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_grow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -2997,7 +2998,8 @@ with(poar_grow_binned,{
     plot(tempdorm[size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mean_grow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()    
     # if(i==1){mtext("#tillers",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+7],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[8]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)   
     for(s in 1:2){
       points(tempdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm) ,mean_grow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -3056,7 +3058,8 @@ with(poar_flow_binned,{
     plot(pptgrow[size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_flow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()
     if(i==1){mtext("Pr(flowering)",side=2,line=3,cex=1.5)}
-    title(LETTERS[i+8],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[9]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(pptgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_flow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -3116,8 +3119,8 @@ with(poar_flow_binned,{
     par(mar=c(0,4,1,0))
     plot(tempgrow[size_bin==i]*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow) ,mean_flow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()
-    # if(i==1){mtext("Pr(flowering)",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+9],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[10]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(tempgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),mean_flow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -3174,8 +3177,8 @@ with(poar_flow_binned,{
     par(mar=c(0,4,1,0))
     plot(pptdorm[size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm) ,mean_flow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()
-    # if(i==1){mtext("Pr(flowering)",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+10],adj=0,cex.main=1.75)    
+     mylabel3 <- paste(graph[[11]])
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)  
     for(s in 1:2){
       points(pptdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_flow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -3236,7 +3239,8 @@ with(poar_flow_binned,{
     plot(tempdorm[size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm) ,mean_flow[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n");box()
     # if(i==1){mtext("Pr(flowering)",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+11],adj=0,cex.main=1.75)    
+     mylabel3 <- paste(graph[[12]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)    
     for(s in 1:2){
       points(tempdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mean_flow[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
@@ -3297,7 +3301,8 @@ with(poar_panic_binned,{
     plot(pptgrow[size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow) ,mean_panic[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n",ylim=c(0,max(mean_panic[size_bin==i])));box()    
     if(i==1){mtext("#panicles",side=2,line=3,cex=1.5)}
-    title(LETTERS[i+12],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[13]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.75)    
     for(s in 1:2){
       points(pptgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -3359,7 +3364,8 @@ with(poar_panic_binned,{
     plot(tempgrow[size_bin==i]* sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),mean_panic[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n",ylim=c(0,max(mean_panic[size_bin==i])));box()    
     # if(i==1){mtext("#panicles",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+13],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[14]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)    
     for(s in 1:2){
       points(tempgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -3419,7 +3425,8 @@ with(poar_panic_binned,{
     plot(pptdorm[size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_panic[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n",ylim=c(0,max(mean_panic[size_bin==i])));box()    
     # if(i==1){mtext("#panicles",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+14],adj=0,cex.main=1.75)    
+     mylabel3 <- paste(graph[[15]])
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)    
     for(s in 1:2){
       points(pptdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -3481,7 +3488,8 @@ with(poar_panic_binned,{
     plot(tempdorm[size_bin==i]*sd(poar_2015_2016$tempdorm)+ mean(poar_2015_2016$tempdorm) ,mean_panic[size_bin==i],type="n",
          xlab=" ",ylab=" ",xaxt="n",ylim=c(0,max(mean_panic[size_bin==i])));box()    
     # if(i==1){mtext("#panicles",side=2,line=3,cex=1.3)}
-    title(LETTERS[i+15],adj=0,cex.main=1.75)    
+    mylabel3 <- paste(graph[[16]])
+    mtext(mylabel3,side = 3, adj = 0,cex=1.5)   
     for(s in 1:2){
       points(tempdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -5429,9 +5437,6 @@ dev.off()
 
 ```
 
-
-
-
 ```{r}
 figosr1<-ggplot() +
   geom_line(aes(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),OSR_pptgrow_all), col = "#000000",size=1) +
@@ -5775,7 +5780,8 @@ climate_cmc_85_values$zpptgrow<-(climate_cmc_85_values$pptgrow-mean(poar_2015_20
 climate_cmc_85_values$ztempgrow<-(climate_cmc_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_cmc_85_values$zpptdorm<-(climate_cmc_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_cmc_85_values$ztempdorm<-(climate_cmc_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_cmc_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_cmc_85_values.csv")
+climate_cmc_85_values<-data.frame(climate_cmc_85_values,coordinates_study_area)
+# write_csv(climate_cmc_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_cmc_85_values.csv")
 ```
 
 ```{r}
@@ -5811,7 +5817,9 @@ climate_cmc_45_values$zpptgrow<-(climate_cmc_45_values$pptgrow-mean(poar_2015_20
 climate_cmc_45_values$ztempgrow<-(climate_cmc_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_cmc_45_values$zpptdorm<-(climate_cmc_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_cmc_45_values$ztempdorm<-(climate_cmc_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_cmc_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_cmc_45_values.csv")
+climate_cmc_45_values<-data.frame(climate_cmc_45_values,coordinates_study_area)
+
+# write_csv(climate_cmc_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_cmc_45_values.csv")
 ```
 
 ```{r}
@@ -5849,7 +5857,7 @@ climate_ces_85_values$zpptgrow<-(climate_ces_85_values$pptgrow-mean(poar_2015_20
 climate_ces_85_values$ztempgrow<-(climate_ces_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_ces_85_values$zpptdorm<-(climate_ces_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_ces_85_values$ztempdorm<-(climate_ces_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_ces_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_ces_85_values.csv")
+# write_csv(climate_ces_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_ces_85_values.csv")
 ```
 
 ```{r}
@@ -5885,7 +5893,7 @@ climate_ces_45_values$zpptgrow<-(climate_ces_45_values$pptgrow-mean(poar_2015_20
 climate_ces_45_values$ztempgrow<-(climate_ces_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_ces_45_values$zpptdorm<-(climate_ces_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_ces_45_values$ztempdorm<-(climate_ces_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_ces_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_ces_45_values.csv")
+# write_csv(climate_ces_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_ces_45_values.csv")
 ```
 
 ```{r}
@@ -5953,8 +5961,8 @@ summary(lambda_future)
 ```{r}
 library(dismo)
 # dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
-# poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
-load("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Herbaruim Project/Data/Occurence/aghy_occ_raw.rdata")
+poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
+# load("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Herbaruim Project/Data/Occurence/aghy_occ_raw.rdata")
 head(poar_occ_raw) # to view the first few records the occurrence dataset use
 ```
 
@@ -6115,10 +6123,9 @@ geo_prlambda_past <- merge(x = lam_prob_past,y =clim_past_values,by=c("pptdorm",
 ```
 
 ```{r}
-summary(geo_prlambda_past)
 (lambda_map_Prpast <- ggplot()+
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
-  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  # coord_sf(xlim = c(-107,-92), ylim = c(25,41)) +
   geom_tile(data = geo_prlambda_past, aes(x = x, y = y, fill = Prlambda))+
   annotate(geom="text", x=-100, y=41, label="Past",
               color="grey",size = 3)+
@@ -6150,7 +6157,7 @@ dim(lam_prob_current)
 ```
 
 ```{r}
-summary(geo_prlambda_current)
+# summary(geo_prlambda_current)
 geo_prlambda_current <- merge(x =lam_prob_current ,y = clim_current_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
 geo_prlambda_current <- geo_prlambda_current[complete.cases(geo_prlambda_current), ]
 
@@ -6264,11 +6271,105 @@ Fig_geoPrlambdaprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, la
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection.pdf", Fig_geoPrlambdaprojection, width = 5, height = 7)
 ```
 
+```{r}
+lambbacmc45 <- read.csv("https://www.dropbox.com/scl/fi/ekjo0ezv0gn2pfoj69blt/poar_cmc45_1-400K.csv?rlkey=25x99ojbmc021qswxl2ehzq3t&dl=1", stringsAsFactors = F)
+lambbacmc85 <- read.csv("https://www.dropbox.com/scl/fi/299bagx6imcgm534bcmhs/poar_cmc85_1-400K.csv?rlkey=fd4qs8grnkyua7o99w0oz9pyt&dl=1", stringsAsFactors = F)
+```
+
+```{r}
+lambbacmc45 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdacmc_45
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambdacmc_45_post<-c()
+for(l in 1:nrow(pivot_lambdacmc_45)){
+  prob_lambdacmc_45_post[l]<-mean(pivot_lambdacmc_45[l,]>1,na.rm=T)
+}
+lamcmc_prob_45<-data.frame(pivot_lambdacmc_45[,1:8],Prlambda=prob_lambdacmc_45_post)
+```
+
+```{r}
+# class(climate_cmc45_values)
+geo_prlambdacmc_45 <- merge(x = lamcmc_prob_45,y =climate_cmc_45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+# summary(geo_prlambdacmc_45)
+```
+
+```{r}
+(lambda_map_Prcmc45 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambdacmc_45, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Future 4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+
+```
+
+```{r}
+lambbacmc85 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdacmc_85
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambdacmc_85_post<-c()
+for(l in 1:nrow(pivot_lambdacmc_85)){
+  prob_lambdacmc_85_post[l]<-mean(pivot_lambdacmc_85[l,]>1,na.rm=T)
+}
+lamcmc_prob_85<-data.frame(pivot_lambdacmc_85[,1:8],Prlambda=prob_lambdacmc_85_post)
+```
+
+```{r}
+geo_prlambdacmc_85 <- merge(x = lamcmc_prob_85,y =climate_cmc_85_values,by=c("pptdorm","tempdorm")) # merge the demographic data with climatic data for each
+# summary(geo_prlambda_current)
+```
+
+```{r}
+(lambda_map_Prcmc85 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambdacmc_85, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Future 8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+
+```
+
+
+```{r}
+Fig_geoPrlambdacmcprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prcmc45, lambda_map_Prcmc85,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojectioncmc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
+```
+
+
+
+
+
 
 ### Niche Projection
 
 #### Lambda-temperature posterior sampling to have probability density
 
+##### Two sex models
 ##### Dormant season
 
 ```{r}
@@ -6666,14 +6767,86 @@ pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecastin
 par(mar=c(5,5,1,1),mfrow=c(2,1))
 fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
 contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=0.75,col="black") 
-mtext("A",side = 3, adj = 0,cex=1.4)
-# title(main="A" ,adj=0,cex.main=1.4,font=1)
+mtext("A",side = 3, adj = 0,cex=1.5)
 text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
 text(x=x_past_d,y=y_past_d,"+",col="black")
 text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
 text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
 fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
 contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,add=T,labcex=0.75,col="black") 
+mtext("B",side = 3, adj = 0,cex=1.4)
+# title(main="B" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"+",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"o",col="black",cex=0.8)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=3.5)
+dev.off()
+```
+
+#### Female dominant models
+
+```{r}
+nichedormant_fd<-readRDS(url("https://www.dropbox.com/scl/fi/u0yeohxrienfp96hopvl5/data_dormant_niche.rds?rlkey=lhum5y9ymqtpkegkw75seruuc&dl=1"))
+prob_lambda_dorm_post_fd<-c()
+for(l in 1:ncol(nichedormant_fd)){
+  prob_lambda_dorm_post_fd[l]<-mean(nichedormant_fd[,l]>1,na.rm=T)
+}
+
+all_pptdorm_seq<-seq(min(data_niche$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_niche$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
+all_tempdorm_seq<-seq(min(data_niche$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),max(data_niche$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),length.out=30)
+
+mtrx_dorm_fd <- matrix(prob_lambda_dorm_post_fd, nrow = 30, dimnames = list(all_pptdorm_seq,
+               all_tempdorm_seq))
+```
+
+```{r}
+# read in results of the above loop
+nichegrowing_fd <- readRDS(url("https://www.dropbox.com/scl/fi/xgi4mzlgwrw1k73n6sdkw/data_growing_niche.rds?rlkey=7gw2nh7mw67ind2dhs9mbfszy&dl=1"))
+prob_lambda_grow_post_fd<-c()
+for(l in 1:ncol(nichegrowing_fd)){
+  prob_lambda_grow_post_fd[l]<-mean(nichegrowing_fd[,l]>1,na.rm=T)
+}
+
+all_pptgrow_seq<-seq(min(data_niche$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),max(data_niche$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),length.out=30)
+all_tempgrow_seq<-seq(min(data_niche$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),max(data_niche$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),length.out=30)
+
+mtrx_grow_fd <- matrix(prob_lambda_grow_post_fd, nrow = 30, dimnames = list(all_pptgrow_seq,
+               all_tempgrow_seq))
+
+```
+
+```{r}
+library(RColorBrewer)
+x_current_d<-clim_current$pptdorm
+y_current_d<-clim_current$tempdorm
+x_past_d<-clim_past$pptdorm
+y_past_d<-clim_past$tempdorm
+x_miroc45_d<-clim_miroc45$pptdorm
+y_miroc45_d<-clim_miroc45$tempdorm
+x_miroc85_d<-clim_miroc85$pptdorm
+y_miroc85_d<-clim_miroc85$tempdorm
+
+x_current_g<-clim_current$pptgrow
+y_current_g<-clim_current$tempgrow
+x_past_g<-clim_past$pptgrow
+y_past_g<-clim_past$tempgrow
+x_miroc45_g<-clim_miroc45$pptgrow
+y_miroc45_g<-clim_miroc45$tempgrow
+x_miroc85_g<-clim_miroc85$pptgrow
+y_miroc85_g<-clim_miroc85$tempgrow
+
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_female_dominant.pdf",width=5,height=7,useDingbats = F)
+par(mar=c(5,5,1,1),mfrow=c(2,1))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,add=T,labcex=0.75,col="black") 
+mtext("A",side = 3, adj = 0,cex=1.5)
+text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"+",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
+contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,add=T,labcex=0.75,col="black") 
 mtext("B",side = 3, adj = 0,cex=1.4)
 # title(main="B" ,adj=0,cex.main=1.4,font=1)
 text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)

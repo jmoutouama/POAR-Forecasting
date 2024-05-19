@@ -115,12 +115,12 @@ Accounting for such a niche differentiation within a population is a long-standi
 The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure \citep{pottier2021sexual,ellis2017does}.
 As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited.
 
-\tom{Climate change can influence dioecious populations via shifts in sex ratio.}{This paragraph is really good but notice that the topic sentence (and much that follows) is largely redundant with the first paragraph. I would suggest creating clearer distinction between paragraphs.} 
-Females and males may respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
-This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions rather than the other sex \citep{zhao2012sex, burli2022environmental} leading to a skewness in the operational sex ratio (relative number of males and females as available mates) \citep{eberhart2017sex}.
-For example, experiments in two populations of Atlantic marine copepods (\textit{Acartia tonsa}) revealed that male survival was more sensitive to increasing temperatures than female survival \citep{sasaki2019complex}.
-In other species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}. 
-Sex-specific responses to climate drivers have the potential to influence population viability under global change because skew in the operational sex ratio can limit reproduction through mate scarcity \citep{petry2016sex}.
+% \tom{Climate change can influence dioecious populations via shifts in sex ratio.}{This paragraph is really good but notice that the topic sentence (and much that follows) is largely redundant with the first paragraph. I would suggest creating clearer distinction between paragraphs.} 
+% Females and males may respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
+% This sex-specific response to climate change may help one sex to succeed in extreme climatic conditions rather than the other sex \citep{zhao2012sex, burli2022environmental} leading to a skewness in the operational sex ratio (relative number of males and females as available mates) \citep{eberhart2017sex}.
+% For example, experiments in two populations of Atlantic marine copepods (\textit{Acartia tonsa}) revealed that male survival was more sensitive to increasing temperatures than female survival \citep{sasaki2019complex}.
+% In other species, such as \textit{Pteropus poliocephalus} or \textit {Populus cathayana}, females showed lower survival than males in response to high temperature \citep{welbergen2008climate,zhao2012sex}. 
+% Sex-specific responses to climate drivers have the potential to influence population viability under global change because skew in the operational sex ratio can limit reproduction through mate scarcity \citep{petry2016sex}.
 
 Species's range limits, when not driven by dispersal limitation, should generally reflect the limits of the ecological niche \citep{lee2016synthesis}. 
 For most species, niches and geographic ranges are often limited by climatic factors including temperature and precipitation \citep{sexton2009evolution}. 
@@ -146,22 +146,21 @@ A previous study on the same system showed that, despite a differentiation of cl
 However that study did not use climate variables preventing us from backcasting and forecasting the impact of climate change on dioecious species.
 Here, we asked four questions: 
 \begin{enumerate}
-	\item What are the sex-specific vital rate responses to variation in temperature and precipitation across the species' range?
-	\item How sex-specific vital rates combine to determine the influence of climate variation on population viability ($\lambda$)?
-	\item What are the historical and projected changes in climate across the species range?
-	\item What are the back-casted and fore-casted dynamics of this species' geographic niche ($\lambda \geq 1$) and how does accountind for sex structure modify these predictions?
+	\item What are the sex-specific vital rate responses to variation in temperature and precipitation across the species' range ?
+	\item How sex-specific vital rates combine to determine the influence of climate variation on population growth rate ($\lambda$) ?
+	\item What are the historical and projected changes in climate across the species range ?
+	\item What are the back-casted and fore-casted dynamics of this species' geographic niche ($\lambda \geq 1$) and how does accounting for sex structure modify these predictions ?
 \end{enumerate}
 
 %--------------------------------------------------------------------
 \section*{Materials and methods}
-
 \subsection*{Study species}
-Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S.(Texas, Oklahoma, and southern Kansas) \citep{hitchcock1971manual}. 
+Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) \citep{hitchcock1971manual}. 
 Average temperatures along the distribution of the species tend to decrease northward as a result of the influence of latitude: lower latitudes receive more heat from the sun over the course of a year.
 Similarly the average precipitation decrease eastward as a result of the influence of longitude: lower longitudes receive less precipitation over the year.
 Texas bluegrass grows between October and May (growing season), with onset of dormancy often from June to September (dormant season) \citep{kindiger2004interspecific}.
 Flowering occurs in May and the species is wind pollinated \citep{hitchcock1971manual}.
-{\color{blue} The male heads are smooth, while those of the female appear fuzzy.}
+% {\color{blue} The male heads are smooth, while those of the female appear fuzzy.}
 
 \subsection*{Common garden experiment}
 We set up a common garden experiment throughout and beyond the range of Texas bluegrass to enable study of sex-specific demographic responses to climate and the implications for range shifts. 
@@ -223,9 +222,10 @@ We used individual level measurements of survival, growth (number of tillers), f
 We fit vital rate models with second-degree polynomial functions for the influence of climate.
 We included a second-degree polynomial because we expected that climate variables would affect vital rates through a hump-shaped relationship. 
 
-We centered and standardized all predictors to facilitate model convergence.
+We centered and standardized all climatic predictors to facilitate model convergence.
+However, Size was on a natural logarithm scale. 
 We included site,source, and block as random effect.
-All the vital rate models used the same linear and quadratic predictor for the expected value ($\mu$)(Eq. \ref{eq:mu}) . 
+All the vital rate models used the same linear and quadratic predictor for the expected value ($\mu$)(Eq.\ref{eq:mu}) . 
 However, we applied a different link function ($f(\mu)$) depending on the distribution the vital rate. 
 We modeled survival and flowering data with a Bernoulli distribution.
 We modeled the growth (tiller number) with a zero-truncated Poisson inverse Gaussian distribution. 
@@ -240,12 +240,14 @@ f(\mu) = \beta_{0} + \beta_{1}size + \beta_{2}sex + \beta_{3}pptgrow + \beta_{4}
 + \beta_{21}pptdorm^2*sex + \beta_{22}tempgrow^2*sex + \beta_{23}tempdorm^2*sex + \phi + \rho + \nu 
 \end{split}
 \end{align}
-\noindent where $\beta_{0}$ is the  grand mean intercept, $\beta_{1}$...$\beta_{13}$ represent the size and climate dependent slopes.
+\noindent where $\beta_{0}$ is the  grand mean intercept, $\beta_{1}$ is the size dependent slopes.
 $size$ was on a natural logarithm scale. 
+$\beta_{2}$...$\beta_{13}$ represent the climate dependent slopes.
+$\beta_{14}$...$\beta_{23}$ represent the sex-climate interaction slopes.
 $pptgrow$ is the precipitation of the growing season (standardized to mean zero and unit variance), $tempgrow$ is the temperature of the growing season (standardized to mean zero and unit variance), $pptdorm$ is the precipitation of the dormant season (standardized to mean zero and unit variance), $tempdorm$ is the temperature of the dormant season (standardized to mean zero and unit variance).
-The model also includes normally distributed random effects for block-to-block variation ($\phi \sim N(0,\ \sigma_{block})$) and source-to-source variation that is related to the provenence of the seeds used to establish the common garden ($\rho \sim N(0,\ \sigma_{source})$), site to site variation ($\nu \sim N(0,\ \sigma_{site})$)
-We fit survival,growth, flowering models with generic weakly informative priors for coefficients ($\mu = 0,\ \sigma = 1.5$) and variances ($\gamma [0.1,\ 0.1]$).
-{\color{blue}We fit fertility model with different generic weakly informative priors for coefficients ($\mu = 0,\ \sigma = 0.15$).} 
+The model also includes normally distributed random effects for block-to-block variation ($\phi \sim N(0,\ \sigma_{block})$) and source-to-source variation that is related to the provenence of the seeds used to establish the common garden ($\rho \sim N(0,\ \sigma_{source})$), site to site variation ($\nu \sim N(0,\ \sigma_{site})$).
+We fit survival, growth, flowering models with generic weakly informative priors for coefficients ($\mu = 0,\ \sigma = 1.5$) and variances ($\gamma [0.1,\ 0.1]$).
+{\color{blue}We fit fertility model with regularizing priors for coefficients ($\mu = 0,\ \sigma = 0.15$).} 
 % because the models could not converge with the same priors that was used for he other vital rates.
 We ran three chains for 1000 samples for warmup and 4000 for interactions, with a thinning rate of 3.
 We accessed the quality of the models using trace plots and predictive check graphs \citep{piironen2017comparison} (Supporting Information \ref{Sup:PPC}).
@@ -253,7 +255,7 @@ To understand the effect of climate on vital rates, we got the 95 \% credible in
 Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
 All models were fit in Stan \citep{rstan}. 
 
-\subsection*{Population growth rate responses to climate}
+\subsection*{Influence of climate variation on population growth rate}
 To understand the effect of climate on population growth rate, we used the vital rate estimated earlier to build a matrix projection model (MPM) structured by size (number of tillers), sex and climate (dormant and growing) as covariate.  
 Let $F_{x,z,t}$ and $M_{x,z,t}$ be the number of female and male plants of size $x$ in year $t$ present at a location that has $z$ as climate, where $x \in \{1,2,...,U\}$ and $U$ is the maximum number of tillers a plant can reach (here 95th percentile of observed maximum size).
 Let $F^{R}_{t}$ and $M^{R}_{t}$ be the new recruits, which we assume do not reproduce in their first year.
@@ -287,7 +289,7 @@ The second term represents survival and size transition of established plants fr
 Since the two-sex MPM is nonlinear (vital rates affect and are affected by population structure) we estimated the asymptotic geometric growth rate ($\lambda$) by numerical simulation, and repeated this across a range of climate.
 
 \subsection*{Identifying the mechanisms of population growth rate sensitivity to climate }
-To identify which aspect of climate is most important for population viability, we use a "random design" Life Table Response Experiment (LTRE). 
+To identify which aspect of climate is most important for population viability, we used a "random design" Life Table Response Experiment (LTRE). 
 We used the RandomForest package to fit a regression model with $\theta$ as predictors  and $\lambda_{c}$ as response \citep{ellner2016data,liaw2002classification}.
 The LTRE approximates the variation in $\lambda$ in response to climate covariates and their interaction \citep{caswell2000matrix,hernandez2023exact}:
 \begin{align}\label{eq:ltre}
@@ -303,8 +305,9 @@ A species' ecological niche can be defined as the range of resources and conditi
 To understand the impact of climate change on species niche shifts, we estimated the probability of  population viability being greater than  1, Pr ($\lambda > 1$) conditional to two environmental axes \citep{diez2014probabilistic}.
 Because the study species is a cool season grass species, we used two environmental axes: (1) temperature and precipitation of the dormant season and (2) temperature and precipitation of the growing season. 
 Pr ($\lambda > 1$) was calculated using the proportion of the Markov chain Monte Carlo iterations (here, 300) that lead to a $\lambda > 1$
-Population viability-environment relationship was mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past,current and future potential distribution of the species.
+Population viability-environment relationship was mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past, current and future potential distribution of the species.
 To do so, we estimated Pr ($\lambda > 1$) as a function of all climate covariates for each pixel (1km*1km) across the species range using the posterior distribution. 
+Because of amount of the computation involve in the Markov chain Monte Carlo iterations, use only 100 posterior samples to estimate Pr ($\lambda > 1$) across the Texas, Oklahoma and Kansas.
 
 All the analysis were performed in R 4.3.1 \citep{RCoreteam}
 
@@ -335,7 +338,7 @@ However, for growth the interaction between temperature and precipitation of the
   \end{center}
 \end{figure}
 
-\subsection*{Population growth rate response to climate change}
+\subsection*{Climate change alter population viability}
 We estimated the predicted response of  population growth rate (population fitness) to seasonal climate gradients using a model assuming a female dominant model and another model using the two sexes. 
 Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness (Fig.\ref{fig:lambda}). 
 For both models (female dominant and two sexes), population fitness decreased with an increase of precipitation of growing season. 
@@ -355,7 +358,7 @@ Under past climate conditions, population growth rate decreased below one for te
   \end{center}
 \end{figure}
 
-\subsection*{Climatic niches and range predictions}
+\subsection*{Climatic change induce range shifts}
 Across species niche population persistence was maximized at higher temperature during the dormant season ( 27 to 31) and intermediate temperature during the growing season (11 to 20). 
 Our demographically based range predictions broadly captured the known distribution of the species (Fig. 1). 
 More specifically, the predicted population viable ($\lambda>1$) matches the presence and absence of the species. 
@@ -366,7 +369,7 @@ Although \emph{P. arichnifera} was predicted to have suitable habitat in the cen
 \begin{figure}%[h!]
   \begin{center}
     \includegraphics[width=0.78\linewidth]{Figures/niche.pdf}
-  \caption{Predicted niche shift for past, present and future climate conditions based on Pr ($\lambda \geq 1$). Niche of dormant season (A), Niche of growing season (B). Contours show predicted probabilities of self- sustaining populations Pr ($\lambda \geq 1$) conditional on precipitation and temperature of the dormant and growing season}
+  \caption{Predicted niche shift for past, present and future climate conditions based on Pr ($\lambda \geq 1$). Niche of dormant season (A), Niche of growing season (B). Contours show predicted probabilities of self- sustaining populations Pr ($\lambda \geq 1$) conditional on precipitation and temperature of the dormant and growing season."+" Past, "*" Current,"o" RCP 45,"." RCP 85}
   \label{fig:geoproj}
   \end{center}
 \end{figure}
@@ -380,8 +383,6 @@ Although \emph{P. arichnifera} was predicted to have suitable habitat in the cen
 \end{figure}
 
 \section*{Discussion}
-
-
 
 
 \newpage
@@ -428,27 +429,44 @@ Although \emph{P. arichnifera} was predicted to have suitable habitat in the cen
 		\label{Sup:Correlation}
 \end{figure}
 	
-  \begin{figure}[h!]
+\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.75\linewidth]{Figures/PPC.pdf}
 		\caption{\textbf{Consistency between real data and simulated values suggests that the fitted model accurately describes the data}. Graph shows density curves for the observed data (light blue ) along with the simulated values (dark blue). The first column shows the linear models and the second column shows the 2 degree polynomial models.}
 		\label{Sup:PPC}
 	\end{figure}
 	
-	\begin{figure}[h!]
+\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.95\linewidth]{Figures/Posterior_mean.pdf}
 		\caption{\textbf{Mean parameter values and 95\% credible intervals for all vital rates}. }
 		\label{Sup:Posterior}
-	\end{figure}
+\end{figure}
 	
-	\begin{figure}[h!]
+\begin{figure}[h!]
   \begin{center}
     \includegraphics[width=0.95\linewidth]{Figures/lambda_CI.pdf}
   \caption{Population growth rate ($\lambda$) as a function of seasonal climate (2016-2017), predicted by the two-sex matrix projection model that incorporates sex-specific demographic responses to climate with sex ratio-dependent seed fertilization.
 We show the mean posterior distribution of $\lambda$ in solid lines, and the 5, 25, 50, 75, and 95\% percentiles of parameter uncertainty in shaded gold color.
 The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
   \label{Sup:lambda2sex}
+  \end{center}
+\end{figure}
+
+\begin{figure}%[h!]
+  \begin{center}
+    \includegraphics[width=0.78\linewidth]{Figures/niche_female_dominant.pdf}
+  \caption{Predicted niche shift for past, present and future climate conditions based on Pr ($\lambda \geq 1$). Niche of dormant season (A), Niche of growing season (B). Contours show predicted probabilities of self- sustaining populations Pr ($\lambda \geq 1$) conditional on precipitation and temperature of the dormant and growing season."+" Past, "*" Current,"o" RCP 45,"." RCP 85}
+  \label{fig:geoprojfd}
+  \end{center}
+\end{figure}
+
+
+\begin{figure}%[h!]
+  \begin{center}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojectioncmc.pdf}
+  \caption{Past (A), Current (B), Future CMCM (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{fig:geoproj}
   \end{center}
 \end{figure}
 
