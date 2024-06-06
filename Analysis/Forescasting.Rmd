@@ -4535,7 +4535,6 @@ for(l in 1:length(pptdorm_seq)){
   lambda_pptdorm_q5[,l] <- quantile(lambda_pptdorm_post_list$lambda_pptdorm_post[,l],probs=c(0.475,0.525),na.rm = T)
   lambda_pptdorm_mean[l] <- mean(lambda_pptdorm_post_list$lambda_pptdorm_post[,l],na.rm = T)
 }
-
 ```
 
 ## Temperature of dormant season
@@ -5705,7 +5704,8 @@ climate_acc_85_values$zpptgrow<-(climate_acc_85_values$pptgrow-mean(poar_2015_20
 climate_acc_85_values$ztempgrow<-(climate_acc_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_acc_85_values$zpptdorm<-(climate_acc_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_acc_85_values$ztempdorm<-(climate_acc_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_acc_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_acc_85_values.csv")
+climate_acc_85_values<-data.frame(climate_acc_85_values,coordinates_study_area)
+# write_csv(climate_acc_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_acc_85_values.csv")
 ```
 
 ```{r}
@@ -5741,7 +5741,8 @@ climate_acc_45_values$zpptgrow<-(climate_acc_45_values$pptgrow-mean(poar_2015_20
 climate_acc_45_values$ztempgrow<-(climate_acc_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_acc_45_values$zpptdorm<-(climate_acc_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_acc_45_values$ztempdorm<-(climate_acc_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-write_csv(climate_acc_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_acc_45_values.csv")
+climate_acc_45_values<-data.frame(climate_acc_45_values,coordinates_study_area)
+# write_csv(climate_acc_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_acc_45_values.csv")
 
 ```
 
@@ -5995,9 +5996,6 @@ hist(poar_occ_unique$year,main="",xlim=c(1901,2019),ylim=c(0,200),col="orange2",
 poar_occ_unique %>% 
   dplyr::select(lon, lat, year)%>% 
   filter(year %in% (1990:2019) & as.numeric(lon >=-126.374160))->poar_occ_1990_2019 #  filter from 1990 to 2019 to match climatic data.
-poar_occ_unique %>% 
-  dplyr::select(lon, lat, year)%>% 
-  filter(year %in% (1901:1930) & as.numeric(lon >=-110.374160))->poar_occ_1901_1930 #  filter from 1990 to 2020 to match climatic data.
 ```
 
 ```{r}
@@ -6100,7 +6098,6 @@ lambbacurrent <- read.csv("https://www.dropbox.com/scl/fi/5xl6vxw456m942qbtynqi/
 lambbapast <- read.csv("https://www.dropbox.com/scl/fi/l1509slfkm5lpecbpscfp/poar_past_1-400K.csv?rlkey=83pxzva68d98qk090kk1kmfkt&dl=1", stringsAsFactors = F)
 lambba45 <- read.csv("https://www.dropbox.com/scl/fi/kq7p7zpnr4n910ed9lf1n/poar_miroc45_1-400K.csv?rlkey=0381obcnwjhzjkcx5kj8krmua&dl=1", stringsAsFactors = F)
 lambba85 <- read.csv("https://www.dropbox.com/scl/fi/tzat8n3x9dgj4mr2kj2a0/poar_miroc85_1-400K.csv?rlkey=yv10l7v2ii4ljossoviebyp59&dl=1", stringsAsFactors = F)
-
 ```
 
 ```{r}
@@ -6214,7 +6211,7 @@ geo_prlambda_45 <- merge(x = lam_prob_45,y =climate_miroc45_values,by=c("pptdorm
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
   geom_tile(data = geo_prlambda_45, aes(x = x, y = y, fill = Prlambda))+
   # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
-  annotate(geom="text", x=-100, y=41, label="Future 4.5",
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
@@ -6226,7 +6223,6 @@ geo_prlambda_45 <- merge(x = lam_prob_45,y =climate_miroc45_values,by=c("pptdorm
   labs(x = "Longitude", y = "Latitude",title="C") )
 
 ```
-
 
 ```{r}
 lambba85 %>% 
@@ -6254,7 +6250,7 @@ geo_prlambda_85 <- merge(x = lam_prob_85,y =climate_miroc85_values,by=c("pptdorm
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
   geom_tile(data = geo_prlambda_85, aes(x = x, y = y, fill = Prlambda))+
   # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
-  annotate(geom="text", x=-100, y=41, label="Future 8.5",
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
@@ -6360,10 +6356,239 @@ Fig_geoPrlambdacmcprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent,
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojectioncmc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
 ```
 
+### Female dominant model
+
+```{r}
+geo_lambbacurrent_fd <- read.csv("https://www.dropbox.com/scl/fi/4bpcjgf80kva9gex0vnc4/lambda_current.csv?rlkey=uwpwd14ma5vp1jq9iwix07c0g&dl=1", stringsAsFactors = F) 
+geo_lambbapast_fd <- read.csv("https://www.dropbox.com/scl/fi/9x9gbdv1vefdyd292726c/data_past_fd.csv?rlkey=besdw6mj9ab1nubx18if54w9z&dl=1", stringsAsFactors = F)
+geo_lambda_miroc45_fd<-read.csv("https://www.dropbox.com/scl/fi/4bm84k4lbnkz3duup2c22/lambda_miroc45.csv?rlkey=iz793zg59fn92un2zl331awzc&dl=1", stringsAsFactors = F)
+geo_lambba_miroc85_fd <- read.csv("https://www.dropbox.com/scl/fi/jpeywkhbiyaap3qwmrdmn/datamiroc85fd.csv?rlkey=9yim1d2m748f2wsrenxtetk94&dl=1", stringsAsFactors = F)
+geo_lambba_cmc45_fd <- read.csv("https://www.dropbox.com/scl/fi/boqyl8ltowyunjf8x3m3w/lambda_cmcc45_post.csv?rlkey=ciwqlt3a97c2khthujotrryil&dl=1", stringsAsFactors = F)
+geolambba_cmc85_fd <- read.csv("https://www.dropbox.com/scl/fi/4eke3xp4gasqe5r8bk5c5/lambda_cmcc85_post.csv?rlkey=mginyfh8hbpmib6dbs8cmjq3f&dl=1", stringsAsFactors = F)
+geo_lambba_acc45_fd <- read.csv("https://www.dropbox.com/scl/fi/p7xkr30t6zf24gtn4adbl/data_acc45_fd.csv?rlkey=2qv22qe7p3bahmn24mmtff1rm&dl=1", stringsAsFactors = F)
+geolambba_acc85_fd <- read.csv("https://www.dropbox.com/scl/fi/5ged79dtckp3z2k570sm8/data_acc85_fd.csv?rlkey=l97zn5wfci6icbbvv8gcj6z5c&dl=1", stringsAsFactors = F)
+```
+
+```{r}
+prob_lambda_past_fd<-c()
+for(l in 1:ncol(lambbapast_fd)){
+  prob_lambda_past_fd[l]<-mean(lambbapast_fd[,l]>1,na.rm=T)
+}
+
+clim_past_values_clean<-na.omit(clim_past_values)
+lam_prob_past_fd<-data.frame(clim_past_values_clean[,9:10],Prlambda=prob_lambda_past_fd)
+
+```
+
+```{r}
+(lambda_map_Prpast_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-107,-92), ylim = c(25,41)) +
+  geom_tile(data = lam_prob_past_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="Past",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="A") )
+
+```
 
 
+```{r}
+prob_lambda_current_fd<-c()
+for(l in 1:ncol(lambbacurrent_fd)){
+  prob_lambda_current_fd[l]<-mean(lambbacurrent_fd[,l]>1,na.rm=T)
+}
+lam_prob_current_fd<-data.frame(clim_current_values[,9:10],Prlambda=prob_lambda_current_fd)
+
+```
+
+```{r}
+(lambda_map_Prcurrent_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_current_fd, aes(x = x, y = y, fill = Prlambda))+
+  geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Current",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="B") )
+```
+
+```{r}
+prob_lambda_miroc45_fd<-c()
+dim(geo_lambda_miroc45_fd)
+for(l in 1:ncol(geo_lambda_miroc45_fd)){
+  prob_lambda_miroc45_fd[l]<-mean(geo_lambda_miroc45_fd[,l]>1,na.rm=T)
+}
+lam_prob_miroc45_fd<-data.frame(climate_miroc45_values[,9:10],Prlambda=prob_lambda_miroc45_fd)
+```
+
+```{r}
+(lambda_map_miroc45_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_miroc45_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+```{r}
+prob_lambda_miroc85_fd<-c()
+dim(geo_lambba_miroc85_fd)
+for(l in 1:ncol(geo_lambba_miroc85_fd)){
+  prob_lambda_miroc85_fd[l]<-mean(geo_lambba_miroc85_fd[,l]>1,na.rm=T)
+}
+lam_prob_miroc85_fd<-data.frame(climate_miroc85_values[,9:10],Prlambda=prob_lambda_miroc85_fd)
+```
+
+```{r}
+(lambda_map_miroc85_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_miroc85_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+```
 
 
+```{r}
+Fig_geoPrlambdacmcprojection_fd_miroc<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_miroc45_fd, lambda_map_miroc85_fd,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_fd_miroc.pdf", Fig_geoPrlambdacmcprojection_fd_miroc, width = 5, height = 7)
+```
+
+
+```{r}
+prob_lambda_cmc45_fd<-c()
+dim(geo_lambba_cmc45_fd)
+for(l in 1:ncol(geo_lambba_cmc45_fd)){
+  prob_lambda_cmc45_fd[l]<-mean(geo_lambba_cmc45_fd[,l]>1,na.rm=T)
+}
+lam_prob_cmc45_fd<-data.frame(climate_cmc_45_values[,9:10],Prlambda=prob_lambda_cmc45_fd)
+```
+
+```{r}
+(lambda_map_cmc45_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_cmc45_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+```{r}
+prob_lambda_cmc85_fd<-c()
+dim(geo_lambba_cmc85_fd)
+for(l in 1:ncol(geo_lambba_cmc85_fd)){
+  prob_lambda_cmc85_fd[l]<-mean(geo_lambba_cmc85_fd[,l]>1,na.rm=T)
+}
+lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_cmc85_fd)
+```
+
+```{r}
+(lambda_map_cmc85_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_cmc85_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+```{r}
+prob_lambda_acc45_fd<-c()
+dim(geo_lambba_acc45_fd)
+for(l in 1:ncol(geo_lambba_acc45_fd)){
+  prob_lambda_acc45_fd[l]<-mean(geo_lambba_acc45_fd[,l]>1,na.rm=T)
+}
+lam_prob_acc45_fd<-data.frame(climate_acc_45_values[,9:10],Prlambda=prob_lambda_cmc45_fd)
+```
+
+```{r}
+(lambda_map_acc45_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_acc45_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP:4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+
+```{r}
+prob_lambda_acc85_fd<-c()
+dim(geolambba_acc85_fd)
+for(l in 1:ncol(geolambba_acc85_fd)){
+  prob_lambda_acc85_fd[l]<-mean(geolambba_acc85_fd[,l]>1,na.rm=T)
+}
+lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_acc85_fd)
+```
+
+```{r}
+(lambda_map_acc85_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_acc85_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP:4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+```
 
 ### Niche Projection
 

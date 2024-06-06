@@ -88,15 +88,15 @@
 \section*{Abstract}
 %200 word limit for Ecology letter
 Rising temperatures and extreme drought events associated with global climate change have triggered an urgent need for predicting species response to climate change.
-Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure. 
-To address this issue, we developed a climate-driven population matrix model using
-demographic data of dioecious species (Texas bluegrass), past and future climate (different gas emission scenarios) to forecast and backcast the effect of climate change on range shifts.
-Our results show a sex specific demographic response to climate change.
-Female individuals have a demographic advantage (higher vital rate) over males. 
-Female demographic advantage led to a slight decline in population viability under  future climate assuming moderate gas emission and a drastic reduction in population viability under future climate assuming high gas emission. 
-Despite a change in species range, climate change will likely alter population viability in dioecious species. 
-Overall, our work suggest that tracking only the female could lead to a slight overestimation of the impact of climate change on dioecious species. 
-This study provides a framework for predicting the impact of climate on dioecious species using population demography. 
+Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change ignore the complication of sex structure. 
+To address this issue, we developed two contasting climate-driven population matrix models (one that does not account for sex structure and another one that does account for sex structure) using
+demographic data of dioecious species (Texas bluegrass), past and future climate (different carbon gas emission scenarios) to forecast and backcast the effect of climate change on range shifts.
+Both models predict a sex specific demographic response to climate change.
+Female individuals have a demographic advantage (higher vital rate) over males.
+Climate change assuming moderate carbon emission has no negative impact on population viability. 
+However, high carbon emission will likely alter population viability in dioecious species and will induce a North-West shift in suitable conditions. 
+Overall, our work suggest that tracking only the female could lead to an underestimation of the impact of climate change on dioecious species. 
+This study provides a framework for predicting the impact of climate on species using population demography. 
 
 %--------------------------------------------------------------------
 \newpage
@@ -123,16 +123,16 @@ In contrast, climate change could expand male habitat suitability (e.g. upslope 
 Although the response of species to climate warming is an urgent and active area of research, few studies have disentangled the interaction between sex and climate drivers to understand their combined effects on population dynamics and range shifts.  
 
 Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
-For example, structured models that are built from long-term demographic data collected from common garden experiments have emerged as powerful technic to study the impact of climate change on species range shift \citep{merow2017climate,schwinning2022common}.
-These structured models are increasingly utilized for two reasons. 
-First, they enable the manipulation of treatments that can isolate spatial and temporal correlations between environmental factors, thus overcoming a main disadvantage with many types of correlative studies \citep{leicht2007comparative}. 
-Second, they link individual-level demographic trait to population demography allowing the investigation of the demographic mechanisms behind vital rates (e.g. survival,fertility, growth and seed germination) response environmental variation \citep{louthan2022climate,dahlgren2016demography}. 
+Structured models that are built from long-term demographic data collected from common garden experiments have emerged as powerful technic to study the impact of climate change on species range shift \citep{merow2017climate,schwinning2022common}.
+These structured models are increasingly utilized for several reasons. 
+First, structured models enable the manipulation of treatments that can isolate spatial and temporal correlations between environmental factors, thus overcoming a main disadvantage with many types of correlative studies \citep{leicht2007comparative}. 
+Second, structured models link individual-level demographic trait to population demography allowing the investigation of the demographic mechanisms behind vital rates (e.g. survival, fertility, growth and seed germination) response environmental variation \citep{louthan2022climate,dahlgren2016demography}. 
 Third, these structured models can be used to identify which aspect of climate is more important for population dynamics.
 For example, Life Table Response Experiment (LTRE) build from structured models is an approach that has become widely used to understand how a given treatment (eg. temperature or precipitation) could affect population dynamics \citep {caswell1989analysis,o2024nonlinear,morrison2007demographic,iler2019reproductive}. 
 % At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 % In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
-In this study, we used a mechanistic approach by combining geographically-distributed field experiments, hierarchical statistical modeling, and two-sex population projection modeling to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
+In this study, we used a mechanistic approach by combining geographically-distributed field experiments, bayesian statistical modeling, and two-sex population projection modeling to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
 Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude. 
 A previous study on the same system showed that, despite a differentiation of climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability \citep{miller2022two}.
 However that study did not use climate variables preventing us from backcasting and forecasting the impact of climate change on dioecious species.
@@ -369,12 +369,45 @@ Although \emph{P. arichnifera} was predicted to have suitable habitat in the cen
 \begin{figure}%[h!]
   \begin{center}
     \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection.pdf}
-  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate using the two sex model. Future projections were based on MIROC. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{fig:geoproj}
+  \end{center}
+\end{figure}
+
+\begin{figure}%[h!]
+  \begin{center}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_fd_miroc.pdf}
+  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate using the female dominant model. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
   \label{fig:geoproj}
   \end{center}
 \end{figure}
 
 \section*{Discussion}
+Three general patterns emerged from our analysis. First, our Bayesian mixed effect model predicts that seasonal climate (temperature and precipitation) affects sex-demographic processes in distinctive and contrasting ways.
+While climate has a significant effect on the probability of survival and growth, it has no effect on the number of panicles. Second, climate change, assuming high carbon emission by increasing seasonal temperature, will favor range shifts. 
+Third, using only one sex to forescat range shifts of dioecious under climate change could lead to an underestimation of the impact of  climate change on species.
+However, our future projections require extrapolation to warmer or colder conditions than observed in our experiment and subsequently should be interpreted with caution. 
+Despite this limitation, our model did well in predicting the suitable area for the species. 
+
+Our results indicate a sex-specific demographic response to climate change. 
+Females have higher survival rate, growth rate, and fertility rate than males. 
+This result is not unique to our study system and has been observed in a range of species and climatic stress \citep{welbergen2008climate,zhao2012sex,sasaki2019complex}. 
+In wind pollinated plants, the lower cost of reproduction of males may allow them to invest their energy in other functions that produce higher growth rates or higher survival rates compared to females \citep{burli2022environmental,hultine2016climate,cipollini1994sexual,field2013comparative}.
+Our models do not shade light into the mechanism explaining such a response to climate change.
+{\color{blue}{We proposed XXXXXXXXX}}. 
+
+Under current conditions, most population across the range are viable.
+However, a projected future climate by inducing an increase in seasonal temperature will affect population viability. 
+Temperature can impact plant populations through different mechanisms. 
+Increasing temperature could increase evaporative demand and affect plant phenology and germination rate. 
+The potential for temperature to influence these different processes changes seasonally. 
+In the summer growing season, when the temperature is high, the effect on the water balance should be strong.
+In the dormant season, when evaporative demand is low, temperature should have a more important effect on phenology and germination. Because our study species was sensitive to temperatures in the growing season, the former mechanism deserve further attention. 
+
+
+
+
+The reduction in population viability across the range due to climate change will drive a shift to the north range in suitable habitat for the species. 
 
 
 \newpage
@@ -453,7 +486,6 @@ The dashed horizontal line indicates the limit of population viability ($\lambda
   \end{center}
 \end{figure}
 
-
 \begin{figure}%[h!]
   \begin{center}
     \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojectioncmc.pdf}
@@ -464,7 +496,7 @@ The dashed horizontal line indicates the limit of population viability ($\lambda
 
 \begin{figure}[h!]
   \begin{center}
-    \includegraphics[width=0.55\linewidth]{Figures/Fig_LTRE.pdf}
+    \includegraphics[width=0.85\linewidth]{Figures/Fig_LTRE.pdf}
   \caption{XXX}
   \label{Sup:LTRE}
   \end{center}
