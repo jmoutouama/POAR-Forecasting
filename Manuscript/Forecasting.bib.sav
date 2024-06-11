@@ -763,6 +763,39 @@ year = {1930},
   publisher = {JSTOR},
 }
 
+@Article{diez2014probabilistic,
+  author    = {Diez, Jeffrey M and Giladi, Itamar and Warren, Robert and Pulliam, H Ronald},
+  journal   = {Journal of ecology},
+  title     = {Probabilistic and spatially variable niches inferred from demography},
+  year      = {2014},
+  number    = {2},
+  pages     = {544--554},
+  volume    = {102},
+  publisher = {Wiley Online Library},
+}
+
+@Article{villellas2015demographic,
+  author    = {Villellas, Jes{\'u}s and Doak, Daniel F and Garc{\'\i}a, Mar{\'\i}a B and Morris, William F},
+  journal   = {Ecology letters},
+  title     = {Demographic compensation among populations: what is it, how does it arise and what are its implications?},
+  year      = {2015},
+  number    = {11},
+  pages     = {1139--1152},
+  volume    = {18},
+  publisher = {Wiley Online Library},
+}
+
+@Article{doak2010demographic,
+  author    = {Doak, Daniel F and Morris, William F},
+  journal   = {Nature},
+  title     = {Demographic compensation and tipping points in climate-induced range shifts},
+  year      = {2010},
+  number    = {7318},
+  pages     = {959--962},
+  volume    = {467},
+  publisher = {Nature Publishing Group UK London},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 @Comment{jabref-meta: fileDirectoryLatex-jm200-W7H2KJQ0RT:/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript;}

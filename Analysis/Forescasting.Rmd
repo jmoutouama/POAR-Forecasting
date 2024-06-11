@@ -807,7 +807,6 @@ ggplot(precip_ts %>% filter(site%in%east_west))+
   geom_line(aes(x=year,y=pr,group=site,col=site))+
   facet_wrap(~season)
 ```
-
 # Mixed effect models (vital rate vs. climate )
 
 ## Read and format data to build the model
@@ -5592,7 +5591,6 @@ clim_current_values$zpptgrow<-(clim_current_values$pptgrow-mean(poar_2015_2016$p
 clim_current_values$ztempgrow<-(clim_current_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 clim_current_values$zpptdorm<-(clim_current_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 clim_current_values$ztempdorm<-(clim_current_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
-
 clim_current_values<-data.frame(clim_current_values,coordinates_study_area)
 dim(clim_current_values)
 # write_csv(clim_current_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/clim_current_values.csv")
@@ -6098,6 +6096,9 @@ lambbacurrent <- read.csv("https://www.dropbox.com/scl/fi/5xl6vxw456m942qbtynqi/
 lambbapast <- read.csv("https://www.dropbox.com/scl/fi/l1509slfkm5lpecbpscfp/poar_past_1-400K.csv?rlkey=83pxzva68d98qk090kk1kmfkt&dl=1", stringsAsFactors = F)
 lambba45 <- read.csv("https://www.dropbox.com/scl/fi/kq7p7zpnr4n910ed9lf1n/poar_miroc45_1-400K.csv?rlkey=0381obcnwjhzjkcx5kj8krmua&dl=1", stringsAsFactors = F)
 lambba85 <- read.csv("https://www.dropbox.com/scl/fi/tzat8n3x9dgj4mr2kj2a0/poar_miroc85_1-400K.csv?rlkey=yv10l7v2ii4ljossoviebyp59&dl=1", stringsAsFactors = F)
+
+lambbaacc45 <- read.csv("https://www.dropbox.com/scl/fi/973dwzsk6y7hzpoov5ljo/poar_acc45_1-400K.csv?rlkey=qsib01gvqjjgmye7pofnmvm7n&dl=1", stringsAsFactors = F)
+lambbaacc85 <- read.csv("https://www.dropbox.com/scl/fi/ybt7vyi1693nselqqkxhc/poar_acc85_1-400K.csv?rlkey=pfzooz6p1p0bw2dnvydm2gdzf&dl=1", stringsAsFactors = F)
 ```
 
 ```{r}
@@ -6356,23 +6357,109 @@ Fig_geoPrlambdacmcprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent,
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojectioncmc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
 ```
 
+
+
+```{r}
+lambbaacc45 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdaacc_45
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambdaacc_45_post<-c()
+for(l in 1:nrow(pivot_lambdaacc_45)){
+  prob_lambdaacc_45_post[l]<-mean(pivot_lambdaacc_45[l,]>1,na.rm=T)
+}
+lambaacc_prob_45<-data.frame(pivot_lambdaacc_45[,1:8],Prlambda=prob_lambdaacc_45_post)
+```
+
+```{r}
+# class(climate_cmc45_values)
+geo_prlambdaacc_45 <- merge(x = lambaacc_prob_45,y =climate_acc_45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+# summary(geo_prlambdacmc_45)
+```
+
+```{r}
+(lambda_map_Pracc45 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambdaacc_45, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+
+```
+
+```{r}
+lambbaacc85 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdacc_85
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambdaacc_85_post<-c()
+for(l in 1:nrow(pivot_lambdacc_85)){
+  prob_lambdaacc_85_post[l]<-mean(pivot_lambdacc_85[l,]>1,na.rm=T)
+}
+lambdaacc_prob_85<-data.frame(pivot_lambdacc_85[,1:8],Prlambda=prob_lambdaacc_85_post)
+```
+
+```{r}
+geo_prlambdaacc_85 <- merge(x = lambdaacc_prob_85,y =climate_acc_85_values,by=c("pptdorm","tempdorm")) # merge the demographic data with climatic data for each
+# summary(geo_prlambda_current)
+```
+
+```{r}
+(lambda_map_Pracc85 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambdaacc_85, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+
+```
+
+
+```{r}
+Fig_geoPrlambdacmcprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojectionacc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
+```
+
 ### Female dominant model
 
 ```{r}
-geo_lambbacurrent_fd <- read.csv("https://www.dropbox.com/scl/fi/4bpcjgf80kva9gex0vnc4/lambda_current.csv?rlkey=uwpwd14ma5vp1jq9iwix07c0g&dl=1", stringsAsFactors = F) 
+geo_lambbacurrent_fd <- read.csv("https://www.dropbox.com/scl/fi/7zmsid3dxszv3l3tyvoox/lambda_post_current.csv?rlkey=hwy253ls9imsupkzqrduwp7r8&dl=1", stringsAsFactors = F) 
 geo_lambbapast_fd <- read.csv("https://www.dropbox.com/scl/fi/9x9gbdv1vefdyd292726c/data_past_fd.csv?rlkey=besdw6mj9ab1nubx18if54w9z&dl=1", stringsAsFactors = F)
-geo_lambda_miroc45_fd<-read.csv("https://www.dropbox.com/scl/fi/4bm84k4lbnkz3duup2c22/lambda_miroc45.csv?rlkey=iz793zg59fn92un2zl331awzc&dl=1", stringsAsFactors = F)
-geo_lambba_miroc85_fd <- read.csv("https://www.dropbox.com/scl/fi/jpeywkhbiyaap3qwmrdmn/datamiroc85fd.csv?rlkey=9yim1d2m748f2wsrenxtetk94&dl=1", stringsAsFactors = F)
-geo_lambba_cmc45_fd <- read.csv("https://www.dropbox.com/scl/fi/boqyl8ltowyunjf8x3m3w/lambda_cmcc45_post.csv?rlkey=ciwqlt3a97c2khthujotrryil&dl=1", stringsAsFactors = F)
-geolambba_cmc85_fd <- read.csv("https://www.dropbox.com/scl/fi/4eke3xp4gasqe5r8bk5c5/lambda_cmcc85_post.csv?rlkey=mginyfh8hbpmib6dbs8cmjq3f&dl=1", stringsAsFactors = F)
+# geo_lambda_miroc45_fd<-read.csv("https://www.dropbox.com/scl/fi/4bm84k4lbnkz3duup2c22/lambda_miroc45.csv?rlkey=iz793zg59fn92un2zl331awzc&dl=1", stringsAsFactors = F)
+# geo_lambba_miroc85_fd <- read.csv("https://www.dropbox.com/scl/fi/jpeywkhbiyaap3qwmrdmn/datamiroc85fd.csv?rlkey=9yim1d2m748f2wsrenxtetk94&dl=1", stringsAsFactors = F)
+# geo_lambba_cmc45_fd <- read.csv("https://www.dropbox.com/scl/fi/boqyl8ltowyunjf8x3m3w/lambda_cmcc45_post.csv?rlkey=ciwqlt3a97c2khthujotrryil&dl=1", stringsAsFactors = F)
+# geolambba_cmc85_fd <- read.csv("https://www.dropbox.com/scl/fi/4eke3xp4gasqe5r8bk5c5/lambda_cmcc85_post.csv?rlkey=mginyfh8hbpmib6dbs8cmjq3f&dl=1", stringsAsFactors = F)
 geo_lambba_acc45_fd <- read.csv("https://www.dropbox.com/scl/fi/p7xkr30t6zf24gtn4adbl/data_acc45_fd.csv?rlkey=2qv22qe7p3bahmn24mmtff1rm&dl=1", stringsAsFactors = F)
 geolambba_acc85_fd <- read.csv("https://www.dropbox.com/scl/fi/5ged79dtckp3z2k570sm8/data_acc85_fd.csv?rlkey=l97zn5wfci6icbbvv8gcj6z5c&dl=1", stringsAsFactors = F)
 ```
 
 ```{r}
 prob_lambda_past_fd<-c()
-for(l in 1:ncol(lambbapast_fd)){
-  prob_lambda_past_fd[l]<-mean(lambbapast_fd[,l]>1,na.rm=T)
+for(l in 1:ncol(geo_lambbapast_fd)){
+  prob_lambda_past_fd[l]<-mean(geo_lambbapast_fd[,l]>1,na.rm=T)
 }
 
 clim_past_values_clean<-na.omit(clim_past_values)
@@ -6401,8 +6488,8 @@ lam_prob_past_fd<-data.frame(clim_past_values_clean[,9:10],Prlambda=prob_lambda_
 
 ```{r}
 prob_lambda_current_fd<-c()
-for(l in 1:ncol(lambbacurrent_fd)){
-  prob_lambda_current_fd[l]<-mean(lambbacurrent_fd[,l]>1,na.rm=T)
+for(l in 1:ncol(geo_lambbacurrent_fd)){
+  prob_lambda_current_fd[l]<-mean(geo_lambbacurrent_fd[,l]>1,na.rm=T)
 }
 lam_prob_current_fd<-data.frame(clim_current_values[,9:10],Prlambda=prob_lambda_current_fd)
 
@@ -6543,7 +6630,7 @@ dim(geo_lambba_acc45_fd)
 for(l in 1:ncol(geo_lambba_acc45_fd)){
   prob_lambda_acc45_fd[l]<-mean(geo_lambba_acc45_fd[,l]>1,na.rm=T)
 }
-lam_prob_acc45_fd<-data.frame(climate_acc_45_values[,9:10],Prlambda=prob_lambda_cmc45_fd)
+lam_prob_acc45_fd<-data.frame(climate_acc_45_values[,9:10],Prlambda=prob_lambda_acc45_fd)
 ```
 
 ```{r}
@@ -6551,7 +6638,7 @@ lam_prob_acc45_fd<-data.frame(climate_acc_45_values[,9:10],Prlambda=prob_lambda_
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
   geom_tile(data = lam_prob_acc45_fd, aes(x = x, y = y, fill = Prlambda))+
-  annotate(geom="text", x=-100, y=41, label="RCP:4.5",
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
@@ -6578,7 +6665,7 @@ lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
   geom_tile(data = lam_prob_acc85_fd, aes(x = x, y = y, fill = Prlambda))+
-  annotate(geom="text", x=-100, y=41, label="RCP:4.5",
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
@@ -6588,6 +6675,11 @@ lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+```{r}
+Fig_geoPrlambdacmcprojection_fd_acc<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_acc45_fd, lambda_map_acc85_fd,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_fd_acc.pdf", Fig_geoPrlambdacmcprojection_fd_acc, width = 5, height = 7)
 ```
 
 ### Niche Projection
@@ -7084,10 +7176,10 @@ dev.off()
 ## LTRE
 
 ```{r}
-pptgrow_seq<-seq(min(poar_2015_2016$zpptgrow),max(poar_2015_2016$zpptgrow),length.out=30)
+pptgrow_seq<-seq(min(data_past_present_45_85$zpptgrow),max(data_past_present_45_85$zpptgrow),length.out=30)
 ## LTRE parameters:
 # these are the indices of the intercepts and slopes
-LTRE_params <- c(1,2,13,14,25,26,37,38)
+LTRE_params <- c(1,2,13,14,26,27,38,39)
 # these are the effects of pptgrow on the intercepts and slopes
 betas_pptgrow <- c(F_params[c("surv_pptgrow","surv_tempgrow_pptgrow","grow_pptgrow","grow_tempgrow_pptgrow","flow_pptgrow","flow_tempgrow_pptgrow","panic_pptgrow","panic_tempgrow_pptgrow")],
                 M_params[c("surv_pptgrow","surv_tempgrow_pptgrow","grow_pptgrow","grow_tempgrow_pptgrow","flow_pptgrow","flow_tempgrow_pptgrow","panic_pptgrow","panic_tempgrow_pptgrow")])
@@ -7130,55 +7222,130 @@ write_rds(list(dp_dpptgrow=dp_dpptgrow,dlambda_dp=dlambda_dp),"/Users/jm200/Libr
 
 ```{r}
 ## read LTRE output
-POAR_LTRE <- readRDS(url("https://www.dropbox.com/scl/fi/34suvuofdyg86995axgpe/POAR_LTREPPTGROW.rds?rlkey=sy7pzi63jo89nlq6doo956hqv&dl=1"))
-
-
-
+POAR_LTRE_PPTGROW <- readRDS(url("https://www.dropbox.com/scl/fi/eu9xnhl0qfizaoom3uj88/POAR_LTREPPTGROW.rds?rlkey=l70j7j7n18cli9wosi4m5pgzs&dl=1"))
 # put it all together 
-LTRE_out <- POAR_LTRE$dp_dpptgrow * POAR_LTRE$dlambda_dp
+LTRE_PPTGROW_out <- POAR_LTRE_PPTGROW$dp_dpptgrow * POAR_LTRE_PPTGROW$dlambda_dp
 
 # Plot male and feme contribution
 # ltre_cols <- c("#D55E00",NA,"#56B4E9",NA,"#009E73",NA,"#CC79A7",NA)
-ltre_cols <- c("#7570B3",NA,"#0072B2",NA,"#E7298A",NA,"#E6AB02",NA)
-ltre_lty <- c(1,NA,1,NA,1,NA,1,NA)
 
-par(mar=c(5,5,1,1),mfrow=c(2,1))
-plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_out[1:8,]),type="l",lwd=4,ylim=c(-7,0.5),col="grey50",lty=2,
-     xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.8)
-HelpersMG::symbol.Female(centerx=1200, centery = -6, rayonx=25, lwd=3, col="black")
-abline(h=0,col="black")
-for(i in seq(1,8,by=2)){
-  lines(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
-}
-title(main="A) Female contribution",adj=0,cex.main=1.4)
-
-plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_out[9:16,]),type="l",lwd=4,ylim=c(-0.5,0.5),col="grey",
-     xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.8)
-HelpersMG::symbol.Male(centerx=1200, centery = -0.4, rayonx=25, lwd=3, col="black")
-abline(h=0,col="black")
-for(i in seq(9,16,by=2)){
-  lines(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
-}
-title(main="B) Male contribution",adj=0,cex.main=1.4)
-legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,4),
-       lty=c(na.omit(ltre_lty),1),col=c(na.omit(ltre_cols),"grey"),cex=1)
 ```
 
 ```{r}
-all_tempdorm<-c(clim_current$tempdorm,clim_past$tempdorm,clim_miroc45$tempdorm,clim_miroc85$tempdorm)
-all_tempdorm_seq <- seq(min(all_tempdorm),max(all_tempdorm),length.out=30)
+tempgrow_seq<-seq(min(data_past_present_45_85$ztempgrow),max(data_past_present_45_85$ztempgrow),length.out=30)
+## LTRE parameters:
+# these are the indices of the intercepts and slopes
+LTRE_params <- c(1,2,13,14,26,27,38,39)
+# these are the effects of pptgrow on the intercepts and slopes
+betas_tempgrow <- c(F_params[c("surv_tempgrow","surv_tempgrow_pptgrow","grow_tempgrow","grow_tempgrow_pptgrow","flow_tempgrow","flow_tempgrow_pptgrow","panic_tempgrow","panic_tempgrow_pptgrow")],
+                M_params[c("surv_tempgrow","surv_tempgrow_pptgrow","grow_tempgrow","grow_tempgrow_pptgrow","flow_tempgrow","flow_tempgrow_pptgrow","panic_tempgrow","panic_tempgrow_pptgrow")])
+# these are the effects of pptgrow^2 on the intercepts and slopes
+betas_tempgrow2 <- c(F_params[c("surv_tempgrow2","grow_tempgrow2","flow_tempgrow2","panic_tempgrow2")],
+                 M_params[c("surv_tempgrow2","grow_tempgrow2","flow_tempgrow2","panic_tempgrow2")])
 
-obs_mean_tempdorm = mean(poar_2015_2016$tempdorm)
-obs_sd_tempdorm = sd(poar_2015_2016$tempdorm)
-stand_fun_tempdorm<-function(x){(x-obs_mean_tempdorm)/obs_sd_tempdorm}
+## Sensitivity of parameters to pptgrow -- this is just the derivative of a second-order polynomial
+dp_dtempgrow_fun <- function(beta_tempgrow,beta_tempgrow2,tempgrow){return(beta_tempgrow + 2*beta_tempgrow2*tempgrow)}
 
-all_tempdorm_seq_z<-stand_fun_tempdorm(all_tempdorm_seq)
+## loop over pptgrow and calculated dp_dpptgrow and dlambda_dp
+dp_dtempgrow <- dlambda_dp <- matrix(NA,nrow=length(LTRE_params)*2,ncol=length(tempgrow_seq))
+lambda_tempgrow <- c()
+perturbation <- 0.01
 
+for(l in 1:length(tempgrow_seq)){
+ lambda_tempgrow[l] <- lambdaSim_delay(F_params=F_params,M_params=M_params,zpptgrow=0,ztempgrow=tempgrow_seq[l],zpptdorm=0,ztempdorm=0,rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+ dp_dtempgrow[,l] <- dp_dtempgrow_fun(beta_tempgrow = unlist(betas_tempgrow),
+                              beta_tempgrow2 = unlist(betas_tempgrow2),
+                              tempgrow=tempgrow_seq[l])
+# cannot vectorize this part unfortunately
+ for(p in 1:8){
+   F_params_perturb <- F_params; M_params_perturb <- M_params;
+   F_params_perturb[LTRE_params[p]] <- unlist(F_params[LTRE_params[p]]) + perturbation
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=tempgrow_seq[l],zpptdorm=0,ztempdorm=0,rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   dlambda_dp[p,l] <- (lambda_perturb - lambda_tempgrow[l]) / perturbation
+ }
+ for(p in 9:16){
+   F_params_perturb <- F_params; M_params_perturb <- M_params;
+   M_params_perturb[LTRE_params[p-8]] <- unlist(M_params[LTRE_params[p-8]]) + perturbation
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=tempgrow_seq[l],zpptdorm=0,ztempdorm=0,rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   dlambda_dp[p,l] <- (lambda_perturb - lambda_tempgrow[l]) / perturbation
+ }
+ print(l)
+}
+## write LTRE output based on posterior mean parameters
+# write_rds(list(dp_dtempgrow=dp_dtempgrow,dlambda_dp=dlambda_dp),"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/POAR_LTRETEMPGROW.rds")
+
+```
+
+```{r}
+## read LTRE output
+POAR_LTRE_TEMPGROW <- readRDS(url("https://www.dropbox.com/scl/fi/o3zaudgef040befdqdj2j/POAR_LTRETEMPGROW.rds?rlkey=cqy74r3mw0vtvx0r6obhlmk0f&dl=1"))
+# put it all together 
+LTRE_TEMPGROW_out <- POAR_LTRE_TEMPGROW$dp_dtempgrow * POAR_LTRE_TEMPGROW$dlambda_dp
+# Plot male and feme contribution
+# ltre_cols <- c("#D55E00",NA,"#56B4E9",NA,"#009E73",NA,"#CC79A7",NA)
+```
+
+```{r}
+all_pptdorm_seq<-seq(min(data_past_present_45_85$zpptdorm),max(data_past_present_45_85$zpptdorm),length.out=30)
 max_yrs<-30
 
 ## LTRE parameters:
 # these are the indices of the intercepts and slopes
-LTRE_params <- c(1,2,13,14,25,26,37,38)
+LTRE_params <- c(1,2,13,14,26,27,38,39)
+# these are the effects of pptdorm on the intercepts and slopes
+betas_pptdorm <- c(F_params[c("surv_pptdorm","surv_tempdorm_pptdorm","grow_pptdorm","grow_tempdorm_pptdorm","flow_pptdorm","flow_tempdorm_pptdorm","panic_pptdorm","panic_tempdorm_pptdorm")],
+                M_params[c("surv_pptdorm","surv_tempdorm_pptdorm","grow_pptdorm","grow_tempdorm_pptdorm","flow_pptdorm","flow_tempdorm_pptdorm","panic_pptdorm","panic_tempdorm_pptdorm")])
+# these are the effects of pptdorm^2 on the intercepts and slopes
+betas_pptdorm2 <- c(F_params[c("surv_pptdorm2","grow_pptdorm2","flow_pptdorm2","panic_pptdorm2")],
+                 M_params[c("surv_pptdorm2","grow_pptdorm2","flow_pptdorm2","panic_pptdorm2")])
+
+## Sensitivity of parameters to pptdorm -- this is just the derivative of a second-order polynomial
+dp_dpptdorm_fun <- function(beta_pptdorm,beta_pptdorm2,pptdorm){return(beta_pptdorm + 2*beta_pptdorm2*pptdorm)}
+
+## loop over pptdorm and calculated dp_dpptdorm and dlambda_dp
+dp_dpptdorm <- dlambda_dp <- matrix(NA,nrow=length(LTRE_params)*2,ncol=length(all_pptdorm_seq))
+lambda_pptdorm <- c()
+perturbation <- 0.01
+
+for(l in 1:length(all_pptdorm_seq)){
+ lambda_pptdorm[l] <- lambdaSim_delay(F_params=F_params,M_params=M_params,zpptgrow=0,ztempgrow=0,ztempdorm=0,zpptdorm=all_pptdorm_seq[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+ dp_dpptdorm[,l] <- dp_dpptdorm_fun(beta_pptdorm = unlist(betas_pptdorm),
+                              beta_pptdorm2 = unlist(betas_pptdorm2),
+                              pptdorm=all_pptdorm_seq[l])
+# cannot vectorize this part unfortunately
+ for(p in 1:8){
+   F_params_perturb <- F_params; M_params_perturb <- M_params;
+   F_params_perturb[LTRE_params[p]] <- unlist(F_params[LTRE_params[p]]) + perturbation
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=0,ztempdorm=0,zpptdorm=all_pptdorm_seq[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   dlambda_dp[p,l] <- (lambda_perturb - lambda_pptdorm[l]) / perturbation
+ }
+ for(p in 9:16){
+   F_params_perturb <- F_params; M_params_perturb <- M_params;
+   M_params_perturb[LTRE_params[p-8]] <- unlist(M_params[LTRE_params[p-8]]) + perturbation
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=0,ztempdorm=0,zpptdorm=all_pptdorm_seq[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   dlambda_dp[p,l] <- (lambda_perturb - lambda_pptdorm[l]) / perturbation
+ }
+ print(l)
+}
+## write LTRE output based on posterior mean parameters
+# write_rds(list(dp_dpptdorm=dp_dpptdorm,dlambda_dp=dlambda_dp),"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/POAR_LTREPPTDORM.rds")
+
+```
+
+```{r}
+## read LTRE output
+POAR_LTRE_PPTDORM <- readRDS(url("https://www.dropbox.com/scl/fi/fppc6kjqx1cgayk7wf95w/POAR_LTREPPTDORM.rds?rlkey=qrv2r9atakg7e2hlhof4xoyzs&dl=1"))
+# put it all together 
+LTRE_PPTDORM_out <- POAR_LTRE_PPTDORM$dp_dpptdorm * POAR_LTRE_PPTDORM$dlambda_dp
+```
+
+```{r}
+all_tempdorm_seq<-seq(min(data_past_present_45_85$ztempdorm),max(data_past_present_45_85$ztempdorm),length.out=30)
+max_yrs<-30
+
+## LTRE parameters:
+# these are the indices of the intercepts and slopes
+LTRE_params <- c(1,2,13,14,26,27,38,39)
 # these are the effects of tempdorm on the intercepts and slopes
 betas_tempdorm <- c(F_params[c("surv_tempdorm","surv_tempdorm_pptdorm","grow_tempdorm","grow_tempdorm_pptdorm","flow_tempdorm","flow_tempdorm_pptdorm","panic_tempdorm","panic_tempdorm_pptdorm")],
                 M_params[c("surv_tempdorm","surv_tempdorm_pptdorm","grow_tempdorm","grow_tempdorm_pptdorm","flow_tempdorm","flow_tempdorm_pptdorm","panic_tempdorm","panic_tempdorm_pptdorm")])
@@ -7190,69 +7357,141 @@ betas_tempdorm2 <- c(F_params[c("surv_tempdorm2","grow_tempdorm2","flow_tempdorm
 dp_dtempdorm_fun <- function(beta_tempdorm,beta_tempdorm2,tempdorm){return(beta_tempdorm + 2*beta_tempdorm2*tempdorm)}
 
 ## loop over tempdorm and calculated dp_dtempdorm and dlambda_dp
-dp_dtempdorm <- dlambda_dp <- matrix(NA,nrow=length(LTRE_params)*2,ncol=length(all_tempdorm_seq_z))
+dp_dtempdorm <- dlambda_dp <- matrix(NA,nrow=length(LTRE_params)*2,ncol=length(all_tempdorm_seq))
 lambda_tempdorm <- c()
 perturbation <- 0.01
 
-for(l in 1:length(all_tempdorm_seq_z)){
- lambda_tempdorm[l] <- lambdaSim_delay(F_params=F_params,M_params=M_params,zpptgrow=0,ztempgrow=0,zpptdorm=0,ztempdorm=all_tempdorm_seq_z[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+for(l in 1:length(all_tempdorm_seq)){
+ lambda_tempdorm[l] <- lambdaSim_delay(F_params=F_params,M_params=M_params,zpptgrow=0,ztempgrow=0,zpptdorm=0,ztempdorm=all_tempdorm_seq[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
  dp_dtempdorm[,l] <- dp_dtempdorm_fun(beta_tempdorm = unlist(betas_tempdorm),
                               beta_tempdorm2 = unlist(betas_tempdorm2),
-                              tempdorm=all_tempdorm_seq_z[l])
+                              tempdorm=all_tempdorm_seq[l])
 # cannot vectorize this part unfortunately
  for(p in 1:8){
    F_params_perturb <- F_params; M_params_perturb <- M_params;
    F_params_perturb[LTRE_params[p]] <- unlist(F_params[LTRE_params[p]]) + perturbation
-   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=0,zpptdorm=0,ztempdorm=all_tempdorm_seq_z[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=0,zpptdorm=0,ztempdorm=all_tempdorm_seq[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
    dlambda_dp[p,l] <- (lambda_perturb - lambda_tempdorm[l]) / perturbation
  }
  for(p in 9:16){
    F_params_perturb <- F_params; M_params_perturb <- M_params;
    M_params_perturb[LTRE_params[p-8]] <- unlist(M_params[LTRE_params[p-8]]) + perturbation
-   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=0,zpptdorm=0,ztempdorm=all_tempdorm_seq_z[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
+   lambda_perturb <- lambdaSim_delay(F_params=F_params_perturb,M_params=M_params_perturb,zpptgrow=0,ztempgrow=0,zpptdorm=0,ztempdorm=all_tempdorm_seq[l],rfx=rfx_fun(),max.yrs=max_yrs)$lambdatracker[max_yrs]
    dlambda_dp[p,l] <- (lambda_perturb - lambda_tempdorm[l]) / perturbation
  }
  print(l)
 }
 ## write LTRE output based on posterior mean parameters
-write_rds(list(dp_dtempdorm=dp_dtempdorm,dlambda_dp=dlambda_dp),"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/POAR_LTRETEMPDORM.rds")
+# write_rds(list(dp_dtempdorm=dp_dtempdorm,dlambda_dp=dlambda_dp),"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/POAR_LTRETEMPDORM.rds")
 
 ```
 
 ```{r}
 ## read LTRE output
-POAR_LTRE_TEMPDORM <- readRDS(url("https://www.dropbox.com/scl/fi/gu2osr7bmi6o47zivj9bp/POAR_LTRETEMPDORM.rds?rlkey=4yvtsq3zidzg38ttkmwluaau3&dl=1"))
-
-
-
+POAR_LTRE_TEMPDORM <- readRDS(url("https://www.dropbox.com/scl/fi/l6lpwgi11lb4qkks501sh/POAR_LTRETEMPDORM.rds?rlkey=m9m0jw9qsrutr7z31rkl3hdp1&dl=1"))
 # put it all together 
 LTRE_TEMPDORM_out <- POAR_LTRE_TEMPDORM$dp_dtempdorm * POAR_LTRE_TEMPDORM$dlambda_dp
+```
 
-# Plot male and feme contribution
+```{r}
 # ltre_cols <- c("#D55E00",NA,"#56B4E9",NA,"#009E73",NA,"#CC79A7",NA)
 ltre_cols <- c("#7570B3",NA,"#0072B2",NA,"#E7298A",NA,"#E6AB02",NA)
 ltre_lty <- c(1,NA,1,NA,1,NA,1,NA)
 
-par(mar=c(5,5,1,1),mfrow=c(2,1))
-plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[1:8,]),type="l",lwd=4,col="grey50",lty=2,
-     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.8)
-# HelpersMG::symbol.Female(centerx=1200, centery = -6, rayonx=25, lwd=3, col="black")
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/LTRE_Temperature.pdf",width=7,height=6,useDingbats = F)
+par(oma=c(5,2,1.5,0.5))
+# par(mar=c(5,4,1,0),mfrow=c(2,2))
+par(mar=c(5,5,1,1),mfrow=c(2,2))
+plot(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[1:8,]),type="l",lwd=3,col="grey20",lty=1,
+     xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),cex.lab=1.2)
+sex.symbols(9, -3, sex = 2, cex = 1.5, lwd = 2, col = "black")  
+abline(h=0,col="black")
+for(i in seq(1,8,by=2)){
+  lines(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
+}
+mtext( "A",side = 3, adj = 0,cex=1.25)
+# legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,4),
+#        lty=c(na.omit(ltre_lty),2),col=c(na.omit(ltre_cols),"grey20"),cex=0.8,seg.len =1)
+
+plot(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[9:16,]),type="l",lwd=3,col="grey20",
+     xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),cex.lab=1.2)
+sex.symbols(9, -1.5, sex = 1, cex = 1.5, lwd = 2, col = "black")  
+abline(h=0,col="black")
+for(i in seq(9,16,by=2)){
+  lines(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
+}
+mtext( "B",side = 3, adj = 0,cex=1.25)
+legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,3),
+       lty=c(na.omit(ltre_lty),1),col=c(na.omit(ltre_cols),"grey20"),cex=0.8)
+
+# par(mar=c(5,5,1,1),mfrow=c(2,1))
+plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[1:8,]),type="l",lwd=3,col="grey20",lty=1,
+     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempdorm")),cex.lab=1.2)
 abline(h=0,col="black")
 for(i in seq(1,8,by=2)){
   lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
 }
-title(main="A) Female contribution",adj=0,cex.main=1.4)
+sex.symbols(25, -4, sex = 2, cex = 1.5, lwd = 2, col = "black") 
+mtext( "C",side = 3, adj = 0,cex=1.25)
 
-plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[9:16,]),type="l",lwd=4,col="grey",
-     xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.8)
-# HelpersMG::symbol.Male(centerx=1200, centery = -0.4, rayonx=25, lwd=3, col="black")
+plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[9:16,]),type="l",lwd=3,col="grey20",
+     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempdorm")),cex.lab=1.2,ylim=c(-10,5))
 abline(h=0,col="black")
 for(i in seq(9,16,by=2)){
   lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
 }
-title(main="B) Male contribution",adj=0,cex.main=1.4)
-legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,4),
-       lty=c(na.omit(ltre_lty),1),col=c(na.omit(ltre_cols),"grey"),cex=1)
+sex.symbols(25, -7.5, sex = 1, cex = 1.5, lwd = 2, col = "black") 
+mtext( "D",side = 3, adj = 0,cex=1.25)
+dev.off()
 ```
+
+```{r}
+ltre_cols <- c("#7570B3",NA,"#0072B2",NA,"#E7298A",NA,"#E6AB02",NA)
+ltre_lty <- c(1,NA,1,NA,1,NA,1,NA)
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/LTRE_Precipitation.pdf",width=7,height=6,useDingbats = F)
+par(oma=c(5,2,1.5,0.5))
+# par(mar=c(5,4,1,0),mfrow=c(2,2))
+par(mar=c(5,5,1,1),mfrow=c(2,2))
+plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[1:8,]),type="l",lwd=3,ylim=c(-7,2),col="grey20",lty=1,
+     xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.2)
+sex.symbols(700, -6, sex = 2, cex = 1.5, lwd = 2, col = "black")  
+abline(h=0,col="black")
+for(i in seq(1,8,by=2)){
+  lines(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
+}
+mtext( "A",side = 3, adj = 0,cex=1.25)
+plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[9:16,]),type="l",lwd=3,ylim=c(-0.5,0.5),col="grey20",
+     xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.2)
+sex.symbols(700, -0.4, sex = 1, cex = 1.5, lwd = 2, col = "black")  
+abline(h=0,col="black")
+for(i in seq(9,16,by=2)){
+  lines(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
+}
+mtext( "B",side = 3, adj = 0,cex=1.25)
+legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,3),
+       lty=c(na.omit(ltre_lty),1),col=c(na.omit(ltre_cols),"grey20"),cex=0.8)
+
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTDORM_out[1:8,]),type="l",lwd=3,ylim=c(-7,4),col="grey20",lty=1,
+     xlab="Precipitation dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptdormant")),cex.lab=1.2)
+sex.symbols(400, -5, sex = 2, cex = 1.5, lwd = 2, col = "black")  
+abline(h=0,col="black")
+for(i in seq(1,8,by=2)){
+  lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
+}
+mtext( "C",side = 3, adj = 0,cex=1.25)
+
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTGROW_out[9:16,]),type="l",lwd=3,col="grey20",
+     xlab="Precipitation dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptdorm")),cex.lab=1.2)
+sex.symbols(400, -0.4, sex = 1, cex = 1.5, lwd = 2, col = "black")  
+abline(h=0,col="black")
+for(i in seq(9,16,by=2)){
+  lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
+}
+mtext("D",side = 3, adj = 0,cex=1.25)
+
+dev.off()
+```
+
 
 \`\`\`
