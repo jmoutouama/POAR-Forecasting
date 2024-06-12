@@ -80,6 +80,7 @@ library(doParallel)
 # library(scater)
 library(BiocManager)
 library(randomForest)
+library(swfscMisc)
 ```
 
 Define some basic functions that we'll use later
@@ -6448,8 +6449,8 @@ ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecas
 ```{r}
 geo_lambbacurrent_fd <- read.csv("https://www.dropbox.com/scl/fi/7zmsid3dxszv3l3tyvoox/lambda_post_current.csv?rlkey=hwy253ls9imsupkzqrduwp7r8&dl=1", stringsAsFactors = F) 
 geo_lambbapast_fd <- read.csv("https://www.dropbox.com/scl/fi/9x9gbdv1vefdyd292726c/data_past_fd.csv?rlkey=besdw6mj9ab1nubx18if54w9z&dl=1", stringsAsFactors = F)
-# geo_lambda_miroc45_fd<-read.csv("https://www.dropbox.com/scl/fi/4bm84k4lbnkz3duup2c22/lambda_miroc45.csv?rlkey=iz793zg59fn92un2zl331awzc&dl=1", stringsAsFactors = F)
-# geo_lambba_miroc85_fd <- read.csv("https://www.dropbox.com/scl/fi/jpeywkhbiyaap3qwmrdmn/datamiroc85fd.csv?rlkey=9yim1d2m748f2wsrenxtetk94&dl=1", stringsAsFactors = F)
+geo_lambda_miroc45_fd<-read.csv("https://www.dropbox.com/scl/fi/dmfb2mdhrv5k8otcrc33m/lambda_miroc45.csv?rlkey=1d4j1blbmlx9i3rp61c35g7f8&dl=1", stringsAsFactors = F)
+geo_lambba_miroc85_fd <- read.csv("https://www.dropbox.com/scl/fi/a1rmqszey6y9s88887fqq/datamiroc85fd.csv?rlkey=1eckoajb6s4ee6dq61f2o5ymj&dl=1", stringsAsFactors = F)
 # geo_lambba_cmc45_fd <- read.csv("https://www.dropbox.com/scl/fi/boqyl8ltowyunjf8x3m3w/lambda_cmcc45_post.csv?rlkey=ciwqlt3a97c2khthujotrryil&dl=1", stringsAsFactors = F)
 # geolambba_cmc85_fd <- read.csv("https://www.dropbox.com/scl/fi/4eke3xp4gasqe5r8bk5c5/lambda_cmcc85_post.csv?rlkey=mginyfh8hbpmib6dbs8cmjq3f&dl=1", stringsAsFactors = F)
 geo_lambba_acc45_fd <- read.csv("https://www.dropbox.com/scl/fi/p7xkr30t6zf24gtn4adbl/data_acc45_fd.csv?rlkey=2qv22qe7p3bahmn24mmtff1rm&dl=1", stringsAsFactors = F)
@@ -7398,12 +7399,12 @@ LTRE_TEMPDORM_out <- POAR_LTRE_TEMPDORM$dp_dtempdorm * POAR_LTRE_TEMPDORM$dlambd
 ltre_cols <- c("#7570B3",NA,"#0072B2",NA,"#E7298A",NA,"#E6AB02",NA)
 ltre_lty <- c(1,NA,1,NA,1,NA,1,NA)
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/LTRE_Temperature.pdf",width=7,height=6,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/LTRE_Temperature.pdf",width=7,height=7,useDingbats = F)
 par(oma=c(5,2,1.5,0.5))
 # par(mar=c(5,4,1,0),mfrow=c(2,2))
 par(mar=c(5,5,1,1),mfrow=c(2,2))
 plot(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[1:8,]),type="l",lwd=3,col="grey20",lty=1,
-     xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),cex.lab=1.2)
+     xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),ylim=c(-5,5),cex.lab=1.2)
 sex.symbols(9, -3, sex = 2, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(1,8,by=2)){
@@ -7414,7 +7415,7 @@ mtext( "A",side = 3, adj = 0,cex=1.25)
 #        lty=c(na.omit(ltre_lty),2),col=c(na.omit(ltre_cols),"grey20"),cex=0.8,seg.len =1)
 
 plot(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[9:16,]),type="l",lwd=3,col="grey20",
-     xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),cex.lab=1.2)
+     xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),ylim=c(-5,5),cex.lab=1.2)
 sex.symbols(9, -1.5, sex = 1, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(9,16,by=2)){
@@ -7426,7 +7427,7 @@ legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","T
 
 # par(mar=c(5,5,1,1),mfrow=c(2,1))
 plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[1:8,]),type="l",lwd=3,col="grey20",lty=1,
-     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempdorm")),cex.lab=1.2)
+     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempdorm")),ylim=c(-5,5),cex.lab=1.2)
 abline(h=0,col="black")
 for(i in seq(1,8,by=2)){
   lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
@@ -7435,12 +7436,12 @@ sex.symbols(25, -4, sex = 2, cex = 1.5, lwd = 2, col = "black")
 mtext( "C",side = 3, adj = 0,cex=1.25)
 
 plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[9:16,]),type="l",lwd=3,col="grey20",
-     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempdorm")),cex.lab=1.2,ylim=c(-10,5))
+     xlab="Temperature dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempdorm")),ylim=c(-5,5),cex.lab=1.2)
 abline(h=0,col="black")
 for(i in seq(9,16,by=2)){
   lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),colSums(LTRE_TEMPDORM_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
 }
-sex.symbols(25, -7.5, sex = 1, cex = 1.5, lwd = 2, col = "black") 
+sex.symbols(25, -4, sex = 1, cex = 1.5, lwd = 2, col = "black") 
 mtext( "D",side = 3, adj = 0,cex=1.25)
 dev.off()
 ```
@@ -7449,32 +7450,32 @@ dev.off()
 ltre_cols <- c("#7570B3",NA,"#0072B2",NA,"#E7298A",NA,"#E6AB02",NA)
 ltre_lty <- c(1,NA,1,NA,1,NA,1,NA)
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/LTRE_Precipitation.pdf",width=7,height=6,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/LTRE_Precipitation.pdf",width=7,height=7,useDingbats = F)
 par(oma=c(5,2,1.5,0.5))
 # par(mar=c(5,4,1,0),mfrow=c(2,2))
 par(mar=c(5,5,1,1),mfrow=c(2,2))
-plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[1:8,]),type="l",lwd=3,ylim=c(-7,2),col="grey20",lty=1,
+plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[1:8,]),type="l",lwd=3,ylim=c(-10,3),col="grey20",lty=1,
      xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.2)
-sex.symbols(700, -6, sex = 2, cex = 1.5, lwd = 2, col = "black")  
+sex.symbols(700, 2, sex = 2, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(1,8,by=2)){
   lines(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
 }
 mtext( "A",side = 3, adj = 0,cex=1.25)
-plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[9:16,]),type="l",lwd=3,ylim=c(-0.5,0.5),col="grey20",
+plot(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[9:16,]),type="l",lwd=3,ylim=c(-10,3),col="grey20",
      xlab="Precipitation growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptgrow")),cex.lab=1.2)
-sex.symbols(700, -0.4, sex = 1, cex = 1.5, lwd = 2, col = "black")  
+sex.symbols(700, 2, sex = 1, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(9,16,by=2)){
   lines(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
 }
 mtext( "B",side = 3, adj = 0,cex=1.25)
-legend("topright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,3),
+legend("bottomright",bty="n",legend=c("Survival","Growth","Flowering","Panicles","Total"),lwd=c(2,2,2,2,3),
        lty=c(na.omit(ltre_lty),1),col=c(na.omit(ltre_cols),"grey20"),cex=0.8)
 
-plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTDORM_out[1:8,]),type="l",lwd=3,ylim=c(-7,4),col="grey20",lty=1,
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTDORM_out[1:8,]),type="l",lwd=3,ylim=c(-10,3),col="grey20",lty=1,
      xlab="Precipitation dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptdormant")),cex.lab=1.2)
-sex.symbols(400, -5, sex = 2, cex = 1.5, lwd = 2, col = "black")  
+sex.symbols(425, 2.75, sex = 2, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(1,8,by=2)){
   lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i],col=ltre_cols[i],lwd=2)
@@ -7482,8 +7483,8 @@ for(i in seq(1,8,by=2)){
 mtext( "C",side = 3, adj = 0,cex=1.25)
 
 plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTGROW_out[9:16,]),type="l",lwd=3,col="grey20",
-     xlab="Precipitation dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptdorm")),cex.lab=1.2)
-sex.symbols(400, -0.4, sex = 1, cex = 1.5, lwd = 2, col = "black")  
+     xlab="Precipitation dormant",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"pptdorm")),ylim=c(-10,3),cex.lab=1.2)
+sex.symbols(400, 2, sex = 1, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(9,16,by=2)){
   lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),colSums(LTRE_PPTGROW_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)
@@ -7493,5 +7494,95 @@ mtext("D",side = 3, adj = 0,cex=1.25)
 dev.off()
 ```
 
+# Sex ratio and climate change 
+
+```{r}
+sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/dnevudg4yrhp7373lfhgq/OSR_dorm.csv?rlkey=4715a7cvjoank1jmx6gk7na67&dl=1"))
+
+all_pptdorm_seq<-seq(min(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
+all_tempdorm_seq<-seq(min(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),max(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),length.out=30)
+
+OSR_mtrx_dorm <- matrix(sexratio_dormant$OSR, nrow = 30, dimnames = list(all_pptdorm_seq,
+               all_tempdorm_seq))
+SR_mtrx_dorm <- matrix(sexratio_dormant$SR, nrow = 30, dimnames = list(all_pptdorm_seq,
+               all_tempdorm_seq))
+```
+
+```{r}
+# read in results of the above loop
+sexratio_growing <- read_csv(url("https://www.dropbox.com/scl/fi/3xsgda5nn4lxu3fcbn284/OSR_grow.csv?rlkey=1svxkjjvsiqhvfm82wvwcno78&dl=1"))
+all_pptgrow_seq<-seq(min(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),max(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),length.out=30)
+all_tempgrow_seq<-seq(min(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),max(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),length.out=30)
+OSR_mtrx_grow <- matrix(sexratio_growing$OSR, nrow = 30, dimnames = list(all_pptgrow_seq,
+               all_tempgrow_seq))
+SR_mtrx_grow <- matrix(sexratio_growing$SR, nrow = 30, dimnames = list(all_pptgrow_seq,
+               all_tempgrow_seq))
+
+```
+
+
+```{r}
+library(RColorBrewer)
+x_current_d<-clim_current$pptdorm
+y_current_d<-clim_current$tempdorm
+x_past_d<-clim_past$pptdorm
+y_past_d<-clim_past$tempdorm
+x_miroc45_d<-clim_miroc45$pptdorm
+y_miroc45_d<-clim_miroc45$tempdorm
+x_miroc85_d<-clim_miroc85$pptdorm
+y_miroc85_d<-clim_miroc85$tempdorm
+
+x_current_g<-clim_current$pptgrow
+y_current_g<-clim_current$tempgrow
+x_past_g<-clim_past$pptgrow
+y_past_g<-clim_past$tempgrow
+x_miroc45_g<-clim_miroc45$pptgrow
+y_miroc45_g<-clim_miroc45$tempgrow
+x_miroc85_g<-clim_miroc85$pptgrow
+y_miroc85_g<-clim_miroc85$tempgrow
+
+```
+```{r}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
+par(mar=c(5,5,1,1),mfrow=c(2,1))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+contour(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,add=T,labcex=0.75,col="black") 
+mtext("A",side = 3, adj = 0,cex=1.25)
+text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"+",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
+contour(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,add=T,labcex=0.75,col="black") 
+mtext("B",side = 3, adj = 0,cex=1.25)
+# title(main="B" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"+",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"o",col="black",cex=0.8)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=3.5)
+dev.off()
+```
+
+
+```{r}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/SR.pdf",width=5,height=7,useDingbats = F)
+par(mar=c(5,5,1,1),mfrow=c(2,1))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,SR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+contour(all_pptdorm_seq,all_tempdorm_seq,SR_mtrx_dorm,add=T,labcex=0.75,col="black") 
+mtext("A",side = 3, adj = 0,cex=1.25)
+text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"+",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,SR_mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
+contour(all_pptgrow_seq,all_tempgrow_seq,SR_mtrx_grow,add=T,labcex=0.75,col="black") 
+mtext("B",side = 3, adj = 0,cex=1.25)
+# title(main="B" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"+",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"o",col="black",cex=0.8)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=3.5)
+dev.off()
+```
 
 \`\`\`

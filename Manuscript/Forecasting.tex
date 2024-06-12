@@ -44,7 +44,7 @@
 
 %-------------------------------------------------------------------------
 \title{Forecasting range shifts of a dioecious plant species under climate change}
-\author[1]{Jacob K. Moutouama \thanks{Corresponding author: jmoutouama@.gmail.com}}
+\author[1]{Jacob K. Moutouama \thanks{Corresponding author: jmoutouama@gmail.com}}
 \author[2]{Aldo Compagnoni}
 \author[1]{Tom E.X. Miller}
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
@@ -89,13 +89,13 @@
 %200 word limit for Ecology letter
 Rising temperatures and extreme drought events associated with global climate change have triggered an urgent need for predicting species response to climate change.
 Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change ignore the complication of sex structure. 
-To address this issue, we developed two contasting climate-driven population matrix models (one that does not account for sex structure and another one that does account for sex structure) using
-demographic data of dioecious species (Texas bluegrass), past and future climate (different carbon gas emission scenarios) to forecast and backcast the effect of climate change on range shifts.
+To address this issue, we developed two contasting climate-driven matrix projection models (MPMs), one that account for sex structure and another one that does not account for sex structure. 
+The MPMs were built from demographic data of dioecious species (Texas bluegrass), past and future climate (different carbon gas emission scenarios).
 Both models predict a sex specific demographic response to climate change.
 Female individuals have a demographic advantage (higher vital rate) over males.
 Climate change assuming moderate carbon emission has no negative impact on population viability. 
-However, high carbon emission will likely alter population viability in dioecious species and will induce a North-West shift in suitable conditions. 
-Overall, our work suggest that tracking only the female could lead to an underestimation of the impact of climate change on dioecious species. 
+However, high carbon emission will likely alter population viability in dioecious species and will induce a North shift in suitable conditions. 
+Overall, our work suggest that tracking only one sex could lead to an underestimation of the impact of climate change on dioecious species.
 This study provides a framework for predicting the impact of climate on species using population demography. 
 
 %--------------------------------------------------------------------
@@ -288,31 +288,29 @@ The LTRE approximates the variation in $\lambda$ in response to climate covariat
 Var(\lambda_{c})\approx \sum_{i=-1}^{n}\sum_{j=1}^{n} Cov(\theta_{i},\theta_{j},\theta_{ij}) + Var (\epsilon)
 \end{align}
 
-\noindent where, $\theta_{i}$, $\theta_{j}$, $\theta_{ij}$  represent respectively the fitted regression slope for the covariate of the dormant season,j the covariate of the growing season and ij the covariate of their interactions. 
+\noindent where, $\theta_{i}$, $\theta_{j}$, $\theta_{ij}$  represent respectively the fitted regression slope for the covariates of the dormant season,j the covariates of the growing season and ij the covariates of their interactions. 
 
 To identify the mechanism by which climate affects population growth rate for each sex, we decomposed the effect of each climate variable (here Climate) on population growth rate ($\lambda$) into contribution arising from the effect on each stage-specific vital rate \citep{caswell2000matrix}.
-At this end we used a life table response experiment (LTRE) with a regression designs. 
-The LTRE approximates the change in $\lambda$ with climate  as the product of the sensitivity of $\lambda$ to the parameters times the sensitivity of the parameters to climate, summed over all parameters \citep{caswell1989analysis}:
+At this end we used another LTRE with a "regression design". 
+The LTRE with a "regression design" approximates the change in $\lambda$ with climate as the product of the sensitivity of $\lambda$ to the parameters times the sensitivity of the parameters to climate, summed over all parameters \citep{caswell1989analysis}:
 \begin{align}\label{eq:ltresex}
-\frac{\partial \lambda}{\partial Climate} \approx \sum_{i} \frac{\partial \lambda}{\partial \theta^{F}_{i}} \frac{\partial \theta^{F}_{i}}{\partial Climate} + \frac{\partial \lambda}{\partial \theta^{M}_{i}} \frac{\partial \theta^{M}_{i}}{\partial Climate}
+\frac{\partial \lambda}{\partial climate} \approx \sum_{i} \frac{\partial \lambda}{\partial \theta^{F}_{i}} \frac{\partial \theta^{F}_{i}}{\partial climate} + \frac{\partial \lambda}{\partial \theta^{M}_{i}} \frac{\partial \theta^{M}_{i}}{\partial climate}
 \end{align}
 
 \noindent where, $\theta^{F}_{i}$ and $\theta^{M}_{i}$ represent sex-specific parameters: the regression coefficients for the intercepts and slopes of size-dependent vital rate functions. 
 Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. 
 
 \subsection*{Impact of climate change on niche and range shifts}
-A species' ecological niche can be defined as the range of resources and conditions (physical and environmental) allowing the species to maintain a viable population ($\lambda \geq 1$).
-To understand the impact of climate change on species niche shifts, we estimated the probability of  population viability being greater than  1, Pr ($\lambda > 1$) conditional to two environmental axes \citep{diez2014probabilistic}.
-Because the study species is a cool season grass species, we used two environmental axes: (1) temperature and precipitation of the dormant season and (2) temperature and precipitation of the growing season. 
-Pr ($\lambda > 1$) was calculated using the proportion of the Markov chain Monte Carlo iterations (here, 300) that lead to a $\lambda > 1$
-Population viability-environment relationship was mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past, current and future potential distribution of the species.
-To do so, we estimated Pr ($\lambda > 1$) as a function of all climate covariates for each pixel (1km*1km) across the species range using the posterior distribution. 
+A species' ecological niche can be defined as the range of resources and conditions (physical and environmental) allowing the species to maintain a viable population ($\lambda > 1$).
+To understand the impact of climate change on species niche shifts, we estimated the probability of  population viability being greater than  1, Pr ($\lambda > 1$) conditional to two environmental axes: (i) temperature and precipitation of the dormant season and (ii) temperature and precipitation of the growing season. 
+Pr ($\lambda > 1$) was calculated using the proportion of the Markov chain Monte Carlo iterations that lead to a $\lambda > 1$ \citep{diez2014probabilistic}.
+Pr ($\lambda > 1$) was mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past, current and future potential distribution of the species.
+To do so, we estimated Pr ($\lambda > 1$) conditional to all climate covariates for each pixel (1km*1km) across the species range. 
 Because of amount of the computation involve in the Markov chain Monte Carlo iterations, use only 100 posterior samples to estimate Pr ($\lambda > 1$) across the Texas, Oklahoma and Kansas.
 
 % All the analysis were performed in R 4.3.1 \citep{RCoreteam}
-All calculations were processed in parallel using open-source software on the Rice Super computer (NOTS) and the German Centre for Integrative Biodiversity Research (iDiv) High-Performance Computing (HPC) Cluster. {\color{blue} This was achieved by splitting the global point occurrence records sent to single computational node}. 
-
-
+All calculations were processed in parallel using open-source software on the Rice Super computer (NOTS) and the German Centre for Integrative Biodiversity Research (iDiv) High-Performance Computing (HPC) Cluster.
+% {\color{blue} This was achieved by splitting the global point occurrence records sent to single computational node}. 
 
 \section*{Results}
 \subsection*{Sex specific demographic response to climate change}
@@ -325,14 +323,14 @@ Temperature of the growing season has a positive effect of the probability of su
 Further, there was a female survival and flowering advantage across both climatic seasons (Figures. 3A-3D, 3I-3L). 
 On the contrary, there was a male panicle advantage across all climatic variables (Figure3M-3P). 
 Counter-intuitively, there was no significant sex growth advantage in all season climatic variables (Figures. 3E-3H). 
-Plant size x sex interaction was significant for all vitals rates (Supporting Information \ref{Sup:Posterior}).
+Plant size and sex interaction was significant for all vitals rates (Supporting Information \ref{Sup:Posterior}).
 For survival, flowering and reproduction the interaction between temperature and precipitation of the growing season and dormant season was not significant (Supporting Information \ref{Sup:Posterior}). 
 However, for growth the interaction between temperature and precipitation of the growing season and dormant season was significantly higher than zero (Supporting Information \ref{Sup:Posterior}). 
 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.95\linewidth]{Figures/vital_rates.pdf}
-  \caption{Sex specific demographic response to climate across species range: A--D, inter-annual probability of survival; E--H, inter-annual growth (change in number of tillers); I--L, probability of flowering; M--P, number of panicles produced given flowering. 
+  \caption{Sex specific demographic response to climate across species range: A--D, seasonal probability of survival; E--H, seasonal growth (change in number of tillers); I--L, seasonal probability of flowering; M--P, number of panicles produced given flowering. 
   Points show means by site for females (orange) and males (green). 
   Point size is proportional to the sample size of the mean.
   Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values.
@@ -342,20 +340,16 @@ However, for growth the interaction between temperature and precipitation of the
 \end{figure}
 
 \subsection*{Climate change alter population viability}
-We estimated the predicted response of  population growth rate (population fitness) to seasonal climate gradients using a model assuming a female dominant model and another model using the two sexes. 
+We estimated the predicted response of  population growth rate (population fitness) to seasonal climate gradients using two models: one accounting for one sex (female dominant) and another one accounting for two sexes. 
 Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness (Fig.\ref{fig:lambda}). 
 For both models (female dominant and two sexes), population fitness decreased with an increase of precipitation of growing season. 
 In contrast population fitness increased with precipitation of the dormant season.
 Furthermore, population fitness was maximized between 23 and 17 \degree C and decreases to zero just beyond 32 \degree C during the growing season.
 Similarly population fitness was maximized between 13 and 17 \degree C and decreases to zero just beyond 20 \degree C during the growing season.
-We have also detected a strong effect of the past and future climate on population growth rate. However, for future climate, the magnitude of that effect was different between gas-scenario emissions. 
-A moderate emission gas scenario (RCP4.5) has a no effect on the population growth rate while a high emission scenario (RCP8.5) has a strong negative effect on the population growth rate. 
-High-emission scenario (RCP8.5) will lead to an alteration of population viability. 
-Under past climate conditions, population growth rate decreased below one for temperature of the growing season and the dormant season.
-
-Population viability was most sensitive to change in temperature of the growing season and temperature of the dormant season. 
-LTRE decomposition reveals that, for each sex, the reduction of lambda for high value of temperature of the growing season (Northern range) was driven by a reduction of survival rate, growth rate, flowering and a reduction in number of panicles. 
-However, the reduction of for higher value of temperature of the dormant season was driven by only the female. 
+We have also detected a strong effect of the past and future climate on population growth rate. 
+However, the magnitude of the effect of future climate on population growth rate was different between gas-scenario emissions. 
+Under past climate conditions, population growth rate decreased below one for temperature of the growing season.
+A moderate emission gas scenario (RCP4.5) has a no effect on the population growth rate while a high emission scenario (RCP8.5) has a strong negative effect on population growth rate. 
 
 \begin{figure}[H]
   \begin{center}
@@ -364,6 +358,12 @@ However, the reduction of for higher value of temperature of the dormant season 
   \label{fig:lambda}
   \end{center}
 \end{figure}
+
+\subsection*{Temperature as a driver of population viability decline }
+Population viability was most sensitive to change in temperature of the growing season and temperature of the dormant season (Supporting Information \ref{Sup:LTRE}). 
+LTRE decomposition reveals that, for each sex, the reduction of lambda for high value of temperature of the growing season was driven by a reduction of survival rate, growth rate, flowering and a reduction in number of panicles. 
+However, the reduction of for higher value of temperature of the dormant season was driven by only the female. 
+
 
 
 \begin{figure}[H]
@@ -415,29 +415,40 @@ Third, using only one sex to forescat range shifts of dioecious under climate ch
 
 Our results indicate a sex-specific demographic response to climate change. 
 Females have higher survival rate and fertility rate than males. 
-This result is not unique to our study system and has been observed in a range of abiotic pollen dispersal species across climatic gradien ts \citep{welbergen2008climate,zhao2012sex,sasaki2019complex}. 
+This result is not unique to our study system and has been observed in a range of abiotic pollen dispersal species across climatic gradients \citep{welbergen2008climate,zhao2012sex,sasaki2019complex}. 
 Several hypotheses could explain the observed demographic advantage of females over males for survival and flowering and the opposite for growth and number of panicles.
-First, the trade-off between fitness traits (survival, growth fertility) due to resource limitation could explain such a result \citep{cipollini1994sexual,freeman1976differential}.
-For most species, females often pay more for reproduction than males due to the requirement to develop seeds and fruits. 
-However, several studies reported a higher cost of reproduction for males in wind pollinated species due to the larger amounts of pollen they produce \citep{burli2022environmental,hultine2016climate,cipollini1994sexual,bruijning2017surviving,field2013comparative}.
+First, the trade-off between fitness traits (survival, growth fertility) due to resource limitation and the pollination mode of our study species (wind pollinated) could explain such a result \citep{cipollini1994sexual,freeman1976differential}.
+For most species, females often pay more for reproduction than males due to the requirement to develop seeds and fruits \citep{hultine2016climate}. 
+However, several studies reported a higher cost of reproduction for males in wind pollinated species due to the larger amounts of pollen they produce \citep{burli2022environmental,cipollini1994sexual,bruijning2017surviving,field2013comparative}.
+In addition to life history trade-off, other among site difference in non-climatic factors such as soil, or biotic interactions could explain decline in vital rate as an indirect effect s of increase in temperature \citep{alexander2015novel}.
 
 Under current conditions, most population across the range are viable.
 This result could be explained by two hypotheses.
-First, demographic compensation whereby an increase of one vital rate is coupled with a decrease of another vital rate could explain a viable population in harsh conditions at the range edge \citep{doak2010demographic,villellas2015demographic}. 
+First, demographic compensation whereby an increase of one vital rate is coupled with a decrease of another vital rate could explain a viable population in harsh conditions at the range edge \citep{doak2010demographic,villellas2015demographic,nomoto2021drivers}. 
 In our system, a decrease in fertility survival rate was counterbalanced by an increase in survival rate, preventing the population growth rate from declining even at range edge for the growing season.
-Second, local adaptation at the edge of the range explains the viable population throughout the range \citep{miller2022two}. 
-Our study was based on a common garden experiment; therefore, individuals planted in climatic conditions that are similar to their source populations climatic conditions suffer less from stressful environmental conditions.
-The question to ask is whether the local population could help the population at the edge to buffer against climate.
-Unfortunately, our model does not shed light on the role of local adaptation in species response to climate change. 
-Moreover, our future projections require extrapolation to warmer or colder conditions than observed in our experiment and subsequently should be interpreted with caution. 
-Despite this limitation, our model did well in predicting the suitable area for the species. 
+Second, local adaptation at the edge of the range could explain the viable population throughout the range \citep{miller2022two}. 
+Our study was based on a common garden experiment; therefore, individuals planted in climatic conditions that are similar to their source populations climatic conditions wer less impacted by stressful environmental conditions.
+One important question to ask is: what is the role of local adaptation in buffering species response to climate change.
+Adding another predictor to our complex model would have lead to overfitting. 
+Therefore, our model does not shed light on the importance of local adaptation in species response to climate change  
+The role of local adpatation in mitigating population response to climate should be the next step in forecasting species response to climate. 
 
-Projected future climate by inducing an increase in seasonal temperature will affect population viability. 
+Our LTRE analysis reveals that a small changes in temperature of the growing and dormant season could have a larger impact on population viability.
+This results suggest that projected future climate will affect population viability. 
 Temperature can impact plant populations through different mechanisms. 
-Increasing temperature could increase evaporative demand, affect plant phenology and germination rate. 
-The potential for temperature to influence these different processes changes seasonally \citep{korner2006significance}. 
-In the summer growing season, when the temperature is high, the effect on the water balance should be strong.
-In the dormant season, when evaporative demand is low, temperature should have a more important effect on phenology and germination. Because our study species was sensitive to temperatures in the growing season, the former mechanism deserve further attention. 
+Increasing temperature could increase evaporative demand, affect plant phenology \citep{dolschak2019impact}, and germination rate \citep{reed2021climate}. 
+The potential for temperature to influence these different processes changes seasonally \citep{konapala2020climate}. 
+In the summer growing season, when the temperature is high, the effect on the water balance should be strong \citep{adler2008influence}.
+In the dormant season, when evaporative demand is low, temperature should have a more important effect on phenology and germination.
+Because our study species was sensitive to temperatures in the growing season, the former mechanism deserve further attention.
+Three years represent a relatively decent time for demographic study for common garden experiments across climatic gradient, it can only capture a certain range of demographic and environmental variability.
+Moreover, our future projections require extrapolation to warmer or colder conditions than observed in our experiment and subsequently should be interpreted with caution. 
+Although our climate-driven projection matrix models may not be perfect when extrapolating, the qualitative implications of a negative response of the species to increase temperature (dormant and growing season) seems consistent across all climate all GCMs.  
+Our work suggest that current climate may not affect population viability, but populations may be impacted negatively over the next year in response to a climate change. 
+This is key because most conservation actions are design from  data on current responses to climate, rather than future response to climate 
+
+
+
 
 The reduction in population viability across the range due to climate change will drive a shift to the north range in suitable habitat for the species. 
 
@@ -544,9 +555,17 @@ The dashed horizontal line indicates the limit of population viability ($\lambda
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/LTRE_Precipitation.pdf}
+    \includegraphics[width=0.85\linewidth]{Figures/OSR.pdf}
   \caption{XXX}
-  \label{Sup:LTREPPT}
+  \label{Sup:OSR}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.85\linewidth]{Figures/SR.pdf}
+  \caption{XXX}
+  \label{Sup:SR}
   \end{center}
 \end{figure}
 
