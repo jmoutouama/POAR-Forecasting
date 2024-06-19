@@ -5857,6 +5857,7 @@ climate_ces_85_values$zpptgrow<-(climate_ces_85_values$pptgrow-mean(poar_2015_20
 climate_ces_85_values$ztempgrow<-(climate_ces_85_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_ces_85_values$zpptdorm<-(climate_ces_85_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_ces_85_values$ztempdorm<-(climate_ces_85_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+climate_ces_85_values<-data.frame(climate_ces_85_values,coordinates_study_area)
 # write_csv(climate_ces_85_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_ces_85_values.csv")
 ```
 
@@ -5893,6 +5894,7 @@ climate_ces_45_values$zpptgrow<-(climate_ces_45_values$pptgrow-mean(poar_2015_20
 climate_ces_45_values$ztempgrow<-(climate_ces_45_values$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
 climate_ces_45_values$zpptdorm<-(climate_ces_45_values$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
 climate_ces_45_values$ztempdorm<-(climate_ces_45_values$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+climate_ces_45_values<-data.frame(climate_ces_45_values,coordinates_study_area)
 # write_csv(climate_ces_45_values,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/climate_ces_45_values.csv")
 ```
 
@@ -5998,15 +6000,15 @@ poar_occ_unique %>%
 ```
 
 ```{r}
-lambda_future %>% 
-  dplyr::select(miroc45,access45,cmcc45,ces45)-> lambda_future45
-mean_lambda_45<-rowMeans(lambda_future45)
-lambda_future %>% 
-  dplyr::select(miroc85,access85,cmcc85,ces85)-> lambda_future85
-mean_lambda_85<-rowMeans(lambda_future85)
-median_lambda_45<-rowMeans(lambda_future45)
-geo45<-data.frame(coordinates_study_area,mean_lambda_45)
-geo85<-data.frame(coordinates_study_area,mean_lambda_85)
+# lambda_future %>% 
+#   dplyr::select(miroc45,access45,cmcc45,ces45)-> lambda_future45
+# mean_lambda_45<-rowMeans(lambda_future45)
+# lambda_future %>% 
+#   dplyr::select(miroc85,access85,cmcc85,ces85)-> lambda_future85
+# mean_lambda_85<-rowMeans(lambda_future85)
+# median_lambda_45<-rowMeans(lambda_future45)
+# geo45<-data.frame(coordinates_study_area,mean_lambda_45)
+# geo85<-data.frame(coordinates_study_area,mean_lambda_85)
 ```
 
 
@@ -6098,8 +6100,14 @@ lambbapast <- read.csv("https://www.dropbox.com/scl/fi/l1509slfkm5lpecbpscfp/poa
 lambba45 <- read.csv("https://www.dropbox.com/scl/fi/kq7p7zpnr4n910ed9lf1n/poar_miroc45_1-400K.csv?rlkey=0381obcnwjhzjkcx5kj8krmua&dl=1", stringsAsFactors = F)
 lambba85 <- read.csv("https://www.dropbox.com/scl/fi/tzat8n3x9dgj4mr2kj2a0/poar_miroc85_1-400K.csv?rlkey=yv10l7v2ii4ljossoviebyp59&dl=1", stringsAsFactors = F)
 
+lambbacmc45 <- read.csv("https://www.dropbox.com/scl/fi/ekjo0ezv0gn2pfoj69blt/poar_cmc45_1-400K.csv?rlkey=25x99ojbmc021qswxl2ehzq3t&dl=1", stringsAsFactors = F)
+lambbacmc85 <- read.csv("https://www.dropbox.com/scl/fi/299bagx6imcgm534bcmhs/poar_cmc85_1-400K.csv?rlkey=fd4qs8grnkyua7o99w0oz9pyt&dl=1", stringsAsFactors = F)
+
 lambbaacc45 <- read.csv("https://www.dropbox.com/scl/fi/973dwzsk6y7hzpoov5ljo/poar_acc45_1-400K.csv?rlkey=qsib01gvqjjgmye7pofnmvm7n&dl=1", stringsAsFactors = F)
 lambbaacc85 <- read.csv("https://www.dropbox.com/scl/fi/ybt7vyi1693nselqqkxhc/poar_acc85_1-400K.csv?rlkey=pfzooz6p1p0bw2dnvydm2gdzf&dl=1", stringsAsFactors = F)
+
+lambbaces45 <- read.csv("https://www.dropbox.com/scl/fi/8ml4oep2lssgg4xd3eon6/poar_ces45_1-400K.csv?rlkey=71ow2cfxcs6uk7iyqfcdijn1y&dl=1", stringsAsFactors = F)
+lambbaces85 <- read.csv("https://www.dropbox.com/scl/fi/84d3crazogxfj5p2id4to/poar_ces85_1-400K.csv?rlkey=raur7uo6w3flwippbrom69uqb&dl=1", stringsAsFactors = F)
 ```
 
 ```{r}
@@ -6266,13 +6274,9 @@ geo_prlambda_85 <- merge(x = lam_prob_85,y =climate_miroc85_values,by=c("pptdorm
 
 ```{r}
 Fig_geoPrlambdaprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection.pdf", Fig_geoPrlambdaprojection, width = 5, height = 7)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_miroc.pdf", Fig_geoPrlambdaprojection, width = 5, height = 7)
 ```
 
-```{r}
-lambbacmc45 <- read.csv("https://www.dropbox.com/scl/fi/ekjo0ezv0gn2pfoj69blt/poar_cmc45_1-400K.csv?rlkey=25x99ojbmc021qswxl2ehzq3t&dl=1", stringsAsFactors = F)
-lambbacmc85 <- read.csv("https://www.dropbox.com/scl/fi/299bagx6imcgm534bcmhs/poar_cmc85_1-400K.csv?rlkey=fd4qs8grnkyua7o99w0oz9pyt&dl=1", stringsAsFactors = F)
-```
 
 ```{r}
 lambbacmc45 %>% 
@@ -6355,7 +6359,7 @@ geo_prlambdacmc_85 <- merge(x = lamcmc_prob_85,y =climate_cmc_85_values,by=c("pp
 
 ```{r}
 Fig_geoPrlambdacmcprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prcmc45, lambda_map_Prcmc85,common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojectioncmc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_cmc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
 ```
 
 
@@ -6441,7 +6445,92 @@ geo_prlambdaacc_85 <- merge(x = lambdaacc_prob_85,y =climate_acc_85_values,by=c(
 
 ```{r}
 Fig_geoPrlambdacmcprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojectionacc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_acc.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
+```
+
+
+```{r}
+lambbaces45 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdaces_45
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambdaces_45_post<-c()
+for(l in 1:nrow(pivot_lambdaces_45)){
+  prob_lambdaces_45_post[l]<-mean(pivot_lambdaces_45[l,]>1,na.rm=T)
+}
+lambaces_prob_45<-data.frame(pivot_lambdaces_45[,1:8],Prlambda=prob_lambdaces_45_post)
+```
+
+```{r}
+# class(climate_cmc45_values)
+geo_prlambdaces_45 <- merge(x = lambaces_prob_45,y =climate_ces_45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+# summary(geo_prlambdacmc_45)
+```
+
+```{r}
+(lambda_map_Prces45 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambdaces_45, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+
+```
+
+```{r}
+lambbaces85 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdaces_85
+#dim(pivot_lambda_current)
+
+# Calculate probability of lambda above 1
+prob_lambdaces_85_post<-c()
+for(l in 1:nrow(pivot_lambdaces_85)){
+  prob_lambdaces_85_post[l]<-mean(pivot_lambdaces_85[l,]>1,na.rm=T)
+}
+lambdaces_prob_85<-data.frame(pivot_lambdaces_85[,1:8],Prlambda=prob_lambdaces_85_post)
+```
+
+```{r}
+geo_prlambdaces_85 <- merge(x = lambdaces_prob_85,y =climate_ces_85_values,by=c("pptdorm","tempdorm")) # merge the demographic data with climatic data for each
+# summary(geo_prlambda_current)
+```
+
+```{r}
+(lambda_map_Prces85 <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = geo_prlambdaces_85, aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(7))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+
+```
+
+
+```{r}
+Fig_geoPrlambdacesprojection<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prces45, lambda_map_Prces85,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_ces.pdf", Fig_geoPrlambdacmcprojection, width = 5, height = 7)
 ```
 
 ### Female dominant model
@@ -6451,10 +6540,12 @@ geo_lambbacurrent_fd <- read.csv("https://www.dropbox.com/scl/fi/7zmsid3dxszv3l3
 geo_lambbapast_fd <- read.csv("https://www.dropbox.com/scl/fi/9x9gbdv1vefdyd292726c/data_past_fd.csv?rlkey=besdw6mj9ab1nubx18if54w9z&dl=1", stringsAsFactors = F)
 geo_lambda_miroc45_fd<-read.csv("https://www.dropbox.com/scl/fi/dmfb2mdhrv5k8otcrc33m/lambda_miroc45.csv?rlkey=1d4j1blbmlx9i3rp61c35g7f8&dl=1", stringsAsFactors = F)
 geo_lambba_miroc85_fd <- read.csv("https://www.dropbox.com/scl/fi/a1rmqszey6y9s88887fqq/datamiroc85fd.csv?rlkey=1eckoajb6s4ee6dq61f2o5ymj&dl=1", stringsAsFactors = F)
-# geo_lambba_cmc45_fd <- read.csv("https://www.dropbox.com/scl/fi/boqyl8ltowyunjf8x3m3w/lambda_cmcc45_post.csv?rlkey=ciwqlt3a97c2khthujotrryil&dl=1", stringsAsFactors = F)
-# geolambba_cmc85_fd <- read.csv("https://www.dropbox.com/scl/fi/4eke3xp4gasqe5r8bk5c5/lambda_cmcc85_post.csv?rlkey=mginyfh8hbpmib6dbs8cmjq3f&dl=1", stringsAsFactors = F)
+geo_lambba_cmc45_fd <- read.csv("https://www.dropbox.com/scl/fi/oarso87jb6q5c30gsqm3k/lambda_cmcc45_fd.csv?rlkey=w7xlibvxnc2etc3iliog960dq&dl=1", stringsAsFactors = F)
+geolambba_cmc85_fd <- read.csv("https://www.dropbox.com/scl/fi/d8uv2mbb2g47ywly0cz63/data_cmc85_fd.csv?rlkey=o4wcrp7hkqmdyow19eue8e1dh&dl=1", stringsAsFactors = F)
 geo_lambba_acc45_fd <- read.csv("https://www.dropbox.com/scl/fi/p7xkr30t6zf24gtn4adbl/data_acc45_fd.csv?rlkey=2qv22qe7p3bahmn24mmtff1rm&dl=1", stringsAsFactors = F)
 geolambba_acc85_fd <- read.csv("https://www.dropbox.com/scl/fi/5ged79dtckp3z2k570sm8/data_acc85_fd.csv?rlkey=l97zn5wfci6icbbvv8gcj6z5c&dl=1", stringsAsFactors = F)
+geo_lambba_ces45_fd <- read.csv("https://www.dropbox.com/scl/fi/zdj4ra2qaghb4y16uiuow/data_ces45_fd.csv?rlkey=wl8t4ih9s48dr674xti0wwwww&dl=1", stringsAsFactors = F)
+geolambba_ces85_fd <- read.csv("https://www.dropbox.com/scl/fi/e4mksgd5hpayfwd3oy0sz/data_ces85_fd.csv?rlkey=miacot7xh5yan0vk6nbwk9q1o&dl=1", stringsAsFactors = F)
 ```
 
 ```{r}
@@ -6568,7 +6659,7 @@ lam_prob_miroc85_fd<-data.frame(climate_miroc85_values[,9:10],Prlambda=prob_lamb
 
 
 ```{r}
-Fig_geoPrlambdacmcprojection_fd_miroc<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_miroc45_fd, lambda_map_miroc85_fd,common.legend = TRUE)
+Fig_geoPrlambdaprojection_fd_miroc<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_miroc45_fd, lambda_map_miroc85_fd,common.legend = TRUE)
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_fd_miroc.pdf", Fig_geoPrlambdacmcprojection_fd_miroc, width = 5, height = 7)
 ```
 
@@ -6601,9 +6692,9 @@ lam_prob_cmc45_fd<-data.frame(climate_cmc_45_values[,9:10],Prlambda=prob_lambda_
 
 ```{r}
 prob_lambda_cmc85_fd<-c()
-dim(geo_lambba_cmc85_fd)
-for(l in 1:ncol(geo_lambba_cmc85_fd)){
-  prob_lambda_cmc85_fd[l]<-mean(geo_lambba_cmc85_fd[,l]>1,na.rm=T)
+dim(geolambba_cmc85_fd)
+for(l in 1:ncol(geolambba_cmc85_fd)){
+  prob_lambda_cmc85_fd[l]<-mean(geolambba_cmc85_fd[,l]>1,na.rm=T)
 }
 lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_cmc85_fd)
 ```
@@ -6623,6 +6714,11 @@ lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+```{r}
+Fig_geoPrlambdaprojection_fd_cmc<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_cmc45_fd, lambda_map_cmc85_fd,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_fd_cmc.pdf", Fig_geoPrlambdacmcprojection_fd_acc, width = 5, height = 7)
 ```
 
 ```{r}
@@ -6682,6 +6778,66 @@ lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_
 Fig_geoPrlambdacmcprojection_fd_acc<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_acc45_fd, lambda_map_acc85_fd,common.legend = TRUE)
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_fd_acc.pdf", Fig_geoPrlambdacmcprojection_fd_acc, width = 5, height = 7)
 ```
+
+```{r}
+prob_lambda_ces45_fd<-c()
+dim(geo_lambba_ces45_fd)
+for(l in 1:ncol(geo_lambba_ces45_fd)){
+  prob_lambda_ces45_fd[l]<-mean(geo_lambba_ces45_fd[,l]>1,na.rm=T)
+}
+lam_prob_ces45_fd<-data.frame(climate_ces_45_values[,9:10],Prlambda=prob_lambda_ces45_fd)
+```
+
+```{r}
+(lambda_map_ces45_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_ces45_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+```
+
+```{r}
+prob_lambda_ces85_fd<-c()
+dim(geolambba_ces85_fd)
+for(l in 1:ncol(geolambba_ces85_fd)){
+  prob_lambda_ces85_fd[l]<-mean(geolambba_ces85_fd[,l]>1,na.rm=T)
+}
+lam_prob_ces85_fd<-data.frame(climate_ces_85_values[,9:10],Prlambda=prob_lambda_ces85_fd)
+```
+
+```{r}
+(lambda_map_ces85_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lam_prob_ces85_fd, aes(x = x, y = y, fill = Prlambda))+
+  annotate(geom="text", x=-100, y=41, label="RCP8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda) > 1),
+    colours = terrain.colors(10),
+    breaks = seq(0, 1, 0.2))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+```
+
+
+```{r}
+Fig_geoPrlambdacmcprojection_fd_ces<-ggarrange(lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_ces45_fd, lambda_map_ces85_fd,common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaprojection_fd_ces.pdf", Fig_geoPrlambdacmcprojection_fd_miroc, width = 5, height = 7)
+```
+
+
 
 ### Niche Projection
 
@@ -6855,8 +7011,8 @@ lambda_dorm_post<-foreach(p=1:n_post_draws,.combine='rbind') %:%
 ## write output as a dataframe
 data_dormant_niche<-data.frame(lambda_dorm_post)
 
-write_rds(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.rds")
-write_csv(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.csv")
+# write_rds(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.rds")
+# write_csv(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.csv")
 ```
 
 ```{r}
@@ -7080,25 +7236,6 @@ y_miroc45_g<-clim_miroc45$tempgrow
 x_miroc85_g<-clim_miroc85$pptgrow
 y_miroc85_g<-clim_miroc85$tempgrow
 
-
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche.pdf",width=5,height=7,useDingbats = F)
-par(mar=c(5,5,1,1),mfrow=c(2,1))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
-contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=0.75,col="black") 
-mtext("A",side = 3, adj = 0,cex=1.5)
-text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
-text(x=x_past_d,y=y_past_d,"+",col="black")
-text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
-text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
-contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,add=T,labcex=0.75,col="black") 
-mtext("B",side = 3, adj = 0,cex=1.4)
-# title(main="B" ,adj=0,cex.main=1.4,font=1)
-text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)
-text(x=x_past_g,y=y_past_g,"+",col="black")
-text(x=x_miroc45_g,y=y_miroc45_g,"o",col="black",cex=0.8)
-text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=3.5)
-dev.off()
 ```
 
 #### Female dominant models
@@ -7153,24 +7290,42 @@ y_miroc45_g<-clim_miroc45$tempgrow
 x_miroc85_g<-clim_miroc85$pptgrow
 y_miroc85_g<-clim_miroc85$tempgrow
 
+```
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_female_dominant.pdf",width=5,height=7,useDingbats = F)
-par(mar=c(5,5,1,1),mfrow=c(2,1))
+
+```{r}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing.pdf",width=8,height=7,useDingbats = F)
+par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=0.75,col="black") 
+mtext("A",side = 3, adj = 0,cex=1.2)
+text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"o",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"*",col="black",cex=2)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=4.5)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
+contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,add=T,labcex=0.75,col="black") 
+mtext("B",side = 3, adj = 0,cex=1.2)
+# title(main="B" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_g,y=y_current_g,"+",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"o",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"*",col="black",cex=2)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
 fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
 contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,add=T,labcex=0.75,col="black") 
-mtext("A",side = 3, adj = 0,cex=1.5)
-text(x=x_current_d,y=y_current_d,"*",col="black",cex=1.5)
-text(x=x_past_d,y=y_past_d,"+",col="black")
-text(x=x_miroc45_d,y=y_miroc45_d,"o",col="black",cex=0.8)
-text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=3.5)
+mtext("C",side = 3, adj = 0,cex=1.2)
+text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"o",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"*",col="black",cex=2)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=4.5)
 fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="") 
 contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,add=T,labcex=0.75,col="black") 
-mtext("B",side = 3, adj = 0,cex=1.4)
+mtext("D",side = 3, adj = 0,cex=1.2)
 # title(main="B" ,adj=0,cex.main=1.4,font=1)
-text(x=x_current_g,y=y_current_g,"*",col="black",cex=1.5)
-text(x=x_past_g,y=y_past_g,"+",col="black")
-text(x=x_miroc45_g,y=y_miroc45_g,"o",col="black",cex=0.8)
-text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=3.5)
+text(x=x_current_g,y=y_current_g,"+",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"o",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"*",col="black",cex=2)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
 dev.off()
 ```
 
@@ -7416,7 +7571,7 @@ mtext( "A",side = 3, adj = 0,cex=1.25)
 
 plot(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[9:16,]),type="l",lwd=3,col="grey20",
      xlab="Temperature growing",ylab=expression(paste(partialdiff,lambda," / ",partialdiff,"tempgrow")),ylim=c(-5,5),cex.lab=1.2)
-sex.symbols(9, -1.5, sex = 1, cex = 1.5, lwd = 2, col = "black")  
+sex.symbols(9, -3, sex = 1, cex = 1.5, lwd = 2, col = "black")  
 abline(h=0,col="black")
 for(i in seq(9,16,by=2)){
   lines(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),colSums(LTRE_TEMPGROW_out[i:(i+1),]),lty=ltre_lty[i-8],col=ltre_cols[i-8],lwd=2)

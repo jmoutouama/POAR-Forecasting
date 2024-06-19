@@ -70,10 +70,7 @@
 \noindent\textbf{Keywords:} climate change, demography, forecasting, matrix projection model, mechanistic models, sex ratio, range limits
 
 \bigskip 
-\noindent\textbf{Acknowledgements:} This research was supported by  XX.
-
-\bigskip
-\noindent\textbf{Authorship statement:} XXXXX.  
+\noindent\textbf{Submitted to:} \textit{Ecology letters} (Letter)
 
 \bigskip 
 \noindent\textbf{Data accessibility statement:} All data \citep{dryaddata} used in this paper are  publicly avaialbale. Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. During peer review, our data and code are available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
@@ -90,13 +87,12 @@
 Rising temperatures and extreme drought events associated with global climate change have triggered an urgent need for predicting species response to climate change.
 Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change ignore the complication of sex structure. 
 To address this issue, we developed two contasting climate-driven matrix projection models (MPMs), one that account for sex structure and another one that does not account for sex structure. 
-The MPMs were built from demographic data of dioecious species (Texas bluegrass), past and future climate (different carbon gas emission scenarios).
-Both models predict a sex specific demographic response to climate change.
-Female individuals have a demographic advantage (higher vital rate) over males.
+The MPMs were built from demographic data of a dioecious species (Texas bluegrass), past and future climate (different carbon gas emission scenarios).
+Both models predict females demographic advantage (higher vital rate) over males.
 Climate change assuming moderate carbon emission has no negative impact on population viability. 
-However, high carbon emission will likely alter population viability in dioecious species and will induce a North shift in suitable conditions. 
-Overall, our work suggest that tracking only one sex could lead to an underestimation of the impact of climate change on dioecious species.
-This study provides a framework for predicting the impact of climate on species using population demography. 
+However, high carbon emission will likely alter population viability in dioecious species and will induce a niche and range shift in the Northern edge of the current range. 
+We demonstrated that tracking only one sex could lead to an underestimation of the impact of climate change on dioecious species.
+Overall, our work  provides a framework for predicting the impact of global warming on species using population demography. 
 
 %--------------------------------------------------------------------
 \newpage
@@ -180,11 +176,11 @@ These climate data were used as covariates in vital rate regressions, which allo
 We aligned the climatic years to match demographic transition years \tom{(May 1 -- April 30)}{I am not sure if these are actually the right dates.} rather than calendar years.
 Based on the natural history of this summer-dormant cool-season species, we divided each transition year into growing and dormant seasons. 
 We define June through September as the dormant season and the rest of the year as the growing season. 
-Across years and sites, the experiment included substantial variation in growing and dormant season temperature and precipitation (Supporting Information \ref{Sup:pr_variation}, \ref{Sup:temp_variation}).
+Across years and sites, the experiment included substantial variation in growing and dormant season temperature and precipitation (Fig. \ref{Sup:pr_variation}, \ref{Sup:temp_variation}).
 
 To back-cast and forecast changes in climate, we downloaded projection data for three 30-year periods: past (1901-1930), current (1990-2019) and future (2070-2100).
 Data for these climatic periods were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
-The GCMs are MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM  and were downloaded from chelsa \citep{sanderson2015representative}.
+The GCMs are MIROC5, Australian Community Climate and Earth System Simulator (ACCESS1-3), CESM1-BGC, Centro Euro-Mediterraneo per I Cambiamenti Climatici (CMCC-CM)  and were downloaded from chelsa \citep{sanderson2015representative}.
 We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing to amount to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which project a radiative forcing to amount to 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}.
 
 \subsection*{Sex ratio experiment}
@@ -242,7 +238,7 @@ We fit survival, growth, flowering models with generic weakly informative priors
 {\color{blue}We fit fertility model with regularizing priors for coefficients ($\mu = 0,\ \sigma = 0.15$).} 
 % because the models could not converge with the same priors that was used for he other vital rates.
 We ran three chains for 1000 samples for warmup and 4000 for interactions, with a thinning rate of 3.
-We accessed the quality of the models using trace plots and predictive check graphs \citep{piironen2017comparison} (Supporting Information \ref{Sup:PPC}).
+We accessed the quality of the models using trace plots and predictive check graphs \citep{piironen2017comparison} (Fig. \ref{Sup:PPC}).
 To understand the effect of climate on vital rates, we got the 95 \% credible interval of the posterior distribution.  
 Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
 All models were fit in Stan \citep{rstan}. 
@@ -301,7 +297,7 @@ The LTRE with a "regression design" approximates the change in $\lambda$ with cl
 Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. 
 
 \subsection*{Impact of climate change on niche and range shifts}
-A species' ecological niche can be defined as the range of resources and conditions (physical and environmental) allowing the species to maintain a viable population ($\lambda > 1$).
+A species' ecological niche can be defined as the range of resources and conditions (physical and environmental) allowing the species to maintain a viable population ($\lambda > 1$) \citep{maguire1973niche,hutchinson1978introduction}.
 To understand the impact of climate change on species niche shifts, we estimated the probability of  population viability being greater than  1, Pr ($\lambda > 1$) conditional to two environmental axes: (i) temperature and precipitation of the dormant season and (ii) temperature and precipitation of the growing season. 
 Pr ($\lambda > 1$) was calculated using the proportion of the Markov chain Monte Carlo iterations that lead to a $\lambda > 1$ \citep{diez2014probabilistic}.
 Pr ($\lambda > 1$) was mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past, current and future potential distribution of the species.
@@ -315,7 +311,7 @@ All calculations were processed in parallel using open-source software on the Ri
 \section*{Results}
 \subsection*{Sex specific demographic response to climate change}
 Most vital rates were strongly climate dependent, but the magnitude of their response differed between sexes suggesting a sex-specific demographic response to climate. 
-Survival and flowering were strongly more dependent on climate than growth (number of tillers) and reproduction (number of panicles) (Fig.\ref{fig:vital_rates}; Supporting Information \ref{Sup:Posterior}).
+Survival and flowering were strongly more dependent on climate than growth (number of tillers) and reproduction (number of panicles) (Fig.\ref{Sup:vital_rates}; Fig. \ref{Sup:Posterior}).
 In addition, we found opposite patterns in the direction of the effect on seasonal climate on the probability of survival and flowering.
 The growing season (precipitation) has a negative effect on the probability of survival, number of tillers, and the probability of flowering, whereas the dormant season has a positive effect on these vital rates. 
 Unlike precipitation, temperature had different effects on different vital rates.
@@ -323,135 +319,155 @@ Temperature of the growing season has a positive effect of the probability of su
 Further, there was a female survival and flowering advantage across both climatic seasons (Figures. 3A-3D, 3I-3L). 
 On the contrary, there was a male panicle advantage across all climatic variables (Figure3M-3P). 
 Counter-intuitively, there was no significant sex growth advantage in all season climatic variables (Figures. 3E-3H). 
-Plant size and sex interaction was significant for all vitals rates (Supporting Information \ref{Sup:Posterior}).
-For survival, flowering and reproduction the interaction between temperature and precipitation of the growing season and dormant season was not significant (Supporting Information \ref{Sup:Posterior}). 
-However, for growth the interaction between temperature and precipitation of the growing season and dormant season was significantly higher than zero (Supporting Information \ref{Sup:Posterior}). 
+Plant size and sex interaction was significant for all vitals rates (Fig. \ref{Sup:Posterior}).
+For survival, flowering and reproduction the interaction between temperature and precipitation of the growing season and dormant season was not significant (Fig. \ref{Sup:Posterior}). 
+However, for growth the interaction between temperature and precipitation of the growing season and dormant season was significantly higher than zero (Fig. \ref{Sup:Posterior}). 
 
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=0.95\linewidth]{Figures/vital_rates.pdf}
-  \caption{Sex specific demographic response to climate across species range: A--D, seasonal probability of survival; E--H, seasonal growth (change in number of tillers); I--L, seasonal probability of flowering; M--P, number of panicles produced given flowering. 
-  Points show means by site for females (orange) and males (green). 
-  Point size is proportional to the sample size of the mean.
-  Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values.
-  Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.}
-  \label{fig:vital_rates}
-  \end{center}
-\end{figure}
 
 \subsection*{Climate change alter population viability}
 We estimated the predicted response of  population growth rate (population fitness) to seasonal climate gradients using two models: one accounting for one sex (female dominant) and another one accounting for two sexes. 
 Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness (Fig.\ref{fig:lambda}). 
-For both models (female dominant and two sexes), population fitness decreased with an increase of precipitation of growing season. 
+For both models (female dominant and two sexes), population fitness decreased with an increase of precipitation of growing season(Fig.\ref{fig:lambda} A, C). 
 In contrast population fitness increased with precipitation of the dormant season.
-Furthermore, population fitness was maximized between 23 and 17 \degree C and decreases to zero just beyond 32 \degree C during the growing season.
-Similarly population fitness was maximized between 13 and 17 \degree C and decreases to zero just beyond 20 \degree C during the growing season.
+Furthermore, population fitness was maximized between 14 and 17 \degree C and decreases to zero just beyond 32 \degree C during the growing season (Fig.\ref{fig:lambda} B).
+Similarly population fitness was maximized between 27 and 31 \degree C and decreases to zero just beyond 20 \degree C during the growing season (Fig.\ref{fig:lambda} D).
+% Across species niche population persistence was maximized at higher temperature during the dormant season ( 27 to 31) and intermediate temperature during the growing season (11 to 20).
 We have also detected a strong effect of the past and future climate on population growth rate. 
 However, the magnitude of the effect of future climate on population growth rate was different between gas-scenario emissions. 
 Under past climate conditions, population growth rate decreased below one for temperature of the growing season.
-A moderate emission gas scenario (RCP4.5) has a no effect on the population growth rate while a high emission scenario (RCP8.5) has a strong negative effect on population growth rate. 
+A moderate emission gas scenario (RCP4.5) has a no effect on the population growth rate while a high emission scenario (RCP8.5) has a strong negative effect on population growth rate (Fig.\ref{fig:lambda} B, D). 
 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.95\linewidth]{Figures/lambda_past_present_future.pdf}
-  \caption{Population growth rate ($\lambda$) as a function of climate (past climate, present and predicted future climates). For future climate, we show a Representation Concentration Pathways 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs. The solid bold curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization. The bold dashed curve represents the prediction by the female dominant matrix projection model. The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+  \caption{Population growth rate ($\lambda$) as a function of Precipitation of the growing season (A), Temperature of the growing season (B), Precipitation of the dormant season (C), Temperature of the dormant season (D).
+The grey curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+The orange curve represents the prediction by the female dominant matrix projection model.
+The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1).
+Lower panels below each data panel shows climate values (past climate, present and future climates).
+For future climate, we show a Representation Concentration Pathways (RCP) 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs (MIROC5, ACCESS, CCMC,CES)}
   \label{fig:lambda}
   \end{center}
 \end{figure}
 
 \subsection*{Temperature as a driver of population viability decline }
 Population viability was most sensitive to change in temperature of the growing season and temperature of the dormant season (Supporting Information \ref{Sup:LTRE}). 
-LTRE decomposition reveals that, for each sex, the reduction of lambda for high value of temperature of the growing season was driven by a reduction of survival rate, growth rate, flowering and a reduction in number of panicles. 
-However, the reduction of for higher value of temperature of the dormant season was driven by only the female. 
-
-
+LTRE decomposition reveals that, for each sex, the reduction of lambda for high value of temperature of the growing season was driven by a reduction of survival rate, growth rate, flowering and a reduction in number of panicles(Fig.\ref{fig:LTRETemp} A, B). 
+However, the reduction of population growth rate for higher value of temperature of the dormant season was driven by only the female (Fig.\ref{fig:LTRETemp} C, D). 
 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.95\linewidth]{Figures/LTRE_Temperature.pdf}
-  \caption{XXX}
+  \caption{Life table response experiment decomposition of the sensitivity of ($\lambda$) to  temperature of growing season (A,B) and dormant season (C,D) into additive vital rate contributions of males females based on posterior mean parameter estimates.}
   \label{fig:LTRETemp}
   \end{center}
 \end{figure}
 
-
-\subsection*{Climatic change induce range shifts}
-Across species niche population persistence was maximized at higher temperature during the dormant season ( 27 to 31) and intermediate temperature during the growing season (11 to 20). 
-Our demographically based range predictions broadly captured the known distribution of the species (Fig. 1). 
-More specifically, the predicted population viable ($\lambda>1$) matches the presence and absence of the species. 
-Furthermore, viable populations of \emph{P. arichnifera} were only predicted at the center of the range for current climatic conditions (Fig1).
-Future and past projections of climate change showed a north-west range shift compared to current distributions. 
-Although \emph{P. arichnifera} was predicted to have suitable habitat in the center of the range under the current climate, future warming is predicted to reduce much of the suitable habitat in the southern part (Figure). 
+\subsection*{Climatic change induce niche and range shifts}
+Our results suggest niche sifts for both dormant and growing season (Fig. \ref{fig:niche}). 
+However, the model that does not account for sex structure overestimate the magnitude of niche shifts (Fig. \ref{fig:niche} D). 
+Our demographically based range predictions broadly captured the known distribution of the species . 
+More specifically, the predicted population viable ($\lambda>1$) matches the presence and absence of the species (Fig. \ref{fig:geoprojcmc} B,Fig. \ref{fig:geoprojfdcmc} B). 
+Furthermore, viable populations of \emph{P. arichnifera} were only predicted at the center of the range for current climatic conditions (Fig. \ref{fig:geoprojcmc} B).
+Although \emph{P. arichnifera} was predicted to have suitable habitat in the center of the range under the current climate, global  warming (regardless of the future scenario of carbon emission used) is predicted to reduce much of the suitable habitat (Fig. \ref{fig:geoprojcmc} C, D). 
+Most of the suitable  habitat will move toward the North at range edge.  
+In contrast, suitability increase across the range under RCP 4.5 which is the scenario assuming moderate carbon emission by 2100. 
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/niche.pdf}
-  \caption{Predicted niche shift for past, present and future climate conditions based on Pr ($\lambda \geq 1$). Niche of dormant season (A), Niche of growing season (B). Contours show predicted probabilities of self- sustaining populations Pr ($\lambda \geq 1$) conditional on precipitation and temperature of the dormant and growing season."+" Past, "*" Current,"o" RCP 45,"." RCP 85}
+    \includegraphics[width=0.95\linewidth]{Figures/niche_dormant_growing.pdf}
+  \caption{A two‐dimensional representation of the predicted niche shift over time (past, present and future climate conditions) based on Pr ($\lambda > 1$). 
+  Contours show predicted probabilities of self- sustaining populations Pr ($\lambda > 1$) conditional on precipitation and temperature of the dormant and growing season.
+ (A) Niche of dormant season for the two sex model , (B) Niche of growing season for the two sex model,
+  Niche of dormant season for female dominant model (C), Niche of growing season for female dominant model.
+  "\begin{normalsize}\textbf{o}\end{normalsize}" Past, "\begin{normalsize}\textbf{+}\end{normalsize}" Current,"\begin{large}\textbf{*}\end{large}" RCP 4.5,"\begin{tiny}$\blacksquare$\end{tiny}" RCP 8.5}
   \label{fig:niche}
   \end{center}
 \end{figure}
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.75\linewidth]{Figures/Fig_geoPrlambdaprojection.pdf}
-  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate using the two sex model. Future projections were based on MIROC. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
-  \label{fig:geoprojmiroc}
+    \includegraphics[width=0.75\linewidth]{Figures/Fig_geoPrlambdaprojection_cmc.pdf}
+  \caption{(A) Past ,(B) Current , Future (2070–20100) (C and D) predicted range shift based on population growth rate using the two sex model. Future projections were based on CMC. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{fig:geoprojcmc}
   \end{center}
 \end{figure}
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.75\linewidth]{Figures/Fig_geoPrlambdaprojection_fd_miroc.pdf}
-  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate using the female dominant model. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
-  \label{fig:geoprojfdmiroc}
+    \includegraphics[width=0.75\linewidth]{Figures/Fig_geoPrlambdaprojection_fd_cmc.pdf}
+  \caption{Past (A), Current (B), Future (2070–20100) (C and D) predicted range shift based on population growth rate using the female dominant model. Future projections were based on the average population growth rate CES. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{fig:geoprojfdcmc}
   \end{center}
 \end{figure}
 
 \section*{Discussion}
+We forecasted range shifts in dioecious species using climate-demographic models. 
 Three general patterns emerged from our analysis. First, our Bayesian mixed effect model predicts that seasonal climate (temperature and precipitation) affects sex-demographic processes in distinctive and contrasting ways.
 While climate has a significant effect on the probability of survival and growth, it has no effect on the number of panicles. Second, future climate, by increasing seasonal temperature, will lead to decline in population viability and favor range shifts. 
 Third, using only one sex to forescat range shifts of dioecious under climate change could lead to an underestimation of the impact of  climate change on species.
-
 
 Our results indicate a sex-specific demographic response to climate change. 
 Females have higher survival rate and fertility rate than males. 
 This result is not unique to our study system and has been observed in a range of abiotic pollen dispersal species across climatic gradients \citep{welbergen2008climate,zhao2012sex,sasaki2019complex}. 
 Several hypotheses could explain the observed demographic advantage of females over males for survival and flowering and the opposite for growth and number of panicles.
-First, the trade-off between fitness traits (survival, growth fertility) due to resource limitation and the pollination mode of our study species (wind pollinated) could explain such a result \citep{cipollini1994sexual,freeman1976differential}.
+The trade-off between fitness traits (survival, growth fertility) due to resource limitation and the pollination mode of our study species (wind pollinated) could explain such a result \citep{cipollini1994sexual,freeman1976differential}.
 For most species, females often pay more for reproduction than males due to the requirement to develop seeds and fruits \citep{hultine2016climate}. 
 However, several studies reported a higher cost of reproduction for males in wind pollinated species due to the larger amounts of pollen they produce \citep{burli2022environmental,cipollini1994sexual,bruijning2017surviving,field2013comparative}.
-In addition to life history trade-off, other among site difference in non-climatic factors such as soil, or biotic interactions could explain decline in vital rate as an indirect effect s of increase in temperature \citep{alexander2015novel}.
+In addition to life history trade-off, other among site difference in non-climatic factors such as soil, or biotic interactions could explain decline in vital rate as an indirect effects of increase in temperature \citep{alexander2015novel,schultz2022climate}.
 
 Under current conditions, most population across the range are viable.
 This result could be explained by two hypotheses.
-First, demographic compensation whereby an increase of one vital rate is coupled with a decrease of another vital rate could explain a viable population in harsh conditions at the range edge \citep{doak2010demographic,villellas2015demographic,nomoto2021drivers}. 
-In our system, a decrease in fertility survival rate was counterbalanced by an increase in survival rate, preventing the population growth rate from declining even at range edge for the growing season.
+First, demographic compensation whereby an increase of one vital rate is coupled with a decrease of another vital rate could explain viable populations in harsh conditions at the range edge \citep{doak2010demographic,villellas2015demographic,nomoto2021drivers}. 
+In our system, a decrease in fertility and survival rate was counterbalanced by an increase in flowering rate, preventing the population growth rate from declining even at range edge during the dormant season.
 Second, local adaptation at the edge of the range could explain the viable population throughout the range \citep{miller2022two}. 
-Our study was based on a common garden experiment; therefore, individuals planted in climatic conditions that are similar to their source populations climatic conditions wer less impacted by stressful environmental conditions.
+Our study was based on a common garden experiment; therefore, individuals planted in climatic conditions that are similar to their source populations climatic conditions were less impacted by stressful environmental conditions.
 One important question to ask is: what is the role of local adaptation in buffering species response to climate change.
 Adding another predictor to our complex model would have lead to overfitting. 
-Therefore, our model does not shed light on the importance of local adaptation in species response to climate change  
-The role of local adpatation in mitigating population response to climate should be the next step in forecasting species response to climate. 
+Therefore, our model does not shed light on the importance of local adaptation in species response to climate change.  
+The role of local adaptation in mitigating population response to climate should be the next step in forecasting species response to climate. 
 
-Our LTRE analysis reveals that a small changes in temperature of the growing and dormant season could have a larger impact on population viability.
-This results suggest that projected future climate will affect population viability. 
+Our LTRE analysis reveals that a small changes in temperature of the growing and dormant season could have a larger  impact on population viability.
+% This results corroborated with other studies and suggest that projected future climate will affect population viability \citep{reed2021climate}. 
 Temperature can impact plant populations through different mechanisms. 
-Increasing temperature could increase evaporative demand, affect plant phenology \citep{dolschak2019impact}, and germination rate \citep{reed2021climate}. 
-The potential for temperature to influence these different processes changes seasonally \citep{konapala2020climate}. 
-In the summer growing season, when the temperature is high, the effect on the water balance should be strong \citep{adler2008influence}.
-In the dormant season, when evaporative demand is low, temperature should have a more important effect on phenology and germination.
-Because our study species was sensitive to temperatures in the growing season, the former mechanism deserve further attention.
-Three years represent a relatively decent time for demographic study for common garden experiments across climatic gradient, it can only capture a certain range of demographic and environmental variability.
+Increasing temperature could increase evaporative demand, affect plant phenology \citep{mclean2016predicting,sherry2007divergence,iler2019reproductive}, and germination rate \citep{reed2021climate}.
+% In the  growing season, when the temperature is high, the effect on the water balance should be strong .
+The potential for temperature to influence these different processes changes seasonally \citep{konapala2020climate}.
+For example, studies suggested that species that are active during the growing season such as cool grass species can have delayed phenology in response to global warming, particularly if temperatures rise above their physiological tolerances \citep{cleland2007shifting,williams2015life}. 
+In addition, high temperature during the growing season by affecting pollen viability, fertilization could affect seed formation and germination \citep{hatfield2015temperature,sletvold2015climate}. 
+% Because our study species was sensitive to temperatures in the growing season, the former mechanism deserve further attention.
+Temperature could also affected OSR. That variation in OSR could affect population growth rate by altering females’ fitness \citep{petry2016sex,knight2005pollen}. 
+
+We found evidence of climatic niche shifts for the models account for sex structure and for the model that does not account for sex structure. 
+However the model that does not account for sex structure overestimated species niche, suggesting that using one sex to predict niche shifts could be misleading.
+Climatic conditions that are not optimal under current conditions will be optimal for the species over the next years particularly at the edge of species. 
+Pollen dispersal may allow plants to resist faster climate change because pollen dispersal may provide the local genetic diversity necessary to adapt at the leading edge of the population \citep{kremer2012long,corlett2013will,duputie2012genetic}.
+Since wind pollination is most effective at short distances, it is most often found in plant species growing at high density such as our study species, dispersal limitation or interspecific interaction might constrain the species to a narrower realized niche \citep{pulliam2000relationship,aguilee2016pollen}. 
+
+Our result suggest that climate change will drive range shifts and the magnitude and rate of that range shift could be underestimated when tracking only one sex (Fig. \ref{Sup:geoprojces},Fig. \ref{Sup:geoprojcesfd},Fig. \ref{Sup:geoprojacc},Fig. \ref{Sup:geoprojaccfd},Fig. \ref{Sup:geoprojmiroc},Fig. \ref{Sup:geopromirocfd}). 
+Since a small change in both sexes affect population viability, OSR change due to climate change in \emph{P. arachnifera} could induce range shifts.
+In \emph{V. edulis} increase in male frequency induce range shifts by reducing pollen limitation in conditions that were not suitable \citep{petry2016sex}. 
+Three years represent a relatively decent time for demographic study for common garden experiments across climatic gradient.
+Thus our models can only capture a certain range of demographic and environmental variability (Fig. \ref{Sup:lambda2sex}).
 Moreover, our future projections require extrapolation to warmer or colder conditions than observed in our experiment and subsequently should be interpreted with caution. 
-Although our climate-driven projection matrix models may not be perfect when extrapolating, the qualitative implications of a negative response of the species to increase temperature (dormant and growing season) seems consistent across all climate all GCMs.  
-Our work suggest that current climate may not affect population viability, but populations may be impacted negatively over the next year in response to a climate change. 
-This is key because most conservation actions are design from  data on current responses to climate, rather than future response to climate 
+Despite all these limitations, the qualitative implications of a negative response of species to increase temperature (dormant and growing season) seems consistent across all climate all GCMs (Fig. \ref{Sup:geoprojces},Fig. \ref{Sup:geoprojcesfd},Fig. \ref{Sup:geoprojacc},Fig. \ref{Sup:geoprojaccfd},Fig. \ref{Sup:geoprojmiroc},Fig. \ref{Sup:geopromirocfd}).  
+Most of the suitable areas move toward the North in response to climate change.
+Climate change will affect population growth rate primarily through the response of female which is more sensitive to climate change.  
+Our work suggest that current climate may not affect population viability, but populations may be impacted negatively over the next decades in response to a climate change. 
+This is key because most conservation actions are design from  data on current responses to climate, rather than future response to climate \citep{sletvold2013climate}. 
+
+\section*{Conclusion}
 
 
 
+\section*{Acknowledgements}
+This research was supported by XXXX.
 
-The reduction in population viability across the range due to climate change will drive a shift to the north range in suitable habitat for the species. 
+\section*{Authorship statement}
+All authors discussed all aspects of the research and contributed to developing methods, analyzing data, and writing and revising the paper.  
 
+\section*{Conflict of interest statement}
+The authors have none to declare. 
 
 \newpage
 \bibliographystyle{apalike}
@@ -488,8 +504,6 @@ The reduction in population viability across the range due to climate change wil
 \end{figure}
 
 
-
-
 \begin{figure}[H]
 		\centering
 		\includegraphics[width=0.95\linewidth]{Figures/Varianceexplained.pdf}
@@ -505,12 +519,32 @@ The reduction in population viability across the range due to climate change wil
 	\end{figure}
 	
 \begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{Figures/vital_rates.pdf}
+  \caption{Sex specific demographic response to climate across species range: A--D, seasonal probability of survival; E--H, seasonal growth (change in number of tillers); I--L, seasonal probability of flowering; M--P, number of panicles produced given flowering. 
+  Points show means by site for females (orange) and males (green). 
+  Points sizes are proportional to the sample sizes of the mean and are jittered .
+  Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values.
+  Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.}
+  \label{Sup:vital_rates}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.95\linewidth]{Figures/Posterior_mean.pdf}
 		\caption{\textbf{Mean parameter values and 95\% credible intervals for all vital rates}. }
 		\label{Sup:Posterior}
 \end{figure}
-	
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.85\linewidth]{Figures/Fig_LTRE.pdf}
+  \caption{XXX}
+  \label{Sup:LTRE}
+  \end{center}
+\end{figure}
+
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.95\linewidth]{Figures/lambda_CI.pdf}
@@ -521,19 +555,28 @@ The dashed horizontal line indicates the limit of population viability ($\lambda
   \end{center}
 \end{figure}
 
+
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.78\linewidth]{Figures/niche_female_dominant.pdf}
-  \caption{Predicted niche shift for past, present and future climate conditions based on Pr ($\lambda \geq 1$). Niche of dormant season (A), Niche of growing season (B). Contours show predicted probabilities of self- sustaining populations Pr ($\lambda \geq 1$) conditional on precipitation and temperature of the dormant and growing season."+" Past, "*" Current,"o" RCP 45,"." RCP 85}
-  \label{fig:geoprojfd}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_ces.pdf}
+  \caption{Past (A), Current (B), Future CMCM (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four CES The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{Sup:geoprojces}
   \end{center}
 \end{figure}
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojectioncmc.pdf}
-  \caption{Past (A), Current (B), Future CMCM (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
-  \label{fig:geoprojcmc}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_fd_ces.pdf}
+  \caption{Past (A), Current (B), Future CMCM (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four CES The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{Sup:geoprojcesfd}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_acc.pdf}
+  \caption{Past (A), Current (B), Future CMCM (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four ACC The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{Sup:geoprojacc}
   \end{center}
 \end{figure}
 
@@ -541,17 +584,27 @@ The dashed horizontal line indicates the limit of population viability ($\lambda
   \begin{center}
     \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_fd_acc.pdf}
   \caption{Past (A), Current (B), Future ACCESS (2070–20100) (C and D) predicted range shift based on population growth rate suing the female dominat model. Future projections were based on the average population growth rate in four GCMs. The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
-  \label{fig:geoproj}
+  \label{Sup:geoprojaccfd}
   \end{center}
 \end{figure}
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/Fig_LTRE.pdf}
-  \caption{XXX}
-  \label{Sup:LTRE}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_miroc.pdf}
+  \caption{Past (A), Current (B), Future MIROC (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four ACC The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{Sup:geoprojmiroc}
   \end{center}
 \end{figure}
+
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.78\linewidth]{Figures/Fig_geoPrlambdaprojection_fd_miroc.pdf}
+  \caption{Past (A), Current (B), Future CMCM (2070–20100) (C and D) predicted range shift based on population growth rate. Future projections were based on the average population growth rate in four ACC The black circles on panel B indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction.  The occurrences of GBIFs are distributed inwith higher population fitness habitat ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+  \label{Sup:geopromirocfd}
+  \end{center}
+\end{figure}
+
 
 \begin{figure}[H]
   \begin{center}
