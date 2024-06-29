@@ -116,7 +116,7 @@ J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
 \spacing{1.25}
 \section*{Abstract}
 %150 words limit for Ecology letter. The number now is 145
-Global warming have triggered an urgent need for predicting species response to climate change.
+Global warming has triggered an urgent need for predicting species response to climate change.
 Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change ignore the complication of sex structure. 
 To address this issue, we developed two contrasting climate-driven matrix projection models (MPMs), a female dominant model and a two-sex model. 
 The MPMs were built from demographic data of a dioecious plant species (Texas bluegrass), past and future climate.
