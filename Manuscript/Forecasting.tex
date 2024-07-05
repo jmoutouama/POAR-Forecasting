@@ -1,4 +1,54 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[dvipsnames]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage{amsmath,amsfonts,amssymb,graphicx,authblk}
 \usepackage[font={footnotesize,singlespacing},labelfont=bf]{caption}
 \usepackage{titlesec,blkarray, bm} 
@@ -43,11 +93,14 @@
 %\doublespacing
 
 
+
+% I cannot get \orcidlink working on my computer so for now replacing this with \textit
+
 %-------------------------------------------------------------------------
 \title{Forecasting range shifts of a dioecious plant species under climate change}
-\author[1]{Jacob K. Moutouama\,\orcidlink{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
-\author[2]{Aldo Compagnoni\,\orcidlink{0000-0001-8302-7492}}
-\author[1]{Tom E.X. Miller\,\orcidlink{0000-0003-3208-6067}}
+\author[1]{Jacob K. Moutouama\,\textit{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
+\author[2]{Aldo Compagnoni\,\textit{0000-0001-8302-7492}}
+\author[1]{Tom E.X. Miller\,\textit{0000-0003-3208-6067}}
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 \date{} % clear date
@@ -56,7 +109,7 @@
 \sloppy
 
 %-------------------------------------------------------------------------
-\usepackage{Sweave}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
 \renewcommand{\baselinestretch}{1.2}
@@ -72,9 +125,9 @@
 \noindent\textbf{Submitted to:} \textit{Ecology letters} (Letter)
 
 \bigskip 
-\noindent\textbf{Data accessibility statement:} All data \citep{dryaddata} used in this paper are  publicly available. 
+\noindent\textbf{Data accessibility statement:} All data used in this paper are  publicly available and cited appropriately \citep{dryaddata}. 
 Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. 
-During peer review, our codes (Stan, Bash and R) available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
+During peer review, our code (Stan, Bash and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
 
 \bigskip 
 \noindent\textbf{Conflict of interest statement:} None.
@@ -108,13 +161,14 @@ J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
 \spacing{1.25}
 \section*{Abstract}
 %150 words limit for Ecology letter. The number now is 142
-Global warming has triggered an urgent need for predicting species response to climate change.
-Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change ignore the complication of sex structure. 
-To address this issue, we developed two contrasting climate-driven matrix projection models (MPMs), a female dominant model and a two-sex model. 
-The MPMs were built from demographic data of a dioecious plant species (Texas bluegrass), past and future climate.
-Both models predict that future climate will alter population viability and will induce niche shift with a cascading effect on range shift toward the Northern edge of the current range.
-However, the magnitude of niche and range shift was overestimated by the female dominant.
-Tracking only one sex to forecast dioecious species response to climate change could lead to ineffective conservation strategies.
+%Tom made changes here that increase word count
+Global warming has triggered an urgent need for predicting the reorganization of Earth's biodiversity under climate change.
+Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure. 
+For dioecious species, it is unclear how commonly unique climate sensitivities of females and males could influence projections for species-level responses to climate change. 
+We developed demographic models of range limitation, parameterized from geographically distributed common garden experiments with females and males of a dioecious grass species (\textit{Poa arachnifera}) throughout and beyond its range in the south-central U.S. 
+Female-dominant and two-sex model versions of the demographic model both predict that future climate change will alter population viability and will induce latitudinal niche extension beyond current northern limits.
+However, the magnitude of niche shift was overestimated by the female-dominant model, \tom{because females have broader temperature tolerance than males}{Not sure yet if this is true but we need some sort of biological rationale to accompany this result.}.
+Explicitly account for both sexes could enhance population viability forecasts and conservation planning for dioecious species in response to climate change.
 
 %--------------------------------------------------------------------
 \newpage

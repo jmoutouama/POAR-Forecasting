@@ -52,11 +52,13 @@ library(xtable)
 
 @
 
+% I cannot get \orcidlink working on my computer so for now replacing this with \textit
+
 %-------------------------------------------------------------------------
 \title{Forecasting range shifts of a dioecious plant species under climate change}
-\author[1]{Jacob K. Moutouama\,\orcidlink{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
-\author[2]{Aldo Compagnoni\,\orcidlink{0000-0001-8302-7492}}
-\author[1]{Tom E.X. Miller\,\orcidlink{0000-0003-3208-6067}}
+\author[1]{Jacob K. Moutouama\,\textit{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
+\author[2]{Aldo Compagnoni\,\textit{0000-0001-8302-7492}}
+\author[1]{Tom E.X. Miller\,\textit{0000-0003-3208-6067}}
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 \date{} % clear date
@@ -80,9 +82,9 @@ library(xtable)
 \noindent\textbf{Submitted to:} \textit{Ecology letters} (Letter)
 
 \bigskip 
-\noindent\textbf{Data accessibility statement:} All data \citep{dryaddata} used in this paper are  publicly available. 
+\noindent\textbf{Data accessibility statement:} All data used in this paper are  publicly available and cited appropriately \citep{dryaddata}. 
 Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. 
-During peer review, our codes (Stan, Bash and R) available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
+During peer review, our code (Stan, Bash and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
 
 \bigskip 
 \noindent\textbf{Conflict of interest statement:} None.
@@ -116,22 +118,24 @@ J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
 \spacing{1.25}
 \section*{Abstract}
 %150 words limit for Ecology letter. The number now is 142
-Global warming has triggered an urgent need for predicting species response to climate change.
-Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change ignore the complication of sex structure. 
-To address this issue, we developed two contrasting climate-driven matrix projection models (MPMs), a female dominant model and a two-sex model. 
-The MPMs were built from demographic data of a dioecious plant species (Texas bluegrass), past and future climate.
-Both models predict that future climate will alter population viability and will induce niche shift with a cascading effect on range shift toward the Northern edge of the current range.
-However, the magnitude of niche and range shift was overestimated by the female dominant.
-Tracking only one sex to forecast dioecious species response to climate change could lead to ineffective conservation strategies.
+%Tom made changes here that increase word count
+Global warming has triggered an urgent need for predicting the reorganization of Earth's biodiversity under climate change.
+Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure. 
+For dioecious species, it is unclear how commonly unique climate sensitivities of females and males could influence projections for species-level responses to climate change. 
+We developed demographic models of range limitation, parameterized from geographically distributed common garden experiments with females and males of a dioecious grass species (\textit{Poa arachnifera}) throughout and beyond its range in the south-central U.S. 
+Female-dominant and two-sex model versions of the demographic model both predict that future climate change will alter population viability and will induce latitudinal niche extension beyond current northern limits.
+However, the magnitude of niche shift was overestimated by the female-dominant model, \tom{because females have broader temperature tolerance than males and become mate-limited under female-biased sex ratios}{Not sure yet if this is true but we need some sort of biological rationale to accompany this result.}.
+Explicitly account for both sexes could enhance population viability forecasts and conservation planning for dioecious species in response to climate change.
 
 %--------------------------------------------------------------------
 \newpage
 \section*{Introduction}
 Rising temperatures and extreme drought events associated with global climate change are leading to increased concern about how species will become redistributed across the globe under future climate conditions \citep{bertrand2011changes,gamelon2017interactions,smith2024extreme}.
-Dioecious species (most animals and 7\% of plants) might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
+Dioecious species (most animals and ca. 7\% of plant species) might be particularly vulnerable to the influence of climate change because they often display skewed sex ratios that are generated or reinforced by sexual niche differentiation (distinct responses of females and males to shared climate drivers) \citep{Tognetti2012}. 
 Accounting for such a niche differentiation within a population is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population viability and range shifts \citep{jones1999sex,gissi2023exploring}. 
-The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure \citep{pottier2021sexual,ellis2017does,Elena}.
-As a result, accurate forecasts of colonization-extinction dynamics for dioecious species under future climate scenarios are limited.
+The vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, \tom{ignore the complication of sex structure}{It is unclear how you are citing these studies. Are they examples of ignoring sex structure? Or examples of accounting for sex structure?} \citep{pottier2021sexual,ellis2017does,Elena}.
+Traditional approaches in population biology instead focus exclusively on females, assuming that males are in sufficient supply as to never limit female fertility \citep{miller2011confronting}. 
+As a result, forecasts of colonization-extinction dynamics for dioecious species under future climate change that explicitly account for females, males, and their inter-dependence are limited.
 
 % \tom{Climate change can influence dioecious populations via shifts in sex ratio.}{This paragraph is really good but notice that the topic sentence (and much that follows) is largely redundant with the first paragraph. I would suggest creating clearer distinction between paragraphs.} 
 % Females and males may respond differently to climate change, especially in species where there is sexual niche differentiation \citep{gissi2023exploring,gissi2023sex,hultine2016climate}. 
@@ -141,35 +145,35 @@ As a result, accurate forecasts of colonization-extinction dynamics for dioeciou
 % Sex-specific responses to climate drivers have the potential to influence population viability under global change because skew in the operational sex ratio can limit reproduction through mate scarcity \citep{petry2016sex}.
 
 Species's range limits, when not driven by dispersal limitation, should generally reflect the limits of the ecological niche \citep{lee2016synthesis}.
-For most species, niches and geographic ranges are often limited by climatic factors including temperature and precipitation \citep{sexton2009evolution}. 
-Therefore, any substantial changes in the magnitude of these climatic factors in a given location across the range could impact population viability, with implications for range shifts based on which regions become more or less suitable  \citep{davis2001range, pease1989model}. 
-Forecasting range shifts for dioecious species is complicated by the potential for each sex to respond differently to climate variation \citep{pottier2021sexual,morrison2016causes}.
+Niches and geographic ranges are often limited by climatic factors including temperature and precipitation \citep{sexton2009evolution}. 
+Therefore, any substantial changes in the magnitude of these climatic factors in a given location across the range could impact population viability, with implications for range expansions or contractions based on which regions become more or less suitable  \citep{davis2001range, pease1989model}. 
+Forecasting range shifts for dioecious species is complicated by the potential for each sex to respond differently to climate variation \citep{pottier2021sexual,hultine2016climate,morrison2016causes}.
 Populations in which males are rare under current climatic conditions could experience low reproductive success due to sperm or pollen limitation that may lead to population decline in response to climate change that disproportionately favors females \citep{eberhart2017sex}.
 In contrast, climate change could expand male habitat suitability (e.g. upslope movement), which might increases seed set for pollen-limited females and favor range expansion \citep{petry2016sex}.
-Although the response of species to climate warming is an urgent and active area of research, few studies have disentangled the interaction between sex and climate drivers to understand their combined effects on population dynamics and range shifts.  
+Although the response of species to climate warming is an urgent and active area of research, few studies have disentangled the interaction between sex and climate drivers to understand their combined effects on population dynamics and range shifts, despite calls for such an approach (hultine2016climate,gissi2023exploring).  
 
-Our ability to track the impact of climate change on the population dynamics of dioecious plants and the implication of such impact on range shift depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
-Structured models that are built from long-term demographic data collected from common garden experiments have emerged as powerful tool to study the impact of climate change on species range shift \citep{merow2017climate,schwinning2022common}.
-These structured models are increasingly utilized for several reasons. 
-First, structured models enable the manipulation of treatments that can isolate spatial and temporal correlations between environmental factors, thus overcoming a main disadvantage with many types of correlative studies \citep{leicht2007comparative}. 
-Second, structured models link individual-level demographic trait to population demography allowing the investigation of factors explaining vital rates (e.g. survival, fertility, growth and seed germination) response to environmental variation \citep{louthan2022climate,dahlgren2016demography}. 
-Third, structured models can be used to identify which aspect of climate is more important for population dynamics.
-For example, Life Table Response Experiment (LTRE) build from structured models is an approach that has become widely used to understand 
-the relative importance of covariates in explaining population growth rate variation \citep{ellner2016data}.
-LTRE is also used to get a mechanistic understanding of how a given treatment (eg. temperature or precipitation) could affect population dynamics \citep {caswell1989analysis,o2024nonlinear,morrison2007demographic,iler2019reproductive}. 
+Tracking the impact of climate change on the population dynamics and range limits of dioecious taxa depends on our ability to build mechanistic models that take into account the spatial and temporal context in which sex specific response to climate change affects population viability \citep{davis2001range,evans2016towards,czachura2020demographic}.
+Structured population models built from demographic data collected from geographically distributed observations or common garden experiments provide several advantages for studying the impact of climate change on species' range shifts \citep{merow2017climate,schwinning2022common,schultz2022climate}.
+First, demographic models link individual-level life history events (mortality, development, and regeneration) to population demography, allowing the investigation of factors explaining vital rate responses to environmental drivers \citep{ehrlen2015predicting,louthan2022climate,dahlgren2016demography}. 
+Second, demographic models have a natural interface with experimental treatments that can isolate spatial and temporal correlations between environmental factors, thus overcoming a main disadvantage with many types of correlative studies \citep{leicht2007comparative}. 
+Third, structured demographic models can be used to identify which aspect of climate is more important for population dynamics.
+For example, Life Table Response Experiments (LTRE) built from structured models have become widely used to understand the relative importance of covariates in explaining variation in population growth rate  \citep{ellner2016data,hernandez2023exact}.
+LTRE is also used to get a mechanistic understanding of how a given treatment (eg. temperature or precipitation) could affect population dynamics through unique vital rate responses \citep {caswell1989analysis,o2024nonlinear,morrison2007demographic,iler2019reproductive}. \tom{}{It is noticeable that you never mention SDMs as a point of contrast with demographic models. Are you intentionally avoiding that?}
 % At their range edge where climatic conditions are expected to be less favorable, if dioecious species populations are non-viable in response to climate change, global warming will induce range contraction in dioecious species.
 % In reverse, if populations at the edge are viable habitats in response to global warming, dioecious species populations could shift their range and relocate to more favorable and thereby favored range expansion. 
 
-In this study, we used a mechanistic approach by combining geographically-distributed field experiments, bayesian statistical modeling, and two-sex population projection modeling and LTRE to understand the demographic response of dioecious species to climate change and its implications for future range dynamics.
-Our study system is a dioecious plant species (\textit{Poa arachnifera}) distributed along environmental gradients in the south-central US corresponding to variation in temperature across latitude and precipitation across longitude. 
-A previous study on the same system showed that, despite a differentiation of climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability \citep{miller2022two}.
-However that study did not use climate variables preventing us from backcasting and forecasting the impact of climate change on dioecious species.
+In this study, we used a mechanistic approach, combining geographically-distributed field experiments, Bayesian statistical modeling, and two-sex population projection modeling, to understand the demographic response of dioecious species to climate change and its implications for past, present, and future range dynamics. 
+Our work focused on the dioecious grass species Texas bluegrass (\textit{Poa arachnifera}), which is distributed along environmental gradients in the south-central U.S. corresponding to variation in temperature across latitude and precipitation across longitude. 
+\tom{}{I think it would be good to add some context about climate change in this study region -- what has already occurred and what is projected.}
+Our previous study showed that, despite a differentiation of climatic niche between sexes, the female niche mattered the most in driving the environmental limits of population viability across longitude \citep{miller2022two}. 
+However, that study used a single proxy variable (longitude) to represent environmental variation related to aridity. 
+Developing a rigorous forecast for the implications of future climate change requires that we transition from climate-implicit to climate-explicit treatment of environmental drivers as we do here.
 Here, we asked four questions: 
 \begin{enumerate}
 	\item What are the sex-specific vital rate responses to variation in temperature and precipitation across the species' range ?
-	\item How sex-specific vital rates combine to determine the influence of climate variation on population growth rate ($\lambda$) ?
-	\item What are the historical and projected changes in climate across the species range ?
-	\item What are the back-casted and fore-casted dynamics of this species' geographic niche and how does accounting for sex structure modify these predictions ?
+	\item How do sex-specific vital rates combine to determine the influence of climate variation on population growth rate ($\lambda$) ?
+	\item What are the historical and projected dynamics of the Texas bluegrass geographic niche and how does accounting for sex structure modify these predictions?
+	\item Which vital rates and climate covariates most strongly determine past and future changes in the geographic niche?
 \end{enumerate}
 
 %--------------------------------------------------------------------
