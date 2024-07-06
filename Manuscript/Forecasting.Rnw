@@ -179,23 +179,25 @@ Here, we asked four questions:
 %--------------------------------------------------------------------
 \section*{Materials and methods}
 \subsection*{Study species}
-Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) \citep{hitchcock1971manual}. 
-Texas bluegrass grows between October and May (growing season), with onset of dormancy often from June to September (dormant season) \citep{kindiger2004interspecific}.
-Flowering occurs in May and the species is wind pollinated \citep{hitchcock1971manual}.
-Average temperatures along the distribution of the species tend to decrease northward as a result of the influence of latitude: lower latitudes receive more heat from the sun over the course of a year.
-Similarly the average precipitation decrease eastward as a result of the influence of longitude: lower longitudes receive less precipitation over the year.
-% {\color{blue} The male heads are smooth, while those of the female appear fuzzy.}
+Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) \citep{hitchcock1971manual}\tom{}{I would reference the map figure (current Fig. 1) here. I also suggest either adding the GBIF records to this figure or adding the county occurrences as in the Am Nat paper, because it is important for readers to see the natural distribution early in the paper. The natural population surveys can be cut from this figure because you don't say anything about them and you do not use the data here. ALternatively, there may be value in re-analyzing the sex ratio surveys with your climate covariates. Fig 1 also needs to be updated with labels and units on the climate variable color bars. I recommend putting panels A-C and B-D on the same climate scale.}. 
+Latitudinal limits of the Texas bluegrass distribution span \# to \# in mean annual temperature, and longitudinal limits span \# to \# in annual precipitation. 
+Texas bluegrass grows between October and May (growing season), with onset of dormancy often from June to September (dormant season) \citep{kindiger2004interspecific}. 
+
+Biological sex in Texas blueegrass is genetically based and the birth (seed) sex ratio is 1:1 (CITE). 
+Females and males are morphologically indistinguishable except for their inflorescences. 
+Flowering occurs in May and the species is wind pollinated \citep{hitchcock1971manual}. 
+Surveys of \# natural populations throughout the species' distribution indicated that operational sex ratio (the female fraction of flowering plants) ranged from \# to \# with a mean of \# \citep{miller2022two}. 
 
 \subsection*{Common garden experiment}
-We set up a common garden experiment throughout and beyond the range of Texas bluegrass to enable study of sex-specific demographic responses to climate and the implications for range shifts. 
-The novelty of this study lies in the fact that we use a precise climate variable to build a mechanistic model to forecast the response of species to climate change.
+We set up a common garden experiment throughout and beyond the range of Texas bluegrass to quantify sex-specific demographic responses to climate. 
+\tom{The novelty of this study lies in the fact that we use a precise climate variable to build a mechanistic model to forecast the response of species to climate change.}{This is not relevant to the description of the experiment.}
 Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
-The common experiment was installed at 14 sites across a climatic gradient (Fig.\ref{fig:study_design}).
+The experiment was installed at 14 sites throughout and, in some cases, beyond the species' natural range (Fig.\ref{fig:study_design}).
 At each site, we established 14 blocks. 
-For each block we planted three female and three male individuals that were clonally propagated from eight natural source populations of Texas bluegrass. 
-The experiment was established in November 2013 and was census annually through 2016, providing both spatial and inter-annual variation in climate. 
-Each May (2014-2016), we collected individual demographic data including survival (alive or dead), growth (number of tillers), flowering status (reproductive or vegetative), and fertility (number of panicles conditional on flowering). 
-For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions years.
+For each block we planted three female and three male individuals that were clonally propagated from females and males from eight natural source populations (Fig.\ref{fig:study_design}); because sex is genetically-based, clones never deviated from their expected sex. 
+The experiment was established in November 2013 and was censused in May of 2014, 2015, and 2016. 
+At each census, we collected individual demographic data including survival (alive or dead), size (number of tillers), and number of panicles (reproductive inflorescences). 
+For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions years, since the start of the experiment did not include the full 2013-14 transition year.
 
 \begin{figure}[H]
   \begin{center}
@@ -212,51 +214,54 @@ For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions ye
 \end{figure}
 
 \subsection*{Climatic data collection}
-We downloaded monthly temperature and precipitation from Chelsa to describe observed climate conditions during our study period \citep{karger2017climatologies}.
-These climate data were used as covariates in vital rate regressions, which allowed us to forecast and back-cast demographic responses to climate change based on observations across the common garden experiment. 
+We gathered downscaled monthly \tom{temperature}{Give units} and \tom{precipitation}{Give units} for each site from Chelsa to describe observed climate conditions during our study period \citep{karger2017climatologies}.
+These climate data were used as covariates in vital rate regressions. 
 %We prefer temperature and precipitation because they capture the most the climate in the study region \colorbox{BurntOrange}{Source}. 
-We aligned the climatic years to match demographic transition years {\color{blue}(May 1 -- April 30)} rather than calendar years.
-Based on the natural history of this summer-dormant cool-season species, we divided each transition year into growing and dormant seasons. 
-We define June through September as the dormant season and the rest of the year as the growing season. 
-Across years and sites, the experiment included substantial variation in growing and dormant season temperature and precipitation (Fig. \ref{Sup:pr_variation}, \ref{Sup:temp_variation}).
+We aligned the climatic years to match demographic transition years \tom{{\color{blue}(May 1 -- April 30)}}{I think this is not right. I think we updated the transition year to be June 1 -- May 31.} rather than calendar years.
+Based on the natural history of this summer-dormant cool-season species, we divided each transition year into dormant (June 1 through September 30) and growing (October 1 through May 31) seasons. 
+%\tom{Across years and sites, the experiment included substantial variation in growing and dormant season temperature and precipitation (Fig. \ref{Sup:pr_variation}, \ref{Sup:temp_variation}).}{I don't think these are the right figures to support this statement because this shows 200 years, whereas we are only describing two years. I think it would be better to show something like the figure I made.}
+The 2014-15 transition year was substantially wetter and cooler across the study region than 2015-16, especially during the growing season (\tom{figure}{I would like to use the figure I made called site-year-weather. However, I cannot tell from this figure whether the first year was unusually wet or the second year was unusually dry -- this will take looking at the climate data more broadly. I am also not sure if this figure was made before or after we changed the dates of the transition year, so it may need to be updated}), so our study design provides both spatial and inter-annual coverage of climate variables. 
 
-To back-cast and forecast changes in climate, we downloaded projection data for three 30-year periods: past (1901-1930), current (1990-2019) and future (2070-2100).
-Data for these climatic periods were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
+To back-cast and forecast demographic responses to changes in climate throughout the study region, we downloaded projection data for three 30-year periods: ``past'' (1901-1930), ``current'' (1990-2019) and ``future'' (2070-2100).
+Data for \tom{these climatic periods}{The four GCMs only refers to the future data, right?} were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
 The GCMs are: Model for Interdisciplinary Research on Climate (MIROC5), Australian Community Climate and Earth System Simulator (ACCESS1-3), Community Earth System Model (CESM1-BGC), Centro Euro-Mediterraneo sui Cambiamenti Climatici Climate Model (CMCC-CM).
 All the GCMs were downloaded from chelsa \citep{sanderson2015representative}.
-We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing to amount to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which project a radiative forcing to amount to 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}.
+We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing amounting to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which projects a radiative forcing of 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}. 
 
 \subsection*{Sex ratio experiment}
-We conducted a sex-ratio experiment on a site close (1 km) to a natural population of the focal species at the center of the range to estimate the effect of sex-ratio variation on female reproductive success.
+\tom{}{You say nothing about this experiment in the Results or Discussion, so in its current state this section serves no purpose in this paper.}
+We conducted a sex-ratio experiment at one site near the center of the range to estimate the effect of sex-ratio variation on female reproductive success.
 Details of the experiment are provided in \cite{compagnoni2017can} and \cite{miller2022two}.
-In short, we established 124 experimental populations on plots measuring 0.4 x 0.4m and separated by at least 15m from each other at that site. 
-We chose 15m because our pilot data show that more than 90\% of wind pollination occurred within 13m. 
-We varied population density (1-48 plants/plot) and sex ratio (0\%-100\% female) across the experimental populations, and we replicated 34 combinations of density-sex ratios. 
-We collected the number of panicles from a subset of females in each plot and collected the number of seeds in each panicle.
-Since the number of panicles (proxy of reproduction effort) does not necessarily reflect reproduction success in \textit{Poar arachnifera}, we accessed reproduction success (seed fertilized) using greenhouse-based germination and trazolium-based seed viability assays. 
+In short, we established 124 experimental populations in plots measuring 0.4 x 0.4m and separated by at least 15m from each other. 
+We chose 15m because our pilot data showed that more than 90\% of wind pollination occurred within 13m. 
+We varied population density (1-48 plants/plot) and sex ratio (0\%-100\% female) across the experimental populations, and we replicated 34 combinations of density and sex ratio. 
+We collected panicles from a subset of females in each plot and recorded the number of seeds in each panicle.
+We assessed reproductive success (seeds fertilized) using greenhouse-based germination and trazolium-based seed viability assays. 
 
-We used the sex-ratio to estimate the probability of viability and the germination rate. 
+\tom{}{I think the data analysis methods could be better organized. Here you describe the experimental methods and data analysis in the same section, but for the common garden experiment you split them.}We used data from the sex-ratio experiment to estimate the probability of seed viability and the germination rate. 
 Seed viability was modeled with a binomial distribution where the probability of viability ($v$) was given by:
 \begin{align}\label{eq:viab_fn}
 v = v_{0} * (1 - OSR^{\alpha})
 \end{align}
-\noindent where $OSR$ is the operational sex ratio (proportion of panicles that were female) in the experimental populations.
+\noindent where $OSR$ is the \tom{operational sex ratio}{I tried to add a little about this, but generally I think the concept of the operational sex ratio is under-developed throughought the manuscript. It is the main way through which sex-specific climate responses can feed back to influence lambda, so it warrants greater attention.} (proportion of panicles that were female) in the experimental populations.
 The properties of the above function is supported by our previous work \citep{compagnoni2017can}. 
 Here, seed viability is maximized at $v_{0}$ as $OSR$ approaches zero (strongly male-biased) and goes to zero as $OSR$ approaches $1$ (strongly female-biased).
 Parameter $\alpha$ controls how viability declines with increasing female bias.
+\tom{}{Throughout the methods I recognize a lot of the text as coming directly from the Am Nat paper. I strongly recommend that you diversify your language and never use published text verbatim. Many journals use plagiarism detection software and this will raise a red flag, even if we are plagiarizing ourselves.}
 
 We used a binomial distribution to model the germination data from greenhouse trials.
-Given that germination was conditional on seed viability,the probability of success was given by the product $v*g$, where $v$ is a function of $OSR$ (Eq. \ref{eq:viab_fn}) and $g$ is assumed to be constant.
+Given that germination was conditional on seed viability,the probability of success was given by the product $v*g$, where $v$ is a function of $OSR$ (Eq. \ref{eq:viab_fn}) and $g$ is assumed to be constant.\tom{}{You provide no information about how this model was fit. This echoes my previous comment that the data analysis should be better organized.}
 
 \subsection*{Sex specific demographic responses to climate}
-We used individual level measurements of survival, growth (number of tillers), flowering, number of panicles to independently develop Bayesian mixed effect models describing how each vital rate varies as a function of sex, size, precipitation of growing and dormant season and temperature of of growing and dormant season. 
+\tom{}{This section needs to be more carefully edited, which I have not done. There is redundancy between the two paragraphs and most importantly, there is not enough biological rationale for the model that you fit. You do not describe which interactions you include, which you do not include, and why. This is a very complex model -- 24 fixed-effect coefficients! -- and it will get skepticism from reviewers. You need to justify why this is the right model, especially since you do not have any model selection or variable selection.}
+We used individual level measurements of survival, growth (number of tillers), flowering, number of panicles to independently develop Bayesian mixed effect models describing how each vital rate varies as a function of sex, size, and four climate covariates (precipitation and temperature of growing and dormant seasons). 
 We fit vital rate models with second-degree polynomial functions for the influence of climate.
 We included a second-degree polynomial because we expected that climate variables would affect vital rates through a hump-shaped relationship. 
 
 We centered and standardized all climatic predictors to facilitate model convergence.
-However, Size was on a natural logarithm scale. 
-We included site,source, and block as random effect.
-All the vital rate models used the same linear and quadratic predictor for the expected value ($\mu$)(Eq.\ref{eq:mu}) . 
+Size (number of tillers) was on a natural logarithm scale. 
+We included site, source, and block as random effects.
+All the vital rate models used the same \tom{linear predictor}{It is still a ``linear predictor'' even if it has quadratic terms.} for the expected value ($\mu$)(Eq.\ref{eq:mu}) . 
 However, we applied a different link function ($f(\mu)$) depending on the distribution the vital rate. 
 We modeled survival and flowering data with a Bernoulli distribution.
 We modeled the growth (tiller number) with a zero-truncated Poisson inverse Gaussian distribution. 
@@ -286,10 +291,10 @@ To understand the effect of climate on vital rates, we got the 95 \% credible in
 Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
 All models were fit in Stan \citep{rstan}. 
 
-\subsection*{Influence of climate variation on population growth rate}
-To understand the effect of climate on population growth rate, we used the vital rate estimated earlier to build a matrix projection model (MPM) structured by size (number of tillers), sex and climate (dormant and growing) as covariate.  
-Let $F_{x,z,t}$ and $M_{x,z,t}$ be the number of female and male plants of size $x$ in year $t$ present at a location that has $z$ as climate, where $x \in \{1,2,...,U\}$ and $U$ is the maximum number of tillers a plant can reach (here 95th percentile of observed maximum size).
-Let $F^{R}_{t}$ and $M^{R}_{t}$ be the new recruits, which we assume do not reproduce in their first year.
+\subsection*{Two-sex and climate-dependent matrix projection model}
+To understand the effect of climate on population growth rate incorporating both female and male climate responses, we used the climate-dependent vital rate regressions to build a matrix projection model (MPM) structured by size (number of tillers) and sex  
+Let $F_{x,z,t}$ and $M_{x,z,t}$ be the number of female and male plants of size $x$ in year $t$ present \tom{at a location that has $z$ as climate}{The variable $z$ is not used consistently or correctly. Notice in eq:viabMPM and eq:dynamics you use $z$ in the RHS but not the LHS. CLimate is not a state variable.}, where $x \in \{1,2,...,U\}$ and $U$ is the maximum number of tillers a plant can reach (here \tom{95th percentile}{I remember you experimented with this. Is this the actual percentile you used or was this text from the Am Nat paper?} of observed maximum size).
+Let $F^{R}_{t}$ and $M^{R}_{t}$ be new recruits, which we assume do not reproduce in their first year.
 We assume that the parameters of sex ratio-dependent mating (Eq. \ref{eq:viab_fn}) do not vary with climate.  
 For a pre-breeding census, the expected numbers of recruits in year $t+1$ is given by:
 \begin{align}\label{eq:recruits}
@@ -317,51 +322,53 @@ We did this because we had little information on the early life cycle transition
 We also assume that $g(y,x=1)$ is the probability that a surviving seedlings reach size $y$, the expected future size of 1-tiller plants from the transplant experiment.
 The second term represents survival and size transition of established plants from the previous year, where $s$ and $g$ give the probabilities of surviving at size $x$ and growing from sizes $x$ to $y$, respectively, and superscripts indicate that these functions may be unique to females ($F$) and males ($M$).
 
-Since the two-sex MPM is nonlinear (vital rates affect and are affected by population structure) we estimated the asymptotic geometric growth rate ($\lambda$) by numerical simulation, and repeated this across a range of climate.
+Since the two-sex MPM is nonlinear (vital rates affect and are affected by population structure) we estimated the asymptotic geometric growth rate ($\lambda$) by numerical simulation, \tom{and repeated this across a range of climate}{Vague - needs more detail.}.
+\tom{}{Too much of this section is familiar to me from the Am Nat paper. I suggest you write this in your own voice. You also should provide an explanation for the female-dominant model.}
 
-\subsection*{Identifying the mechanisms of population growth rate sensitivity to climate }
+\subsection*{Life Table Response Experiments}
 To identify which aspect of climate is most important for population viability, we used a "random design" Life Table Response Experiment (LTRE). 
-We used the RandomForest package to fit a regression model with seasonal climate (here $\theta$) as predictors  and $\lambda$ as response \citep{ellner2016data,liaw2002classification}.
+We used the RandomForest package to fit a regression model with seasonal \tom{climate}{It is unclear what variation in climate you are sampling over.} (here $\theta$) as predictors  and $\lambda$ as response \citep{ellner2016data,liaw2002classification}.
 The LTRE approximates the variation in $\lambda$ in response to seasonal climate covariates and their interaction \citep{caswell2000matrix,hernandez2023exact}:
 \begin{align}\label{eq:ltre}
 Var(\lambda_{c})\approx \sum_{i=-1}^{n}\sum_{j=1}^{n} Cov(\theta_{i},\theta_{j},\theta_{ij}) + Var (\epsilon)
 \end{align}
 
-\noindent where, $\theta_{i}$, $\theta_{j}$, $\theta_{ij}$  represent respectively the fitted regression slope for the covariates of the dormant season,j the covariates of the growing season and ij the covariates of their interactions. 
+\noindent where, $\theta_{i}$, $\theta_{j}$, $\theta_{ij}$  represent respectively the \tom{fitted regression slope for the covariates of the dormant season,j the covariates of the growing season and ij the covariates of their interactions.}{But you also have second-order terms, and I am not sure whether and how this LTRE accounts for that. Also, what is $n$ here? Why does the summation over i start at -1? And why do you show only two variables, since you have four?} 
 
-To identify the mechanism by which climate affects population growth rate for each sex, we decomposed the effect of each climate variable on population growth rate ($\lambda$) into contribution arising from the effect on each stage-specific vital rate \citep{caswell2000matrix}.
-At this end we used another LTRE with a "regression design". 
+To identify the mechanism by which climate affects population growth rate for each sex, we decomposed the effect of each climate variable on population growth rate ($\lambda$) into contribution arising from the effect on each \tom{stage-specific vital rate}{I don't know what you mean by ``stage-specific''} \citep{caswell2000matrix}.
+\tom{At this end we used another LTRE with a "regression design".}{I think you need greater clarification about what different information you get out of the two LTREs, and how they relate to the motivating biological questions. I understand this, of course, but I think readers will be confused.} 
 The LTRE with a "regression design" approximates the change in $\lambda$ with climate as the product of the sensitivity of $\lambda$ to the parameters times the sensitivity of the parameters to climate, summed over all parameters \citep{caswell1989analysis}:
 \begin{align}\label{eq:ltresex}
 \frac{\partial \lambda}{\partial climate} \approx \sum_{i} \frac{\partial \lambda}{\partial \theta^{F}_{i}} \frac{\partial \theta^{F}_{i}}{\partial climate} + \frac{\partial \lambda}{\partial \theta^{M}_{i}} \frac{\partial \theta^{M}_{i}}{\partial climate}
 \end{align}
 
 \noindent where, $\theta^{F}_{i}$ and $\theta^{M}_{i}$ represent sex-specific parameters: the regression coefficients for the intercepts and slopes of size-dependent vital rate functions. 
-Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. 
+Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters. \tom{}{I don't really understand how this LTRE works because your climate variables interact. So this should not decompose as cleanly as the equation implies.}
 
 \subsection*{Impact of climate change on niche and range shifts}
 A species' ecological niche can be defined as the range of resources and conditions allowing its populations to self- sustained  ($\lambda > 1$) \citep{maguire1973niche,hutchinson1978introduction}.
-To understand the impact of climate change on species niche shifts, we estimated the probability of self- sustaining populations, which is Pr ($\lambda > 1$) conditional to two environmental axes: (i) temperature and precipitation of the dormant season and (ii) temperature and precipitation of the growing season. 
-Pr ($\lambda > 1$) was calculated using the proportion of the 300 Markov chain Monte Carlo iterations that lead to a $\lambda > 1$ \citep{diez2014probabilistic}.
+To understand the impact of climate change on species niche shifts, we estimated the probability of self- sustaining populations, which is Pr ($\lambda > 1$) conditional to two environmental axes: (i) temperature and precipitation of the dormant season and (ii) temperature and precipitation of the growing season. \tom{}{As a general comment, I find it difficult to follow which analyses are explicitly spatial (i.e., mapping quantities as rasters) and which are not -- I think the methods can be sharpened around this.}
+Pr ($\lambda > 1$) was calculated using the proportion of the 300 Markov chain Monte Carlo iterations that lead to a $\lambda > 1$ \citep{diez2014probabilistic}.\tom{}{I suggest you bring this up much earlier, in the Intro probably. I think you under-sell the value of this approach, particularly related to accounting for uncertainty. You also need to describe which types of uncertainty are accounted for here, i.e., process error and estimation error.}
 
 Pr ($\lambda > 1$) was also mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past, current and future potential distribution of the species.
-To do so, we estimated Pr ($\lambda > 1$) conditional to all climate covariates for each pixel ($\sim$340 km2) across the species range. 
-Then we add the current occurrences record of the species (1990-2019) from Global Biodiversity Information Facility (GBIF) to validate the accuracy of our prediction
-Because of the amount of the computation involve in the Markov chain Monte Carlo iterations, use only 100 posterior samples to estimate Pr ($\lambda > 1$) across the Texas, Oklahoma and Kansas.
+\tom{To do so, we estimated Pr ($\lambda > 1$) conditional to all climate covariates for each pixel ($\sim$340 km2) across the species range.}{I think you did this separately for past, present, and future, and for multiple futures? Needs to be explained.} 
+\tom{Then we add the current occurrences record of the species (1990-2019) from Global Biodiversity Information Facility (GBIF) to validate the accuracy of our prediction}{If you actually intend this as model validation then it needs to be presented more thoroughly and analyzed more rigorously.}
+Because of the amount of the computation involved in the Markov chain Monte Carlo iterations, use only 100 posterior samples to estimate Pr ($\lambda > 1$) across the Texas, Oklahoma and Kansas.
 
-All the analysis were performed in R 4.3.1 \citep{RCoreteam}
-However the estimation of the impact of climate change on niche and range shifts were processed in parallel using open-source software on the Rice Super computer (NOTS) and the German Centre for Integrative Biodiversity Research (iDiv) High-Performance Computing Cluster.
+All the analyses were performed in R 4.3.1 \citep{RCoreteam}
+\tom{However the estimation of the impact of climate change on niche and range shifts were processed in parallel using open-source software on the Rice Super computer (NOTS) and the German Centre for Integrative Biodiversity Research (iDiv) High-Performance Computing Cluster.}{I am not sure you need this -- it was still done in R.}
 
 \section*{Results}
 \subsection*{Sex specific demographic response to climate change}
-Most vital rates were strongly climate dependent, but the magnitude of their response were similar between sexes suggesting no sex-specific demographic response to climate. 
-Survival and flowering were strongly more dependent on climate than growth (number of tillers) and reproduction (number of panicles) (Fig.\ref{fig:vital_rates}; Fig. \ref{Sup:Posterior}).
+Most vital rates were strongly climate dependent, but the magnitude of their response were similar between sexes suggesting \tom{no sex-specific demographic response to climate}{A few comments here: 1-This undermines the entire premise of the paper! If that's the result, it is what it is, but it suggests that the current Introduction does not serve the Results very well. 2-Your figure masks a lot of variation and interactions, and I think these are worth looking into more deeply. 3-This result is inconsistent with what we found in the Am Nat paper, and that concerns me, and will concern reviewers. 4-The niche plot indicates differences between two-sex and female dominant, which could only happen if there were sex-specific responses in the vital rates.}. 
+\tom{Survival and flowering were strongly more dependent on climate than growth (number of tillers) and panicle production (Fig.\ref{fig:vital_rates}; Fig. \ref{Sup:Posterior}).}{I am not sure this is true. The scales are very different.}
 In addition, we found opposite patterns in the direction of the effect on seasonal climate on the probability of survival and flowering.
-The growing season (precipitation) has a negative effect on the probability of survival, number of tillers, and the probability of flowering, whereas the dormant season has a positive effect on these vital rates. 
+\tom{Growing season precipitation has a negative effect on the probability of survival, number of tillers, and the probability of flowering, whereas dormant season precipitation has a positive effect on these vital rates. }{I think these trends are conditional on temperature - see other comments.}
 Unlike precipitation, temperature of the growing season has a positive effect of the probability of survival, a negative effect of the probability of flowering, and the number of tillers, but no significant effect on the number of panicles. 
-Further, there was a female survival and flowering advantage across both climatic seasons (Figures. 3A-3D, 3I-3L). 
-On the contrary, there was a male panicle advantage across all climatic variables (Figure3M-3P). 
-Counter-intuitively, there was no significant sex growth advantage in all season climatic variables (Figures. 3E-3H). 
+Further, there was a female survival and flowering advantage \tom{across both climatic seasons}{I am not sure what you mean by ``climatic seasons''. More precise language will help.} (Figures. 3A-3D, 3I-3L). 
+\tom{On the contrary, there was a male panicle advantage across all climatic variables (Figure3M-3P). }{The points and lines look very similar}
+\tom{Counter-intuitively, there was no significant sex growth advantage in all season climatic variables (Figures. 3E-3H). }{I cannot follow what this sentence is saying or why it is counter-intuitive.}
+\tom{}{I found this paragraph difficult to read, and obviously there are a lot of results to explain. I suggest you put some thought into how to organize these results in a way that communicates what you think are the most important points and makes it easier to digest. I think you also need to be careful about providing statistical support for your assertions.}
 % Plant size and sex interaction was significant for all vitals rates (Fig. \ref{Sup:Posterior}), suggesting a sexual dimorphism.
 % For survival, flowering and reproduction the interaction between temperature and precipitation of the growing season and dormant season was not significant (Fig. \ref{Sup:Posterior}). 
 % However, for growth, the interaction between temperature and precipitation of the growing season and dormant season was significantly higher than zero (Fig. \ref{Sup:Posterior}). 
@@ -385,18 +392,20 @@ Counter-intuitively, there was no significant sex growth advantage in all season
 
 
 \subsection*{Climate change alters population viability}
-We estimated population growth rate response to seasonal climate gradients using two models: a female dominant model and a two-sex model. 
-Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness (Fig.\ref{fig:lambda}). 
+We estimated population growth rate response to seasonal climate gradients using two models: \tom{a female dominant model and a two-sex model}{You do not provide any methods for this contrast.}. 
+\tom{Consistent with the effect of climate on the individual vital rate, we found a strong effect of seasonal climate on population fitness (Fig.\ref{fig:lambda}).}{Here and in the preceding figure, I think we need to be more transparent about at what climate values we are purely extrapolating. If I recall correctly, the ``present'' ranges shown in the lambda figure are not the actual range you fit the models over.} 
 For both models, population growth rate decreased toward high precipitation of growing season (Fig.\ref{fig:lambda} A, C). 
 In contrast population growth rate increased with an increase in precipitation of the dormant season.
 Furthermore, population growth rate was maximized between 14 and 17 \degree C and decreased bellow zero beyond 18 \degree C during the growing season (Fig.\ref{fig:lambda} B).
 Similarly population fitness was maximized between 27 and 31 \degree C and decreasesd bellow zero just beyond 20 \degree C during the dormant season (Fig.\ref{fig:lambda} D).
 % Across species niche population persistence was maximized at higher temperature during the dormant season ( 27 to 31) and intermediate temperature during the growing season (11 to 20).
-We have also detected a strong effect of the past and future climate on population growth rate. 
-However, the magnitude of the effect of future climate on population growth rate was different between gas-scenario emissions. 
-Under past climate conditions, population growth rate decreased below one for temperature of the growing season.
-A moderate emission gas scenario (RCP4.5) has a no effect on the population growth rate while a high emission scenario (RCP8.5) has a strong negative effect on population growth rate (Fig.\ref{fig:lambda} B, D). 
+\tom{}{I would like to discuss possibly not using this figure. I actually think the 2-D niche plots are the better representation of these results, because there are temp*precip interactions that you cannot see here but you can see in the 2-D niche plot. For example, the result that lambda increases with lower temperature is kind of weird, but you can see in the 2-D plot that this is only true at low temperature, and it reverses at high temperature. There are probably important interactions that we should try to visualize in the vital rates.}
 
+\tom{We have also detected a strong effect of the past and future climate on population growth rate. 
+However, the magnitude of the effect of future climate on population growth rate was different between emissions scenarios. 
+Under past climate conditions, population growth rate decreased below one for temperature of the growing season.
+A moderate emission gas scenario (RCP4.5) has a no effect on the population growth rate while a high emission scenario (RCP8.5) has a strong negative effect on population growth rate (Fig.\ref{fig:lambda} B, D).}{I understand what you are describing here, but I would not say that this shows ``effects of climate change on population growth''. Rather it shows what we predict lambda would be in different ranges of climate. That is a subtle distinction but I think it is important because ``effects of climate change'' depend on where in the range you are. All this might be moot if we don't use figure, although I love the way you show changes in climate from past to future, so we should find a way to keep that. } 
+\tom{}{I cannot write comments in the figure captions, so this comment applies to ``Lower panels below each data panel''.THis is not an adequate explanation of what is shown here. These are the ranges (min-max) of monthly climate values for the entire set of experimental sites over specific years, which need to be identified here.}
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.85\linewidth]{Figures/lambda_past_present_future.pdf}
@@ -405,8 +414,7 @@ A moderate emission gas scenario (RCP4.5) has a no effect on the population grow
 The grey curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
 The orange curve represents the prediction by the female dominant matrix projection model.
 The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1).
-Lower panels below each data panel shows climate values at different time perdio (past climate, present and future climates).
-For future climate, we show a Representation Concentration Pathways (RCP) 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs (MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM).}
+Lower panels below each data panel shows climate values at different time perdio (past climate, present and future climates).For future climate, we show a Representation Concentration Pathways (RCP) 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs (MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM).}
   \label{fig:lambda}
   \end{center}
 \end{figure}
@@ -414,8 +422,9 @@ For future climate, we show a Representation Concentration Pathways (RCP) 4.5 an
 \subsection*{Temperature as a driver of population growth rate decline }
 Population growth rate was most sensitive to change in temperature of the growing season and temperature of the dormant season (Supporting Information \ref{Sup:LTRE}). 
 LTRE decomposition revealed that, for each sex, the reduction of $\lambda$ for high value of temperature of the growing season was driven by a reduction of survival rate, growth rate, and a reduction in number of panicles (Fig.\ref{fig:LTRETemp} A, B). 
-However, the reduction of population growth rate for higher value of temperature of the dormant season was driven by only female individuals(Fig.\ref{fig:LTRETemp} C, D). 
+\tom{However, the reduction of population growth rate for higher value of temperature of the dormant season was driven by only female individuals(Fig.\ref{fig:LTRETemp} C, D). }{This is not how I interpret the figure.}
 The increase of the probability of flowering was sufficient to prevent population growth rate from declining for high tmeprature of the dormant season (Fig.\ref{fig:LTRETemp} C).
+\tom{}{I don't think readers will understand how to process these results, or what they mean with respect to the motivating questions. I think this can be presented in a more reader-friendly way that connects more clearly to the conceptual aims of the study.}
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.85\linewidth]{Figures/LTRE_Temperature.pdf}
@@ -426,10 +435,11 @@ The increase of the probability of flowering was sufficient to prevent populatio
 \end{figure}
 
 \subsection*{Climatic change induce niche and range shifts}
-Our results suggested niche sifts for both models (female dominant and two-sex) during the dormant and growing season (Fig. \ref{fig:niche}). 
-However, the female dominant model overestimated the magnitude of niche shifts (Fig. \ref{fig:niche} D). 
-Further, our demographically based range predictions broadly captured the known distribution of the species. 
-More specifically, the predicted probabilities of self- sustaining ($\lambda>1$) matches the presence and absence of the species (Fig. \ref{fig:geoprojacc} B, Fig. \ref{fig:geoprojacc} F). 
+\tom{}{General comment on this section: these are the most important results of the paper but they are described only briefly and without much statistical support. That is true for much of the Results section. I think this could be strengthened. I also think for both the niche and the map figures we need a more visually intuitive way to contrast the two-sex and female-dominant models.}
+\tom{Our results suggested niche sifts for both models (female dominant and two-sex) during the dormant and growing season (Fig. \ref{fig:niche}). }{I do not understand this statement.}
+\tom{However, the female dominant model overestimated the magnitude of niche shifts (Fig. \ref{fig:niche} D). }{This needs to be quantified more rigorously and statistically better supported. This also is inconsistent with the result that there were no sex-specific climate reponses, because that is the only way the predictions could differ.}
+\tom{Further, our demographically based range predictions broadly captured the known distribution of the species. 
+More specifically, the predicted probabilities of self- sustaining ($\lambda>1$) matches the presence and absence of the species (Fig. \ref{fig:geoprojacc} B, Fig. \ref{fig:geoprojacc} F). }{Again, these results need to be reported in a more quantitively rigorous way. I also do not agree that the model captures the known distribution. I think it drastically over-predicts known occurrence, and that warrants some attention.}
 Furthermore, viable populations of \emph{P. arichnifera} were only predicted at the center of the range for current climatic conditions (Fig. \ref{fig:geoprojacc} B).
 Although \emph{P. arichnifera} was predicted to have suitable habitats in the center of the range under current climate, global  warming (regardless of the future scenario of carbon emission used) is predicted to reduce much of these suitable habitats (Fig. \ref{fig:geoprojacc} C, D). 
 Most of the current suitable habitats will move toward the Northern range edge.  
@@ -461,34 +471,33 @@ Most of the current suitable habitats will move toward the Northern range edge.
 
 
 \section*{Discussion}
-Although much emphasis has been placed in the response of monoecious species to climate, we have little knowledge about how skewness in sex ratio will affect dioecious species population dynamics and dioecious range shifts. 
-We forecasted range shifts in dioecious species using climate-demographic models. 
-Three general patterns emerged from our analysis.
-First, our Bayesian mixed effect model predicts that seasonal climate (temperature and precipitation) affects sex-demographic processes in distinctive and contrasting ways.
+Dioecioius species make up a large fraction of Earth's biodiversity -- most animals and many plants -- yet we have little knowledge about how \tom{skewness in sex ratio}{You have not described anything about skewness in sex ratio, either from the model or in the data, and this is a glaring omission because as you correctly observe here, it is the way that sex structure matters for population viability} will affect population viability and range shifts of dioecious species under climate change. 
+Three general patterns emerged from our analysis of range-wide common garden experiments and sex-structured, climate-explicit demographic models.
+First, our Bayesian mixed effect model predicts that seasonal climate (temperature and precipitation) affects sex-demographic processes in \tom{distinctive and contrasting ways}{I am not sure whether this is referring to distinct and constrasting climate variables or sex differences.}.
 While climate has a significant effect on the probability of survival and growth, it has no effect on the number of panicles. 
-Second, future climate, by increasing seasonal temperature, will reduce survival rate, growth rate and reproduction and thereby alter population viability.
+Second, future climate, by increasing \tom{seasonal temperature}{I don't know what you mean by ``seasonal temperature'' -- be more specific}, \tom{will reduce survival rate, growth rate and reproduction and thereby alter population viability.}{It will not do so everywhere -- in some places these metrics will increase in others they will decrease, hence the range shifts.}
 In addition, climate change favors range shifts. 
-Third, using only one sex to forescat range shifts of dioecious under climate change could lead to an overestimation of the impact of  climate change on species.
+Third, \tom{using only one sex to forescat range shifts of dioecious under climate change could lead to an overestimation of the impact of  climate change on species.}{This result needs a clearer biological mechanism.}
 
-Our results indicate no sex-specific demographic response to climate change. 
+\tom{Our results indicate no sex-specific demographic response to climate change.}{Again, if this is true then there should be no difference between the female-dominant and two-sex models.} 
 However, females have higher survival rate and fertility rate than males. 
-This result is not unique to our study system and has been observed in a range of pollen dispersal species across climatic gradients \citep{welbergen2008climate,zhao2012sex,sasaki2019complex}. 
+\tom{This result}{Which result are you referring to?} is not unique to our study system and has been observed in \tom{a range of pollen dispersal species across climatic gradients}{Not sure what this means.} \citep{welbergen2008climate,zhao2012sex,sasaki2019complex}. 
 Several hypotheses could explain the observed demographic advantage of females over males for survival and flowering and the opposite for growth and number of panicles.
 The trade-off between fitness traits (survival, growth fertility) due to resource limitation and the pollination mode of our study species (wind pollinated) could explain such a result \citep{cipollini1994sexual,freeman1976differential}.
 For most species, the cost of reproduction is often higher for females than males due to the requirement to develop seeds and fruits \citep{hultine2016climate}. 
 However, several studies reported a higher cost of reproduction for males in wind pollinated species due to the larger amounts of pollen they produce \citep{burli2022environmental,cipollini1994sexual,bruijning2017surviving,field2013comparative}.
-In addition to life history trade-off, difference in non-climatic factors such as soil, or biotic interactions could explain decline in vital rate as an indirect effects of increase in temperature \citep{alexander2015novel,schultz2022climate}.
+\tom{In addition to life history trade-off, difference in non-climatic factors such as soil, or biotic interactions could explain decline in vital rate as an indirect effects of increase in temperature \citep{alexander2015novel,schultz2022climate}.}{This seems like a general comment about climate effects whereas I thought the paragraph was focused on sex differences.}
 
-Under current conditions, most populations across the range are viable.
+\tom{Under current conditions, most populations across the range are viable.}{I don't think this statement is well-supported. We don't have any data from natural populations.}
 This result could be explained by two hypotheses.
 First, demographic compensation whereby an increase of one vital rate is coupled with a decrease of another vital rate could explain viable populations in harsh conditions at the range edge \citep{doak2010demographic,villellas2015demographic,nomoto2021drivers}. 
-In our system, a decrease in fertility and survival rate was counterbalanced by an increase in flowering rate, preventing the population growth rate from declining even at range edge during the dormant season.
+In our system, a decrease in fertility and survival rate was counterbalanced by an increase in flowering rate, \tom{preventing the population growth rate from declining even at range edge}{Not sure I follow this - if lambda was not declining it would not be a range edge} \tom{during the dormant season}{Population growth rate is an annual measure, it does not refer to any season. I think what you mean here is that dormant season weather can affect population growth rate.}.
 Second, local adaptation at the edge of the range could explain the viable populations throughout the range \citep{miller2022two}. 
-Our study was based on a common garden experiment; therefore, individuals planted in climatic conditions that are similar to their source populations climatic conditions were less impacted by stressful environmental conditions.
-An important question to ask is: what is the role of local adaptation in buffering species response against climate change.
+\tom{Our study was based on a common garden experiment; therefore, individuals planted in climatic conditions that are similar to their source populations climatic conditions were less impacted by stressful environmental conditions.}{This statement lacks evidence.}
+\tom{An important question to ask is: what is the role of local adaptation in buffering species response against climate change.
 Unfortunately, our model does not shed light on that question.
 Adding another predictor to our complex model would have lead to overfitting. 
-Therefore, the role of local adaptation in mitigating population response to climate should be the next step in forecasting species response to climate. 
+Therefore, the role of local adaptation in mitigating population response to climate should be the next step in forecasting species response to climate. }{I don't think this is a very effective use of the Discussion. If you want to address local adaptation maybe that can go in an appendix. I don't actually understand the point of this paragraph but maybe I am not understanding something.}
 
 Our LTRE analysis reveals that a small change in temperature of the growing and dormant season could have a larger  impact on population viability.
 % This results corroborated with other studies and suggest that projected future climate will affect population viability \citep{reed2021climate}. 
@@ -499,42 +508,43 @@ The potential for temperature to influence these different processes changes sea
 For example, studies suggested that species that are active during the growing season such as cool grass species can have delayed phenology in response to global warming, particularly if temperatures rise above their physiological tolerances \citep{cleland2007shifting,williams2015life}. 
 In addition, high temperature during the growing season by affecting pollen viability, fertilization could affect seed formation and germination \citep{hatfield2015temperature,sletvold2015climate}. 
 % Because our study species was sensitive to temperatures in the growing season, the former mechanism deserve further attention.
-Temperature also affected operational sex ratio (OSR) (Fig.\ref{Sup:OSR}). 
-That variation in OSR could affect population growth rate by altering females’ fitness \citep{petry2016sex,knight2005pollen,haridas2014frequency}. 
+\tom{Temperature also affected operational sex ratio (OSR) (Fig.\ref{Sup:OSR}). 
+That variation in OSR could affect population growth rate by altering females’ fitness \citep{petry2016sex,knight2005pollen,haridas2014frequency}. }{These results need to be beter developed because they underlie all the other results. And again, the only way you can get an effect on temperature on OSR is if there were sex-specific responses to climate, but you way there were none.}
 
 We found evidence of climatic niche shifts for the female dominant model and the two-sex model. 
-However the female dominant model overestimated species niche, suggesting that using one sex to predict niche shifts could be misleading.
-Despite that overestimation for the female dominant model, both models agree on the fact that climatic conditions that are not optimal under current conditions will be optimal for the species over the next years particularly at the edge of species. 
-Further, pollen dispersal may allow plants to resist climate change because pollen dispersal may provide the local genetic diversity necessary to adapt at the leading edge of the population \citep{kremer2012long,corlett2013will,duputie2012genetic}.
-Since wind pollination is most effective at short distances, it is most often found in plant species growing at high density such as our study species, it is less likely that dispersal limitation  affect niche shift in our study system. 
+\tom{However the female dominant model overestimated species niche, suggesting that using one sex to predict niche shifts could be misleading.}{Again -- what is the biological explanation for this result?}
+Despite that overestimation for the female dominant model, both models agree on the fact that climatic conditions that are not optimal under current conditions will be optimal for the species over the next years particularly \tom{at the edge of species}{Which edge? I am not sure which specific results you are referring to here.}. 
+\tom{Further, pollen dispersal may allow plants to resist climate change because pollen dispersal may provide the local genetic diversity necessary to adapt at the leading edge of the population \citep{kremer2012long,corlett2013will,duputie2012genetic}.
+Since wind pollination is most effective at short distances, it is most often found in plant species growing at high density such as our study species, it is less likely that dispersal limitation  affect niche shift in our study system.}{I do not find this particularly relevant for interpreting the result that opens this paragraph.} 
 However, others biotic factors such as species competition might constrain the species to a narrower realized niche \citep{pulliam2000relationship,aguilee2016pollen}. 
 
 Our results suggest that climate change will drive range shifts and the magnitude and rate of that range shift could be overestimated when tracking only one sex (Fig. \ref{Sup:geoprojces},Fig. \ref{Sup:geoprojcmc},Fig. \ref{Sup:geoprojmiroc}). 
-This overestimation of the impact of climate change using a female dominant model could be do to several factors.
-First, small change in seasonal temperature affects population viability for both sexes.
+\tom{This overestimation of the impact of climate change using a female dominant model could be do to several factors.}{OK I was expecting this earlier.}
+First, small change in seasonal temperature affects \tom{population viability for both sexes}{Population viability is a property of the entire population, so females and males cannot have their own population viability.}.
 Second, operational sex ratio in \emph{Poa arachnifera} become female biased in area with lower temperature of growing season such as Northern range edge (Fig.\ref{Sup:OSR} B). 
-Our results converge with previous studies that have found the same pattern for other dioecious species \citep{woldemelak2021effect,varga2020environmental}. 
-Our funding also contrast with a previous study suggesting that an increase in male frequency induce range shifts by reducing pollen limitation in conditions that were not suitable \citep{petry2016sex}. 
+Our results converge with previous studies that have found the \tom{same pattern}{Unclear what pattern you are referring to} for other dioecious species \citep{woldemelak2021effect,varga2020environmental}. 
+Our finding also contrast with a previous study suggesting that an increase in male frequency induce range shifts by reducing pollen limitation in conditions that were not suitable \citep{petry2016sex}. 
 
-Three years represent a relatively decent time for demographic study for common garden experiments across climatic gradient.
+\tom{Three years represent a relatively decent time for demographic study for common garden experiments across climatic gradient.}{I am not sure whether this is intended to mean that three years is short or long -- can you sharpen this?}
 Thus our models can only capture a certain range of demographic and environmental variability (Fig. \ref{Sup:lambda2sex}).
-Moreover, our future projections require extrapolation to warmer or colder conditions than observed in our experiment and subsequently should be interpreted with caution \citep{chen2024influence}. 
-Despite all these limitations, the qualitative implications of a negative response of species to increase temperature (dormant and growing season) seems consistent across all GCMs.  
+\tom{Moreover, our future projections require extrapolation to warmer or colder conditions than observed in our experiment and subsequently should be interpreted with caution \citep{chen2024influence}. }{This is a good point, and it needs to be shown more clearly in methods and results.}
+Despite all these limitations, the qualitative implications of \tom{a negative response of species to increase temperature (dormant and growing season)}{Again, it is not negative everywhere. Northern populations with benefit from warming, so these results need to be described with greater nuance.} seems consistent across all GCMs.  
 Most of the suitable areas move toward the North of the current range in response to climate change.
-Climate change will affect population growth rate primarily through the response of female which is more sensitive to climate change \citep{miller2022two}.
-Males also have a significant contribution to population growth rate particularly for temperature. 
-Our work suggest that current climate may not affect population viability, but populations may be impacted negatively over the next decades in response to a climate change. 
+\tom{Climate change will affect population growth rate primarily through the response of female which is more sensitive to climate change \citep{miller2022two}.}{This paper says the opposite.}
+\tom{Males also have a significant contribution to population growth rate particularly for temperature. }{I do not know what this is saying.}
+Our work suggest that \tom{current climate may not affect population viability}{This statement does not make sense to me. Our data show that population viability is sensitive to climate under current (observed) conditions.}, but populations may be impacted negatively over the next decades in response to a climate change. 
 This is key because most conservation actions are design from  data on current responses to climate, rather than future response to climate \citep{sletvold2013climate}. 
-Moreover, management strategies that focus on both sex would be effective and will enhance population growth rate in response to global warming. 
+Moreover, management strategies that focus on both sexes would be effective and will enhance population growth rate in response to global warming. 
 
 \section*{Conclusion}
 We have investigated the potential consequence of skewness in sex ratio on population dynamics and range shift in the context of climate change. 
-We found that future climate will affect population growth rate at the center of species range.
+\tom{We found that future climate will affect population growth rate at the center of species range.}{I do not follow what this is referring to.}
 This reduction in population growth rate will induce a range shift to the northern edge of the species current range. 
 Our results also suggest that tracking only one sex could lead to an overestimation of the effect of climate change on population dynamics. 
 Our work  provides a framework for predicting the impact of global warming on species using population demography. 
 
 \section*{Acknowledgements}
+\tom{}{Much of this looks like it is copied from the Am Nat paper.}
 We are thankful to Dariusz Malinowski, Jason Goldman, Tom Arsuffi, Alan Byboth, John Walker, Kenneth Steigman, Steven Gibson, Wesley Newman, Kerry Griffis, Liz Martin, Melanie Hartman, Brian Northup, Le-land Russell, Dexter R. Mardis, and Dixie Smith for facilitating our fieldwork. 
 We acknowledge Marion Donald, Kory Kolis, Nakian Kim, and Alex Espana for valuable assistance in the field, laboratory, and greenhouse. 
 We want also to acknowledge the network of biological field stations that hosted our geographically distributed experiment. 
