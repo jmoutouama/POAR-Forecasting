@@ -432,43 +432,6 @@ dev.off()
 
 ```
 
-*Scaled with present data*
-
-```{r,eval=FALSE}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/MIROC_scaled_with_current.pdf",height = 7,width = 7,useDingbats = F)
-
-par(mfrow=c(2,2))
-hist(scale(poar_2015_2016$pptgrow),xlab="Precipitation growing",main="",xlim=c(-2,3),ylim=c(0,9),col="grey")
-hist((clim_past$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="pink",add=T)
-hist((clim_miroc45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#F0E442",add=T)
-hist((clim_miroc85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#0072B2",add=T)
-hist((clim_current$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="green",add=T)
-
-
-hist(scale(poar_2015_2016$tempgrow),xlab="Temperature growing",xlim=c(-3,3),ylim=c(0,8),main="",col="grey")
-hist((clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="pink",add=T)
-hist((clim_miroc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#F0E442",add=T)
-hist((clim_miroc85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#0072B2",add=T)
-hist((clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="green",add=T)
-
-
-hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-2,3),ylim=c(0,8),main="",col="grey")
-hist((clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="pink",add=T)
-hist((clim_miroc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#F0E442",add=T)
-hist((clim_miroc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#0072B2",add=T)
-hist((clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="green",add=T)
-legend("topright",legend=c("Observed","Present","Past","MIROC45","MIROC85"),lwd=6,col =c("green","grey","pink","#F0E442","#0072B2") ,bty="n",cex=0.75)
-
-hist(scale(poar_2015_2016$tempdorm),xlab="Temperature dormant",xlim=c(-4,5),ylim=c(0,6),col="grey",main="")
-hist((clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="pink",add=T)
-hist((clim_miroc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#F0E442",add=T)
-hist((clim_miroc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#0072B2",add=T)
-hist((clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="green",add=T)
-
-
-dev.off()
-
-```
 
 #### ACCESS
 
@@ -526,41 +489,6 @@ dev.off()
 
 ```
 
-*Scaled with present data*
-
-```{r}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/ACCESS_scaled_with_current.pdf",height = 7,width = 7,useDingbats = F)
-par(mfrow=c(2,2))
-
-hist(scale(poar_2015_2016$pptgrow),xlab="Precipitation growing",xlim=c(-2,3),ylim=c(0,9),main="")
-hist((clim_past$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="pink",add=T)
-hist((clim_access45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#F0E442",add=T)
-hist((clim_access85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#0072B2",add=T)
-hist((clim_current$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="green",add=T)
-
-
-hist(scale(poar_2015_2016$tempgrow),xlab="Temperature growing",xlim=c(-3,3),main="")
-hist((clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="pink",add=T)
-hist((clim_access45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#F0E442",add=T)
-hist((clim_access85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#0072B2",add=T)
-hist((clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="green",add=T)
-
-hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-2,3),ylim=c(0,10),main="")
-hist((clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="pink",add=T)
-hist((clim_access45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#F0E442",add=T)
-hist((clim_access85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#0072B2",add=T)
-hist((clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="green",add=T)
-legend("topright",legend=c("Observed","Present","Past","MIROC45","MIROC85"),lwd=6,col =c("green","grey","pink","#F0E442","#0072B2") ,bty="n",cex=0.75)
-
-
-hist(scale(poar_2015_2016$tempdorm),xlab="Temperature dormant",xlim=c(-4,5),ylim=c(0,8),main="")
-hist((clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="pink",add=T)
-hist((clim_access45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#F0E442",add=T)
-hist((clim_access85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#0072B2",add=T)
-hist((clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="green",add=T)
-dev.off()
-
-```
 
 #### CMCC
 
@@ -620,41 +548,6 @@ dev.off()
 
 ```
 
-*Scaled with present data*
-
-```{r,eval=FALSE}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/CMCCscaled_with_current.pdf",height = 7,width = 7,useDingbats = F)
-
-par(mfrow=c(2,2))
-
-hist(scale(poar_2015_2016$pptgrow),xlab="Precipitation growing",xlim=c(-2,3),ylim=c(0,10),main="")
-hist((clim_past$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="pink",add=T)
-hist((clim_cmcc45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#F0E442",add=T)
-hist((clim_cmcc85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#0072B2",add=T)
-hist((clim_current$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="green",add=T)
-
-hist(scale(poar_2015_2016$tempgrow),xlab="Temperature growing",xlim=c(-3,4),main="")
-hist((clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="pink",add=T)
-hist((clim_cmcc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#F0E442",add=T)
-hist((clim_cmcc85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#0072B2",add=T)
-hist((clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="green",add=T)
-
-hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-2,3),ylim=c(0,8),main="")
-hist((clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="pink",add=T)
-hist((clim_cmcc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#F0E442",add=T)
-hist((clim_cmcc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#0072B2",add=T)
-hist((clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="green",add=T)
-legend("topright",legend=c("Observed","Present","Past","MIROC45","MIROC85"),lwd=6,col =c("green","grey","pink","#F0E442","#0072B2") ,bty="n",cex=0.75)
-
-hist(scale(poar_2015_2016$tempdorm),xlab="Temperature dormant",xlim=c(-4,6),ylim=c(0,6),main="")
-hist((clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="pink",add=T)
-hist((clim_cmcc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#F0E442",add=T)
-hist((clim_cmcc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#0072B2",add=T)
-hist((clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="green",add=T)
-
-dev.off()
-
-```
 
 #### CESM1
 
@@ -710,40 +603,6 @@ dev.off()
 
 ```
 
-*Scaled with current data*
-
-```{r,eval=FALSE}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/CESM1scaled_with_current.pdf",height = 7,width = 7,useDingbats = F)
-
-par(mfrow=c(2,2))
-
-hist(scale(poar_2015_2016$pptgrow),xlab="Precipitation growing",xlim=c(-3,3),ylim=c(0,9),main="",col="grey")
-hist((clim_past$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="pink",add=T)
-hist((clim_cesm45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#F0E442",add=T)
-hist((clim_cesm85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="#0072B2",add=T)
-hist((clim_current$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow),col="green",add=T)
-
-hist(scale(poar_2015_2016$tempgrow),xlab="Temperature growing",xlim=c(-3,3),main="",col="grey")
-hist((clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="pink",add=T)
-hist((clim_cesm45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#F0E442",add=T)
-hist((clim_cesm85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="#0072B2",add=T)
-hist((clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow),col="green",add=T)
-
-hist(scale(poar_2015_2016$pptdorm),xlab="Precipitation dormant",xlim=c(-3,3),ylim=c(0,10),main="",col="grey")
-hist((clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="pink",add=T)
-hist((clim_cesm45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#F0E442",add=T)
-hist((clim_cesm85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="#0072B2",add=T)
-hist((clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm),col="green",add=T)
-legend("topright",legend=c("Observed","Present","Past","MIROC45","MIROC85"),lwd=6,col =c("green","grey","pink","#F0E442","#0072B2") ,bty="n",cex=0.75)
-
-hist(scale(poar_2015_2016$tempdorm),xlab="Temperature dormant",xlim=c(-4,3),ylim=c(0,6),main="",col="grey")
-hist((clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="pink",add=T)
-hist((clim_cesm45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#F0E442",add=T)
-hist((clim_cesm85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),col="#0072B2",add=T)
-hist((clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm),xlab="Temperature",col="green",add=T)
-dev.off()
-
-```
 
 ## Check for correlation between predictors for the seasonal data
 
@@ -790,24 +649,7 @@ poar.clim_seasonal <- left_join(x = poar_allsites_2015_2016,y =poar_2015_2016,by
 # head(poar.clim_seasonal)
 ```
 
-## Time series plots to visualize climate change
 
-```{r}
-temp_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/pr_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
-precip_ts <- read.csv("C:/Users/tm9/Dropbox/github/POAR-Forecasting/data/tas_poar_CRUTS.csv") %>% mutate(year = as.numeric(substr(transition,1,4)))
-## remember to patch in CHELSA data beginning 1978
-
-## north and south sites
-north_south<-c("ninnescah","lostP")
-east_west<-c("ozona","shsu")
-
-ggplot(temp_ts %>% filter(site%in%east_west))+
-  geom_line(aes(x=year,y=tas,group=site,col=site))+
-  facet_wrap(~season)
-ggplot(precip_ts %>% filter(site%in%east_west))+
-  geom_line(aes(x=year,y=pr,group=site,col=site))+
-  facet_wrap(~season)
-```
 # Mixed effect models (vital rate vs. climate )
 
 ## Read and format data to build the model
@@ -1162,21 +1004,44 @@ surv_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_s,bsizesex_s,bt
                                                         btempgrowpptgrowsex_s,btempdormpptdormsex_s,bpptgrow2_s,
                                                         btempgrow2_s,btempdorm2_s,bpptgrow2sex_s,bpptdorm2_s,bpptdorm2sex_s,btempdorm2sex_s,
                                                         btempgrow2sex_s)) + 
-  ggplot2::scale_y_discrete(labels=c("b0_s"="Intercept","bsize_s"="size","bsex_s"="sex",
+  ggplot2::scale_y_discrete(limits = c("b0_s","bsex_s", "bsize_s","bsizesex_s",
+                                       "bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s",
+                                       "bpptgrowsex_s","bpptdormsex_s", "btempdormsex_s","btempgrowsex_s",
+                                        "btempgrowpptgrowsex_s", "btempdormpptdormsex_s", 
+                                       "btempgrowpptgrow_s","btempdormpptdorm_s",
+                                       "bpptgrow2_s","bpptdorm2_s","btempdorm2_s","btempgrow2_s",
+                                       "bpptdorm2sex_s","bpptgrow2sex_s","btempdorm2sex_s", "btempgrow2sex_s"),
+                            labels=c("b0_s"="Intercept",
+                                     "bsex_s"="sex",
+                                     "bsize_s"="size",
                                      "bsizesex_s"="size:sex",
-                                     "bpptgrow_s"="pptgrow","bpptdorm_s"="pptdorm","btempgrow_s"="tempgrow","btempdorm_s"="tempdorm",
-                                    "bpptgrowsex_s"="pptgrow:sex","bpptdormsex_s"="pptdorm:sex","btempdormsex_s"="tempdorm:sex","btempgrowsex_s"="tempgrow:sex",  
-                                 "btempgrowpptgrowsex_s"="tempgrow:pptgrow:sex","btempdormpptdormsex_s"="tempdorm:pptdorm:sex",
-                                     "btempgrowpptgrow_s"="tempgrow:pptgrow", "btempdormpptdorm_s"="tempdorm:pptdorm",
-                                     "bpptgrow2_s"=expression(pptgrow^2),"btempgrow2_s"=expression(tempgrow^2),"bpptdorm2_s"=expression(pptdorm^2),"btempdorm2_s"=expression(tempdorm^2),
-                                     "bpptdorm2sex_s"=expression(pptdorm^2:sex),"btempdorm2sex_s"=expression(tempdorm^2:sex),"bpptgrow2sex_s"=expression(pptgrow^2:sex),"btempgrow2sex_s"=expression(tempgrow^2:sex)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "white") +
+                                     "bpptgrow_s"="pptgrow",
+                                     "bpptdorm_s"="pptdorm",
+                                     "btempgrow_s"="tempgrow",
+                                     "btempdorm_s"="tempdorm",
+                                     "bpptgrowsex_s"="pptgrow:sex",
+                                     "bpptdormsex_s"="pptdorm:sex",
+                                     "btempdormsex_s"="tempdorm:sex",
+                                     "btempgrowsex_s"="tempgrow:sex",  
+                                     "btempgrowpptgrowsex_s"="tempgrow:pptgrow:sex",
+                                     "btempdormpptdormsex_s"="tempdorm:pptdorm:sex",
+                                     "btempgrowpptgrow_s"="tempgrow:pptgrow",
+                                     "btempdormpptdorm_s"="tempdorm:pptdorm",
+                                     "bpptgrow2_s"=expression(pptgrow^2),
+                                     "btempgrow2_s"=expression(tempgrow^2),
+                                     "bpptdorm2_s"=expression(pptdorm^2),
+                                     "btempdorm2_s"=expression(tempdorm^2),
+                                     "bpptdorm2sex_s"=expression(pptdorm^2:sex),
+                                     "btempdorm2sex_s"=expression(tempdorm^2:sex),
+                                     "bpptgrow2sex_s"=expression(pptgrow^2:sex),
+                                     "btempgrow2sex_s"=expression(tempgrow^2:sex)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates (Survival)")+
   xlim(-2,2)+
   ggtitle("A") +
-  geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
   theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 13),
         axis.title.y = element_blank(),
@@ -1194,22 +1059,45 @@ grow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_g,bt
                                                         btempgrowpptgrowsex_g,btempdormpptdormsex_g,bpptgrow2_g,
                                                         btempgrow2_g,btempdorm2_g,bpptgrow2sex_g,bpptdorm2_g,bpptdorm2sex_g,btempdorm2sex_g,
                                                         btempgrow2sex_g)) + 
-  ggplot2::scale_y_discrete(labels=c("b0_g"="Intercept","bsize_g"="size","bsex_g"="sex",
+  ggplot2::scale_y_discrete(limits = c("b0_g","bsex_g", "bsize_g","bsizesex_g",
+                                       "bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g",
+                                       "bpptgrowsex_g","bpptdormsex_g", "btempdormsex_g","btempgrowsex_g",
+                                        "btempgrowpptgrowsex_g", "btempdormpptdormsex_g", 
+                                       "btempgrowpptgrow_g","btempdormpptdorm_g",
+                                       "bpptgrow2_g","bpptdorm2_g","btempdorm2_g","btempgrow2_g",
+                                       "bpptdorm2sex_g","bpptgrow2sex_g","btempdorm2sex_g", "btempgrow2sex_g"),
+                            labels=c("b0_g"="Intercept",
+                                     "bsize_g"="size",
+                                     "bsex_g"="sex",
                                      "bsizesex_g"="size:sex",
-                                     "bpptgrow_g"="pptgrow","bpptdorm_g"="pptdorm","btempgrow_g"="tempgrow","btempdorm_g"="tempdorm",
-                                    "bpptgrowsex_g"="pptgrow:sex","bpptdormsex_g"="pptdorm:sex","btempdormsex_g"="tempdorm:sex","btempgrowsex_g"="tempgrow:sex",  
-                                 "btempgrowpptgrowsex_g"="tempgrow:pptgrow:sex","btempdormpptdormsex_g"="tempdorm:pptdorm:sex",
-                                     "btempgrowpptgrow_g"="tempgrow:pptgrow", "btempdormpptdorm_g"="tempdorm:pptdorm",
-                                     "bpptgrow2_g"=expression(pptgrow^2),"btempgrow2_g"=expression(tempgrow^2),"bpptdorm2_g"=expression(pptdorm^2),"btempdorm2_g"=expression(tempdorm^2),
-                                     "bpptdorm2sex_g"=expression(pptdorm^2:sex),"btempdorm2sex_g"=expression(tempdorm^2:sex),"bpptgrow2sex_g"=expression(pptgrow^2:sex),"btempgrow2sex_g"=expression(tempgrow^2:sex)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "white") +
+                                     "bpptgrow_g"="pptgrow",
+                                     "bpptdorm_g"="pptdorm",
+                                     "btempgrow_g"="tempgrow",
+                                     "btempdorm_g"="tempdorm",
+                                    "bpptgrowsex_g"="pptgrow:sex",
+                                    "bpptdormsex_g"="pptdorm:sex",
+                                    "btempdormsex_g"="tempdorm:sex",
+                                    "btempgrowsex_g"="tempgrow:sex",  
+                                 "btempgrowpptgrowsex_g"="tempgrow:pptgrow:sex",
+                                 "btempdormpptdormsex_g"="tempdorm:pptdorm:sex",
+                                     "btempgrowpptgrow_g"="tempgrow:pptgrow",
+                                 "btempdormpptdorm_g"="tempdorm:pptdorm",
+                                 "bpptgrow2_g"=expression(pptgrow^2),
+                                 "btempgrow2_g"=expression(tempgrow^2),
+                                 "bpptdorm2_g"=expression(pptdorm^2),
+                                 "btempdorm2_g"=expression(tempdorm^2),
+                                  "bpptdorm2sex_g"=expression(pptdorm^2:sex),
+                                 "btempdorm2sex_g"=expression(tempdorm^2:sex),
+                                 "bpptgrow2sex_g"=expression(pptgrow^2:sex),
+                                 "btempgrow2sex_g"=expression(tempgrow^2:sex)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates (Growth)")+
   ylab(NULL) +
-  xlim(-2,2)+
+  xlim(-1.5,1.5)+
   ggtitle("B") +
-  geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
   theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 13),
         axis.title.y = element_blank(),
@@ -1227,22 +1115,45 @@ flow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_f,bt
                                                         btempgrowpptgrowsex_f,btempdormpptdormsex_f,bpptgrow2_f,
                                                         btempgrow2_f,btempdorm2_f,bpptgrow2sex_f,bpptdorm2_f,bpptdorm2sex_f,btempdorm2sex_f,
                                                         btempgrow2sex_f)) + 
-  ggplot2::scale_y_discrete(labels=c("b0_f"="Intercept","bsize_f"="size","bsex_f"="sex",
+  ggplot2::scale_y_discrete(limits = c("b0_f","bsex_f", "bsize_f","bsizesex_f",
+                                       "bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f",
+                                       "bpptgrowsex_f","bpptdormsex_f", "btempdormsex_f","btempgrowsex_f",
+                                        "btempgrowpptgrowsex_f", "btempdormpptdormsex_f", 
+                                       "btempgrowpptgrow_f","btempdormpptdorm_f",
+                                       "bpptgrow2_f","bpptdorm2_f","btempdorm2_f","btempgrow2_f",
+                                       "bpptdorm2sex_f","bpptgrow2sex_f","btempdorm2sex_f", "btempgrow2sex_f"),
+                            labels=c("b0_f"="Intercept",
+                                     "bsize_f"="size",
+                                     "bsex_f"="sex",
                                      "bsizesex_f"="size:sex",
-                                     "bpptgrow_f"="pptgrow","bpptdorm_f"="pptdorm","btempgrow_f"="tempgrow","btempdorm_f"="tempdorm",
-                                    "bpptgrowsex_f"="pptgrow:sex","bpptdormsex_f"="pptdorm:sex","btempdormsex_f"="tempdorm:sex","btempgrowsex_f"="tempgrow:sex",  
-                                 "btempgrowpptgrowsex_f"="tempgrow:pptgrow:sex","btempdormpptdormsex_f"="tempdorm:pptdorm:sex",
-                                     "btempgrowpptgrow_f"="tempgrow:pptgrow", "btempdormpptdorm_f"="tempdorm:pptdorm",
-                                     "bpptgrow2_f"=expression(pptgrow^2),"btempgrow2_f"=expression(tempgrow^2),"bpptdorm2_f"=expression(pptdorm^2),"btempdorm2_f"=expression(tempdorm^2),
-                                     "bpptdorm2sex_f"=expression(pptdorm^2:sex),"btempdorm2sex_f"=expression(tempdorm^2:sex),"bpptgrow2sex_f"=expression(pptgrow^2:sex),"btempgrow2sex_f"=expression(tempgrow^2:sex)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "white") +
+                                     "bpptgrow_f"="pptgrow",
+                                     "bpptdorm_f"="pptdorm",
+                                     "btempgrow_f"="tempgrow",
+                                     "btempdorm_f"="tempdorm",
+                                    "bpptgrowsex_f"="pptgrow:sex",
+                                    "bpptdormsex_f"="pptdorm:sex",
+                                    "btempdormsex_f"="tempdorm:sex",
+                                    "btempgrowsex_f"="tempgrow:sex",  
+                                 "btempgrowpptgrowsex_f"="tempgrow:pptgrow:sex",
+                                 "btempdormpptdormsex_f"="tempdorm:pptdorm:sex",
+                                     "btempgrowpptgrow_f"="tempgrow:pptgrow",
+                                 "btempdormpptdorm_f"="tempdorm:pptdorm",
+                                    "bpptgrow2_f"=expression(pptgrow^2),
+                                 "btempgrow2_f"=expression(tempgrow^2),
+                                 "bpptdorm2_f"=expression(pptdorm^2),
+                                 "btempdorm2_f"=expression(tempdorm^2),
+                                    "bpptdorm2sex_f"=expression(pptdorm^2:sex),
+                                 "btempdorm2sex_f"=expression(tempdorm^2:sex),
+                                 "bpptgrow2sex_f"=expression(pptgrow^2:sex),
+                                 "btempgrow2sex_f"=expression(tempgrow^2:sex)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates (Flowering)")+
   ylab(NULL) +
   xlim(-2,2)+
   ggtitle("C") +
-  geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
   theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 13),
         axis.title.y = element_blank(),
@@ -1260,7 +1171,14 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
                                                         btempgrowpptgrowsex_p,btempdormpptdormsex_p,bpptgrow2_p,
                                                         btempgrow2_p,btempdorm2_p,bpptgrow2sex_p,bpptdorm2_p,bpptdorm2sex_p,btempdorm2sex_p,
                                                         btempgrow2sex_p)) + 
-  ggplot2::scale_y_discrete(labels=c("b0_p"="Intercept","bsize_p"="size","bsex_p"="sex",
+  ggplot2::scale_y_discrete(limits = c("b0_p","bsex_p", "bsize_p","bsizesex_p",
+                                       "bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p",
+                                       "bpptgrowsex_p","bpptdormsex_p", "btempdormsex_p","btempgrowsex_p",
+                                        "btempgrowpptgrowsex_p", "btempdormpptdormsex_p", 
+                                       "btempgrowpptgrow_p","btempdormpptdorm_p",
+                                       "bpptgrow2_p","bpptdorm2_p","btempdorm2_p","btempgrow2_p",
+                                       "bpptdorm2sex_p","bpptgrow2sex_p","btempdorm2sex_p", "btempgrow2sex_p"),
+                            labels=c("b0_p"="Intercept","bsize_p"="size","bsex_p"="sex",
                                      "bsizesex_p"="size:sex",
                                      "bpptgrow_p"="pptgrow","bpptdorm_p"="pptdorm","btempgrow_p"="tempgrow","btempdorm_p"="tempdorm",
                                     "bpptgrowsex_p"="pptgrow:sex","bpptdormsex_p"="pptdorm:sex","btempdormsex_p"="tempdorm:sex","btempgrowsex_p"="tempgrow:sex",  
@@ -1274,8 +1192,8 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
   ylab(NULL) +
   xlim(-1,1)+
   ggtitle("D") +
-  geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
   theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 13),
         axis.title.y = element_blank(),
@@ -1291,9 +1209,9 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
 ```
 
 ```{r,eval=FALSE}
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean.pdf",useDingbats = F,height=8,width=9)
-# ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
-# dev.off()
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean.pdf",useDingbats = F,height=12,width=10)
+ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
+dev.off()
 ```
 
 # Vital rate figure (observed data)
@@ -3546,6 +3464,8 @@ with(poar_panic_binned,{
 dev.off()
 ```
 
+
+
 # Matrix model (lambda vs climate)
 
 ##load MPM functions
@@ -5437,76 +5357,6 @@ dev.off()
 
 ```
 
-```{r}
-figosr1<-ggplot() +
-  geom_line(aes(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),OSR_pptgrow_all), col = "#000000",size=1) +
-  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-            alpha = 0.1, data = rect_pptgrow, inherit.aes = FALSE) +
-  xlab(" Precipitation (grow. season)") +
-  ylab(expression(paste("Population growth rate, ", lambda))) +
-  ggtitle("")+
-  theme_bw() +
-  theme(legend.position="none",
-        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.title.x = element_text(size = 9,color="black"),
-        axis.title.y = element_text(size = 9,color="black"))+
-  scale_fill_manual(values = c("blue","green", "yellow", "red"),name="") 
-
-
-figosr2<-ggplot() +
-  geom_line(aes(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),OSR_tempgrow_all), col = "#000000",size=1)+
-  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-            alpha = 0.1, data = rect_tempgrow, inherit.aes = FALSE) +
-  xlab(" Temperature (grow. season)") +
-  ylab(expression(paste("Population growth rate, ", lambda))) +
-  scale_y_continuous(breaks = c(0,1,2,3,4,5,6,7,8))+
-  ggtitle("")+
-  theme_bw() +
-  theme(legend.position="none",
-        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.title.x = element_text(size = 9,color="black"),
-        axis.title.y = element_text(size = 9,color="black"))+
-  scale_fill_manual(values = c("blue","green", "yellow", "red"),name="") 
-
-
-figors3<-ggplot() +
-  geom_line(aes(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),OSR_pptdorm_all), col = "#000000",size=1)+
-  xlab(" Precipitation (dorm. season)") +
-  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-            alpha = 0.1, data = rect_pptdorm, inherit.aes = FALSE) +
-  ylab(expression(paste("Population growth rate, ", lambda))) +
-  ggtitle("")+
-  theme_bw() +
-  theme(legend.position="none",
-        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.title.x = element_text(size = 9,color="black"),
-        axis.title.y = element_text(size = 9,color="black"))+
-  scale_fill_manual(values = c("blue","green", "yellow", "red"),name="") 
-
-figcombo4<-ggplot() +
-  geom_line(aes(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),OSR_tempdorm_all), col = "#000000",size=1) +
-  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf, fill = Time), 
-            alpha = 0.1, data = rect_tempdorm, inherit.aes = FALSE) +
-  xlab(" Temperature (dorm. season)") +
-  ylab(expression(paste("Population growth rate, ", lambda))) +
-  ggtitle("")+
-  theme_bw() +
-  theme(legend.position="none",
-        panel.border = element_rect(colour = "black", fill=NA, size=0.5),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.title.x = element_text(size = 9,color="black"),
-        axis.title.y = element_text(size = 9,color="black"))+
-  scale_fill_manual(values = c("blue","green", "yellow", "red"),name="")
-
-
-```
 
 ### Geographic Projection
 
@@ -5587,25 +5437,25 @@ par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
 plot(crop_pptdorm_raster,xlab="Longitude",ylab="Latitude")
 mtext("A",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
-plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
-plot(garden,add=T,pch = 21,col="black",cex =1,bg="black")
-plot(source,add=T,pch = 21,col="red",bg="red",cex =0.75)
+# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
+plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
 legend(-106.5, 28.5, 
-       legend=c("Natural populations ", "Common garden sites","Source populations"),
-       pch = c(23,21,21),
-       pt.cex=c(1.5,1,0.75),
-       col = c("black","black","red"),
-       pt.bg=c("grey","black","red"),
+       legend=c( "Common garden sites","Source populations"),
+       pch = c(21,23),
+       pt.cex=c(1.25,1),
+       col = c("black","black"),
+       pt.bg=c("black","grey"),
        cex = 0.7, 
        bty = "n", 
-       horiz = F , 
+       horiz = F , ß
 )
 plot(crop_tempdorm_raster,xlab="Longitude",ylab="Latitude")
 mtext("B",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
-plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
-plot(garden,add=T,pch = 21,col="black",cex =1,bg="black")
-plot(source,add=T,pch = 21,col="red",bg="red",cex =0.75)
+# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
+plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
 # legend(-106.5, 28.5, 
 #        legend=c("Natural population survey", "Common garden site","Source population"),
 #        pch = c(23,21,21),
@@ -5620,9 +5470,9 @@ plot(source,add=T,pch = 21,col="red",bg="red",cex =0.75)
 plot(crop_pptgrow_raster,xlab="Longitude",ylab="Latitude")
 mtext("C",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
-plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
-plot(garden,add=T,pch = 21,col="black",cex =1,bg="black")
-plot(source,add=T,pch = 21,col="red",bg="red",cex =0.75)
+# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
+plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
 # legend(-106.5, 28.5, 
 #        legend=c("Natural population ", "Common garden site","Source population"),
 #        pch = c(23,21,21),
@@ -5637,9 +5487,9 @@ plot(source,add=T,pch = 21,col="red",bg="red",cex =0.75)
 plot(crop_tempgrow_raster,xlab="Longitude",ylab="Latitude")
 mtext("D",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
-plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
-plot(garden,add=T,pch = 21,col="black",cex =1,bg="black")
-plot(source,add=T,pch = 21,col="red",bg="red",cex =0.75)
+# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
+plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
 # legend(-106.5, 28.5, 
 #        legend=c("Natural population survey", "Common garden site","Source population"),
 #        pch = c(23,21,21),
@@ -6057,7 +5907,13 @@ lambda_future$ces85<-clim_lambda_ces85$lambda
 ```{r}
 lambda_past<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/clim_lambda_past.csv")
 lambda_current<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_current.csv")
-lambda_future<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_future.csv")
+lambda_cmc85<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_cmc85.csv")
+lambda_cmc45<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/lambda_cmc45.csv")
+lambda_past_fd<-read.csv("/Volumes/NO NAME/geolambdaFd/lam_past_fd.csv")
+lambda_current_fd<-read.csv("/Volumes/NO NAME/geolambdaFd/lam_current_fd.csv")
+lambda_cmc85_fd<-read.csv("/Volumes/NO NAME/geolambdaFd/lam_cmc_85_fd.csv")
+lambda_cmc45_fd<-read.csv("/Volumes/NO NAME/geolambdaFd/lam_cmc_45_fd.csv")
+
 ```
 
 ```{r}
@@ -6165,7 +6021,7 @@ outline_map <- map_data("world")
 (lambda_map_45 <- ggplot()+
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = geo45, aes(x = x, y = y, fill = mean_lambda_45))+
+  geom_tile(data = lambda_cmc45, aes(x = x, y = y, fill =lambda ))+
   annotate(geom="text", x=-100, y=41, label="Future 4.5",
               color="grey",size = 3)+
   scale_fill_gradientn(
@@ -6182,7 +6038,7 @@ theme(strip.background = element_blank(),
 (lambda_map_85 <- ggplot()+
   # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
   # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
-  geom_tile(data = geo85, aes(x = x, y = y, fill = mean_lambda_85))+
+  geom_tile(data = lambda_cmc85, aes(x = x, y = y, fill = lambda))+
   annotate(geom="text", x=-100, y=41, label="Future 8.5",
               color="grey",size = 3)+
   scale_fill_gradientn(
@@ -6194,6 +6050,79 @@ theme(strip.background = element_blank(),
   labs(x = "Longitude", y = "Latitude",title="D") )
 
 ```
+
+
+```{r}
+(lambda_map_past_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lambda_past_fd, aes(x = x, y = y, fill = lambda_mat_past_fd))+
+  # geom_point(data=poar_occ_1901_1930,aes(lon, lat))+
+  annotate(geom="text", x=-100, y=41, label="Past",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(lambda)),
+    colours = terrain.colors(7))+
+  theme_light()+
+  theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="A") )
+
+```
+
+```{r}
+(lambda_map_current_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lambda_current_fd, aes(x = x, y = y, fill = lambda_mat_current_fd))+
+  geom_point(data=poar_occ_1990_2019,aes(lon, lat),alpha=1/5)+
+  annotate(geom="text", x=-100, y=41, label="Current",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(lambda)),
+    colours = terrain.colors(7))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="B") )
+
+```
+
+```{r}
+(lambda_map_45_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lambda_cmc45_fd, aes(x = x, y = y, fill =lambda_mat_cmc45_fd ))+
+  annotate(geom="text", x=-100, y=41, label="Future 4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(lambda)),
+    colours = terrain.colors(7))+
+  theme_light()+
+theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="C") )
+
+```
+
+```{r}
+(lambda_map_85_fd <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-110,-90), ylim = c(25,45)) +
+  geom_tile(data = lambda_cmc85_fd, aes(x = x, y = y, fill = lambda_mat_cmc85_fd))+
+  annotate(geom="text", x=-100, y=41, label="Future 8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(lambda)),
+    colours = terrain.colors(7))+
+  theme_light()+
+theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="D") )
+
+```
+
+
 
 ```{r}
 Fig_geoprojection<-ggarrange(lambda_map_past, lambda_map_current, lambda_map_45, lambda_map_85,common.legend = TRUE)
@@ -6268,8 +6197,8 @@ geo_prlambda_past <- merge(x = lam_prob_past,y =clim_past_values,by=c("pptdorm",
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6317,8 +6246,8 @@ geo_prlambda_current <- merge(x =lam_prob_current ,y = clim_current_values,by=c(
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+     breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6359,8 +6288,8 @@ geo_prlambda_45 <- merge(x = lam_prob_45,y =climate_miroc45_values,by=c("pptdorm
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+     breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6400,7 +6329,8 @@ geo_prlambda_85 <- merge(x = lam_prob_85,y =climate_miroc85_values,by=c("pptdorm
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6429,8 +6359,8 @@ lam_prob_past_fd<-data.frame(clim_past_values_clean[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+     breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6458,8 +6388,8 @@ lam_prob_current_fd<-data.frame(clim_current_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6484,8 +6414,8 @@ lam_prob_miroc45_fd<-data.frame(climate_miroc45_values[,9:10],Prlambda=prob_lamb
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6510,19 +6440,44 @@ lam_prob_miroc85_fd<-data.frame(climate_miroc85_values[,9:10],Prlambda=prob_lamb
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="H") )
 ```
 
+
+```{r}
+geo_prlambda_past_fd_twosex<-left_join(lam_prob_past_fd,geo_prlambda_past,by=c("x","y"))
+geo_prlambda_past_fd_twosex$lambda_diff<-geo_prlambda_past_fd_twosex$Prlambda.x-geo_prlambda_past_fd_twosex$Prlambda.y
+```
+
+```{r}
+(lambda_map_Prpast_diff <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-107,-92), ylim = c(25,41)) +
+  geom_tile(data = geo_prlambda_past_fd_twosex, aes(x = x, y = y, fill = lambda_diff))+
+  annotate(geom="text", x=-100, y=41, label="Past",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(Delta," (E-A)")),
+    colours = terrain.colors(4),
+     breaks = seq(-0.5, 0.5, length.out=5))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="E") )
+
+```
+
+
+
 ```{r}
 Fig_geoPrlambdamiroc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,lambda_map_Prpast_fd,lambda_map_Prcurrent_fd,lambda_map_miroc45_fd,lambda_map_miroc85_fd,common.legend = TRUE,ncol = 4, nrow = 2)
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width = 10, height = 8)
 ```
-
 
 ```{r}
 lambbacmc45 %>% 
@@ -6556,8 +6511,8 @@ geo_prlambdacmc_45 <- merge(x = lamcmc_prob_45,y =climate_cmc_45_values,by=c("pp
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6596,14 +6551,14 @@ geo_prlambdacmc_85 <- merge(x = lamcmc_prob_85,y =climate_cmc_85_values,by=c("pp
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7))+
+    colours = terrain.colors(100),
+   breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="D") )
 
 ```
-
 
 ```{r}
 prob_lambda_cmc45_fd<-c()
@@ -6623,8 +6578,8 @@ lam_prob_cmc45_fd<-data.frame(climate_cmc_45_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6649,8 +6604,8 @@ lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6659,7 +6614,7 @@ lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_
 
 ```{r}
 Fig_geoPrlambdacmc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prcmc45, lambda_map_Prcmc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_cmc45_fd, lambda_map_cmc85_fd, common.legend = TRUE,ncol = 4, nrow = 2)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc_all, width = 10, height = 8)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc, width = 10, height = 8)
 ```
 
 ```{r}
@@ -6693,8 +6648,8 @@ geo_prlambdaacc_45 <- merge(x = lambaacc_prob_45,y =climate_acc_45_values,by=c("
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+   breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6732,7 +6687,8 @@ geo_prlambdaacc_85 <- merge(x = lambdaacc_prob_85,y =climate_acc_85_values,by=c(
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6758,8 +6714,8 @@ lam_prob_acc45_fd<-data.frame(climate_acc_45_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6785,8 +6741,8 @@ lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6796,7 +6752,7 @@ lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_
 ```{r}
 Fig_geoPrlambdaacc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_acc45_fd,lambda_map_acc85_fd,ncol=4,nrow=2,
                                         common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdaacc_.pdf", Fig_geoPrlambdaacc_all, width = 10, height = 8)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdaacc_.pdf", Fig_geoPrlambdaacc, width = 10, height = 8)
 ```
 
 
@@ -6832,8 +6788,8 @@ geo_prlambdaces_45 <- merge(x = lambaces_prob_45,y =climate_ces_45_values,by=c("
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+    breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6871,7 +6827,8 @@ geo_prlambdaces_85 <- merge(x = lambdaces_prob_85,y =climate_ces_85_values,by=c(
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(7))+
+    colours = terrain.colors(100),
+     breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6897,8 +6854,8 @@ lam_prob_ces45_fd<-data.frame(climate_ces_45_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+     breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -6923,8 +6880,8 @@ lam_prob_ces85_fd<-data.frame(climate_ces_85_values[,9:10],Prlambda=prob_lambda_
               color="grey",size = 3)+
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
-    colours = terrain.colors(10),
-    breaks = seq(0, 1, 0.2))+
+    colours = terrain.colors(100),
+     breaks = seq(0, 1, length.out=5))+
   theme_light()+
  theme(strip.background = element_blank(),
         strip.text  = element_text(face = "italic", color = "black"))+
@@ -7299,7 +7256,7 @@ data_growing_niche<-data.frame(lambda_grow_post)
 ```{r}
 # read in results of the above loop
 nichegrowing <- readRDS(url("https://www.dropbox.com/scl/fi/ggxrqzgz2wwmo1mec2d5m/data_growing_niche.rds?rlkey=6uv4l0e2ajovdit7gt778aexw&dl=1"))
-fixr::check_for_negative_values(nichegrowing)
+# fixr::check_for_negative_values(nichegrowing)
 summary(nichegrowing)
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
@@ -7389,20 +7346,21 @@ y_miroc45_g<-clim_miroc45$tempgrow
 x_miroc85_g<-clim_miroc85$pptgrow
 y_miroc85_g<-clim_miroc85$tempgrow
 
+scal_breaks <- c(seq(0, 1, length.out = 101))
 ```
 
 
 ```{r}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing.pdf",width=8,height=7,useDingbats = F)
 par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="") 
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,col=topo.colors(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",breaks =scal_breaks ) 
 contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm,add=T,labcex=0.75,col="black") 
 mtext("A",side = 3, adj = 0,cex=1.2)
 text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
 text(x=x_past_d,y=y_past_d,"o",col="black")
 text(x=x_miroc45_d,y=y_miroc45_d,"*",col="black",cex=2)
 text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=4.5)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="") 
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,col=topo.colors(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="",breaks = scal_breaks) 
 contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow,add=T,labcex=0.75,col="black") 
 mtext("B",side = 3, adj = 0,cex=1.2)
 # title(main="B" ,adj=0,cex.main=1.4,font=1)
@@ -7410,14 +7368,14 @@ text(x=x_current_g,y=y_current_g,"+",col="black",cex=1.5)
 text(x=x_past_g,y=y_past_g,"o",col="black")
 text(x=x_miroc45_g,y=y_miroc45_g,"*",col="black",cex=2)
 text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="") 
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",breaks = scal_breaks) 
 contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,add=T,labcex=0.75,col="black") 
 mtext("C",side = 3, adj = 0,cex=1.2)
 text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
 text(x=x_past_d,y=y_past_d,"o",col="black")
 text(x=x_miroc45_d,y=y_miroc45_d,"*",col="black",cex=2)
 text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=4.5)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="") 
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="",breaks = scal_breaks) 
 contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,add=T,labcex=0.75,col="black") 
 mtext("D",side = 3, adj = 0,cex=1.2)
 # title(main="B" ,adj=0,cex.main=1.4,font=1)
@@ -7803,7 +7761,7 @@ dormant<-wireframe(z ~ y+x, data = xyzdorm, zlab = list("OSR", rot=90),
 ```
 
 ```{r}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR_3D.pdf",width=6,height=8,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR_3D.pdf",width=5,height=4,useDingbats = F)
 grid.arrange(growing,dormant,ncol = 1)
 dev.off()
 ```
@@ -7906,178 +7864,70 @@ POAR=rbind(POAR12[-14,],rbind(POAR13[-1,],newDf))        #Clear bay and Thunderb
 POAR=POAR[order(as.character(POAR$Population)),]
 ```
 
-
-
-```{r}
-
-SR_conditions_1901_1930 <- terra::extract(clim_1990_2019,POAR_coordinate)
-SR_clim_past<-data.frame(SR_conditions_1901_1930)
-SR_conditions_1990_2019 <- terra::extract(clim_1990_2019,POAR_coordinate)
-SR_clim_current<-data.frame(SR_conditions_1901_1930)
-SR_conditions_cmc_45 <- terra::extract(clim_cmcc_45,POAR_coordinate)
-SR_clim_cmc_45<-data.frame(SR_conditions_cmc_45)
-SR_conditions_cmc_85 <- terra::extract(clim_cmcc_85,POAR_coordinate)
-SR_clim_cmc_85<-data.frame(SR_conditions_cmc_85)
-data_SR<-cbind(POAR,SR_clim_current)
-dim(data_SR)
-data_SR_time<-rbind(SR_clim_past,SR_clim_current,SR_clim_cmc_45,SR_conditions_cmc_85)
-```
-
-
-
-```{r}
-## Fit Stan model (should be quick and simple)
-survey_dat <- list(y = data_SR$Total.Female.Infl.,
-                   n_trials = data_SR$Total.Male.Infl.+POAR$Total.Female.Infl.,
-                   pptdorm = as.vector(scale(data_SR$pptdorm)) ,
-                   tempdorm =as.vector(scale(data_SR$tempdorm)),
-                   pptgrow =as.vector(scale(data_SR$pptgrow)),
-                   tempgrow = as.vector(scale(data_SR$tempgrow)),
-                   N = nrow(data_SR))
-# simulation parameters
-sim_pars <- list(
-  warmup = 1000, 
-  iter = 4000, 
-  thin = 3, 
-  chains = 3
-)
-# fit the stan model, a simple binomial glm
-fit_survey_tempdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_survey_temporm.stan',
-  data = survey_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-
-fit_survey_tempgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_survey_tempgrow.stan',
-  data = survey_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-```
-
-```{r}
-traceplot(fit_survey_tempdorm, pars = quote_bare(b0,b_tempdorm))+theme_bw()
-traceplot(fit_survey_tempgrow, pars = quote_bare(b0,b_tempgrow))+theme_bw()
-```
-
-```{r}
-## pull out coefficients
-n_post_draws <- 300
-coef_survey_tempdorm <- rstan::extract(fit_survey_tempdorm,par=c("b0","b_tempdorm"))
-coef_survey_tempdorm_mean <- lapply(coef_survey_tempdorm,mean)
-coef_survey_tempgrow <- rstan::extract(fit_survey_tempgrow,par=c("b0","b_tempgrow"))
-coef_survey_tempgrow_mean <- lapply(coef_survey_tempgrow,mean)
-sr_post_draws <- sample.int(length(coef_survey_tempdorm$b0), n_post_draws)
-```
-
-```{r}
-# dummy variable for plotting
-x_tempgrow <- seq(min(scale(data_SR_time$tempgrow)),max(scale(data_SR_time$tempgrow)),length = 100)
-x_tempdorm <- seq(min(scale(data_SR_time$tempdorm)),max(scale(data_SR_time$tempdorm)),length = 100)
-
-```
-
 ```{r}
 ## compare to common garden sex ratios
 #OSR by year
 garden_osr <- poar.clim_seasonal %>% 
-  dplyr::select( year, site, Sex,ztempgrow,ztempdorm,flowerN_t1) %>% 
-  group_by(year, ztempgrow, ztempdorm,site, Sex) %>% 
+  dplyr::select(year, site, Sex,zpptgrow,zpptdorm,ztempgrow,ztempdorm,flowerN_t1) %>% 
+  group_by(year,zpptgrow,zpptdorm,ztempgrow,ztempdorm,site, Sex) %>% 
   summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_panicles) %>% 
-  rename(fem_pan = `F`,
-         mal_pan = `M`,
+  dplyr::rename(
+    fem_pan ="F",
+         mal_pan = "M",
+         tempdorm=ztempdorm,
          tempgrow=ztempgrow,
-         tempdorm=ztempdorm) %>% 
-  mutate(tot_pan=fem_pan+mal_pan,
+         pptdorm=zpptdorm,
+         pptgrow=zpptgrow) %>% 
+  mutate(
+    tot_pan=fem_pan+mal_pan,
          osr = fem_pan/tot_pan,
          year_index = year-2014)
+
 #OSR pooled across years
-garden_osr_poolyr <- poar %>% 
-  dplyr::select(site, Sex, ztempgrow, ztempdorm,flowerN_t1) %>% 
-  group_by(ztempgrow,ztempdorm, site, Sex) %>% 
+garden_osr_poolyr <- poar.clim_seasonal %>% 
+  dplyr::select(site, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,flowerN_t1) %>% 
+  group_by(zpptgrow,zpptdorm,ztempgrow,ztempdorm, site, Sex) %>% 
   summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_panicles) %>% 
-  rename(fem_pan = `F`,
-         mal_pan = `M`,
+  rename(fem_pan = "F",
+         mal_pan = "M",
+         tempdorm=ztempdorm,
          tempgrow=ztempgrow,
-         tempdorm=ztempdorm) %>% 
+         pptdorm=zpptdorm,
+         pptgrow=zpptgrow) %>% 
   mutate(tot_pan=fem_pan+mal_pan,
          osr = fem_pan/tot_pan)
-ggplot(garden_osr)+
-  geom_point(aes(x=tempgrow,y=osr,color=as.factor(year)))
 
 ##sex ratio by year
-garden_sr <- poar %>% 
-  dplyr::select( year, site, Sex, ztempgrow, ztempdorm,surv_t1) %>% 
-  group_by(year, ztempgrow,ztempdorm, site, Sex) %>% 
+garden_sr <- poar.clim_seasonal %>% 
+  dplyr::select( year, site, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,surv_t1) %>% 
+  group_by(year, zpptgrow,zpptdorm,ztempgrow, ztempdorm, site, Sex) %>% 
   summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_plants) %>% 
   rename(fem = `F`,
          mal = `M`,
+         tempdorm=ztempdorm,
          tempgrow=ztempgrow,
-         tempdorm=ztempdorm) %>% 
+         pptdorm=zpptdorm,
+         pptgrow=zpptgrow) %>% 
   mutate(total=fem+mal,
          sr = fem/total)
 ##sex ratio pooled across years
-garden_sr_poolyr <- poar %>%
-  dplyr::select(site, Sex, ztempgrow,ztempdorm, surv_t1) %>% 
-  group_by(ztempgrow,ztempdorm, site, Sex) %>% 
+garden_sr_poolyr <- poar.clim_seasonal %>%
+  dplyr::select(site, Sex, zpptgrow, zpptdorm, ztempgrow, ztempdorm, surv_t1) %>% 
+  group_by(zpptgrow,zpptdorm,ztempgrow, ztempdorm, site, Sex) %>% 
   summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_plants) %>% 
   rename(fem = `F`,
-         mal = `M`) %>% 
+         mal = `M`,
+         tempdorm=ztempdorm,
+         tempgrow=ztempgrow,
+         pptdorm=zpptdorm,
+         pptgrow=zpptgrow) %>% 
   mutate(total=fem+mal,
          sr = fem/total)
-ggplot(garden_sr)+
-  geom_point(aes(x=tempgrow,y=sr,color=as.factor(year)))
 
-```
-
-```{r}
-#print figure
-#pdf("Manuscript/Figures/garden_sex_ratios.pdf",useDingbats = F,height=6,width=12)
-par(mfrow=c(1,2),mar=c(5,6,1,1))
-year_cols <- c("#e41a1c","#377eb8","#4daf4a")
-
-plot(garden_sr$ztempgrow + mean(latlong$Longitude),garden_sr$sr,type="n",ylim=c(0,1),cex.lab=1.4,
-     xlab="Longitude",ylab="Sex ratio\n(proportion female plants)")
-abline(h=0.5,col="gray",lty=2);title("A",adj=0,font=4)
-points(garden_sr$ztempgrow[garden_sr$year==2015] + mean(latlong$Longitude),
-       garden_sr$sr[garden_sr$year==2015],
-       pch=16,cex=log(garden_sr$total[garden_sr$year==2015]),col=alpha(year_cols[1],0.5))
-points(garden_sr$ztempgrow[garden_sr$year==2016] + mean(latlong$Longitude),
-       garden_sr$sr[garden_sr$year==2016],
-       pch=16,cex=log(garden_sr$total[garden_sr$year==2016]),col=alpha(year_cols[2],0.5))
-points(garden_sr$ztempgrow[garden_sr$year==2017] + mean(latlong$Longitude),
-       garden_sr$sr[garden_sr$year==2017],
-       pch=16,cex=log(garden_sr$total[garden_sr$year==2017]),col=alpha(year_cols[3],0.5))
-lines(long_seq + mean(latlong$Longitude),invlogit(coef(sr_glm)[1] + coef(sr_glm)[2]*long_seq),col=year_cols[1],lwd=3)
-lines(long_seq + mean(latlong$Longitude),invlogit(coef(sr_glm)[1] + coef(sr_glm)[3] + (coef(sr_glm)[2]+coef(sr_glm)[5])*long_seq),col=year_cols[2],lwd=3)
-lines(long_seq + mean(latlong$Longitude),invlogit(coef(sr_glm)[1] + coef(sr_glm)[4] + (coef(sr_glm)[2]+coef(sr_glm)[6])*long_seq),col=year_cols[3],lwd=3)
-legend("topleft",legend=2015:2017,bty="n",lwd=3,col=year_cols,cex=1.2)
-
-plot(garden_osr$ztempgrow + mean(latlong$Longitude),garden_osr$osr,type="n",ylim=c(0,1),cex.lab=1.4,
-     xlab="Longitude",ylab="Operational sex ratio\n(proportion female panicles)")
-abline(h=0.5,col="gray",lty=2);title("B",adj=0,font=4)
-points(garden_osr$ztempgrow[garden_osr$year==2015] + mean(latlong$Longitude),
-       garden_osr$osr[garden_osr$year==2015],
-       pch=16,cex=log(garden_osr$tot_pan[garden_osr$year==2015]),col=alpha(year_cols[1],0.5))
-points(garden_osr$ztempgrow[garden_osr$year==2016] + mean(latlong$Longitude),
-       garden_osr$osr[garden_osr$year==2016],
-       pch=16,cex=log(garden_osr$tot_pan[garden_osr$year==2016]),col=alpha(year_cols[2],0.5))
-points(garden_osr$ztempgrow[garden_osr$year==2017] + mean(latlong$Longitude),
-       garden_osr$osr[garden_osr$year==2017],
-       pch=16,cex=log(garden_osr$tot_pan[garden_osr$year==2017]),col=alpha(year_cols[3],0.5))
-lines(long_seq + mean(latlong$Longitude),invlogit(coef(osr_glm)[1] + coef(osr_glm)[2]*long_seq),col=year_cols[1],lwd=3)
-lines(long_seq + mean(latlong$Longitude),invlogit(coef(osr_glm)[1] + coef(osr_glm)[3] + (coef(osr_glm)[2]+coef(osr_glm)[5])*long_seq),col=year_cols[2],lwd=3)
-lines(long_seq + mean(latlong$Longitude),invlogit(coef(osr_glm)[1] + coef(osr_glm)[4] + (coef(osr_glm)[2]+coef(osr_glm)[6])*long_seq),col=year_cols[3],lwd=3)
-#dev.off()
 ```
 
 ```{r}
@@ -8086,20 +7936,48 @@ garden_osr_dat <- list(y = garden_osr_poolyr$fem_pan,
                        n_trials = garden_osr_poolyr$tot_pan,
                        tempgrow = as.vector(garden_osr_poolyr$tempgrow),
                        tempdorm = as.vector(garden_osr_poolyr$tempdorm),
+                       pptdorm=as.vector(garden_osr_poolyr$pptgrow),
+                       pptgrow=as.vector(garden_osr_poolyr$pptdorm),
                        N = nrow(garden_osr_poolyr))
 
 ```
 
 ```{r}
+sim_pars <- list(
+  warmup = 1000, 
+  iter = 4000, 
+  thin = 3, 
+  chains = 3
+)
+```
+
+```{r}
 fit_garden_osr_tempgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_survey_tempgrow.stan',
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_tempgrow.stan',
   data = garden_osr_dat,
   warmup = sim_pars$warmup,
   iter = sim_pars$iter,
   thin = sim_pars$thin,
   chains = sim_pars$chains )
+
 fit_garden_osr_tempdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_survey_temporm.stan',
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_temporm.stan',
+  data = garden_osr_dat,
+  warmup = sim_pars$warmup,
+  iter = sim_pars$iter,
+  thin = sim_pars$thin,
+  chains = sim_pars$chains )
+
+fit_garden_osr_pptgrow <- stan(
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptgrow.stan',
+  data = garden_osr_dat,
+  warmup = sim_pars$warmup,
+  iter = sim_pars$iter,
+  thin = sim_pars$thin,
+  chains = sim_pars$chains )
+
+fit_garden_osr_pptdorm <- stan(
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptdorm.stan',
   data = garden_osr_dat,
   warmup = sim_pars$warmup,
   iter = sim_pars$iter,
@@ -8110,11 +7988,263 @@ fit_garden_osr_tempdorm <- stan(
 ```
 
 ```{r}
+traceplot(fit_garden_osr_tempgrow, pars = quote_bare(b0,b_tempgrow,b_tempgrow2))+theme_bw()
+traceplot(fit_garden_osr_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2))+theme_bw()
+traceplot(fit_garden_osr_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2))+theme_bw()
+traceplot(fit_garden_osr_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2))+theme_bw()
+```
+
+```{r,eval=FALSE}
+#pull out parameter posterior distributions
+pred_ORS_tempgrow <- rstan::extract(fit_garden_osr_tempgrow, pars = c("pred"))$pred
+pred_ORS_tempdorm <- rstan::extract(fit_garden_osr_tempdorm, pars = c("pred"))$pred
+pred_ORS_pptgrow <- rstan::extract(fit_garden_osr_pptgrow, pars = c("pred"))$pred
+pred_ORS_pptdorm <- rstan::extract(fit_garden_osr_pptdorm, pars = c("pred"))$pred
+
+#draw 500 random samples from the joint posterior
+n_post_draws <- 500
+post_draws <- sample.int(dim(pred_ORS_tempgrow)[1], n_post_draws)
+#set up simulation output
+y_osr_tempgrow_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
+y_osr_tempdorm_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
+y_osr_pptgrow_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
+y_osr_pptdorm_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
+#loop over the posterior and generate new observations
+for(i in 1:n_post_draws){
+  print(i)
+  y_osr_tempgrow_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_tempgrow[i,]))
+  y_osr_tempdorm_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_tempdorm[i,]))
+  y_osr_pptgrow_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_pptgrow[i,]))
+  y_osr_pptdorm_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_pptdorm[i,]))
+}
+
+```
+
+```{r,eval=FALSE}
+#plot ppc overlay
+ppc_dens_overlay(garden_osr_dat$y, y_osr_tempgrow_sim)+
+  xlab("Temperature (grow.seson)")+ylab("Density")+
+  ggtitle(("Survival"))+theme(legend.position = "none")->ppc_tempgrow
+
+#print figure
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/PPC.pdf",useDingbats = F,height=10,width=6)
+# multiplot(ppc_surv,ppc_flow,ppc_viab,
+#           ppc_grow,ppc_panic,ppc_germ,cols=2)
+# dev.off()
+```
+
+
+```{r}
 ## pull out coefficients
-coef_garden_osr_tempgrow <- rstan::extract(fit_garden_osr_tempgrow,par=c("b0","b_tempgrow"))
-coef_garden_osr_tempgrow_mean <- lapply(coef_garden_osr_tempgrow,mean)
-coef_garden_osr_tempdorm <- rstan::extract(fit_garden_osr_tempdorm,par=c("b0","b_tempdorm"))
-coef_garden_osr_tempdorm_mean <- lapply(coef_garden_osr_tempdorm,mean)
+coef_garden_osr_tempgrow <- rstan::extract(fit_garden_osr_tempgrow,par=c("b0","b_tempgrow","b_tempgrow2"))
+coef_garden_osr_pptgrow <- rstan::extract(fit_garden_osr_pptgrow,par=c("b0","b_pptgrow","b_pptgrow2"))
+coef_garden_osr_tempdorm <- rstan::extract(fit_garden_osr_tempdorm,par=c("b0","b_tempdorm","b_tempdorm2"))
+coef_garden_osr_pptdorm <- rstan::extract(fit_garden_osr_pptdorm,par=c("b0","b_pptdorm","b_pptdorm2"))
+```
+
+```{r}
+posterior_pptgrow <- as.array(fit_garden_osr_pptgrow)
+color_scheme_set("orange")
+osr_pptgrow<-mcmc_intervals(posterior_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_pptgrow","b_pptgrow2"),
+                            labels=c("b0"="b0",
+                                     "b_pptgrow"="pptgrow",
+                                     "b_pptgrow2"=expression(pptgrow^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+  xlim(-0.5,0.5)+
+  ggtitle("A") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
+
+posterior_tempgrow <- as.array(fit_garden_osr_tempgrow)
+osr_tempgrow<-mcmc_intervals(posterior_tempgrow, pars = quote_bare(b0,b_tempgrow,b_tempgrow2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_tempgrow","b_tempgrow2"),
+                            labels=c("b0"="b0",
+                                     "b_tempgrow"="tempgrow",
+                                     "b_tempgrow2"=expression(tempgrow^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+  xlim(-1,1)+
+  ggtitle("B") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
+
+posterior_pptdorm <- as.array(fit_garden_osr_pptdorm)
+osr_pptdorm<-mcmc_intervals(posterior_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_pptdorm","b_pptdorm2"),
+                            labels=c("b0"="b0",
+                                     "b_pptdorm"="pptdorm",
+                                     "b_pptdorm2"=expression(pptdorm^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+   xlim(-0.5,0.5)+
+  ggtitle("C") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
+
+posterior_tempdorm <- as.array(fit_garden_osr_tempdorm)
+osr_tempdorm<-mcmc_intervals(posterior_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_tempdorm","b_tempdorm2"),
+                            labels=c("b0"="b0",
+                                     "b_tempdorm"="tempdorm",
+                                     "b_tempdorm2"=expression(tempdorm^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+  xlim(-0.5,0.5)+
+  ggtitle("D") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
+
+```
+
+```{r,eval=FALSE}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_ORS.pdf",useDingbats = F,height=6,width=5)
+ggarrange(osr_pptgrow,osr_tempgrow,osr_pptdorm,osr_tempdorm + rremove("ylab"), ncol = 2, nrow = 2)
+dev.off()
+```
+
+```{r}
+set.seed(13)
+n_post_draws<-300
+osr_post_draws <- sample.int(length(coef_garden_osr_tempgrow$b0), n_post_draws)
+```
+
+```{r}
+x_tempgrow <- seq(min(garden_osr_poolyr$tempgrow),max(garden_osr_poolyr$tempgrow),length = 100)
+x_pptgrow <- seq(min(garden_osr_poolyr$pptgrow),max(garden_osr_poolyr$pptgrow),length = 100)
+x_tempdorm <- seq(min(garden_osr_poolyr$tempdorm),max(garden_osr_poolyr$tempdorm),length = 100)
+x_pptdorm <- seq(min(garden_osr_poolyr$pptdorm),max(garden_osr_poolyr$pptdorm),length = 100)
+
+```
+
+```{r}
+garden_osr_poolyr_plot <- poar.clim_seasonal %>% 
+  dplyr::select(site, Sex, pptgrow,pptdorm,tempgrow, tempdorm,flowerN_t1) %>% 
+  group_by(pptgrow,pptdorm,tempgrow,tempdorm, site, Sex) %>% 
+  summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
+  spread(key=Sex,value=total_panicles) %>% 
+  rename(fem_pan = "F",
+         mal_pan = "M",
+         tempdorm=tempdorm,
+         tempgrow=tempgrow,
+         pptdorm=pptdorm,
+         pptgrow=pptgrow) %>% 
+  mutate(tot_pan=fem_pan+mal_pan,
+         osr = fem_pan/tot_pan)
+```
+
+```{r}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/gardens_OSR.pdf",useDingbats = F,width=8,height=8)
+par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
+
+plot(garden_osr_poolyr$pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Precipitation (grow.season)",ylab="Proportion female plants")
+abline(h=0.5,col="gray",lty=2)
+mtext("A",side = 3, adj = 0,cex=1.25)
+for(p in 1:n_post_draws){
+  lines(x_pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),
+        invlogit(coef_garden_osr_pptgrow$b0[osr_post_draws[p]] +
+                   coef_garden_osr_pptgrow$b_pptgrow[osr_post_draws[p]] * x_pptgrow +
+                   coef_garden_osr_pptgrow$b_pptgrow2[osr_post_draws[p]] * x_pptgrow* x_pptgrow),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_osr_poolyr$pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+
+
+plot(garden_osr_poolyr$tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Temerature (grow.season)",ylab="Proportion female plants")
+abline(h=0.5,col="gray",lty=2)
+mtext("B",side = 3, adj = 0,cex=1.25)
+for(p in 1:n_post_draws){
+  lines(x_tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),
+        invlogit(coef_garden_osr_tempgrow$b0[osr_post_draws[p]] +
+                   coef_garden_osr_tempgrow$b_tempgrow[osr_post_draws[p]] * x_tempgrow +
+                   coef_garden_osr_tempgrow$b_tempgrow2[osr_post_draws[p]] * x_tempgrow* x_tempgrow),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_osr_poolyr$tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+
+
+plot(garden_osr_poolyr$pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Precipitation (dorm.season)",ylab="Proportion female plants")
+mtext("C",side = 3, adj = 0,cex=1.25)
+abline(h=0.5,col="gray",lty=2)
+for(p in 1:n_post_draws){
+  lines(x_pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),
+        invlogit(coef_garden_osr_pptdorm$b0[osr_post_draws[p]] +
+                   coef_garden_osr_pptdorm$b_pptdorm[osr_post_draws[p]] * x_pptdorm +
+                   coef_garden_osr_pptdorm$b_pptdorm2[osr_post_draws[p]] * x_pptdorm* x_pptdorm),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_osr_poolyr$pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+
+plot(garden_osr_poolyr$tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Temperature (dorm.season)",ylab="Proportion female plants")
+mtext("D",side = 3, adj = 0,cex=1.25)
+abline(h=0.5,col="gray",lty=2)
+for(p in 1:n_post_draws){
+  lines(x_tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),
+        invlogit(coef_garden_osr_tempdorm$b0[osr_post_draws[p]] +
+                   coef_garden_osr_tempdorm$b_tempdorm[osr_post_draws[p]] * x_tempdorm +
+                   coef_garden_osr_tempdorm$b_tempdorm2[osr_post_draws[p]] * x_tempdorm* x_tempdorm),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_osr_poolyr$tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+dev.off()
+
 ```
 
 ```{r}
@@ -8122,12 +8252,14 @@ garden_sr_dat <- list(y = garden_sr_poolyr$fem,
                        n_trials = garden_sr_poolyr$total,
                        tempgrow = as.vector(garden_osr_poolyr$tempgrow),
                        tempdorm = as.vector(garden_osr_poolyr$tempdorm),
+                      pptgrow = as.vector(garden_osr_poolyr$pptgrow),
+                       pptdorm = as.vector(garden_osr_poolyr$pptdorm),
                        N = nrow(garden_sr_poolyr))
 ```
 
 ```{r}
 fit_garden_sr_tempgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_survey_tempgrow.stan',
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_tempgrow.stan',
   data = garden_sr_dat,
   warmup = sim_pars$warmup,
   iter = sim_pars$iter,
@@ -8135,7 +8267,23 @@ fit_garden_sr_tempgrow <- stan(
   chains = sim_pars$chains )
 
 fit_garden_sr_tempdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_survey_temporm.stan',
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_temporm.stan',
+  data = garden_sr_dat,
+  warmup = sim_pars$warmup,
+  iter = sim_pars$iter,
+  thin = sim_pars$thin,
+  chains = sim_pars$chains )
+
+fit_garden_sr_pptgrow <- stan(
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptgrow.stan',
+  data = garden_sr_dat,
+  warmup = sim_pars$warmup,
+  iter = sim_pars$iter,
+  thin = sim_pars$thin,
+  chains = sim_pars$chains )
+
+fit_garden_sr_pptdorm <- stan(
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptdorm.stan',
   data = garden_sr_dat,
   warmup = sim_pars$warmup,
   iter = sim_pars$iter,
@@ -8143,127 +8291,225 @@ fit_garden_sr_tempdorm <- stan(
   chains = sim_pars$chains )
 ```
 
+
+
+```{r}
+traceplot(fit_garden_sr_tempgrow, pars = quote_bare(b0,b_tempgrow,b_tempgrow2))+theme_bw()
+traceplot(fit_garden_sr_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2))+theme_bw()
+traceplot(fit_garden_sr_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2))+theme_bw()
+traceplot(fit_garden_sr_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2))+theme_bw()
+```
+
 ```{r}
 ## pull out coefficients
-coef_garden_sr_tempgrow <- rstan::extract(fit_garden_sr_tempgrow,par=c("b0","b_tempgrow"))
-coef_garden_sr_tempgrow_mean <- lapply(coef_garden_sr_tempgrow,mean)
-coef_garden_sr_tempdorm <- rstan::extract(fit_garden_sr_tempdorm,par=c("b0","b_tempdorm"))
-coef_garden_sr_tempdorm_mean <- lapply(coef_garden_sr_tempdorm,mean)
-
+coef_garden_sr_tempgrow <- rstan::extract(fit_garden_sr_tempgrow,par=c("b0","b_tempgrow","b_tempgrow2"))
+coef_garden_sr_pptgrow <- rstan::extract(fit_garden_sr_pptgrow,par=c("b0","b_pptgrow","b_pptgrow2"))
+coef_garden_sr_tempdorm <- rstan::extract(fit_garden_sr_tempdorm,par=c("b0","b_tempdorm","b_tempdorm2"))
+coef_garden_sr_pptdorm <- rstan::extract(fit_garden_sr_pptdorm,par=c("b0","b_pptdorm","b_pptdorm2"))
 ```
 
 ```{r}
-## figure option combines natural population survey with common garden sex ratios
-#print figure
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/nat_pops_gardens_SR.pdf",useDingbats = F,height=4,width=12)
-par(mfrow=c(1,3),mar=c(5,5,2,1))
-## natural populations
-plot(survey_dat$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),
-     survey_dat$y/survey_dat$n_trials,pch=1,type="n",xlim=c(min(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow)),max(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow))),
-     ylim=c(0,1),
-     cex=log(survey_dat$n_trials),#cex=4*(survey_dat$n_trials/max(survey_dat$n_trials))+1,#
-     xlab="Temerature (grow.season)",ylab="Proportion female panicles",cex.lab=1.8,cex.axis=1.4,
-     col=alpha("#E6AB02",1))
-title("A) Natural population OSR",adj=0,font=4,cex.main=1.6)
-abline(h=0.5,col="gray",lty=2)
-#lines(x_long + mean(POAR$Longitude),
-#      invlogit(mean(coef_surv$b0) + mean(coef_surv$b_long) * x_long),lwd=3,col="black")
-for(p in 1:n_post_draws){
-  lines(x_tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),
-        invlogit(coef_survey_tempgrow$b0[sr_post_draws[p]] + coef_survey_tempgrow$b_tempgrow[sr_post_draws[p]] * x_tempgrow),
-        col=alpha("#E6AB02",0.1))
-}
-points(survey_dat$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),
-       survey_dat$y/survey_dat$n_trials,col=alpha("#E6AB02",1),cex=log(survey_dat$n_trials),lwd=2,bg="#E6AB02")
+posterior_pptgrow_sr <- as.array(fit_garden_sr_pptgrow)
+color_scheme_set("orange")
+sr_pptgrow<-mcmc_intervals(posterior_pptgrow_sr, pars = quote_bare(b0,b_pptgrow,b_pptgrow2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_pptgrow","b_pptgrow2"),
+                            labels=c("b0"="b0",
+                                     "b_pptgrow"="pptgrow",
+                                     "b_pptgrow2"=expression(pptgrow^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+  xlim(-0.3,0.3)+
+  ggtitle("A") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
 
-## common gardens
-plot(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.8,cex.axis=1.4,
-     type="n",xlim=c(min(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow)),max(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow))),
-     xlab="Temerature (grow.season)",ylab="Proportion female panicles")#cex=4*(garden_osr_poolyr$tot_pan/max(garden_osr_poolyr$tot_pan))+1.5)#
-abline(h=0.5,col="gray",lty=2)
-title("B) Common garden OSR",adj=0,font=4,cex.main=1.6)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef(osr_glm_poolyr)[1] + coef(osr_glm_poolyr)[2]*long_seq),lwd=3)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef_garden_osr_mean$b0 + coef_garden_osr_mean$b_long*long_seq),lwd=3)
-for(p in 1:n_post_draws){
-  lines(x_tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),
-        invlogit(coef_garden_osr_tempgrow$b0[sr_post_draws[p]] + coef_garden_osr_tempgrow$b_tempgrow[sr_post_draws[p]] * x_tempgrow),
-        col=alpha("#E6AB02",0.1))
-}
-points(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),cex=log(garden_osr_poolyr$tot_pan),
-       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02")
+posterior_tempgrow_sr <- as.array(fit_garden_sr_tempgrow)
+sr_tempgrow<-mcmc_intervals(posterior_tempgrow_sr, pars = quote_bare(b0,b_tempgrow,b_tempgrow2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_tempgrow","b_tempgrow2"),
+                            labels=c("b0"="b0",
+                                     "b_tempgrow"="tempgrow",
+                                     "b_tempgrow2"=expression(tempgrow^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+  xlim(-0.3,0.3)+
+  ggtitle("B") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
 
-plot(garden_sr_poolyr$ztempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.8,cex.axis=1.4,
-     xlim=c(min(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow)),max(garden_osr_poolyr$tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow))),
-     xlab="Temerature (grow.season)",ylab="Proportion female plants",cex=log(garden_sr_poolyr$total))#cex=4*(garden_sr_poolyr$total/max(garden_sr_poolyr$total))+1.5)#
+posterior_pptdorm_sr <- as.array(fit_garden_sr_pptdorm)
+sr_pptdorm<-mcmc_intervals(posterior_pptdorm_sr, pars = quote_bare(b0,b_pptdorm,b_pptdorm2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_pptdorm","b_pptdorm2"),
+                            labels=c("b0"="b0",
+                                     "b_pptdorm"="pptdorm",
+                                     "b_pptdorm2"=expression(pptdorm^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+   xlim(-0.3,0.3)+
+  ggtitle("C") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
+
+posterior_tempdorm_sr <- as.array(fit_garden_sr_tempdorm)
+sr_tempdorm<-mcmc_intervals(posterior_tempdorm_sr, pars = quote_bare(b0,b_tempdorm,b_tempdorm2)) + 
+  ggplot2::scale_y_discrete(limits = c("b0","b_tempdorm","b_tempdorm2"),
+                            labels=c("b0"="b0",
+                                     "b_tempdorm"="tempdorm",
+                                     "b_tempdorm2"=expression(tempdorm^2)))+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  labs(color = "Interaction type:")+
+  xlab("Posterior estimates ")+
+  xlim(-0.3,0.3)+
+  ggtitle("D") +
+  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
+  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
+  theme_pubr()+
+  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 8),
+        axis.text.y  = element_text(size = 10),
+        axis.line.x = element_line(linewidth = 0.1),
+        axis.line.y = element_line(linewidth = 0.1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(colour = "black", size=0.5))
+
+```
+
+
+```{r,eval=FALSE}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_SR.pdf",useDingbats = F,height=6,width=5)
+ggarrange(sr_pptgrow,sr_tempgrow,sr_pptdorm,sr_tempdorm + rremove("ylab"), ncol = 2, nrow = 2)
+dev.off()
+```
+
+```{r}
+set.seed(13)
+n_post_draws<-300
+sr_post_draws <- sample.int(length(coef_garden_sr_tempgrow$b0), n_post_draws)
+```
+
+
+```{r}
+garden_sr_poolyr_plot <- poar.clim_seasonal %>%
+  dplyr::select(site, Sex, pptgrow, pptdorm, tempgrow, tempdorm, surv_t1) %>% 
+  group_by(pptgrow,pptdorm,tempgrow, tempdorm, site, Sex) %>% 
+  summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
+  spread(key=Sex,value=total_plants) %>% 
+  rename(fem = `F`,
+         mal = `M`,
+         tempdorm=tempdorm,
+         tempgrow=tempgrow,
+         pptdorm=pptdorm,
+         pptgrow=pptgrow) %>% 
+  mutate(total=fem+mal,
+         sr = fem/total)
+```
+
+```{r}
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/SR_gardens_SR.pdf",useDingbats = F,width=9,height=8)
+par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
+
+plot(garden_sr_poolyr$pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Precipitation (grow.season)",ylab="Proportion female plants")
 abline(h=0.5,col="gray",lty=2)
-title("C) Common garden SR",adj=0,font=4,cex.main=1.6)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef(sr_glm_poolyr)[1] + coef(sr_glm_poolyr)[2]*long_seq),lwd=3)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef_garden_sr_mean$b0 + coef_garden_sr_mean$b_long*long_seq),lwd=3)
+mtext("A",side = 3, adj = 0,cex=1.25)
 for(p in 1:n_post_draws){
-  lines(x_tempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),
-        invlogit(coef_garden_sr_tempgrow$b0[sr_post_draws[p]] + coef_garden_sr_tempgrow$b_tempgrow[sr_post_draws[p]] * x_tempgrow),
+  lines(x_pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),
+        invlogit(coef_garden_sr_pptgrow$b0[sr_post_draws[p]] +
+                   coef_garden_sr_pptgrow$b_pptgrow[sr_post_draws[p]] * x_pptgrow +
+                   coef_garden_sr_pptgrow$b_pptgrow2[sr_post_draws[p]] * x_pptgrow* x_pptgrow),
         col=alpha("#E6AB02",0.1))
 }
-points(garden_sr_poolyr$ztempgrow*sd(data_SR$tempgrow) + mean(data_SR$tempgrow),garden_sr_poolyr$sr,
-       lwd=2,col=alpha("#E6AB02",1),cex=log(garden_sr_poolyr$total),bg="#E6AB02")
+points(garden_sr_poolyr$pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),cex=1.5,
+       garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+
+
+plot(garden_sr_poolyr$tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Temerature (grow.season)",ylab="Proportion female plants")
+abline(h=0.5,col="gray",lty=2)
+mtext("B",side = 3, adj = 0,cex=1.25)
+for(p in 1:n_post_draws){
+  lines(x_tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),
+        invlogit(coef_garden_sr_tempgrow$b0[sr_post_draws[p]] +
+                   coef_garden_sr_tempgrow$b_tempgrow[sr_post_draws[p]] * x_tempgrow +
+                   coef_garden_sr_tempgrow$b_tempgrow2[sr_post_draws[p]] * x_tempgrow* x_tempgrow),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_sr_poolyr$tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),cex=1.5,
+       garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+
+
+plot(garden_sr_poolyr$pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Precipitation (dorm.season)",ylab="Proportion female plants")
+mtext("C",side = 3, adj = 0,cex=1.25)
+abline(h=0.5,col="gray",lty=2)
+for(p in 1:n_post_draws){
+  lines(x_pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),
+        invlogit(coef_garden_sr_pptdorm$b0[sr_post_draws[p]] +
+                   coef_garden_sr_pptdorm$b_pptdorm[sr_post_draws[p]] * x_pptdorm +
+                   coef_garden_sr_pptdorm$b_pptdorm2[sr_post_draws[p]] * x_pptdorm* x_pptdorm),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_sr_poolyr$pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),cex=1.5,
+       garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
+
+plot(garden_sr_poolyr$tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
+     xlab="Temperature (dorm.season)",ylab="Proportion female plants")
+mtext("D",side = 3, adj = 0,cex=1.25)
+abline(h=0.5,col="gray",lty=2)
+for(p in 1:n_post_draws){
+  lines(x_tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),
+        invlogit(coef_garden_sr_tempdorm$b0[sr_post_draws[p]] +
+                   coef_garden_sr_tempdorm$b_tempdorm[sr_post_draws[p]] * x_tempdorm +
+                   coef_garden_sr_tempdorm$b_tempdorm2[sr_post_draws[p]] * x_tempdorm* x_tempdorm),
+        col=alpha("#E6AB02",0.1))
+}
+points(garden_sr_poolyr$tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),cex=1.5,
+       garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
 dev.off()
 
 ```
 
-```{r}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/nat_pops_gardens_SR_tempdorm.pdf",useDingbats = F,height=4,width=12)
-par(mfrow=c(1,3),mar=c(5,5,2,1))
-## natural populations
-plot(survey_dat$tempg*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),
-     survey_dat$y/survey_dat$n_trials,pch=1,type="n",xlim=c(min(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm)),max(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm))),
-     ylim=c(0,1),
-     cex=log(survey_dat$n_trials),#cex=4*(survey_dat$n_trials/max(survey_dat$n_trials))+1,#
-     xlab="Temerature (dorm.season)",ylab="Proportion female panicles",cex.lab=1.8,cex.axis=1.4,
-     col=alpha("#E6AB02",1))
-title("A) Natural population OSR",adj=0,font=4,cex.main=1.6)
-abline(h=0.5,col="gray",lty=2)
-#lines(x_long + mean(POAR$Longitude),
-#      invlogit(mean(coef_surv$b0) + mean(coef_surv$b_long) * x_long),lwd=3,col="black")
-for(p in 1:n_post_draws){
-  lines(x_tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),
-        invlogit(coef_survey_tempdorm$b0[sr_post_draws[p]] + coef_survey_tempdorm$b_tempdorm[sr_post_draws[p]] * x_tempdorm),
-        col=alpha("#E6AB02",0.1))
-}
-points(survey_dat$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),
-       survey_dat$y/survey_dat$n_trials,col=alpha("#E6AB02",1),cex=log(survey_dat$n_trials),lwd=2,bg="#E6AB02")
 
-## common gardens
-plot(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.8,cex.axis=1.4,
-     type="n",xlim=c(min(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm)),max(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm))),
-     xlab="Temerature (dorm.season)",ylab="Proportion female panicles")#cex=4*(garden_osr_poolyr$tot_pan/max(garden_osr_poolyr$tot_pan))+1.5)#
-abline(h=0.5,col="gray",lty=2)
-title("B) Common garden OSR",adj=0,font=4,cex.main=1.6)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef(osr_glm_poolyr)[1] + coef(osr_glm_poolyr)[2]*long_seq),lwd=3)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef_garden_osr_mean$b0 + coef_garden_osr_mean$b_long*long_seq),lwd=3)
-for(p in 1:n_post_draws){
-  lines(x_tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),
-        invlogit(coef_garden_osr_tempdorm$b0[sr_post_draws[p]] + coef_garden_osr_tempdorm$b_tempdorm[sr_post_draws[p]] * x_tempdorm),
-        col=alpha("#E6AB02",0.1))
-}
-points(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),cex=log(garden_osr_poolyr$tot_pan),
-       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02")
 
-plot(garden_sr_poolyr$ztempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.8,cex.axis=1.4,
-     xlim=c(min(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm)),max(garden_osr_poolyr$tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm))),
-     xlab="Temerature (dorm.season)",ylab="Proportion female plants",cex=log(garden_sr_poolyr$total))#cex=4*(garden_sr_poolyr$total/max(garden_sr_poolyr$total))+1.5)#
-abline(h=0.5,col="gray",lty=2)
-title("C) Common garden SR",adj=0,font=4,cex.main=1.6)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef(sr_glm_poolyr)[1] + coef(sr_glm_poolyr)[2]*long_seq),lwd=3)
-#lines(long_seq + mean(latlong$Longitude),invlogit(coef_garden_sr_mean$b0 + coef_garden_sr_mean$b_long*long_seq),lwd=3)
-for(p in 1:n_post_draws){
-  lines(x_tempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),
-        invlogit(coef_garden_sr_tempdorm$b0[sr_post_draws[p]] + coef_garden_sr_tempdorm$b_tempdorm[sr_post_draws[p]] * x_tempdorm),
-        col=alpha("#E6AB02",0.1))
-}
-points(garden_sr_poolyr$ztempdorm*sd(data_SR$tempdorm) + mean(data_SR$tempdorm),garden_sr_poolyr$sr,
-       lwd=2,col=alpha("#E6AB02",1),cex=log(garden_sr_poolyr$total),bg="#E6AB02")
-dev.off()
 
-```
+
 
 \`\`\`

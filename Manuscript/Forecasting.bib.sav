@@ -1,3 +1,47 @@
+@article{hernandez2023exact,
+  title={An exact version of Life Table Response Experiment analysis, and the R package exactLTRE},
+  author={Hern{\'a}ndez, Christina M and Ellner, Stephen P and Adler, Peter B and Hooker, Giles and Snyder, Robin E},
+  journal={Methods in Ecology and Evolution},
+  volume={14},
+  number={3},
+  pages={939--951},
+  year={2023},
+  publisher={Wiley Online Library}
+}
+
+@article{ehrlen2015predicting,
+  title={Predicting changes in the distribution and abundance of species under environmental change},
+  author={Ehrl{\'e}n, Johan and Morris, William F},
+  journal={Ecology letters},
+  volume={18},
+  number={3},
+  pages={303--314},
+  year={2015},
+  publisher={Wiley Online Library}
+}
+
+@article{schultz2022climate,
+  title={Climate-driven, but dynamic and complex? A reconciliation of competing hypotheses for species’ distributions},
+  author={Schultz, Emily L and H{\"u}lsmann, Lisa and Pillet, Michiel D and Hartig, Florian and Breshears, David D and Record, Sydne and Shaw, John D and DeRose, R Justin and Zuidema, Pieter A and Evans, Margaret EK},
+  journal={Ecology letters},
+  volume={25},
+  number={1},
+  pages={38--51},
+  year={2022},
+  publisher={Wiley Online Library}
+}
+
+@article{miller2011confronting,
+  title={Confronting two-sex demographic models with data},
+  author={Miller, Tom EX and Inouye, Brian D},
+  journal={Ecology},
+  volume={92},
+  number={11},
+  pages={2141--2151},
+  year={2011},
+  publisher={Wiley Online Library}
+}
+
 @Article{miller2022two,
   author    = {Miller, Tom EX and Compagnoni, Aldo},
   journal   = {The American Naturalist},
@@ -1067,6 +1111,17 @@ year = {1930},
   doi     = {10.1126/science.adp1088},
   eprint  = {https://www.science.org/doi/pdf/10.1126/science.adp1088},
   url     = {https://www.science.org/doi/abs/10.1126/science.adp1088},
+}
+
+@Article{chen2024influence,
+  author    = {Chen, Xin and Liang, Ye and Feng, Xiao},
+  journal   = {Global Ecology and Biogeography},
+  title     = {Influence of model complexity, training collinearity, collinearity shift, predictor novelty and their interactions on ecological forecasting},
+  year      = {2024},
+  number    = {3},
+  pages     = {371--384},
+  volume    = {33},
+  publisher = {Wiley Online Library},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

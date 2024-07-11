@@ -446,7 +446,7 @@ Most of the current suitable habitats will move toward the Northern range edge.
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/niche_dormant_growing.pdf}
+    \includegraphics[width=0.95\linewidth]{Figures/niche_dormant_growing.pdf}
   \caption{\textbf{A two‐dimensional representation of the predicted niche shift over time (past, present and future climate conditions)}. 
   Contours show predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$) conditional on precipitation and temperature of the dormant and growing season.
  (A) Niche of dormant season for the two sex model, (B) Niche of growing season for the two sex model,
