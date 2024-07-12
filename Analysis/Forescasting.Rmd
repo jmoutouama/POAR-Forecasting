@@ -5398,6 +5398,47 @@ plot(study_area,add=T)
 plot(coordinates_study_area,add=T)
 ```
 
+## Download occurrence data from gbif for *Poa arachnifera*
+
+```{r}
+library(dismo)
+# dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
+poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
+# load("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Herbaruim Project/Data/Occurence/aghy_occ_raw.rdata")
+head(poar_occ_raw) # to view the first few records the occurrence dataset use
+```
+
+## Clean occurrence data from gbif
+
+```{r}
+poar_occ <- subset(poar_occ_raw,(!is.na(lat))&(!is.na(lon))) # here we remove erroneous coordinates, where either the latitude or longitude is missing
+cat(nrow(poar_occ_raw)-nrow(poar_occ), "records are removed") # Show the number of records that are removed from the dataset. 
+poar_occ %>% 
+  dplyr::select(country,lon, lat, year,basisOfRecord)%>% 
+  filter(country=="United States")->poar_occ_clean # We want only occurrence data for the US
+
+```
+
+```{r}
+dups_poar <- duplicated(poar_occ_clean[c("lat","lon")]  )
+poar_occ_unique <- poar_occ_clean[!dups_poar,] # Remove duplicated data based on latitude and longitude
+cat(nrow(poar_occ_clean)-nrow(poar_occ_unique), "records are removed")
+```
+
+```{r}
+table(poar_occ_unique$basisOfRecord) # show the frequency table of “basisOfRecord”
+```
+
+```{r}
+hist(poar_occ_unique$year,main="",xlim=c(1901,2019),ylim=c(0,200),col="orange2",xlab="years")
+```
+
+```{r}
+poar_occ_unique %>% 
+  dplyr::select(lon, lat, year)%>% 
+  filter(year %in% (1990:2019) & as.numeric(lon >=-126.374160))->poar_occ_1990_2019 #  filter from 1990 to 2019 to match climatic data.
+```
+
 
 ```{r}
 Locationinfo<-read_rds("/Users/jm200/Downloads/poar_ms_quantities.rds")
@@ -5405,10 +5446,10 @@ survey<-Locationinfo$survey_site_table[,2:3]
 garden<-Locationinfo$exp_site_table[,3:4]
 Locationinfo$survey_site_table %>% 
   filter(Experimental_source=="yes")->sourceinfo
-source<-sourceinfo[,2:3]
-coordinates(survey) <- ~ Longitude + Latitude
+data_gbif<-poar_occ_1990_2019[,1:2]
+coordinates(data_gbif) <- ~ lon + lat
 CRS1 <- CRS("+init=epsg:4326") # WGS 84
-crs(survey) <- CRS1
+crs(data_gbif) <- CRS1
 coordinates(garden) <- ~ Longitude + Latitude
 crs(garden) <- CRS1
 coordinates(source) <- ~ Longitude + Latitude
@@ -5434,72 +5475,49 @@ crop_tempgrow_raster <- terra::crop(tempgrow_raster, study_area,mask=TRUE)
 ```{r}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/POAR_survey_garden_map.pdf",width=7,height=8,useDingbats = F)
 par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
-plot(crop_pptdorm_raster,xlab="Longitude",ylab="Latitude")
-mtext("A",side = 3, adj = 0,cex=1.25)
+plot(crop_pptdorm_raster,xlab="Longitude",ylab="Latitude",main="Precipitation (dorm. season)",cex.main=1)
+# mtext("A",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
-# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(data_gbif,add=T,pch = 23,col="black",bg="grey",cex =0.75)
 plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
-plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
+plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
 legend(-106.5, 28.5, 
-       legend=c( "Common garden sites","Source populations"),
-       pch = c(21,23),
-       pt.cex=c(1.25,1),
-       col = c("black","black"),
-       pt.bg=c("black","grey"),
+       legend=c( "GBIF occurences","Common garden sites","Source populations"),
+       pch = c(23,21,21),
+       pt.cex=c(0.75,1.25,1),
+       col = c("black","black","black"),
+       pt.bg=c("grey","black","red"),
        cex = 0.7, 
        bty = "n", 
-       horiz = F , ß
+       horiz = F , 
 )
-plot(crop_tempdorm_raster,xlab="Longitude",ylab="Latitude")
-mtext("B",side = 3, adj = 0,cex=1.25)
+plot(crop_tempdorm_raster,xlab="Longitude",ylab="Latitude",main="Temperature (dorm. season)",cex.main=1)
+# mtext("B",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
 # plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(data_gbif,add=T,pch = 23,col="black",bg="grey",cex =0.75)
 plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
-plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
-# legend(-106.5, 28.5, 
-#        legend=c("Natural population survey", "Common garden site","Source population"),
-#        pch = c(23,21,21),
-#        pt.cex=c(1.5,1,0.75),
-#        col = c("black","black","red"),
-#        pt.bg=c("grey","black","red"),
-#        cex = 0.7, 
-#        bty = "n", 
-#        horiz = F , 
-# )
+plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
 
-plot(crop_pptgrow_raster,xlab="Longitude",ylab="Latitude")
-mtext("C",side = 3, adj = 0,cex=1.25)
-plot(study_area,add=T)
-# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
-plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
-plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
-# legend(-106.5, 28.5, 
-#        legend=c("Natural population ", "Common garden site","Source population"),
-#        pch = c(23,21,21),
-#        pt.cex=c(1.5,1,0.75),
-#        col = c("black","black","red"),
-#        pt.bg=c("grey","black","red"),
-#        cex = 0.7, 
-#        bty = "n", 
-#        horiz = F , 
-# )
 
-plot(crop_tempgrow_raster,xlab="Longitude",ylab="Latitude")
-mtext("D",side = 3, adj = 0,cex=1.25)
+
+plot(crop_pptgrow_raster,xlab="Longitude",ylab="Latitude",main="Precipitation (grow. season)",cex.main=1)
+# mtext("C",side = 3, adj = 0,cex=1.25)
 plot(study_area,add=T)
-# plot(survey,add=T,pch = 23,col="black",bg="grey",cex =1.5)
+plot(data_gbif,add=T,pch = 23,col="black",bg="grey",cex =0.75)
 plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
-plot(source,add=T,pch = 23,col="black",bg="grey",cex =1)
-# legend(-106.5, 28.5, 
-#        legend=c("Natural population survey", "Common garden site","Source population"),
-#        pch = c(23,21,21),
-#        pt.cex=c(1.5,1,0.75),
-#        col = c("black","black","red"),
-#        pt.bg=c("grey","black","red"),
-#        cex = 0.7, 
-#        bty = "n", 
-#        horiz = F , 
-# )
+plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
+
+
+
+plot(crop_tempgrow_raster,xlab="Longitude",ylab="Latitude",main="Temperature (dorm. season)",cex.main=1)
+# mtext("D",side = 3, adj = 0,cex=1.25)
+plot(study_area,add=T)
+plot(data_gbif,add=T,pch = 23,col="black",bg="grey",cex =0.75)
+plot(garden,add=T,pch = 21,col="black",cex =1.25,bg="black")
+plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
+
+
 dev.off()
 ```
 
@@ -6198,10 +6216,14 @@ geo_prlambda_past <- merge(x = lam_prob_past,y =clim_past_values,by=c("pptdorm",
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-    breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
-        strip.text  = element_text(face = "italic", color = "black"))+
+        strip.text  = element_text(face = "italic", color = "black"),
+       legend.position = c(0.15, 0.7),
+          legend.direction = "vertical")+
   labs(x = "Longitude", y = "Latitude",title="A") )
 
 ```
@@ -6247,9 +6269,12 @@ geo_prlambda_current <- merge(x =lam_prob_current ,y = clim_current_values,by=c(
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-     breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="B") )
 ```
@@ -6272,7 +6297,7 @@ lam_prob_45<-data.frame(pivot_lambda_45[,1:8],Prlambda=prob_lambda_45_post)
 ```
 
 ```{r}
-class(climate_miroc45_values)
+# class(climate_miroc45_values)
 geo_prlambda_45 <- merge(x = lam_prob_45,y =climate_miroc45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
 # dim(geo_prlambda_45)
 # summary(geo_prlambda_current)
@@ -6289,9 +6314,12 @@ geo_prlambda_45 <- merge(x = lam_prob_45,y =climate_miroc45_values,by=c("pptdorm
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-     breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="C") )
 
@@ -6330,9 +6358,12 @@ geo_prlambda_85 <- merge(x = lam_prob_85,y =climate_miroc85_values,by=c("pptdorm
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-    breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="D") )
 
@@ -6360,9 +6391,12 @@ lam_prob_past_fd<-data.frame(clim_past_values_clean[,9:10],Prlambda=prob_lambda_
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-     breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = c(0.15, 0.7),
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="E") )
 
@@ -6389,9 +6423,12 @@ lam_prob_current_fd<-data.frame(clim_current_values[,9:10],Prlambda=prob_lambda_
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-    breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="F") )
 ```
@@ -6415,9 +6452,12 @@ lam_prob_miroc45_fd<-data.frame(climate_miroc45_values[,9:10],Prlambda=prob_lamb
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-    breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="G") )
 ```
@@ -6441,9 +6481,12 @@ lam_prob_miroc85_fd<-data.frame(climate_miroc85_values[,9:10],Prlambda=prob_lamb
   scale_fill_gradientn(
     name = expression("Pr " (lambda) > 1),
     colours = terrain.colors(100),
-    breaks = seq(0, 1, length.out=5))+
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
   theme_light()+
  theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
   labs(x = "Longitude", y = "Latitude",title="H") )
 ```
@@ -6451,7 +6494,22 @@ lam_prob_miroc85_fd<-data.frame(climate_miroc85_values[,9:10],Prlambda=prob_lamb
 
 ```{r}
 geo_prlambda_past_fd_twosex<-left_join(lam_prob_past_fd,geo_prlambda_past,by=c("x","y"))
-geo_prlambda_past_fd_twosex$lambda_diff<-geo_prlambda_past_fd_twosex$Prlambda.x-geo_prlambda_past_fd_twosex$Prlambda.y
+geo_prlambda_past_fd_twosex$Prlambda<-geo_prlambda_past_fd_twosex$Prlambda.x-geo_prlambda_past_fd_twosex$Prlambda.y
+```
+
+```{r}
+geo_prlambda_current_fd_twosex<-left_join(lam_prob_current_fd,geo_prlambda_current,by=c("x","y"))
+geo_prlambda_current_fd_twosex$Prlambda<-geo_prlambda_current_fd_twosex$Prlambda.x-geo_prlambda_current_fd_twosex$Prlambda.y
+```
+
+```{r}
+geo_prlambda_miroc45_fd_twosex<-left_join(lam_prob_miroc45_fd,geo_prlambda_45,by=c("x","y"))
+geo_prlambda_miroc45_fd_twosex$Prlambda<-geo_prlambda_miroc45_fd_twosex$Prlambda.x-geo_prlambda_miroc45_fd_twosex$Prlambda.y
+```
+
+```{r}
+geo_prlambda_miroc85_fd_twosex<-left_join(lam_prob_miroc85_fd,geo_prlambda_85,by=c("x","y"))
+geo_prlambda_miroc85_fd_twosex$Prlambda<-geo_prlambda_miroc85_fd_twosex$Prlambda.x-geo_prlambda_miroc85_fd_twosex$Prlambda.y
 ```
 
 ```{r}
@@ -6462,21 +6520,161 @@ geo_prlambda_past_fd_twosex$lambda_diff<-geo_prlambda_past_fd_twosex$Prlambda.x-
   annotate(geom="text", x=-100, y=41, label="Past",
               color="grey",size = 3)+
   scale_fill_gradientn(
-    name = expression(paste(Delta," (E-A)")),
-    colours = terrain.colors(4),
-     breaks = seq(-0.5, 0.5, length.out=5))+
+    name = expression(paste(Delta,("Pr " (lambda) > 1))),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(-0.5, 0.5, length.out=5),labels=c(0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
   theme_light()+
  theme(strip.background = element_blank(),
+        strip.text  = element_text(face = "italic", color = "black"),
+            legend.position = c(0.15, 0.7),
+       legend.direction = "vertical")+
+  labs(x = "Longitude", y = "Latitude",title="I") )
+
+```
+
+```{r}
+(lambda_map_Prcurrent_diff <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-107,-92), ylim = c(25,41)) +
+  geom_tile(data = geo_prlambda_current_fd_twosex, aes(x = x, y = y, fill = lambda_diff))+
+  annotate(geom="text", x=-100, y=41, label="Cuurent",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(Delta," (FD-2S)")),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(-0.5, 0.5, length.out=5),labels=c(0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+       legend.position = "none",
         strip.text  = element_text(face = "italic", color = "black"))+
-  labs(x = "Longitude", y = "Latitude",title="E") )
+  labs(x = "Longitude", y = "Latitude",title="J") )
+
+```
+
+```{r}
+(lambda_map_Prmiroc45_diff <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-107,-92), ylim = c(25,41)) +
+  geom_tile(data = geo_prlambda_miroc45_fd_twosex, aes(x = x, y = y, fill = lambda_diff))+
+  annotate(geom="text", x=-100, y=41, label="RCP 4.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(Delta," (FD-2S)")),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(-0.5, 0.5, length.out=5),labels=c(0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+       legend.position = "none",
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="K") )
 
 ```
 
 
+```{r}
+(lambda_map_Prmiroc85_diff <- ggplot()+
+  # geom_map(data = outline_map, map = outline_map, aes(map_id = region), color = "grey", linewidth = .1, fill = "#FAF9F6")+
+  # coord_sf(xlim = c(-107,-92), ylim = c(25,41)) +
+  geom_tile(data = geo_prlambda_miroc85_fd_twosex, aes(x = x, y = y, fill = lambda_diff))+
+  annotate(geom="text", x=-100, y=41, label="RCP 8.5",
+              color="grey",size = 3)+
+  scale_fill_gradientn(
+    name = expression(paste(Delta," (FD-2S)")),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(-0.5, 0.5, length.out=5),labels=c(0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  theme_light()+
+ theme(strip.background = element_blank(),
+       legend.position = "none",
+        strip.text  = element_text(face = "italic", color = "black"))+
+  labs(x = "Longitude", y = "Latitude",title="L") )
+
+```
+
 
 ```{r}
-Fig_geoPrlambdamiroc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,lambda_map_Prpast_fd,lambda_map_Prcurrent_fd,lambda_map_miroc45_fd,lambda_map_miroc85_fd,common.legend = TRUE,ncol = 4, nrow = 2)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width = 10, height = 8)
+dat_miroc_map<-rbind(geo_prlambda_past[,c("x","y","Prlambda")],lam_prob_past_fd[,c("x","y","Prlambda")],geo_prlambda_past_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_current[,c("x","y","Prlambda")],lam_prob_current_fd[,c("x","y","Prlambda")],geo_prlambda_current_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_45[,c("x","y","Prlambda")],lam_prob_miroc45_fd[,c("x","y","Prlambda")],geo_prlambda_miroc45_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_85[,c("x","y","Prlambda")],lam_prob_miroc85_fd[,c("x","y","Prlambda")],geo_prlambda_miroc85_fd_twosex[,c("x","y","Prlambda")])
+
+dim(dat_miroc_map)
+
+dat_miroc_map$Time<-c(rep("Past",nrow(geo_prlambda_past)+nrow(lam_prob_past_fd)+nrow(geo_prlambda_past_fd_twosex)),rep("Present",3*nrow(geo_prlambda_current)),rep("RCP45",3*nrow(geo_prlambda_45)),rep("RCP85",3*nrow(geo_prlambda_85)))
+
+dat_miroc_map$model<-c(rep("B",nrow(geo_prlambda_past)),rep("A",nrow(lam_prob_past_fd)),rep("C",nrow(geo_prlambda_past_fd_twosex)),
+                       rep("B",nrow(geo_prlambda_current)),rep("A",nrow(lam_prob_current_fd)),rep("C",nrow(geo_prlambda_current_fd_twosex)),
+                       rep("B",nrow(geo_prlambda_45)),rep("A",nrow(lam_prob_miroc45_fd)),rep("C",nrow(geo_prlambda_miroc45_fd_twosex)),
+                       
+                      rep("B",nrow(geo_prlambda_85)),rep("A",nrow(lam_prob_miroc85_fd)),rep("C",nrow(geo_prlambda_miroc85_fd_twosex)) 
+                                    )
+```
+
+```{r}
+library(ggnewscale)
+model_names <- c("A"="Female dominant model (F)",
+                    "B"="Two-sex model (FM)",
+                    "C"="F - FM"
+                    )
+Time_names <- c("Past"="Past",
+                    "Present"="Present",
+                    "RCP45"="RCP 4.5",
+                    "RCP85"="RCP 8.5"
+                 )
+
+Fig_geoPrlambdamiroc<-ggplot()+
+  geom_tile(data = subset(dat_miroc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[F]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_miroc_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[FM]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_miroc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  scale_fill_gradientn(
+    name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  theme_light()+
+ theme(legend.position = "bottom",
+       legend.title = element_text(size = 8),
+       legend.text  = element_text(size = 7),
+       strip.text.x = element_text(
+        size = 10, color = "grey40", face = "bold"
+        ),
+      strip.text.y = element_text(
+        size = 10, color = "grey40", face = "bold"),
+      strip.background = element_rect(
+     color="black", fill="white", size=0.5, linetype="solid"
+     )
+        )
+  
+
+```
+
+```{r}
+Fig_geoPrlambdamiroc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,lambda_map_Prpast_fd,lambda_map_Prcurrent_fd,lambda_map_miroc45_fd,lambda_map_miroc85_fd,lambda_map_Prpast_diff,lambda_map_Prcurrent_diff,lambda_map_Prmiroc45_diff,lambda_map_Prmiroc85_diff,common.legend = FALSE,ncol = 4, nrow = 3)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width =9, height = 10)
 ```
 
 ```{r}
@@ -6613,8 +6811,80 @@ lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_
 ```
 
 ```{r}
+geo_prlambda_cmc45_fd_twosex<-left_join(lam_prob_cmc45_fd,geo_prlambdacmc_45,by=c("x","y"))
+geo_prlambda_cmc45_fd_twosex$Prlambda<-geo_prlambda_cmc45_fd_twosex$Prlambda.x-geo_prlambda_cmc45_fd_twosex$Prlambda.y
+```
+
+```{r}
+geo_prlambda_cmc85_fd_twosex<-left_join(lam_prob_cmc85_fd,geo_prlambdacmc_85,by=c("x","y"))
+geo_prlambda_cmc85_fd_twosex$Prlambda<-geo_prlambda_cmc85_fd_twosex$Prlambda.x-geo_prlambda_cmc85_fd_twosex$Prlambda.y
+```
+
+```{r}
+dat_cmc_map<-rbind(geo_prlambda_past[,c("x","y","Prlambda")],lam_prob_past_fd[,c("x","y","Prlambda")],geo_prlambda_past_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_current[,c("x","y","Prlambda")],lam_prob_current_fd[,c("x","y","Prlambda")],geo_prlambda_current_fd_twosex[,c("x","y","Prlambda")],geo_prlambdacmc_45[,c("x","y","Prlambda")],lam_prob_cmc45_fd[,c("x","y","Prlambda")],geo_prlambda_cmc45_fd_twosex[,c("x","y","Prlambda")],geo_prlambdacmc_85[,c("x","y","Prlambda")],lam_prob_cmc85_fd[,c("x","y","Prlambda")],geo_prlambda_cmc85_fd_twosex[,c("x","y","Prlambda")])
+
+dim(dat_cmc_map)
+
+dat_cmc_map$Time<-c(rep("Past",nrow(geo_prlambda_past)+nrow(lam_prob_past_fd)+nrow(geo_prlambda_past_fd_twosex)),rep("Present",3*nrow(geo_prlambda_current)),rep("RCP45",3*nrow(geo_prlambdacmc_45)),rep("RCP85",3*nrow(geo_prlambdacmc_85)))
+
+dat_cmc_map$model<-c(rep("B",nrow(geo_prlambda_past)),rep("A",nrow(lam_prob_past_fd)),rep("C",nrow(geo_prlambda_past_fd_twosex)),
+                       rep("B",nrow(geo_prlambda_current)),rep("A",nrow(lam_prob_current_fd)),rep("C",nrow(geo_prlambda_current_fd_twosex)),
+                       rep("B",nrow(geo_prlambdacmc_45)),rep("A",nrow(lam_prob_cmc45_fd)),rep("C",nrow(geo_prlambda_cmc45_fd_twosex)),
+                       
+                      rep("B",nrow(geo_prlambdacmc_85)),rep("A",nrow(lam_prob_cmc85_fd)),rep("C",nrow(geo_prlambda_cmc85_fd_twosex)) 
+                                    )
+```
+
+
+```{r}
+Fig_geoPrlambdacmc<-ggplot()+
+  geom_tile(data = subset(dat_cmc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[F]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_cmc_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[FM]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_cmc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  scale_fill_gradientn(
+    name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  theme_light()+
+ theme(legend.position = "bottom",
+       legend.title = element_text(size = 8),
+       legend.text  = element_text(size = 7),
+       strip.text.x = element_text(
+        size = 10, color = "grey40", face = "bold"
+        ),
+      strip.text.y = element_text(
+        size = 10, color = "grey40", face = "bold"),
+      strip.background = element_rect(
+     color="black", fill="white", size=0.5, linetype="solid"
+     )
+        )
+```
+
+
+```{r}
 Fig_geoPrlambdacmc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prcmc45, lambda_map_Prcmc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_cmc45_fd, lambda_map_cmc85_fd, common.legend = TRUE,ncol = 4, nrow = 2)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc, width = 10, height = 8)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc, width = 9, height = 10)
 ```
 
 ```{r}
@@ -6749,10 +7019,83 @@ lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_
   labs(x = "Longitude", y = "Latitude",title="H") )
 ```
 
+
+```{r}
+geo_prlambda_acc45_fd_twosex<-left_join(lam_prob_acc45_fd,geo_prlambdaacc_45,by=c("x","y"))
+geo_prlambda_acc45_fd_twosex$Prlambda<-geo_prlambda_acc45_fd_twosex$Prlambda.x-geo_prlambda_acc45_fd_twosex$Prlambda.y
+```
+
+```{r}
+geo_prlambda_acc85_fd_twosex<-left_join(lam_prob_acc85_fd,geo_prlambdaacc_85,by=c("x","y"))
+geo_prlambda_acc85_fd_twosex$Prlambda<-geo_prlambda_acc85_fd_twosex$Prlambda.x-geo_prlambda_acc85_fd_twosex$Prlambda.y
+```
+
+```{r}
+dat_acc_map<-rbind(geo_prlambda_past[,c("x","y","Prlambda")],lam_prob_past_fd[,c("x","y","Prlambda")],geo_prlambda_past_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_current[,c("x","y","Prlambda")],lam_prob_current_fd[,c("x","y","Prlambda")],geo_prlambda_current_fd_twosex[,c("x","y","Prlambda")],geo_prlambdaacc_45[,c("x","y","Prlambda")],lam_prob_acc45_fd[,c("x","y","Prlambda")],geo_prlambda_acc45_fd_twosex[,c("x","y","Prlambda")],geo_prlambdaacc_85[,c("x","y","Prlambda")],lam_prob_acc85_fd[,c("x","y","Prlambda")],geo_prlambda_acc85_fd_twosex[,c("x","y","Prlambda")])
+
+dim(dat_acc_map)
+
+dat_acc_map$Time<-c(rep("Past",nrow(geo_prlambda_past)+nrow(lam_prob_past_fd)+nrow(geo_prlambda_past_fd_twosex)),rep("Present",3*nrow(geo_prlambda_current)),rep("RCP45",3*nrow(geo_prlambdaacc_45)),rep("RCP85",3*nrow(geo_prlambdaacc_85)))
+
+dat_acc_map$model<-c(rep("B",nrow(geo_prlambda_past)),rep("A",nrow(lam_prob_past_fd)),rep("C",nrow(geo_prlambda_past_fd_twosex)),
+                       rep("B",nrow(geo_prlambda_current)),rep("A",nrow(lam_prob_current_fd)),rep("C",nrow(geo_prlambda_current_fd_twosex)),
+                       rep("B",nrow(geo_prlambdaacc_45)),rep("A",nrow(lam_prob_acc45_fd)),rep("C",nrow(geo_prlambda_acc45_fd_twosex)),
+                       
+                      rep("B",nrow(geo_prlambdaacc_85)),rep("A",nrow(lam_prob_acc85_fd)),rep("C",nrow(geo_prlambda_acc85_fd_twosex)) 
+                                    )
+```
+
+
+```{r}
+Fig_geoPrlambdaacc<-ggplot()+
+  geom_tile(data = subset(dat_acc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[F]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_acc_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[FM]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_acc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  scale_fill_gradientn(
+    name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  theme_light()+
+ theme(legend.position = "bottom",
+       legend.title = element_text(size = 8),
+       legend.text  = element_text(size = 7),
+       strip.text.x = element_text(
+        size = 10, color = "grey40", face = "bold"
+        ),
+      strip.text.y = element_text(
+        size = 10, color = "grey40", face = "bold"),
+      strip.background = element_rect(
+     color="black", fill="white", size=0.5, linetype="solid"
+     )
+        )
+```
+
+
 ```{r}
 Fig_geoPrlambdaacc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_acc45_fd,lambda_map_acc85_fd,ncol=4,nrow=2,
                                         common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdaacc_.pdf", Fig_geoPrlambdaacc, width = 10, height = 8)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdaacc_.pdf", Fig_geoPrlambdaacc, width = 9, height = 10)
 ```
 
 
@@ -6889,10 +7232,83 @@ lam_prob_ces85_fd<-data.frame(climate_ces_85_values[,9:10],Prlambda=prob_lambda_
 ```
 
 
+```{r}
+geo_prlambda_ces45_fd_twosex<-left_join(lam_prob_ces45_fd,geo_prlambdaces_45,by=c("x","y"))
+geo_prlambda_ces45_fd_twosex$Prlambda<-geo_prlambda_ces45_fd_twosex$Prlambda.x-geo_prlambda_ces45_fd_twosex$Prlambda.y
+```
+
+```{r}
+geo_prlambda_ces85_fd_twosex<-left_join(lam_prob_ces85_fd,geo_prlambdaces_85,by=c("x","y"))
+geo_prlambda_ces85_fd_twosex$Prlambda<-geo_prlambda_ces85_fd_twosex$Prlambda.x-geo_prlambda_ces85_fd_twosex$Prlambda.y
+```
+
+
+```{r}
+dat_ces_map<-rbind(geo_prlambda_past[,c("x","y","Prlambda")],lam_prob_past_fd[,c("x","y","Prlambda")],geo_prlambda_past_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_current[,c("x","y","Prlambda")],lam_prob_current_fd[,c("x","y","Prlambda")],geo_prlambda_current_fd_twosex[,c("x","y","Prlambda")],geo_prlambdaces_45[,c("x","y","Prlambda")],lam_prob_ces45_fd[,c("x","y","Prlambda")],geo_prlambda_ces45_fd_twosex[,c("x","y","Prlambda")],geo_prlambdaces_85[,c("x","y","Prlambda")],lam_prob_ces85_fd[,c("x","y","Prlambda")],geo_prlambda_ces85_fd_twosex[,c("x","y","Prlambda")])
+
+dim(dat_ces_map)
+
+dat_ces_map$Time<-c(rep("Past",nrow(geo_prlambda_past)+nrow(lam_prob_past_fd)+nrow(geo_prlambda_past_fd_twosex)),rep("Present",3*nrow(geo_prlambda_current)),rep("RCP45",3*nrow(geo_prlambdaces_45)),rep("RCP85",3*nrow(geo_prlambdaces_85)))
+
+dat_ces_map$model<-c(rep("B",nrow(geo_prlambda_past)),rep("A",nrow(lam_prob_past_fd)),rep("C",nrow(geo_prlambda_past_fd_twosex)),
+                       rep("B",nrow(geo_prlambda_current)),rep("A",nrow(lam_prob_current_fd)),rep("C",nrow(geo_prlambda_current_fd_twosex)),
+                       rep("B",nrow(geo_prlambdaces_45)),rep("A",nrow(lam_prob_ces45_fd)),rep("C",nrow(geo_prlambda_ces45_fd_twosex)),
+                       
+                      rep("B",nrow(geo_prlambdaces_85)),rep("A",nrow(lam_prob_ces85_fd)),rep("C",nrow(geo_prlambda_ces85_fd_twosex)) 
+                                    )
+```
+
+
+
+```{r}
+Fig_geoPrlambdaces<-ggplot()+
+  geom_tile(data = subset(dat_ces_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[F]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_ces_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[FM]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+     breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+                           limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_ces_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  scale_fill_gradientn(
+    name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
+                           limits=c(-0.5,0.5))+
+  facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  theme_light()+
+ theme(legend.position = "bottom",
+       legend.title = element_text(size = 8),
+       legend.text  = element_text(size = 7),
+       strip.text.x = element_text(
+        size = 10, color = "grey40", face = "bold"
+        ),
+      strip.text.y = element_text(
+        size = 10, color = "grey40", face = "bold"),
+      strip.background = element_rect(
+     color="black", fill="white", size=0.5, linetype="solid"
+     )
+        )
+```
+
 
 ```{r}
 Fig_geoPrlambdaces<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prces45, lambda_map_Prces85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_ces45_fd, lambda_map_ces85_fd,ncol=4,nrow=2,common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_ces.pdf", Fig_geoPrlambdaces,  width = 10, height = 8)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_ces.pdf", Fig_geoPrlambdaces,  width = 9, height = 10)
 ```
 
 ### Niche Projection
@@ -7709,8 +8125,8 @@ dev.off()
 # Sex ratio and climate change 
 
 ```{r}
-sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/dnevudg4yrhp7373lfhgq/OSR_dorm.csv?rlkey=4715a7cvjoank1jmx6gk7na67&dl=1"))
-
+# sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/dnevudg4yrhp7373lfhgq/OSR_dorm.csv?rlkey=4715a7cvjoank1jmx6gk7na67&dl=1"))
+sexratio_dormant<-read_csv("/Volumes/NO NAME/geolambdaFd/SR_OSR_dorm.csv")
 all_pptdorm_seq<-seq(min(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
 all_tempdorm_seq<-seq(min(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),max(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),length.out=30)
 
@@ -7786,12 +8202,14 @@ y_miroc45_g<-clim_miroc45$tempgrow
 x_miroc85_g<-clim_miroc85$pptgrow
 y_miroc85_g<-clim_miroc85$tempgrow
 
+scal_breaks <- c(seq(0, 1, length.out = 101))
+
 ```
 
 ```{r}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
 par(mar=c(5,5,1,1),mfrow=c(2,1))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="",breaks = scal_breaks) 
 contour(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,add=T,labcex=0.75,col="black") 
 mtext("A",side = 3, adj = 0,cex=1.25)
 text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
@@ -7814,7 +8232,7 @@ dev.off()
 ```{r}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/SR.pdf",width=5,height=7,useDingbats = F)
 par(mar=c(5,5,1,1),mfrow=c(2,1))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,SR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="") 
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,SR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="",breaks = scal_breaks) 
 contour(all_pptdorm_seq,all_tempdorm_seq,SR_mtrx_dorm,add=T,labcex=0.75,col="black") 
 mtext("A",side = 3, adj = 0,cex=1.25)
 text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
@@ -7993,46 +8411,6 @@ traceplot(fit_garden_osr_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2))
 traceplot(fit_garden_osr_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2))+theme_bw()
 traceplot(fit_garden_osr_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2))+theme_bw()
 ```
-
-```{r,eval=FALSE}
-#pull out parameter posterior distributions
-pred_ORS_tempgrow <- rstan::extract(fit_garden_osr_tempgrow, pars = c("pred"))$pred
-pred_ORS_tempdorm <- rstan::extract(fit_garden_osr_tempdorm, pars = c("pred"))$pred
-pred_ORS_pptgrow <- rstan::extract(fit_garden_osr_pptgrow, pars = c("pred"))$pred
-pred_ORS_pptdorm <- rstan::extract(fit_garden_osr_pptdorm, pars = c("pred"))$pred
-
-#draw 500 random samples from the joint posterior
-n_post_draws <- 500
-post_draws <- sample.int(dim(pred_ORS_tempgrow)[1], n_post_draws)
-#set up simulation output
-y_osr_tempgrow_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
-y_osr_tempdorm_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
-y_osr_pptgrow_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
-y_osr_pptdorm_sim <- matrix(NA,n_post_draws,length(garden_osr_dat$y))
-#loop over the posterior and generate new observations
-for(i in 1:n_post_draws){
-  print(i)
-  y_osr_tempgrow_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_tempgrow[i,]))
-  y_osr_tempdorm_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_tempdorm[i,]))
-  y_osr_pptgrow_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_pptgrow[i,]))
-  y_osr_pptdorm_sim[i,] <- rbinom(n=length(garden_osr_dat$y), size=1, prob = invlogit(pred_ORS_pptdorm[i,]))
-}
-
-```
-
-```{r,eval=FALSE}
-#plot ppc overlay
-ppc_dens_overlay(garden_osr_dat$y, y_osr_tempgrow_sim)+
-  xlab("Temperature (grow.seson)")+ylab("Density")+
-  ggtitle(("Survival"))+theme(legend.position = "none")->ppc_tempgrow
-
-#print figure
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/PPC.pdf",useDingbats = F,height=10,width=6)
-# multiplot(ppc_surv,ppc_flow,ppc_viab,
-#           ppc_grow,ppc_panic,ppc_germ,cols=2)
-# dev.off()
-```
-
 
 ```{r}
 ## pull out coefficients
