@@ -489,7 +489,6 @@ dev.off()
 
 ```
 
-
 #### CMCC
 
 ```{r}
@@ -547,7 +546,6 @@ hist(clim_current$tempdorm,col="green",add=T)
 dev.off()
 
 ```
-
 
 #### CESM1
 
@@ -6650,7 +6648,7 @@ Fig_geoPrlambdamiroc<-ggplot()+
   geom_tile(data = subset(dat_miroc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
   scale_fill_gradientn(
     name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
-    colours = terrain.colors(100),
+    colours = colorspace::diverge_hcl(7),
     na.value = "transparent",
     breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
                            limits=c(-0.5,0.5))+
@@ -6674,7 +6672,7 @@ Fig_geoPrlambdamiroc<-ggplot()+
 
 ```{r}
 Fig_geoPrlambdamiroc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,lambda_map_Prpast_fd,lambda_map_Prcurrent_fd,lambda_map_miroc45_fd,lambda_map_miroc85_fd,lambda_map_Prpast_diff,lambda_map_Prcurrent_diff,lambda_map_Prmiroc45_diff,lambda_map_Prmiroc85_diff,common.legend = FALSE,ncol = 4, nrow = 3)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width =9, height = 10)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width =9, height = 10)
 ```
 
 ```{r}
@@ -6861,7 +6859,7 @@ Fig_geoPrlambdacmc<-ggplot()+
   geom_tile(data = subset(dat_cmc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
   scale_fill_gradientn(
     name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
-    colours = terrain.colors(100),
+    colours = colorspace::diverge_hcl(7),
     na.value = "transparent",
     breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
                            limits=c(-0.5,0.5))+
@@ -6884,7 +6882,7 @@ Fig_geoPrlambdacmc<-ggplot()+
 
 ```{r}
 Fig_geoPrlambdacmc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prcmc45, lambda_map_Prcmc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd, lambda_map_cmc45_fd, lambda_map_cmc85_fd, common.legend = TRUE,ncol = 4, nrow = 2)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc, width = 9, height = 10)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc, width = 9, height = 10)
 ```
 
 ```{r}
@@ -7071,7 +7069,7 @@ Fig_geoPrlambdaacc<-ggplot()+
   geom_tile(data = subset(dat_acc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
   scale_fill_gradientn(
     name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
-    colours = terrain.colors(100),
+    colours = colorspace::diverge_hcl(7),
     na.value = "transparent",
     breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
                            limits=c(-0.5,0.5))+
@@ -7095,7 +7093,7 @@ Fig_geoPrlambdaacc<-ggplot()+
 ```{r}
 Fig_geoPrlambdaacc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_acc45_fd,lambda_map_acc85_fd,ncol=4,nrow=2,
                                         common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambdaacc_.pdf", Fig_geoPrlambdaacc, width = 9, height = 10)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaacc.pdf", Fig_geoPrlambdaacc, width = 9, height = 10)
 ```
 
 
@@ -7285,7 +7283,7 @@ Fig_geoPrlambdaces<-ggplot()+
   geom_tile(data = subset(dat_ces_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
   scale_fill_gradientn(
     name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
-    colours = terrain.colors(100),
+    colours = colorspace::diverge_hcl(7),
     na.value = "transparent",
     breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
                            limits=c(-0.5,0.5))+
@@ -7308,7 +7306,7 @@ Fig_geoPrlambdaces<-ggplot()+
 
 ```{r}
 Fig_geoPrlambdaces<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prces45, lambda_map_Prces85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_ces45_fd, lambda_map_ces85_fd,ncol=4,nrow=2,common.legend = TRUE)
-ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Updated/Fig_geoPrlambda_ces.pdf", Fig_geoPrlambdaces,  width = 9, height = 10)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambda_ces.pdf", Fig_geoPrlambdaces,  width = 9, height = 10)
 ```
 
 ### Niche Projection
@@ -8125,8 +8123,8 @@ dev.off()
 # Sex ratio and climate change 
 
 ```{r}
-# sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/dnevudg4yrhp7373lfhgq/OSR_dorm.csv?rlkey=4715a7cvjoank1jmx6gk7na67&dl=1"))
-sexratio_dormant<-read_csv("/Volumes/NO NAME/geolambdaFd/SR_OSR_dorm.csv")
+sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/i4e5amud3v0td6jz10j86/SR_OSR_dorm.csv?rlkey=bk1gyfcjn68umysxazydgqrmo&dl=1"))
+# sexratio_dormant<-read_csv("/Volumes/NO NAME/geolambdaFd/SR_OSR_dorm.csv")
 all_pptdorm_seq<-seq(min(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
 all_tempdorm_seq<-seq(min(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),max(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),length.out=30)
 
@@ -8138,7 +8136,7 @@ SR_mtrx_dorm <- matrix(sexratio_dormant$SR, nrow = 30, dimnames = list(all_pptdo
 
 ```{r}
 # read in results of the above loop
-sexratio_growing <- read_csv(url("https://www.dropbox.com/scl/fi/3xsgda5nn4lxu3fcbn284/OSR_grow.csv?rlkey=1svxkjjvsiqhvfm82wvwcno78&dl=1"))
+sexratio_growing <- read_csv(url("https://www.dropbox.com/scl/fi/vr2pkz8ot2v6azqf18y0t/OSR_grow.csv?rlkey=l1h2re7kf7q155fuwg8m5m8ot&dl=1"))
 all_pptgrow_seq<-seq(min(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),max(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),length.out=30)
 all_tempgrow_seq<-seq(min(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),max(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),length.out=30)
 OSR_mtrx_grow <- matrix(sexratio_growing$OSR, nrow = 30, dimnames = list(all_pptgrow_seq,
@@ -8209,7 +8207,7 @@ scal_breaks <- c(seq(0, 1, length.out = 101))
 ```{r}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
 par(mar=c(5,5,1,1),mfrow=c(2,1))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="",breaks = scal_breaks) 
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,na.omit(OSR_mtrx_dorm),col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="",breaks = scal_breaks) 
 contour(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,add=T,labcex=0.75,col="black") 
 mtext("A",side = 3, adj = 0,cex=1.25)
 text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
