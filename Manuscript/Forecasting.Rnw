@@ -40,6 +40,7 @@
 
 \graphicspath{{/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/}}
 \newcommand{\tom}[2]{{\color{red}{#1}}\footnote{\textit{\color{red}{#2}}}}
+\newcommand{\jacob}[2]{{\color{blue}{#1}}\footnote{\textit{\color{blue}{#2}}}}
 %\doublespacing
 
 <<setup,echo=F, message=F, warning=F>>=
@@ -74,8 +75,8 @@ library(xtable)
 % \bigskip 
 %45 character limit on running head
 \noindent\textbf{Running header:} Forecasting range shifts
-
 \bigskip 
+
 \noindent\textbf{Keywords:} demography, forecasting, global warming, matrix projection model, population dynamics, sex ratio, range limits
 
 \bigskip 
@@ -97,18 +98,10 @@ All authors conducted the statistical analyses and modeling.
 J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
 
 \bigskip
-\noindent\textbf{Abstract:}
-
-\bigskip
-\noindent\textbf{Main Text:}
-
-\bigskip
-\noindent\textbf{Figures:}
-
-\bigskip
-\noindent\textbf{Tables:}
-
-\bigskip
+\noindent\textbf{Abstract:}\\
+\noindent\textbf{Main Text:}\\
+\noindent\textbf{Figures:}\\
+\noindent\textbf{Tables:}\\
 \noindent\textbf{References:}
 
 \newpage
@@ -121,10 +114,10 @@ J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
 %Tom made changes here that increase word count
 Global warming has triggered an urgent need for predicting the reorganization of Earth's biodiversity under climate change.
 Currently, the vast majority of theory and models in population biology, including those used to forecast biodiversity responses to climate change, ignore the complication of sex structure. 
-For dioecious species, it is unclear how commonly unique climate sensitivities of females and males could influence projections for species-level responses to climate change. 
+% For dioecious species, it is unclear how commonly unique climate sensitivities of females and males could influence projections for species-level responses to climate change. 
 We developed demographic models of range limitation, parameterized from geographically distributed common garden experiments with females and males of a dioecious grass species (\textit{Poa arachnifera}) throughout and beyond its range in the south-central U.S. 
 Female-dominant and two-sex model versions of the demographic model both predict that future climate change will alter population viability and will induce latitudinal niche extension beyond current northern limits.
-However, the magnitude of niche shift was overestimated by the female-dominant model, \tom{because females have broader temperature tolerance than males and become mate-limited under female-biased sex ratios}{Not sure yet if this is true but we need some sort of biological rationale to accompany this result.}.
+However, the magnitude of niche shift was overestimated by the female-dominant model, because females have broader temperature tolerance than males and become mate-limited under female-biased sex ratios.
 Explicitly account for both sexes could enhance population viability forecasts and conservation planning for dioecious species in response to climate change.
 
 %--------------------------------------------------------------------
@@ -359,6 +352,18 @@ All the analyses were performed in R 4.3.1 \citep{RCoreteam}
 \tom{However the estimation of the impact of climate change on niche and range shifts were processed in parallel using open-source software on the Rice Super computer (NOTS) and the German Centre for Integrative Biodiversity Research (iDiv) High-Performance Computing Cluster.}{I am not sure you need this -- it was still done in R.}
 
 \section*{Results}
+\subsection*{Varation in sex-ratio along climate gradient}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.85\linewidth]{Figures/gardens_OSR.pdf}
+  \caption{\textbf{Variation in Operational Sex-ratio accross climate gradient}.
+  (A, B) Proportion of panicules that were females across precipitation and temperature of the growing season; (C, D) Proportion of of panicules that were females across precipitation and temperature of the dormant season.
+  Statistical results are shown in Fig. \ref{Sup:PosteriorOSR}.}
+  \label{fig:vital_rates}
+  \end{center}
+\end{figure}
+
 \subsection*{Sex specific demographic response to climate change}
 Most vital rates were strongly climate dependent, but the magnitude of their response were similar between sexes suggesting \tom{no sex-specific demographic response to climate}{A few comments here: 1-This undermines the entire premise of the paper! If that's the result, it is what it is, but it suggests that the current Introduction does not serve the Results very well. 2-Your figure masks a lot of variation and interactions, and I think these are worth looking into more deeply. 3-This result is inconsistent with what we found in the Am Nat paper, and that concerns me, and will concern reviewers. 4-The niche plot indicates differences between two-sex and female dominant, which could only happen if there were sex-specific responses in the vital rates.}. 
 \tom{Survival and flowering were strongly more dependent on climate than growth (number of tillers) and panicle production (Fig.\ref{fig:vital_rates}; Fig. \ref{Sup:Posterior}).}{I am not sure this is true. The scales are very different.}
@@ -408,7 +413,7 @@ A moderate emission gas scenario (RCP4.5) has a no effect on the population grow
 \tom{}{I cannot write comments in the figure captions, so this comment applies to ``Lower panels below each data panel''.THis is not an adequate explanation of what is shown here. These are the ranges (min-max) of monthly climate values for the entire set of experimental sites over specific years, which need to be identified here.}
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/lambda_past_present_future.pdf}
+    \includegraphics[width=0.99\linewidth]{Figures/lambda_past_present_future_LTRE.pdf}
   \caption{\textbf{Population growth rate ($\lambda$) as a function of seasonal climate}.
 (A) Precipitation of the growing season, (B) Temperature of the growing season, (C) Precipitation of the dormant season, (D) Temperature of the dormant season.
 The grey curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
@@ -425,14 +430,14 @@ LTRE decomposition revealed that, for each sex, the reduction of $\lambda$ for h
 \tom{However, the reduction of population growth rate for higher value of temperature of the dormant season was driven by only female individuals(Fig.\ref{fig:LTRETemp} C, D). }{This is not how I interpret the figure.}
 The increase of the probability of flowering was sufficient to prevent population growth rate from declining for high tmeprature of the dormant season (Fig.\ref{fig:LTRETemp} C).
 \tom{}{I don't think readers will understand how to process these results, or what they mean with respect to the motivating questions. I think this can be presented in a more reader-friendly way that connects more clearly to the conceptual aims of the study.}
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=0.85\linewidth]{Figures/LTRE_Temperature.pdf}
-  \caption{\textbf{Life table response experiment decomposition of the sensitivity of $\lambda$ to seasonal climate into additive vital rate contributions of males and females based on posterior mean parameter estimates.}
- (A) Temperature of growing season (contribution of female), (B) Temperature of growing season (contribution of male),  (C) Temperature of dormant season (contribution of female) and (D) Temperature of dormant season (contribution of male).}
-  \label{fig:LTRETemp}
-  \end{center}
-\end{figure}
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics[width=0.85\linewidth]{Figures/LTRE_Temperature.pdf}
+%   \caption{\textbf{Life table response experiment decomposition of the sensitivity of $\lambda$ to seasonal climate into additive vital rate contributions of males and females based on posterior mean parameter estimates.}
+%  (A) Temperature of growing season (contribution of female), (B) Temperature of growing season (contribution of male),  (C) Temperature of dormant season (contribution of female) and (D) Temperature of dormant season (contribution of male).}
+%   \label{fig:LTRETemp}
+%   \end{center}
+% \end{figure}
 
 \subsection*{Climatic change induce niche and range shifts}
 \tom{}{General comment on this section: these are the most important results of the paper but they are described only briefly and without much statistical support. That is true for much of the Results section. I think this could be strengthened. I also think for both the niche and the map figures we need a more visually intuitive way to contrast the two-sex and female-dominant models.}
@@ -603,10 +608,44 @@ This work was supported partially by the Big-Data Private-Cloud Research Cyberin
 		\label{Sup:PPC}
 	\end{figure}
 	
+	
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{Figures/gardens_SR.pdf}
+  \caption{\textbf{Variation in sex-ratio accross climate gradient}.
+  (A, B) Proportion of plants that were females across precipitation and temperature of the growing season; (C, D) Proportion of plants that were females across precipitation and temperature of the dormant season.
+  Statistical results are shown in Fig. \ref{Sup:PosteriorSR}.}
+  \label{fig:vital_rates}
+  \end{center}
+\end{figure}
+
 \begin{figure}[H]
 		\centering
-		\includegraphics[width=0.95\linewidth]{Figures/Posterior_mean.pdf}
-		\caption{Mean parameter values and 95\% credible intervals for all vital rates. 
+		\includegraphics[width=0.75\linewidth]{Figures/Posterior_ORS.pdf}
+		\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+		pptgrow is  the precipitation of growing season,
+		Tempgrow is the temperature of growing season,
+		pptdorm is the temperature of dormant season,
+		Tempdorm is the temperature of dormant season.}
+		\label{Sup:PosteriorOSR}
+\end{figure}
+
+
+\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.75\linewidth]{Figures/Posterior_SR.pdf}
+		\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+		pptgrow is  the precipitation of growing season,
+		Tempgrow is the temperature of growing season,
+		pptdorm is the temperature of dormant season,
+		Tempdorm is the temperature of dormant season.}
+		\label{Sup:PosteriorSR}
+\end{figure}
+	
+\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.99\linewidth]{Figures/Posterior_mean.pdf}
+		\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
 		pptgrow is  the precipitation of growing season,
 		Tempgrow is the temperature of growing season,
 		pptdorm is the temperature of dormant season,

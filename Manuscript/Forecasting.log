@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  14 JUL 2024 20:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  16 JUL 2024 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -837,29 +837,35 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count336
 \l__pdf_internal_box=\box77
 )
-(./Forecasting.aux)
+(./Forecasting.aux
+
+LaTeX Warning: Label `fig:vital_rates' multiply defined.
+
+
+LaTeX Warning: Label `fig:vital_rates' multiply defined.
+
+)
 \openout1 = `Forecasting.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-
-(/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+ (/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count337
 \scratchdimen=\dimen300
@@ -912,35 +918,35 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 62.
+Package hyperref Info: Link coloring OFF on input line 63.
 (./Forecasting.out) (./Forecasting.out)
 \@outlinefile=\write5
 \openout5 = `Forecasting.out'.
 
 \symgns@font=\mathgroup10
 LaTeX Font Info:    Overwriting symbol font `gns@font' in version `bold'
-(Font)                  TS1/pplx/m/n --> TS1/pplx/b/n on input line 62.
-Package gensymb Info: Math companion symbols declared on input line 62.
-LaTeX Info: Redefining \degree on input line 62.
-LaTeX Info: Redefining \celsius on input line 62.
+(Font)                  TS1/pplx/m/n --> TS1/pplx/b/n on input line 63.
+Package gensymb Info: Math companion symbols declared on input line 63.
+LaTeX Info: Redefining \degree on input line 63.
+LaTeX Info: Redefining \celsius on input line 63.
 Package gensymb Info: Using text companion symbols for \degree, \celsius and \p
-erthousand on input line 62.
-LaTeX Info: Redefining \ohm on input line 62.
-Package gensymb Info: Using \textohm for \ohm on input line 62.
-Package gensymb Info: Using \textmu for \micro on input line 62.
-LaTeX Info: Redefining \microtypecontext on input line 62.
-Package microtype Info: Applying patch `item' on input line 62.
-Package microtype Info: Applying patch `toc' on input line 62.
-Package microtype Info: Applying patch `eqnum' on input line 62.
-Package microtype Info: Applying patch `footnote' on input line 62.
-Package microtype Info: Applying patch `verbatim' on input line 62.
+erthousand on input line 63.
+LaTeX Info: Redefining \ohm on input line 63.
+Package gensymb Info: Using \textohm for \ohm on input line 63.
+Package gensymb Info: Using \textmu for \micro on input line 63.
+LaTeX Info: Redefining \microtypecontext on input line 63.
+Package microtype Info: Applying patch `item' on input line 63.
+Package microtype Info: Applying patch `toc' on input line 63.
+Package microtype Info: Applying patch `eqnum' on input line 63.
+Package microtype Info: Applying patch `footnote' on input line 63.
+Package microtype Info: Applying patch `verbatim' on input line 63.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 62.
+LaTeX Info: Redefining \showhyphens on input line 63.
 Package microtype Info: Tracking enabled.
 Package microtype Info: Using tracking set `all'.
 Package microtype Info: No adjustment of interword spacing.
@@ -950,56 +956,56 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 )
 LaTeX Font Info:    Trying to load font information for OT1+pplx on input line 
-68.
+69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ot1pplx.fd
 File: ot1pplx.fd 2004/09/06 font definitions for OT1/pplx.
 )
 LaTeX Font Info:    Trying to load font information for OML+zplm on input line 
-68.
+69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 
-68.
+69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 
-68.
+69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 15.0049pt on input line 68.
+(Font)              scaled to size 15.0049pt on input line 69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 68.
+(Font)              scaled to size 10.42007pt on input line 69.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 8.33606pt on input line 68.
+(Font)              scaled to size 8.33606pt on input line 69.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 15.0049pt on input line 68.
+(Font)              scaled to size 15.0049pt on input line 69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 68.
+(Font)              scaled to size 10.42007pt on input line 69.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 8.33606pt on input line 68.
+(Font)              scaled to size 8.33606pt on input line 69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
 LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 
-68.
+69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
@@ -1009,21 +1015,21 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for TS1+pplx on input line 
-68.
+69.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ts1pplx.fd
 File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 68.
+(Font)              scaled to size 7.91925pt on input line 69.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 68.
+(Font)              scaled to size 6.25204pt on input line 69.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 68.
+(Font)              scaled to size 7.91925pt on input line 69.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 68.
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 7
-9.
+(Font)              scaled to size 6.25204pt on input line 69.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 8
+0.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
@@ -1033,24 +1039,24 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 79.
+(Font)              scaled to size 12.50409pt on input line 80.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 79.
+(Font)              scaled to size 9.37807pt on input line 80.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 79.
+(Font)              scaled to size 7.29405pt on input line 80.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 79.
+(Font)              scaled to size 12.50409pt on input line 80.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 79.
+(Font)              scaled to size 9.37807pt on input line 80.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 79.
+(Font)              scaled to size 7.29405pt on input line 80.
  [1
 
 {/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive/2023
-/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}] [2]
+/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
 LaTeX Font Info:    Trying to load font information for T1+cmss on input line 1
-11.
+04.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2022/07/10 v2.5l Standard LaTeX font definitions
@@ -1059,153 +1065,189 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [3] [4] [5]
-[6]
-<Figures/POAR_survey_garden_map.pdf, id=184, 505.89pt x 578.16pt>
+ [2] [3] [4]
+[5]
+<Figures/POAR_survey_garden_map.pdf, id=178, 505.89pt x 578.16pt>
 File: Figures/POAR_survey_garden_map.pdf Graphic file (type pdf)
 <use Figures/POAR_survey_garden_map.pdf>
 Package pdftex.def Info: Figures/POAR_survey_garden_map.pdf  used on input line
- 196.
+ 189.
 (pdftex.def)             Requested size: 422.77664pt x 483.18092pt.
- [7] [8 <./Figures/POAR_survey_garden_map.pdf>] [9] [10] [11] [12] [13]
-[14]
-<Figures/vital_rates.pdf, id=374, 939.51pt x 1011.78pt>
+ [6] [7 <./Figures/POAR_survey_garden_map.pdf>] [8] [9] [10] [11] [12]
+[13]
+<Figures/gardens_OSR.pdf, id=359, 578.16pt x 578.16pt>
+File: Figures/gardens_OSR.pdf Graphic file (type pdf)
+<use Figures/gardens_OSR.pdf>
+Package pdftex.def Info: Figures/gardens_OSR.pdf  used on input line 351.
+(pdftex.def)             Requested size: 399.29463pt x 399.29253pt.
+ [14] [15 <./Figures/gardens_OSR.pdf>]
+<Figures/vital_rates.pdf, id=392, 939.51pt x 1011.78pt>
 File: Figures/vital_rates.pdf Graphic file (type pdf)
 <use Figures/vital_rates.pdf>
-Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 370.
+Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 375.
 (pdftex.def)             Requested size: 446.26582pt x 480.58505pt.
- [15] [16 <./Figures/vital_rates.pdf>]
-<Figures/lambda_past_present_future.pdf, id=415, 578.16pt x 578.16pt>
-File: Figures/lambda_past_present_future.pdf Graphic file (type pdf)
-<use Figures/lambda_past_present_future.pdf>
-Package pdftex.def Info: Figures/lambda_past_present_future.pdf  used on input 
-line 403.
-(pdftex.def)             Requested size: 399.29463pt x 399.29253pt.
- [17]
-<Figures/LTRE_Temperature.pdf, id=433, 505.89pt x 505.89pt>
-File: Figures/LTRE_Temperature.pdf Graphic file (type pdf)
-<use Figures/LTRE_Temperature.pdf>
-Package pdftex.def Info: Figures/LTRE_Temperature.pdf  used on input line 422.
-(pdftex.def)             Requested size: 399.29463pt x 399.30135pt.
- [18 <./Figures/lambda_past_present_future.pdf>] [19 <./Figures/LTRE_Temperatur
-e.pdf>]
-<Figures/niche_dormant_growing.pdf, id=469, 578.16pt x 505.89pt>
+ [16] [17 <./Figures/vital_rates.pdf>]
+<Figures/lambda_past_present_future_LTRE.pdf, id=432, 1011.78pt x 722.7pt>
+File: Figures/lambda_past_present_future_LTRE.pdf Graphic file (type pdf)
+<use Figures/lambda_past_present_future_LTRE.pdf>
+Package pdftex.def Info: Figures/lambda_past_present_future_LTRE.pdf  used on i
+nput line 408.
+(pdftex.def)             Requested size: 465.06004pt x 332.1924pt.
+ [18]
+
+LaTeX Warning: Reference `fig:LTRETemp' on page 19 undefined on input line 421.
+
+
+
+LaTeX Warning: Reference `fig:LTRETemp' on page 19 undefined on input line 422.
+
+
+
+LaTeX Warning: Reference `fig:LTRETemp' on page 19 undefined on input line 423.
+
+
+[19 <./Figures/lambda_past_present_future_LTRE.pdf>]
+<Figures/niche_dormant_growing.pdf, id=468, 578.16pt x 505.89pt>
 File: Figures/niche_dormant_growing.pdf Graphic file (type pdf)
 <use Figures/niche_dormant_growing.pdf>
 Package pdftex.def Info: Figures/niche_dormant_growing.pdf  used on input line 
-441.
+446.
 (pdftex.def)             Requested size: 446.26582pt x 390.47824pt.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 446.
+(Font)              scaled to size 5.21004pt on input line 451.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 446.
+(Font)              scaled to size 5.21004pt on input line 451.
  [20]
-<Figures/Fig_geoPrlambdacmc.pdf, id=480, 650.43pt x 722.7pt>
+<Figures/Fig_geoPrlambdacmc.pdf, id=481, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambdacmc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambdacmc.pdf>
-Package pdftex.def Info: Figures/Fig_geoPrlambdacmc.pdf  used on input line 453
+Package pdftex.def Info: Figures/Fig_geoPrlambdacmc.pdf  used on input line 458
 .
 (pdftex.def)             Requested size: 465.06004pt x 516.74863pt.
  [21 <./Figures/niche_dormant_growing.pdf>] [22 <./Figures/Fig_geoPrlambdacmc.p
 df>] [23] [24]
 [25] [26] [27] (./Forecasting.bbl [28] [29] [30] [31] [32] [33]) [34]
-<Figures/fig_pr_past_present_future.pdf, id=736, 650.43pt x 578.16pt>
+<Figures/fig_pr_past_present_future.pdf, id=737, 650.43pt x 578.16pt>
 File: Figures/fig_pr_past_present_future.pdf Graphic file (type pdf)
 <use Figures/fig_pr_past_present_future.pdf>
 Package pdftex.def Info: Figures/fig_pr_past_present_future.pdf  used on input 
-line 569.
+line 574.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
-<Figures/fig_tas_past_present_future.pdf, id=737, 650.43pt x 578.16pt>
+<Figures/fig_tas_past_present_future.pdf, id=738, 650.43pt x 578.16pt>
 File: Figures/fig_tas_past_present_future.pdf Graphic file (type pdf)
 <use Figures/fig_tas_past_present_future.pdf>
 Package pdftex.def Info: Figures/fig_tas_past_present_future.pdf  used on input
- line 578.
+ line 583.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
  [35
 
  <./Figures/fig_pr_past_present_future.pdf>]
-<Figures/Varianceexplained.pdf, id=751, 578.16pt x 289.08pt>
+<Figures/Varianceexplained.pdf, id=752, 578.16pt x 289.08pt>
 File: Figures/Varianceexplained.pdf Graphic file (type pdf)
 <use Figures/Varianceexplained.pdf>
-Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 586.
+Package pdftex.def Info: Figures/Varianceexplained.pdf  used on input line 591.
 
 (pdftex.def)             Requested size: 446.26582pt x 223.13042pt.
  [36 <./Figures/fig_tas_past_present_future.pdf>]
-<Figures/PPC.pdf, id=765, 433.62pt x 722.7pt>
+<Figures/PPC.pdf, id=766, 433.62pt x 722.7pt>
 File: Figures/PPC.pdf Graphic file (type pdf)
 <use Figures/PPC.pdf>
-Package pdftex.def Info: Figures/PPC.pdf  used on input line 593.
+Package pdftex.def Info: Figures/PPC.pdf  used on input line 598.
 (pdftex.def)             Requested size: 352.31625pt x 587.22539pt.
  [37 <./Figures/Varianceexplained.pdf>]
-<Figures/Posterior_mean.pdf, id=782, 722.7pt x 867.24pt>
+<Figures/gardens_SR.pdf, id=783, 650.43pt x 578.16pt>
+File: Figures/gardens_SR.pdf Graphic file (type pdf)
+<use Figures/gardens_SR.pdf>
+Package pdftex.def Info: Figures/gardens_SR.pdf  used on input line 606.
+(pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
+ [38 <./Figures/PPC.pdf>]
+<Figures/Posterior_ORS.pdf, id=798, 361.35pt x 433.62pt>
+File: Figures/Posterior_ORS.pdf Graphic file (type pdf)
+<use Figures/Posterior_ORS.pdf>
+Package pdftex.def Info: Figures/Posterior_ORS.pdf  used on input line 616.
+(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
+
+[39 <./Figures/gardens_SR.pdf>]
+<Figures/Posterior_SR.pdf, id=812, 361.35pt x 433.62pt>
+File: Figures/Posterior_SR.pdf Graphic file (type pdf)
+<use Figures/Posterior_SR.pdf>
+Package pdftex.def Info: Figures/Posterior_SR.pdf  used on input line 628.
+(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
+ [40 <./Figures/Posterior_ORS.pdf>]
+<Figures/Posterior_mean.pdf, id=826, 722.7pt x 867.24pt>
 File: Figures/Posterior_mean.pdf Graphic file (type pdf)
 <use Figures/Posterior_mean.pdf>
-Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 600.
-(pdftex.def)             Requested size: 446.26582pt x 535.52628pt.
- [38 <./Figures/PPC.pdf>]
-<Figures/Fig_LTRE.pdf, id=795, 361.35pt x 361.35pt>
+Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 639.
+(pdftex.def)             Requested size: 465.06004pt x 558.0753pt.
+ [41 <./Figures/Posterior_SR.pdf>]
+<Figures/Fig_LTRE.pdf, id=839, 361.35pt x 361.35pt>
 File: Figures/Fig_LTRE.pdf Graphic file (type pdf)
 <use Figures/Fig_LTRE.pdf>
-Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 611.
+Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 650.
 (pdftex.def)             Requested size: 305.33789pt x 305.34044pt.
-
-[39 <./Figures/Posterior_mean.pdf>]
-<Figures/LTRE_Precipitation.pdf, id=809, 505.89pt x 505.89pt>
+ [42 <./Figures/Posterior_mean.pdf>]
+<Figures/LTRE_Precipitation.pdf, id=853, 505.89pt x 505.89pt>
 File: Figures/LTRE_Precipitation.pdf Graphic file (type pdf)
 <use Figures/LTRE_Precipitation.pdf>
-Package pdftex.def Info: Figures/LTRE_Precipitation.pdf  used on input line 619
+Package pdftex.def Info: Figures/LTRE_Precipitation.pdf  used on input line 658
 .
 (pdftex.def)             Requested size: 460.35791pt x 460.36833pt.
- [40 <./Figures/Fig_LTRE.pdf>]
-<Figures/lambda_CI.pdf, id=820, 542.025pt x 578.16pt>
+ [43 <./Figures/Fig_LTRE.pdf>]
+<Figures/lambda_CI.pdf, id=864, 542.025pt x 578.16pt>
 File: Figures/lambda_CI.pdf Graphic file (type pdf)
 <use Figures/lambda_CI.pdf>
-Package pdftex.def Info: Figures/lambda_CI.pdf  used on input line 628.
+Package pdftex.def Info: Figures/lambda_CI.pdf  used on input line 667.
 (pdftex.def)             Requested size: 446.26582pt x 476.03511pt.
- [41 <./Figures/LTRE_Precipitation.pdf>]
-<Figures/Fig_geoPrlambda_ces.pdf, id=832, 650.43pt x 722.7pt>
+ [44 <./Figures/LTRE_Precipitation.pdf>]
+<Figures/Fig_geoPrlambda_ces.pdf, id=876, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambda_ces.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambda_ces.pdf>
-Package pdftex.def Info: Figures/Fig_geoPrlambda_ces.pdf  used on input line 63
-8.
+Package pdftex.def Info: Figures/Fig_geoPrlambda_ces.pdf  used on input line 67
+7.
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [42 <./Figures/lambda_CI.pdf>]
-<Figures/Fig_geoPrlambdaacc.pdf, id=846, 650.43pt x 722.7pt>
+ [45 <./Figures/lambda_CI.pdf>]
+<Figures/Fig_geoPrlambdaacc.pdf, id=890, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambdaacc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambdaacc.pdf>
-Package pdftex.def Info: Figures/Fig_geoPrlambdaacc.pdf  used on input line 651
+Package pdftex.def Info: Figures/Fig_geoPrlambdaacc.pdf  used on input line 690
 .
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [43 <./Figures/Fig_geoPrlambda_ces.pdf>]
-<Figures/Fig_geoPrlambda_miroc.pdf, id=862, 650.43pt x 722.7pt>
+[46 <./Figures/Fig_geoPrlambda_ces.pdf>]
+<Figures/Fig_geoPrlambda_miroc.pdf, id=905, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambda_miroc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambda_miroc.pdf>
 Package pdftex.def Info: Figures/Fig_geoPrlambda_miroc.pdf  used on input line 
-664.
+703.
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [44 <./Figures/Fig_geoPrlambdaacc.pdf>]
-<Figures/OSR.pdf, id=877, 361.35pt x 505.89pt>
+ [47 <./Figures/Fig_geoPrlambdaacc.pdf>]
+<Figures/OSR.pdf, id=920, 361.35pt x 505.89pt>
 File: Figures/OSR.pdf Graphic file (type pdf)
 <use Figures/OSR.pdf>
-Package pdftex.def Info: Figures/OSR.pdf  used on input line 677.
+Package pdftex.def Info: Figures/OSR.pdf  used on input line 716.
 (pdftex.def)             Requested size: 352.31625pt x 493.24461pt.
- [45 <./Figures/Fig_geoPrlambda_miroc.pdf>] [46 <./Figures/OSR.pdf>] (./Forecas
-ting.aux)
+ [48 <./Figures/Fig_geoPrlambda_miroc.pdf>] [49 <./Figures/OSR.pdf>]
+(./Forecasting.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  )
 (\end occurred inside a group at level 1)
 
-### semi simple group (level 1) entered at line 110 (\begingroup)
+### semi simple group (level 1) entered at line 103 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 30157 strings out of 476025
- 555136 string characters out of 5790018
+ 30196 strings out of 476025
+ 555972 string characters out of 5790018
  1872388 words of memory out of 5000000
- 48650 multiletter control sequences out of 15000+600000
- 707503 words of font info for 1029 fonts, out of 8000000 for 9000
+ 48671 multiletter control sequences out of 15000+600000
+ 708075 words of font info for 1037 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,14n,94p,1363b,849s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,14n,94p,1363b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1219,10 +1261,10 @@ b></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr
 /local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/local
 /texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texliv
 e/2023/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (46 pages, 15539082 bytes).
+Output written on Forecasting.pdf (49 pages, 17206388 bytes).
 PDF statistics:
- 1012 PDF objects out of 1200 (max. 8388607)
- 870 compressed objects within 9 object streams
- 238 named destinations out of 1000 (max. 500000)
- 252519 words of extra memory for PDF output out of 266212 (max. 10000000)
+ 1058 PDF objects out of 1200 (max. 8388607)
+ 904 compressed objects within 10 object streams
+ 243 named destinations out of 1000 (max. 500000)
+ 252534 words of extra memory for PDF output out of 266212 (max. 10000000)
 
