@@ -1,14 +1,3 @@
-@article{hernandez2023exact,
-  title={An exact version of Life Table Response Experiment analysis, and the R package exactLTRE},
-  author={Hern{\'a}ndez, Christina M and Ellner, Stephen P and Adler, Peter B and Hooker, Giles and Snyder, Robin E},
-  journal={Methods in Ecology and Evolution},
-  volume={14},
-  number={3},
-  pages={939--951},
-  year={2023},
-  publisher={Wiley Online Library}
-}
-
 @article{ehrlen2015predicting,
   title={Predicting changes in the distribution and abundance of species under environmental change},
   author={Ehrl{\'e}n, Johan and Morris, William F},
@@ -127,17 +116,6 @@
   number    = {10},
   pages     = {e03464},
   volume    = {102},
-  publisher = {Wiley Online Library},
-}
-
-@Article{Adler2008,
-  author    = {Adler, Peter B and HilleRisLambers, Janneke},
-  journal   = {Ecology},
-  title     = {The influence of climate and species composition on the population dynamics of ten prairie forbs},
-  year      = {2008},
-  number    = {11},
-  pages     = {3049--3060},
-  volume    = {89},
   publisher = {Wiley Online Library},
 }
 
@@ -685,34 +663,12 @@ year = {1930},
   publisher = {National Acad Sciences},
 }
 
-@Article{dalgleish2011climate,
-  author    = {Dalgleish, Harmony J and Koons, David N and Hooten, Mevin B and Moffet, Corey A and Adler, Peter B},
-  journal   = {Ecology},
-  title     = {Climate influences the demography of three dominant sagebrush steppe plants},
-  year      = {2011},
-  number    = {1},
-  pages     = {75--85},
-  volume    = {92},
-  publisher = {Wiley Online Library},
-}
-
 @Article{dryaddata,
   author  = {Miller, TEX and Compagnoni, A},
   journal = {American Naturalist, Dryad Digital Repository,},
   title   = {Data from: Two-sex demography, sexual niche differentiation, and the geographic range limits of Texas bluegrass (\textit{Poa arachnifera})},
   year    = {2022},
   note    = {https://doi.org/10.5061/dryad.kkwh70s5x},
-}
-
-@Article{hernandez2023exact,
-  author    = {Hern{\'a}ndez, Christina M and Ellner, Stephen P and Adler, Peter B and Hooker, Giles and Snyder, Robin E},
-  journal   = {Methods in Ecology and Evolution},
-  title     = {An exact version of Life Table Response Experiment analysis, and the R package exactLTRE},
-  year      = {2023},
-  number    = {3},
-  pages     = {939--951},
-  volume    = {14},
-  publisher = {Wiley Online Library},
 }
 
 @Article{ellner2016data,
@@ -892,17 +848,6 @@ year = {1930},
   publisher = {Springer},
 }
 
-@Article{adler2008influence,
-  author    = {Adler, Peter B and HilleRisLambers, Janneke},
-  journal   = {Ecology},
-  title     = {The influence of climate and species composition on the population dynamics of ten prairie forbs},
-  year      = {2008},
-  number    = {11},
-  pages     = {3049--3060},
-  volume    = {89},
-  publisher = {Wiley Online Library},
-}
-
 @Article{mclean2016predicting,
   author    = {McLean, Nina and Lawson, Callum R and Leech, Dave I and van de Pol, Martijn},
   journal   = {Ecology Letters},
@@ -929,17 +874,6 @@ year = {1930},
   pages     = {213--246},
   volume    = {107},
   publisher = {University of Chicago Press},
-}
-
-@Article{schultz2022climate,
-  author    = {Schultz, Emily L and H{\"u}lsmann, Lisa and Pillet, Michiel D and Hartig, Florian and Breshears, David D and Record, Sydne and Shaw, John D and DeRose, R Justin and Zuidema, Pieter A and Evans, Margaret EK},
-  journal   = {Ecology letters},
-  title     = {Climate-driven, but dynamic and complex? A reconciliation of competing hypotheses for species’ distributions},
-  year      = {2022},
-  number    = {1},
-  pages     = {38--51},
-  volume    = {25},
-  publisher = {Wiley Online Library},
 }
 
 @Misc{hatfield2015temperature,
@@ -1122,6 +1056,60 @@ year = {1930},
   pages     = {371--384},
   volume    = {33},
   publisher = {Wiley Online Library},
+}
+
+@article{hernandez2023exact,
+  title={An exact version of Life Table Response Experiment analysis, and the R package exactLTRE},
+  author={Hern{\'a}ndez, Christina M and Ellner, Stephen P and Adler, Peter B and Hooker, Giles and Snyder, Robin E},
+  journal={Methods in Ecology and Evolution},
+  volume={14},
+  number={3},
+  pages={939--951},
+  year={2023},
+  publisher={Wiley Online Library}
+}
+
+@Article{Adler2008,
+  author    = {Adler, Peter B and HilleRisLambers, Janneke},
+  journal   = {Ecology},
+  title     = {The influence of climate and species composition on the population dynamics of ten prairie forbs},
+  year      = {2008},
+  number    = {11},
+  pages     = {3049--3060},
+  volume    = {89},
+  publisher = {Wiley Online Library},
+}
+
+@Article{renganayaki2005identification,
+  author    = {Renganayaki, K and Jessup, RW and Burson, BL and Hussey, MA and Read, JC},
+  journal   = {Crop science},
+  title     = {Identification of male-specific AFLP markers in dioecious Texas bluegrass},
+  year      = {2005},
+  number    = {6},
+  pages     = {2529--2539},
+  volume    = {45},
+  publisher = {Wiley Online Library},
+}
+
+@Article{popbio,
+  author  = {Chris J. Stubben and Brook G. Milligan},
+  journal = {Journal of Statistical Software},
+  title   = {Estimating and Analyzing Demographic Models Using the popbio Package in R},
+  year    = {2007},
+  number  = {11},
+  volume  = {22},
+}
+
+@Article{,
+  author   = {Paul-Christian Bürkner},
+  journal  = {Journal of Statistical Software},
+  title    = {{brms}: An {R} Package for {Bayesian} Multilevel Models Using {Stan}},
+  year     = {2017},
+  number   = {1},
+  pages    = {1--28},
+  volume   = {80},
+  doi      = {10.18637/jss.v080.i01},
+  encoding = {UTF-8},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
