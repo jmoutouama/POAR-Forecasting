@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  31 JUL 2024 22:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  13 AUG 2024 14:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1061,210 +1061,195 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
  [2] [3] [4]
 [5]
-<Figures/POAR_survey_garden_map.pdf, id=201, 505.89pt x 578.16pt>
+<Figures/POAR_survey_garden_map.pdf, id=203, 505.89pt x 578.16pt>
 File: Figures/POAR_survey_garden_map.pdf Graphic file (type pdf)
 <use Figures/POAR_survey_garden_map.pdf>
 Package pdftex.def Info: Figures/POAR_survey_garden_map.pdf  used on input line
- 194.
+ 193.
 (pdftex.def)             Requested size: 422.77664pt x 483.18092pt.
  [6] [7 <./Figures/POAR_survey_garden_map.pdf>] [8] [9] [10] [11] [12]
-<Figures/vital_rates.pdf, id=341, 939.51pt x 1011.78pt>
+[13]
+<Figures/vital_rates.pdf, id=347, 939.51pt x 1011.78pt>
 File: Figures/vital_rates.pdf Graphic file (type pdf)
 <use Figures/vital_rates.pdf>
-Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 379.
-(pdftex.def)             Requested size: 446.26582pt x 480.58505pt.
-
-[13] [14 <./Figures/vital_rates.pdf>]
-<Figures/lambda_past_present_future.pdf, id=382, 578.16pt x 505.89pt>
+Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 380.
+(pdftex.def)             Requested size: 375.80544pt x 404.70483pt.
+ [14 <./Figures/vital_rates.pdf>]
+<Figures/POAR_OSR.pdf, id=369, 361.35pt x 361.35pt>
+File: Figures/POAR_OSR.pdf Graphic file (type pdf)
+<use Figures/POAR_OSR.pdf>
+Package pdftex.def Info: Figures/POAR_OSR.pdf  used on input line 411.
+(pdftex.def)             Requested size: 375.80544pt x 375.80617pt.
+ [15 <./Figures/POAR_OSR.pdf>]
+<Figures/lambda_past_present_future.pdf, id=397, 505.89pt x 578.16pt>
 File: Figures/lambda_past_present_future.pdf Graphic file (type pdf)
 <use Figures/lambda_past_present_future.pdf>
 Package pdftex.def Info: Figures/lambda_past_present_future.pdf  used on input 
-line 424.
-(pdftex.def)             Requested size: 469.75502pt x 411.0346pt.
- [15] [16 <./Figures/lambda_past_present_future.pdf>]
-<Figures/Fig_geo_sr_cmc.pdf, id=410, 722.7pt x 505.89pt>
-File: Figures/Fig_geo_sr_cmc.pdf Graphic file (type pdf)
-<use Figures/Fig_geo_sr_cmc.pdf>
-Package pdftex.def Info: Figures/Fig_geo_sr_cmc.pdf  used on input line 448.
-(pdftex.def)             Requested size: 469.75502pt x 328.8323pt.
- [17 <./Figures/Fig_geo_sr_cmc.pdf>]
-<Figures/niche_dormant_growing.pdf, id=433, 578.16pt x 722.7pt>
+line 444.
+(pdftex.def)             Requested size: 469.75502pt x 536.87161pt.
+ [16]
+Overfull \vbox (17.4416pt too high) has occurred while \output is active []
+
+
+[17 <./Figures/lambda_past_present_future.pdf>]
+<Figures/niche_dormant_growing.pdf, id=423, 578.16pt x 722.7pt>
 File: Figures/niche_dormant_growing.pdf Graphic file (type pdf)
 <use Figures/niche_dormant_growing.pdf>
 Package pdftex.def Info: Figures/niche_dormant_growing.pdf  used on input line 
-476.
+479.
 (pdftex.def)             Requested size: 446.26582pt x 557.82607pt.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 482.
+(Font)              scaled to size 5.21004pt on input line 485.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 482.
+(Font)              scaled to size 5.21004pt on input line 485.
  [18]
-<Figures/Fig_geoPrlambdacmc.pdf, id=439, 650.43pt x 722.7pt>
+<Figures/Fig_geoPrlambdacmc.pdf, id=430, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambdacmc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambdacmc.pdf>
-Package pdftex.def Info: Figures/Fig_geoPrlambdacmc.pdf  used on input line 489
+Package pdftex.def Info: Figures/Fig_geoPrlambdacmc.pdf  used on input line 492
 .
 (pdftex.def)             Requested size: 465.06004pt x 516.74863pt.
  [19 <./Figures/niche_dormant_growing.pdf>] [20 <./Figures/Fig_geoPrlambdacmc.p
-df>] [21] [22]
-(./Forecasting.bbl [23] [24] [25] [26] [27] [28]) [29]
-<Figures/fig_tas_past_present_future.pdf, id=591, 650.43pt x 578.16pt>
+df>] [21] [22] [23]
+(./Forecasting.bbl [24] [25] [26] [27] [28] [29]) [30]
+<Figures/fig_tas_past_present_future.pdf, id=595, 650.43pt x 578.16pt>
 File: Figures/fig_tas_past_present_future.pdf Graphic file (type pdf)
 <use Figures/fig_tas_past_present_future.pdf>
 Package pdftex.def Info: Figures/fig_tas_past_present_future.pdf  used on input
- line 614.
+ line 605.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
-<Figures/fig_pr_past_present_future.pdf, id=592, 650.43pt x 578.16pt>
+<Figures/fig_pr_past_present_future.pdf, id=596, 650.43pt x 578.16pt>
 File: Figures/fig_pr_past_present_future.pdf Graphic file (type pdf)
 <use Figures/fig_pr_past_present_future.pdf>
 Package pdftex.def Info: Figures/fig_pr_past_present_future.pdf  used on input 
-line 622.
+line 613.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
- [30
+ [31
 
  <./Figures/fig_tas_past_present_future.pdf>]
-<Figures/MIROC.pdf, id=606, 505.89pt x 505.89pt>
+<Figures/MIROC.pdf, id=612, 505.89pt x 505.89pt>
 File: Figures/MIROC.pdf Graphic file (type pdf)
 <use Figures/MIROC.pdf>
-Package pdftex.def Info: Figures/MIROC.pdf  used on input line 630.
+Package pdftex.def Info: Figures/MIROC.pdf  used on input line 621.
 (pdftex.def)             Requested size: 446.26582pt x 446.27298pt.
- [31 <./Figures/fig_pr_past_present_future.pdf>]
-<Figures/ACCESS.pdf, id=622, 505.89pt x 505.89pt>
+ [32 <./Figures/fig_pr_past_present_future.pdf>]
+<Figures/ACCESS.pdf, id=626, 505.89pt x 505.89pt>
 File: Figures/ACCESS.pdf Graphic file (type pdf)
 <use Figures/ACCESS.pdf>
-Package pdftex.def Info: Figures/ACCESS.pdf  used on input line 637.
+Package pdftex.def Info: Figures/ACCESS.pdf  used on input line 628.
 (pdftex.def)             Requested size: 465.06004pt x 465.06935pt.
 
-[32 <./Figures/MIROC.pdf>]
-<Figures/CESM1.pdf, id=632, 505.89pt x 505.89pt>
+[33 <./Figures/MIROC.pdf>]
+<Figures/CESM1.pdf, id=636, 505.89pt x 505.89pt>
 File: Figures/CESM1.pdf Graphic file (type pdf)
 <use Figures/CESM1.pdf>
-Package pdftex.def Info: Figures/CESM1.pdf  used on input line 644.
+Package pdftex.def Info: Figures/CESM1.pdf  used on input line 635.
 (pdftex.def)             Requested size: 465.06004pt x 465.06935pt.
- [33 <./Figures/ACCESS.pdf>]
-<Figures/CMCC.pdf, id=642, 505.89pt x 505.89pt>
+ [34 <./Figures/ACCESS.pdf>]
+<Figures/CMCC.pdf, id=646, 505.89pt x 505.89pt>
 File: Figures/CMCC.pdf Graphic file (type pdf)
 <use Figures/CMCC.pdf>
-Package pdftex.def Info: Figures/CMCC.pdf  used on input line 651.
+Package pdftex.def Info: Figures/CMCC.pdf  used on input line 642.
 (pdftex.def)             Requested size: 465.06004pt x 465.06935pt.
- [34 <./Figures/CESM1.pdf>]
-<Figures/site_year_weather.pdf, id=652, 433.62pt x 578.16pt>
+ [35 <./Figures/CESM1.pdf>]
+<Figures/site_year_weather.pdf, id=656, 433.62pt x 578.16pt>
 File: Figures/site_year_weather.pdf Graphic file (type pdf)
 <use Figures/site_year_weather.pdf>
-Package pdftex.def Info: Figures/site_year_weather.pdf  used on input line 658.
+Package pdftex.def Info: Figures/site_year_weather.pdf  used on input line 649.
 
 (pdftex.def)             Requested size: 450.49489pt x 600.68997pt.
- [35 <./Figures/CMCC.pdf>]
-<Figures/PPC.pdf, id=662, 433.62pt x 722.7pt>
+ [36 <./Figures/CMCC.pdf>]
+<Figures/PPC.pdf, id=666, 433.62pt x 722.7pt>
 File: Figures/PPC.pdf Graphic file (type pdf)
 <use Figures/PPC.pdf>
-Package pdftex.def Info: Figures/PPC.pdf  used on input line 673.
+Package pdftex.def Info: Figures/PPC.pdf  used on input line 663.
 (pdftex.def)             Requested size: 352.31625pt x 587.22539pt.
- [36 <./Figures/site_year_weather.pdf>]
-<Figures/Posterior_mean.pdf, id=673, 722.7pt x 867.24pt>
+ [37 <./Figures/site_year_weather.pdf>]
+<Figures/Posterior_mean.pdf, id=678, 722.7pt x 867.24pt>
 File: Figures/Posterior_mean.pdf Graphic file (type pdf)
 <use Figures/Posterior_mean.pdf>
-Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 682.
+Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 670.
 (pdftex.def)             Requested size: 465.06004pt x 558.0753pt.
- [37 <./Figures/PPC.pdf>]
-<Figures/Fig_LTRE.pdf, id=687, 361.35pt x 361.35pt>
+ [38 <./Figures/PPC.pdf>]
+<Figures/gardens_OSR.pdf, id=691, 578.16pt x 578.16pt>
+File: Figures/gardens_OSR.pdf Graphic file (type pdf)
+<use Figures/gardens_OSR.pdf>
+Package pdftex.def Info: Figures/gardens_OSR.pdf  used on input line 681.
+(pdftex.def)             Requested size: 375.80544pt x 375.79955pt.
+ [39 <./Figures/Posterior_mean.pdf>]
+<Figures/Posterior_ORS.pdf, id=706, 361.35pt x 433.62pt>
+File: Figures/Posterior_ORS.pdf Graphic file (type pdf)
+<use Figures/Posterior_ORS.pdf>
+Package pdftex.def Info: Figures/Posterior_ORS.pdf  used on input line 690.
+(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
+ [40 <./Figures/gardens_OSR.pdf>]
+<Figures/gardens_SR.pdf, id=719, 650.43pt x 578.16pt>
+File: Figures/gardens_SR.pdf Graphic file (type pdf)
+<use Figures/gardens_SR.pdf>
+Package pdftex.def Info: Figures/gardens_SR.pdf  used on input line 701.
+(pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
+ [41 <./Figures/Posterior_ORS.pdf>]
+<Figures/Posterior_SR.pdf, id=733, 361.35pt x 433.62pt>
+File: Figures/Posterior_SR.pdf Graphic file (type pdf)
+<use Figures/Posterior_SR.pdf>
+Package pdftex.def Info: Figures/Posterior_SR.pdf  used on input line 710.
+(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
+ [42 <./Figures/gardens_SR.pdf>]
+<Figures/POAR_OSR_MIROC_CES_ACC.pdf, id=746, 361.35pt x 505.89pt>
+File: Figures/POAR_OSR_MIROC_CES_ACC.pdf Graphic file (type pdf)
+<use Figures/POAR_OSR_MIROC_CES_ACC.pdf>
+Package pdftex.def Info: Figures/POAR_OSR_MIROC_CES_ACC.pdf  used on input line
+ 730.
+(pdftex.def)             Requested size: 375.80544pt x 526.12862pt.
+ [43 <./Figures/Posterior_SR.pdf>]
+<Figures/Fig_LTRE.pdf, id=760, 361.35pt x 361.35pt>
 File: Figures/Fig_LTRE.pdf Graphic file (type pdf)
 <use Figures/Fig_LTRE.pdf>
-Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 694.
+Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 740.
 (pdftex.def)             Requested size: 305.33789pt x 305.34044pt.
- [38 <./Figures/Posterior_mean.pdf>]
-<Figures/LTRE_Temperature.pdf, id=701, 505.89pt x 505.89pt>
+ [44 <./Figures/POAR_OSR_MIROC_CES_ACC.pdf>]
+<Figures/LTRE_Temperature.pdf, id=770, 505.89pt x 505.89pt>
 File: Figures/LTRE_Temperature.pdf Graphic file (type pdf)
 <use Figures/LTRE_Temperature.pdf>
-Package pdftex.def Info: Figures/LTRE_Temperature.pdf  used on input line 702.
+Package pdftex.def Info: Figures/LTRE_Temperature.pdf  used on input line 748.
 (pdftex.def)             Requested size: 446.26582pt x 446.27298pt.
- [39 <./Figures/Fig_LTRE.pdf>]
-<Figures/LTRE_Precipitation.pdf, id=711, 505.89pt x 505.89pt>
+ [45 <./Figures/Fig_LTRE.pdf>]
+<Figures/LTRE_Precipitation.pdf, id=780, 505.89pt x 505.89pt>
 File: Figures/LTRE_Precipitation.pdf Graphic file (type pdf)
 <use Figures/LTRE_Precipitation.pdf>
-Package pdftex.def Info: Figures/LTRE_Precipitation.pdf  used on input line 711
+Package pdftex.def Info: Figures/LTRE_Precipitation.pdf  used on input line 757
 .
 (pdftex.def)             Requested size: 446.26582pt x 446.27298pt.
-[40 <./Figures/LTRE_Temperature.pdf>]
-<Figures/Niche_overestimation.pdf, id=722, 505.89pt x 289.08pt>
+ [46 <./Figures/LTRE_Temperature.pdf>]
+<Figures/Niche_overestimation.pdf, id=791, 505.89pt x 289.08pt>
 File: Figures/Niche_overestimation.pdf Graphic file (type pdf)
 <use Figures/Niche_overestimation.pdf>
 Package pdftex.def Info: Figures/Niche_overestimation.pdf  used on input line 7
-20.
+66.
 (pdftex.def)             Requested size: 465.06004pt x 265.7539pt.
- [41 <./Figures/LTRE_Precipitation.pdf>]
-<Figures/Fig_geoPrlambda_ces.pdf, id=733, 650.43pt x 722.7pt>
+ [47 <./Figures/LTRE_Precipitation.pdf>]
+<Figures/Fig_geoPrlambda_ces.pdf, id=802, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambda_ces.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambda_ces.pdf>
-Package pdftex.def Info: Figures/Fig_geoPrlambda_ces.pdf  used on input line 73
-0.
+Package pdftex.def Info: Figures/Fig_geoPrlambda_ces.pdf  used on input line 78
+6.
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
-
-[42 <./Figures/Niche_overestimation.pdf>]
-<Figures/Fig_geoPrlambdaacc.pdf, id=750, 650.43pt x 722.7pt>
+ [48 <./Figures/Niche_overestimation.pdf>]
+<Figures/Fig_geoPrlambdaacc.pdf, id=818, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambdaacc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambdaacc.pdf>
-Package pdftex.def Info: Figures/Fig_geoPrlambdaacc.pdf  used on input line 743
+Package pdftex.def Info: Figures/Fig_geoPrlambdaacc.pdf  used on input line 799
 .
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [43 <./Figures/Fig_geoPrlambda_ces.pdf>]
-<Figures/Fig_geoPrlambda_miroc.pdf, id=766, 650.43pt x 722.7pt>
+ [49 <./Figures/Fig_geoPrlambda_ces.pdf>]
+<Figures/Fig_geoPrlambda_miroc.pdf, id=834, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambda_miroc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambda_miroc.pdf>
 Package pdftex.def Info: Figures/Fig_geoPrlambda_miroc.pdf  used on input line 
-756.
+812.
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [44 <./Figures/Fig_geoPrlambdaacc.pdf>]
-<Figures/gardens_SR.pdf, id=781, 650.43pt x 578.16pt>
-File: Figures/gardens_SR.pdf Graphic file (type pdf)
-<use Figures/gardens_SR.pdf>
-Package pdftex.def Info: Figures/gardens_SR.pdf  used on input line 770.
-(pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
- [45 <./Figures/Fig_geoPrlambda_miroc.pdf>]
-<Figures/Posterior_ORS.pdf, id=798, 361.35pt x 433.62pt>
-File: Figures/Posterior_ORS.pdf Graphic file (type pdf)
-<use Figures/Posterior_ORS.pdf>
-Package pdftex.def Info: Figures/Posterior_ORS.pdf  used on input line 780.
-(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
- [46 <./Figures/gardens_SR.pdf>]
-<Figures/Posterior_SR.pdf, id=811, 361.35pt x 433.62pt>
-File: Figures/Posterior_SR.pdf Graphic file (type pdf)
-<use Figures/Posterior_SR.pdf>
-Package pdftex.def Info: Figures/Posterior_SR.pdf  used on input line 792.
-(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
- [47 <./Figures/Posterior_ORS.pdf>]
-<Figures/gardens_OSR.pdf, id=824, 578.16pt x 578.16pt>
-File: Figures/gardens_OSR.pdf Graphic file (type pdf)
-<use Figures/gardens_OSR.pdf>
-Package pdftex.def Info: Figures/gardens_OSR.pdf  used on input line 805.
-(pdftex.def)             Requested size: 375.80544pt x 375.79955pt.
-
-[48 <./Figures/Posterior_SR.pdf>]
-<Figures/Fig_geo_sr_ces.pdf, id=839, 722.7pt x 505.89pt>
-File: Figures/Fig_geo_sr_ces.pdf Graphic file (type pdf)
-<use Figures/Fig_geo_sr_ces.pdf>
-Package pdftex.def Info: Figures/Fig_geo_sr_ces.pdf  used on input line 816.
-(pdftex.def)             Requested size: 465.06004pt x 325.54391pt.
- [49 <./Figures/gardens_OSR.pdf>]
-<Figures/Fig_geo_sr_acc.pdf, id=853, 722.7pt x 505.89pt>
-File: Figures/Fig_geo_sr_acc.pdf Graphic file (type pdf)
-<use Figures/Fig_geo_sr_acc.pdf>
-Package pdftex.def Info: Figures/Fig_geo_sr_acc.pdf  used on input line 829.
-(pdftex.def)             Requested size: 465.06004pt x 325.54391pt.
- [50 <./Figures/Fig_geo_sr_ces.pdf>]
-<Figures/Fig_geo_sr_miroc.pdf, id=865, 722.7pt x 505.89pt>
-File: Figures/Fig_geo_sr_miroc.pdf Graphic file (type pdf)
-<use Figures/Fig_geo_sr_miroc.pdf>
-Package pdftex.def Info: Figures/Fig_geo_sr_miroc.pdf  used on input line 842.
-(pdftex.def)             Requested size: 465.06004pt x 325.54391pt.
- [51 <./Figures/Fig_geo_sr_acc.pdf>]
-<Figures/lambda_CI.pdf, id=877, 542.025pt x 578.16pt>
-File: Figures/lambda_CI.pdf Graphic file (type pdf)
-<use Figures/lambda_CI.pdf>
-Package pdftex.def Info: Figures/lambda_CI.pdf  used on input line 856.
-(pdftex.def)             Requested size: 446.26582pt x 476.03511pt.
- [52 <./Figures/Fig_geo_sr_miroc.pdf>] [53 <./Figures/lambda_CI.pdf>] [54] (./F
-orecasting.aux)
+ [50 <./Figures/Fig_geoPrlambdaacc.pdf>] [51 <./Figures/Fig_geoPrlambda_miroc.p
+df>] [52] (./Forecasting.aux)
 Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 (rerunfilecheck)             Checksum: A417B732F05FA37DB71566230B1AF58A;272.
  )
@@ -1273,13 +1258,13 @@ Package rerunfilecheck Info: File `Forecasting.out' has not changed.
 ### semi simple group (level 1) entered at line 103 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 30128 strings out of 476025
- 555880 string characters out of 5790018
- 1877388 words of memory out of 5000000
- 48718 multiletter control sequences out of 15000+600000
- 705856 words of font info for 983 fonts, out of 8000000 for 9000
+ 30086 strings out of 476025
+ 555239 string characters out of 5790018
+ 1883388 words of memory out of 5000000
+ 48709 multiletter control sequences out of 15000+600000
+ 703418 words of font info for 959 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,14n,94p,1401b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,14n,94p,1253b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1293,10 +1278,10 @@ b></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr
 /local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/local
 /texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texliv
 e/2023/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (54 pages, 18072593 bytes).
+Output written on Forecasting.pdf (52 pages, 17262829 bytes).
 PDF statistics:
- 1016 PDF objects out of 1200 (max. 8388607)
- 832 compressed objects within 9 object streams
+ 977 PDF objects out of 1000 (max. 8388607)
+ 812 compressed objects within 9 object streams
  187 named destinations out of 1000 (max. 500000)
- 252595 words of extra memory for PDF output out of 266212 (max. 10000000)
+ 252580 words of extra memory for PDF output out of 266212 (max. 10000000)
 
