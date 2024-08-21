@@ -212,8 +212,9 @@ For example, Life Table Response Experiments (LTRE) built from structured models
 In this study, we combine geographically-distributed common garden experiments, hierarchical Bayesian statistical modeling, two-sex population projection modeling, and climate back-casting and forecasting to understand demographic responses to climate change and their implications for past, present, and future range dynamics. 
 Our work focused on the dioecious plant Texas bluegrass (\textit{Poa arachnifera}), which is distributed along environmental gradients in the south-central U.S. corresponding to variation in temperature across latitude and precipitation across longitude (Fig. \ref{fig:study_design}). 
 This region has experienced rapid climate warming since 1900 and this is projected to continue through the end of the century (Fig. \ref{Sup:temp_variation}).  
+\tom{For example,}{Provide a more quantitative summary of how the climate is changing, i.e. For example, summer temperatures have increased by XX-XX degrees C since 1900, and climate models predict another XX-XX degrees of warming by 2100.}
 Our previous study showed that, despite evidence for differentiation of climatic niche between sexes, the female niche mattered the most in driving longitudinal range limits of Texas bluegrass \citep{miller2022two}. 
-However, that study used a single proxy variable (longitude) to represent environmental variation related to aridity and did not consider variation in temperature, which is the much stronger dimension of forecasted climate change in this region (Fig. \ref{Sup:temp_variation},\ref{Sup:pr_variation}). 
+However, that study used a single proxy variable (longitude) to represent environmental variation related to aridity and did not consider variation in temperature, which is the much stronger dimension of forecasted climate change in this region (Fig. \tom{\ref{Sup:temp_variation},\ref{Sup:pr_variation}}{Please improve the legend for these figures.}). 
 Developing a rigorous forecast for the implications of future climate change requires that we transition from climate-implicit to climate-explicit treatment of multiple environmental drivers as we do here.
 Leveraging the power of Bayesian inference, we take a probabilistic view of past, present, and future range limits by quantifying the probability of population viability ($Pr(\lambda\ge1)$) in relation to climate drivers of demography, given uncertainty arising from multiple sources of estimation and process error. %using Markov Chain Monte Carlo (MCMC) can be utilized to infer species niche which is defined as the range of resources and conditions allowing its populations of self-sustaining populations, conditional on different factors of the environment \citep{maguire1973niche,hutchinson1978introduction,diez2014probabilistic}
 Specifically, we asked: 
@@ -228,21 +229,24 @@ Specifically, we asked:
 \section*{Materials and methods}
 \subsection*{Study species}
 Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) (Figure \ref{fig:study_design}) \citep{hitchcock1971manual}\jacob{}{I have updated the map}. 
-Latitudinal limits of the Texas bluegrass distribution span 7.74 \degree C to 16.94 \degree C of temperature during the dormant season and 24.38 \degree C to 28.80 \degree C  during the dormant season. 
-Longitudinal limits span 244.9 mm to 901.5 mm of precipitation during the growing season and 156.3 mm to 373.3 mm. 
-Texas bluegrass grows between October and May (growing season), with onset of dormancy often from June to September (dormant season) \citep{kindiger2004interspecific}. 
+%Latitudinal limits of the Texas bluegrass distribution span 7.74 \degree C to 16.94 \degree C of temperature during the dormant season and 24.38 \degree C to 28.80 \degree C  during the dormant season. 
+%Longitudinal limits span 244.9 mm to 901.5 mm of precipitation during the growing season and 156.3 mm to 373.3 mm. 
+\tom{}{If you are showing all these maps here is no need to report the climate values in the text.}
+Texas bluegrass grows between October and May, flowers in spring, and goes dormant during the hot summer months of June to September \citep{kindiger2004interspecific}. 
+Following this life history, we divide the calendar year into growing (October 1 - May 31) and dormant seasons (June 1 - September 30). 
 
-Biological sex in Texas blueegrass is genetically based and the birth (seed) sex ratio is 1:1 \citep{renganayaki2005identification}. 
+Biological sex in Texas bluegrass is genetically based and the birth (seed) sex ratio is 1:1 \citep{renganayaki2005identification}. 
 Females and males are morphologically indistinguishable except for their inflorescences. 
-Flowering occurs in May and the species is wind pollinated \citep{hitchcock1971manual}. 
-Surveys of 22 natural populations throughout the species' distribution indicated that operational sex ratio (the female fraction of flowering plants) ranged from 0.007 to 0.986 with a mean of 0.404 \citep{miller2022two}. 
+Like all grasses, the species is wind pollinated \citep{hitchcock1971manual}. 
+Surveys of 22 natural populations throughout the species' distribution indicated that operational sex ratio (the female fraction of inflorescneces) ranged from 0.007 to 0.986 with a mean of 0.404 \citep{miller2022two}. 
 
 \subsection*{Common garden experiment}
-We set up a common garden experiment throughout and beyond the range of Texas bluegrass to quantify sex-specific demographic responses to climate. 
+\subsubsection*{Experimental design}
+We conducted a common garden experiment to quantify sex-specific demographic responses to climate variation. 
 Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
-The experiment was installed at 14 sites throughout and, in some cases, beyond the species' natural range (Figure \ref{fig:study_design}).
+The experiment was installed at 14 sites throughout and, in some cases, beyond the natural range of Texas bluegrass that sampled a broad range of temperature and precipitation (Figure \ref{fig:study_design}).\tom{}{A few comments about figure 1 (I cannot comment in the legend). Please update the gray diamonds as GBIF occurrences, not natural population surveys. Please add ``mm'' and ``\degree C'' to the titles. It would also be good to spell out ``growing'' and ``dormant'' seasons.}
 At each site, we established 14 blocks. 
-For each block we planted the same number of plant from each sex (three female and three male individuals) that were clonally propagated from females and males from eight natural source populations (Figure \ref{fig:study_design}); because sex is genetically-based, clones never deviated from their expected sex. 
+For each block we planted three female and three male individuals that were clonally propagated from females and males from eight natural source populations (Figure \ref{fig:study_design}); because sex is genetically-based, clones never deviated from their expected sex. 
 The experiment was established in November 2013 and was censused in May of 2014, 2015, and 2016. 
 At each census, we collected individual demographic data including survival (alive or dead), size (number of tillers), and number of panicles (reproductive inflorescences). 
 For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions years, since the start of the experiment did not include the full 2013-14 transition year.
@@ -250,8 +254,8 @@ For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions ye
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.90\linewidth]{Figures/POAR_survey_garden_map.pdf}
-  \caption{\textbf{Maps of 30-year (1990-2019) normal climate and study sites used for demographic monitoring of \emph{Poa arachnifera} in Texas, Kansas and Oklahoma in the United States}.
-  Precipitation of growing and precipitation of dormant season are in mm, temperature of the dormant and temperature of growing season are in \degree C.
+  \caption{\textbf{Maps of 30-year (1990-2019) climate normals and study sites used for demographic monitoring of \emph{Poa arachnifera} in Texas, Kansas and Oklahoma in the United States}.
+  Precipitation is in mm and temperature is in \degree C.
   We surveyed 22 natural populations (grey diamond).
   The common garden sites were installed on 14 sites (black circle) collected from 7 sources populations (red circle).
   See also (Figure \ref{Sup:temp_variation}, Figure \ref{Sup:pr_variation}) for more details about climate variation across the study sites since the beginning of last century.}
@@ -259,33 +263,28 @@ For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions ye
   \end{center}
 \end{figure}
 
-\subsection*{Climatic data collection}
+\subsubsection*{Climatic data collection}
 We gathered downscaled monthly temperature and precipitation for each site from Chelsa to describe observed climate conditions during our study period \citep{karger2017climatologies}.
 These climate data were used as covariates in vital rate regressions. 
 %We prefer temperature and precipitation because they capture the most the climate in the study region \colorbox{BurntOrange}{Source}. 
-We aligned the climatic years to match demographic transition years (June 1 -- May 31) rather than calendar years.
-Based on the natural history of this summer-dormant cool-season species, we divided each transition year into dormant (June 1 through September 30) and growing (October 1 through May 31) seasons. 
+We aligned the climatic years to match demographic transition years (June 1 -- May 31) and growing and dormant seasons within each year.
+%Based on the natural history of this summer-dormant cool-season species, we divided each transition year into dormant (June 1 through September 30) and growing (October 1 through May 31) seasons. 
 % The 2014-15 transition year was substantially wetter and cooler across the study region than 2015-16, especially during the growing season (Fig.\ref{Sup:climate_variation}), so our study design provides both spatial and inter-annual coverage of climate variables. 
-
-To back-cast and forecast demographic responses to changes in climate throughout the study region, we downloaded projection data for three 30-year periods: ``past'' (1901-1930), ``current'' (1990-2019) and ``future'' (2070-2100).
-Data for future climatic periods were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5). 
-The GCMs are: Model for Interdisciplinary Research on Climate (MIROC5), Australian Community Climate and Earth System Simulator (ACCESS1-3), Community Earth System Model (CESM1-BGC), Centro Euro-Mediterraneo sui Cambiamenti Climatici Climate Model (CMCC-CM).
+To back-cast and forecast demographic responses to changes in climate throughout the study region, we also downloaded projection data for three 30-year periods: ``past'' (1901-1930), ``current'' (1990-2019) and ``future'' (2070-2100).
+Data for future climatic periods were downloaded from four general circulation models (GCMs) selected from the Coupled Model Intercomparison Project Phase 5 (CMIP5): Model for Interdisciplinary Research on Climate (MIROC5), Australian Community Climate and Earth System Simulator (ACCESS1-3), Community Earth System Model (CESM1-BGC), Centro Euro-Mediterraneo sui Cambiamenti Climatici Climate Model (CMCC-CM).
 All the GCMs were also downloaded from chelsa \citep{sanderson2015representative}.
 We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing amounting to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which projects a radiative forcing of 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}. 
 
-Projection data for the three 30-year periods had warmer or colder conditions than observed in our experiment (Figure \ref{Sup:projectionMIROC}, Figure \ref{Sup:projectionACCESS}, Figure \ref{Sup:projectionCESM1}, Figure \ref{Sup:projectionCMCC}). 
-However, the observed period was substantially wetter and cooler across the study region than 2015-16, especially during the growing season (Figure \ref{Sup:climate_variation}), so our study design provides both spatial and inter-annual coverage of climate variables. 
+Projection data for the three 30-year periods included warmer or colder conditions than observed in our experiment (Figure \ref{Sup:projectionMIROC}, Figure \ref{Sup:projectionACCESS}, Figure \ref{Sup:projectionCESM1}, Figure \ref{Sup:projectionCMCC}), so extending our inferences to these conditions required extrapolation, as we describe below. 
+\tom{However, the observed period was substantially wetter and cooler across the study region than 2015-16, especially during the growing season (Figure \ref{Sup:climate_variation}), so our study design provides both spatial and inter-annual coverage of climate variables.}{I struggle to follow this sentence. I know one of the years was very different from the 30-year normal, which is good because it gives more climate coverage, but I think this can be explained more directly.} 
 
-
-\subsection*{Sex specific demographic responses to climate}
-\jacob{}{ I have reduced the redundancy between the two paragraphs and added the biological rationale for the model.  I hope that the explaination I added provided a clarification about why I did not use model selection.}
-We used individual level measurements of survival, growth (number of tillers), flowering, number of panicles to develop Bayesian linear mixed effect models describing how each vital rate varies as a function of sex, size, and four climate covariates (precipitation and temperature of growing and dormant season). 
-We kept the four climate covariates in the mixed effect models because each climatic variable describes different aspect of climate that could be important for the species persistence across its range. 
-Vital rate models were fit with second-degree polynomial functions and with the same linear predictors for the expected value ($\mu$)(Eq.\ref{eq:mu}).
-The second-degree polynomial was included because we expected that climate would affect vital rates through a hump-shaped relationship assuming that (i) the center of the range is the optimum range for the species (ii) and climate sets limits on whether habitats will be suitable for the study species.
-We also included the interaction effect of temperature and precipitation for each season to understand the synergistic effect of both variables on population demography. 
-We centered and standardized all climatic predictors to facilitate model convergence.
-Size (number of tillers) was on a natural logarithm scale. 
+\subsubsection*{Sex-specific demographic responses to climatic variation across common garden sites}
+We used individual-level measurements of survival, growth (change in number of tillers), flowering, and number of panicles (conditional on flowering) to develop Bayesian mixed effect models describing how each vital rate varies as a function of sex, size, and four climate covariates (precipitation and temperature of growing and dormant season). 
+%\tom{We kept the four climate covariates in the mixed effect models because each climatic variable describes different aspect of climate that could be important for the species persistence across its range.}{This sentence does not contain any information.} 
+These vital rate models included main effects of size (the natural log of tiller number), sex, and seasonal climate covariates. 
+Climate variables were fit with second-degree polynomial functions to accommodate the possibility of hump-shaped relationships (reduced demographic performance at both extremes).
+We also included two-way interactions between sex and each climate driver and between temperature and precipitation within each season, and a three-way interaction between sex, temperature, and precipitation within each season. 
+Vital rate models were fit with the same linear predictors for the expected value ($\mu$)(Eq.\ref{eq:mu}):
 \begin{align}\label{eq:mu}
 \begin{split}
 \mu = \beta_{0} + \beta_{1}size + \beta_{2}sex + \beta_{3}pptgrow + \beta_{4}pptdorm + \beta_{5}tempgrow + \beta_{6}tempdorm \\ 
@@ -296,123 +295,122 @@ Size (number of tillers) was on a natural logarithm scale.
 + \beta_{21}pptdorm^2*sex + \beta_{22}tempgrow^2*sex + \beta_{23}tempdorm^2*sex + \phi + \rho + \nu 
 \end{split}
 \end{align}
-\noindent where $\beta_{0}$ is the  grand mean intercept, $\beta_{1}$ is the size dependent slopes.
-$size$ was on a natural logarithm scale. 
-$\beta_{2}$...$\beta_{13}$ represent the climate dependent slopes.
-$\beta_{14}$...$\beta_{23}$ represent the sex-climate interaction slopes.
-$pptgrow$ is the precipitation of the growing season, $tempgrow$ is the temperature of the growing season, $pptdorm$ is the precipitation of the dormant season, $tempdorm$ is the temperature of the dormant season.
+%\noindent where $\beta_{0}$ is the  grand mean intercept, $\beta_{1}$ is the size dependent slopes.
+%$size$ was on a natural logarithm scale. 
+%$\beta_{2}$...$\beta_{13}$ represent the climate dependent slopes.
+%$\beta_{14}$...$\beta_{23}$ represent the sex-climate interaction slopes.
+%$pptgrow$ is the precipitation of the growing season, $tempgrow$ is the temperature of the growing season, $pptdorm$ is the precipitation of the dormant season, $tempdorm$ is the temperature of the dormant season.
+The linear predictor includes normally distributed random effects for block-to-block variation ($\phi \sim N(0,\ \sigma_{block})$), site to site variation ($\nu \sim N(0,\ \sigma_{site})$), and source-to-source variation that is related to the genetic provenence of the transplants used to establish the common garden ($\rho \sim N(0,\ \sigma_{source})$).
 
-Different link function ($f(\mu)$) was applied depending on the the vital rate distributions. 
+A different link function ($f(\mu)$) was applied depending on the the vital rate distributions. 
 We modeled survival and flowering data with a Bernoulli distribution.
 We modeled the growth (tiller number) with a zero-truncated Poisson inverse Gaussian distribution. 
-Fertility (panicle count) was model as zero-truncated negative binomial. 
-Each vital rate model includes normally distributed random effects for block-to-block variation ($\phi \sim N(0,\ \sigma_{block})$) and source-to-source variation that is related to the provenence of the seeds used to establish the common garden ($\rho \sim N(0,\ \sigma_{source})$), site to site variation ($\nu \sim N(0,\ \sigma_{site})$).
-We fit survival, growth, flowering models with generic weakly informative priors for coefficients ($\mu = 0,\ \sigma = 1.5$) and variances ($\gamma [0.1,\ 0.1]$).
-We fit fertility model with regularizing priors for coefficients ($\mu = 0,\ \sigma = 0.15$).
+Fertility (panicle count conditional on flowering) was modeled as zero-truncated negative binomial. 
+We used generic weakly informative priors to fit coefficients for survival, growth, flowering models ($\mu = 0,\ \sigma = 1.5$) and random effect variances ($\gamma [0.1,\ 0.1]$).
+\tom{We fit fertility model with regularizing priors for coefficients ($\mu = 0,\ \sigma = 0.15$).}{I think you need to explain a little more about why fertility was handled differently and what you mean by regularizing.}
 % because the models could not converge with the same priors that was used for he other vital rates.
-We ran three chains for 1000 samples for warmup and 4000 for sampling, with a thinning rate of 3.
-We accessed the quality of the models using the predictive check graphs \citep{piironen2017comparison} (Figure \ref{Sup:PPC}).
-To understand the effect of climate on vital rates, we got the 95 \% credible interval of the posterior distribution.  
-Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
-All models were fit in Stan \citep{rstan}. 
 
-\subsection*{Two-sex and female dominant climate-dependent matrix projection models}
-To estimate population growth rate and sex ratio, we used the climate-dependent vital rate regressions estimated above and the number of new recruit per year to build two matrix projection models (MPMs) structured by size (number of tillers) and sex.
-The first MPM assumes that climate affects population growth rate through the female alone (female dominant model). 
-The second MPM assumes that climate affects population growth rate through a sex-specific response to climate which may lead to skewness in sex ratio that will affect female vital rates (two-sex model). 
-Below we describe how the number of new recruit per year, the probability of seed viability, the female dominant and the two-sex models were built.
-
-Let $v$ be the probability of seed viability (Eq. \ref{eq:viab_fn}). 
-We modeled  $v$ using data collected from a sex-ratio experiment (Supplementary Method \ref{sec:experiment}).
-We assume that $v$ does not vary with climate.  
-\begin{align}\label{eq:viab_fn}
-v = v_{0} * (1 - OSR^{\alpha})
-\end{align}
-\noindent where $OSR$ is the (proportion of panicles that were female) in the experimental populations.
-$\alpha$ is the parameter that controls how seed viability declines with increasing female bias.
-
-Let $F_{x,\ t}$ and $M_{x,\ t}$ be the number of female and male plants of size $x$ in year $t$ present at a location that has $z$ as climate, where $x \in [L,\ U]$.
-$L$ is the minimum possible sizes and $U$ is the 95th percentile of observed maximum size.
-Let $F^{R}_{t}$ and $M^{R}_{t}$ be new recruits, which we assume do not reproduce in their first year.
-For a pre-breeding census, the expected numbers of recruits in year $t+1$ is given by:
-\begin{align}\label{eq:recruits}
-F^{R}_{t+1} = \sum_{L}^{U} 	[ \, p^{F}(x,\ z) \cdot c^{F}(x,\ z) \cdot d \cdot v(\mathbf{F_{t}},\ \mathbf{M_{t}}) \cdot m \cdot \rho 	] \, F_{x,\ t}
-\\
-M^{R}_{t+1} = \sum_{L}^{U} 	[ \, p^{F}(x,\ z) \cdot c^{F}(x,\ z) \cdot d \cdot v(\mathbf{F_{t}},\ \mathbf{M_{t}}) \cdot m \cdot (1-\rho) 	] \, F_{x,\ t}
-\end{align}
-
-\noindent where $p^{F}$ and $c^{F}$ are flowering probability and panicle production for females of size $x$, $d$ is the number of seeds per female panicle, $v$ is the probability that a seed is fertilized, $m$ is the probability that a fertilized seed germinates, and $\rho$ is the primary sex ratio (proportion of recruits that are female). 
-Seed fertilization depends on the OSR of panicles (following Eq. \ref{eq:viab_fn}) which was derived from the $U \times 1$ vectors of population structure $\mathbf{F_{t}}$ and $\mathbf{M_{t}}$:
-\begin{align}\label{eq:viab_MPM}
-v(\mathbf{F_{t}},\mathbf{M_{t}}) = v_{0} * \left[ 1 - \left( \frac{\sum_{L}^{U} p^{F}(x,\ z) c^{F}(x,\ z) F_{x,t}}{\sum_{L}^{U} p^{F}(x,\ z) c^{F}(x,\ z) F_{x,t} + p^{M}(x,\ z) c^{M}(x,\ z) M_{x,\ t}} \right) ^{\alpha}\right]
-\end{align}
-
-Thus, the dynamics of the size-structured component of the population are given by:
-\begin{align}\label{eq:dynamics}
-F_{y,t+1} = [ \, \sigma \cdot g^{F}(y,\ x=1,\ z) ] \, F^{R}_{t} + \sum_{L}^{U} 	[ \, s^{F}(x,\ z) \cdot g^{F}(y,\ x,\ z)] \, F_{x,\ t}
-\\
-M_{y,t+1} = [ \, \sigma \cdot g^{M}(y,\ x=1,\ z) ] \, M^{R}_{t} + \sum_{L}^{U} 	[ \,  s^{M}(x,\ z) \cdot g^{M}(y,\ x,\ z) ] \, M_{x,\ t}
-\end{align}
-
-\noindent In the two equations above, the first component indicates seedlings that survived their first year and enter the size distribution of established plants.
-Here, we assume that seedling survival probability ($\sigma$) is the same across sexes and climatic variables.
-We used $\sigma$ from a sister species \textit{Poa autumnalis} in east Texas (T.E.X. Miller and J.A. Rudgers, \textit{unpublished data}). 
-We did this because we had little information on the early life cycle transitions of greenhouse-raised transplants.
-We also assume that $g\ (y,\ x=1)$ is the probability that a surviving seedlings reach size $y$, the expected future size of L-tiller plants from the transplant experiment.
-The second component of the equations indicates survival and size transition of established plants from the previous year, where $s$ and $g$ give the probabilities of surviving at size $x$ and growing from sizes $x$ to $y$, respectively, and superscripts suggest that these functions may be unique to females ($F$) and males ($M$).
-
-Since the climate-dependent vital rate regressions were built using MCMC, we were able to propagate the uncertainty in vital rate parameters to uncertainty in predicted population growth rates ($\lambda$).
-We estimated population growth rate for the female dominant MPM using the function lambda in the package popbio \citep{popbio}. 
-Since the two-sex MPM is nonlinear (vital rates affect and are affected by population structure) we estimated the asymptotic geometric growth rate ($\lambda$) by numerical simulation, \jacob{and repeated this across a range of climate}{I think the key thing here is that the estimation of lambda was not from an eigen value as opposed to the female dominant.I added an explanation of "vital rates affect and are affected by population structure" in the first paragraph}.
-
-
-\subsection*{Life Table Response Experiments}
-\jacob{}{I modified this section. I understand your concern about accounting for the second order term in the first LTRE but I don't think we should be worry about that here. I am saying that because the technic here is similar to an ANOVA-- we dropped one predictor to see how much the error goes up. That's why we don't account for sex or size because lambda account for them already.}To identify which aspect of climate is most important for population viability, we used a Life Table Response Experiments (LTRE)  based on a non parametric model for the dependence of $\lambda$ on time-varying parameters \citep{ellner2016data}. 
-To do so, we used the RandomForest package to fit a regression model with four climatic variable (temperature of growing season, precipitation of growing season, temperature of the dormant season and precipitation of the dormant season)
-as predictors  and $\lambda$ as response \citep{liaw2002classification}.
-The regression model allowed the estimation of the relative importance of each predictor.  
-The importance is measured by asking: how wrongly is $\lambda$ predicted if we replaced the focal predictor (e.g., temperature of growing season) by a random value of the other predictors.
-
-To estimate the contribution of each sex to population growth rate variation, we decomposed the effect of each climate variable on population growth rate ($\lambda$) into contribution arising from the effect on each  vital rate \citep{caswell2000matrix}.
-At this end we used another LTRE with a "regression design"\citep{caswell1989analysis}.
-The LTRE with a "regression design"  estimates the contribution of each sex (Eq. \ref{eq:ltresex}).
-\begin{align}\label{eq:ltresex}
-\frac{\partial \lambda}{\partial climate} \approx \sum_{i} \frac{\partial \lambda}{\partial \theta^{F}_{i}} \frac{\partial \theta^{F}_{i}}{\partial climate} + \frac{\partial \lambda}{\partial \theta^{M}_{i}} \frac{\partial \theta^{M}_{i}}{\partial climate}
-\end{align}
-
-\noindent where, $\theta^{F}_{i}$ and $\theta^{M}_{i}$ represent sex-specific parameters: the regression coefficients for the intercepts and slopes of size-dependent vital rate functions. 
-Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters.
-\jacob{}{$\theta^{F}_{i}$ and $\theta^{M}_{i}$ include the interaction and second order effect. I think we are good with this formula}
-
-
-\subsection*{Climate change impacts on sex ratio}
+\subsubsection*{Sex ratio responses to climatic variation across common garden sites}
+We also used the experimental data to investigate how climatic variation across the range influenced sex ratio and operational sex ratio of the common garden populations. 
 To understand the impact of climate change on sex ratio, we used two methods. 
 First, we developed eight Bayesian linear models using  data collected during three years.
 Each model had OSR or SR as response variable and a climate variable as predictor (Eq.\ref{eq:sr_fn}). 
 \begin{align}\label{eq:sr_fn}
-SR = \omega_{0}+ \omega_{1}climate + \omega_{2}climate*climate\  + \  \epsilon
+	SR = \omega_{0}+ \omega_{1}climate + \omega_{2}climate*climate\  + \  \epsilon
 \end{align}
 \noindent where $SR$ is the proportion of panicles that were female or proportion of female individuals in the experimental populations.
 $\omega_{0}$ is the intercept, $\omega_{1}$ and $\omega_{2}$ are the climate dependent slopes.
 $\epsilon$ is error term.
 
-Second, we used the two-sex model to estimate sex-ratio by numerical simulation and repeated this across a range of climate. 
-This allow us to have the sex-ratio that account for all climate covariates. 
-We then compare sex ratio across time (past, present and future) using density plots. 
+\subsubsection*{Model-fitting procedures}
+All models were fit using Stan \citep{rstan} in R 4.3.1 \citep{RCoreteam}.
+\noindent We centered and standardized all climatic predictors to mean zero, variance one, which facilitated model convergence.
+We ran three chains for 1000 samples for warmup and 4000 for sampling, with a thinning rate of 3.
+We assessed the quality of the models using the predictive check graphs \citep{piironen2017comparison} (Figure \ref{Sup:PPC}).
+%To understand the effect of climate on vital rates, we got the 95 \% credible interval of the posterior distribution. 
+%Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
+ 
 
-\subsection*{Climate change impacts on niche and range shifts}
+\subsection*{Two-sex and female-dominant matrix projection models}
+To estimate population viability and sex ratio, we used the climate-dependent vital rate regressions estimated above, combined with additional data sources, to build female-dominant and two-sex versions of a climate-explicit matrix projection model (MPMs) structured by the discrete state variables size (number of tillers) and sex.
+The female-dominant and two-sex versions of the model both allow for sex-specific response to climate and differ only in the feedback between operational sex ratio and seed fertilization. 
+For clarity of presentation we do not explicitly include climate-dependence in the notation below, but the following model was evaluated over variation in seasonal temperature and precipitation. 
+
+Let $F_{x,\ t}$ and $M_{x,\ t}$ be the number of female and male plants of size $x$ in year $t$, where $x \in [1,...\ U]$.
+The minimum possible size is one tiller and $U$ is the 95th percentile of observed maximum size \tom{(\# tillers)}{Give this number.}.
+Let $F^{R}_{t}$ and $M^{R}_{t}$ be new female and male recruits in year $t$, which we treat as distinct from the rest of the size distribution because we assume they do not reproduce in their first year, consistent with our observations.
+For a pre-breeding census, the expected numbers of recruits in year $t+1$ is given by:
+\begin{align}\label{eq:recruits}
+F^{R}_{t+1} = \sum_{L}^{U} 	[ \, p^{F}(x) \cdot c^{F}(x) \cdot d \cdot v(\mathbf{F_{t}},\ \mathbf{M_{t}}) \cdot m \cdot \rho 	] \, F_{x,\ t}
+\\
+M^{R}_{t+1} = \sum_{L}^{U} 	[ \, p^{F}(x) \cdot c^{F}(x) \cdot d \cdot v(\mathbf{F_{t}},\ \mathbf{M_{t}}) \cdot m \cdot (1-\rho) 	] \, F_{x,\ t}
+\end{align}
+\noindent where $p^{F}$ and $c^{F}$ are flowering probability and panicle production for females of size $x$, $d$ is the number of seeds per female panicle, $v$ is the probability that a seed is fertilized, $m$ is the probability that a fertilized seed germinates, and $\rho$ is the primary sex ratio (proportion of recruits that are female), which we assume to be $0.5$. 
+
+In the two-sex model, seed fertilization is a function of population structure, allowing for feedback between vital rates and operational sex ratio (OSR). 
+In the context of the model, OSR is defined as the fraction of panicles that are female and is derived from the $U \times 1$ vectors $\mathbf{F_{t}}$ and $\mathbf{M_{t}}$:
+\begin{align}\label{eq:viab_MPM}
+	v(\mathbf{F_{t}},\mathbf{M_{t}}) = v_{0} * \left[ 1 - \left( \frac{\sum_{1}^{U} p^{F}(x,\ z) c^{F}(x,\ z) F_{x,t}}{\sum_{1}^{U} p^{F}(x,\ z) c^{F}(x,\ z) F_{x,t} + p^{M}(x,\ z) c^{M}(x,\ z) M_{x,\ t}} \right) ^{\alpha}\right]
+\end{align}
+The summations tally the total number of female and male panicles over the size distribution, giving the fraction female. 
+This function has the properties that seed fertilization is maximized at $v_{0}$ as OSR approaches 100\% male, goes to zero as OSR approaches 100\% female, and parameter $\alpha$ controls how female seed viability declines as male panicles become rare. 
+We estimated these parameters using data from a sex ratio manipulation experiment, conducted in the center of the range, in which seed fertilization was measured in plots of varying OSR; this experiment is described elsewhere  \citep{compagnoni2017can} and is summarized in \tom{Supplementary Method \ref{sec:experiment}}{I think the supplement should also include a data figure showing the fit of the model to the experimental data.}. 
+This experiment also provided estimates for seed number per panicle ($d$) and germination rate ($m$). 
+Lacking data on climate-dependence, we assume that seed fertilization, seed number, and germination do not vary with climate.  
+
+The dynamics of the size-structured component of the population are given by:
+\begin{align}\label{eq:dynamics}
+F_{y,t+1} = [ \, \sigma \cdot g^{F}(y,\ x=1) ] \, F^{R}_{t} + \sum_{L}^{U} 	[ \, s^{F}(x) \cdot g^{F}(y,\ x)] \, F_{x,\ t}
+\\
+M_{y,t+1} = [ \, \sigma \cdot g^{M}(y,\ x=1) ] \, M^{R}_{t} + \sum_{L}^{U} 	[ \,  s^{M}(x) \cdot g^{M}(y,\ x) ] \, M_{x,\ t}
+\end{align}
+
+\noindent In the equations above, the first terms indicate recruits that survived their first year and enter the size distribution of established plants.
+Here, we assume that seedling survival probability ($\sigma$) is the same across sexes and climatic variables.
+We estimated the seedling survival probability $\sigma$ using demographic data from the congeneric species \textit{Poa autumnalis} in east Texas (T.E.X. Miller and J.A. Rudgers, \textit{unpublished data}), and we assume that $\sigma$ is the same across sexes and climatic variables. 
+We did this because we had little information on the early life cycle transitions of greenhouse-raised transplants.
+We used $g\ (y,\ x=1)$ (the future size distribution of one-tiller plants from the transplant experiment) to give the probability that a surviving recruit reaches size $y$.
+The second component of the equations indicates survival and size transition of established plants from the previous year, where $s$ and $g$ give the probabilities of surviving at size $x$ and growing from sizes $x$ to $y$, respectively, and superscripts indicate that these functions may be unique to females ($F$) and males ($M$).
+
+The model described above yields a $2(U+1) \times 2(U+1)$ transtion matrix. 
+We estimated the population growth rate $\lambda$ of the female dominant model as the leading eigenvalue of the transition matrix. 
+Since the two-sex MPM is nonlinear (matrix elements affect and are affected by population structure) we estimated $\lambda$ and stable sex ratio (female fraction of all individuals) and operational sex ratio (female fraction of panicles) by numerical simulation.
+Since all parameters were estimated using MCMC sampling, we were able to propagate the uncertainty in our estimates of the vital rate parameters to uncertainty in $\lambda$. 
+\tom{Furthermore, by sampling over distributions associated with site, block, and source population variance terms, we are able to additionally incorporate process error into the total uncertainty in $\lambda$.}{I just want to confirm that this is actually what you did.}
+
+
+\subsection*{Life Table Response Experiments}
+%\jacob{}{I modified this section. I understand your concern about accounting for the second order term in the first LTRE but I don't think we should be worry about that here. I am saying that because the technic here is similar to an ANOVA-- we dropped one predictor to see how much the error goes up. That's why we don't account for sex or size because lambda account for them already.}
+We conducted two types of Life Table Response Experiments (LTRE) to isolate contributions of climate variables and sex-specific vital rates to variation in $\lambda$.
+First, to identify which aspect of climate is most important for population viability, we used an LTRE based on a nonparametric model for the dependence of $\lambda$ on parameters associated with seasonal temperature and precipitation \citep{ellner2016data}. 
+To do so, we used the RandomForest package to fit a regression model with four climatic variables (temperature of growing season, precipitation of growing season, temperature of the dormant season and precipitation of the dormant season) as predictors  and \tom{$\lambda$}{Is this lambda from the female-dominant or two-sex model? Does it matter?} as response \citep{liaw2002classification}.
+The regression model allowed the estimation of the relative importance of each predictor. 
+\tom{The importance is measured by asking: how wrongly is $\lambda$ predicted if we replaced the focal predictor (e.g., temperature of growing season) by a random value of the other predictors.}{I do not understand this.}
+
+Second, to understand how climate drivers influence $\lambda$ via sex-specific demography, we decomposed the effect of each climate variable on population growth rate ($\lambda$) into contribution arising from the effect on each female and male vital rate using a ``regression design'' LTRE \citep{caswell1989analysis,caswell2000matrix}.
+This LTRE decomposes the sensitivity of $\lambda$ to climate according to:
+\begin{align}\label{eq:ltresex}
+\frac{\partial \lambda}{\partial climate} \approx \sum_{i} \frac{\partial \lambda}{\partial \theta^{F}_{i}} \frac{\partial \theta^{F}_{i}}{\partial climate} + \frac{\partial \lambda}{\partial \theta^{M}_{i}} \frac{\partial \theta^{M}_{i}}{\partial climate}
+\end{align}
+
+\noindent where, $\theta^{F}_{i}$ and $\theta^{M}_{i}$ represent sex-specific parameters (the regression coefficients of the vital rate functions). 
+Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters.
+\jacob{}{$\theta^{F}_{i}$ and $\theta^{M}_{i}$ include the interaction and second order effect. I think we are good with this formula}\tom{}{I do not agree. It is true that you can compute this, but only by ``turning off'' the interaction by holding the interacting variable constant. I still think this needs to be better addressed in both LTRE analyses.}
+
+\subsection*{Population viability across the climatic niche and geographic range}
 % A species' ecological niche can be defined as the range of resources and conditions allowing its populations to self- sustained  ($\lambda > 1$) \citep{maguire1973niche,hutchinson1978introduction,diez2014probabilistic}.
-To understand the impact of climate change on species niche shifts, we estimated the probability of self- sustaining populations, which is Pr ($\lambda > 1$) conditional to (i) temperature and precipitation of the dormant season or to (ii) temperature and precipitation of the growing season.
-Pr ($\lambda > 1$) was calculated for the two-sex model and the female dominant MPMs using the proportion of the 300 Markov chain Monte Carlo iterations that lead to a $\lambda > 1$ \citep{diez2014probabilistic}.
-The probability of self- sustaining populations was then represented as a contour plot with values of Pr ($\lambda > 1$) at given temperature and precipitation for the growing and dormant season across time (past, present and future). 
+To understand the impact of climate change on species niche shifts, we estimated the probability of self- sustaining populations, which is Pr ($\lambda \ge 1$) conditional to temperature and precipitation of the dormant and growing seasons.
+Pr ($\lambda > 1$) was calculated for the two-sex model and the female dominant MPMs using the proportion of the 300 MCMC samples that lead to a $\lambda \ge 1$ \citep{diez2014probabilistic}.
+Population viability in climate niche space was then represented as a contour plot with values of Pr ($\lambda > 1$) at given temperature and precipitation for the growing season, holding dormant season climate constant, and vice versa. 
+We also visualized how our common garden sites have ``moved'' through climate space through time due to climate change. 
 
-Pr ($\lambda > 1$) was also mapped onto geographic layers of three state (Texas, Oklahoma and Kansas) to delineate past, current and future potential distribution of the species.
-To do so, we estimated Pr ($\lambda > 1$) conditional to all climate covariates for each pixel ($\sim$25 km2) across the species range for each time period (past, present, future).
+Pr ($\lambda > 1$) was also mapped onto geographic layers of three US states (Texas, Oklahoma and Kansas) to delineate past, current and future potential geographic distribution of the species.
+To do so, we estimated Pr ($\lambda > 1$) conditional to all climate covariates for each pixel ($\sim$25 km2) for each time period (past, present, future).
 Because of the amount of the computation involved in the Markov chain Monte Carlo iterations, use only 100 posterior samples to estimate Pr ($\lambda > 1$) across the study area (Texas, Oklahoma and Kansas).
 
-To compare the probability of self-sustaining populations between the female dominant and the two-sex model, we used a zero-inflated beta model in brms \citep{brms}. 
+\tom{To compare the probability of self-sustaining populations between the female dominant and the two-sex model, we used a zero-inflated beta model in brms \citep{brms}. }{This just floats here without much context. Not sure we need it, but I am flagging for now and will come back to this after reading the results.}
 
-All the analyses were performed in R 4.3.1 \citep{RCoreteam}
+
 % \tom{However the estimation of the impact of climate change on niche and range shifts were processed in parallel using open-source software on the Rice Super computer (NOTS) and the German Centre for Integrative Biodiversity Research (iDiv) High-Performance Computing Cluster.}{I am not sure you need this -- it was still done in R.}
 
 \section*{Results}
