@@ -9914,10 +9914,14 @@ mean(OSR)
 ## compare to common garden sex ratios
 #OSR by year
 garden_osr <- poar.clim_seasonal %>% 
-  dplyr::select(year, site, Sex,zpptgrow,zpptdorm,ztempgrow,ztempdorm,flowerN_t1) %>% 
-  group_by(year,zpptgrow,zpptdorm,ztempgrow,ztempdorm,site, Sex) %>% 
+  dplyr::select(year, site, Block,Code,Sex,zpptgrow,zpptdorm,ztempgrow,ztempdorm,flowerN_t1) %>% 
+  group_by(year,zpptgrow,zpptdorm,ztempgrow,ztempdorm,site,Block,Code, Sex) %>% 
   summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_panicles) %>% 
+  na.omit %>% 
+  mutate( site= site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
   dplyr::rename(
     fem_pan ="F",
          mal_pan = "M",
@@ -9932,11 +9936,15 @@ garden_osr <- poar.clim_seasonal %>%
 
 #OSR pooled across years
 garden_osr_poolyr <- poar.clim_seasonal %>% 
-  dplyr::select(site, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,flowerN_t1) %>% 
-  group_by(zpptgrow,zpptdorm,ztempgrow,ztempdorm, site, Sex) %>% 
+  dplyr::select(site,Block,Code, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,flowerN_t1) %>% 
+  group_by(zpptgrow,zpptdorm,ztempgrow,ztempdorm, site,Block,Code, Sex) %>% 
   summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_panicles) %>% 
-  rename(fem_pan = "F",
+  na.omit %>% 
+  mutate( site= site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
+  dplyr::rename(fem_pan = "F",
          mal_pan = "M",
          tempdorm=ztempdorm,
          tempgrow=ztempgrow,
@@ -9947,10 +9955,13 @@ garden_osr_poolyr <- poar.clim_seasonal %>%
 
 ##sex ratio by year
 garden_sr <- poar.clim_seasonal %>% 
-  dplyr::select( year, site, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,surv_t1) %>% 
-  group_by(year, zpptgrow,zpptdorm,ztempgrow, ztempdorm, site, Sex) %>% 
+  dplyr::select( year, site,Block,Code, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,surv_t1) %>% 
+  group_by(year, zpptgrow,zpptdorm,ztempgrow, ztempdorm, site,Block,Code, Sex) %>% 
   summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_plants) %>% 
+  mutate( site= site %>% as.factor %>% as.numeric,
+          Block = Block %>% as.factor %>% as.numeric,
+          source = Code %>% as.factor %>% as.numeric ) %>%
   rename(fem = `F`,
          mal = `M`,
          tempdorm=ztempdorm,
@@ -9961,8 +9972,8 @@ garden_sr <- poar.clim_seasonal %>%
          sr = fem/total)
 ##sex ratio pooled across years
 garden_sr_poolyr <- poar.clim_seasonal %>%
-  dplyr::select(site, Sex, zpptgrow, zpptdorm, ztempgrow, ztempdorm, surv_t1) %>% 
-  group_by(zpptgrow,zpptdorm,ztempgrow, ztempdorm, site, Sex) %>% 
+  dplyr::select(site,Block,Code, Sex, zpptgrow, zpptdorm, ztempgrow, ztempdorm, surv_t1) %>% 
+  group_by(zpptgrow,zpptdorm,ztempgrow, ztempdorm, site,Block,Code, Sex) %>% 
   summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_plants) %>% 
   rename(fem = `F`,
@@ -9980,159 +9991,72 @@ garden_sr_poolyr <- poar.clim_seasonal %>%
 ## Use the same stan model as above to fit these longitudinal trends
 garden_osr_dat <- list(y = garden_osr_poolyr$fem_pan,
                        n_trials = garden_osr_poolyr$tot_pan,
+                       n_blocks = garden_osr_poolyr$Block %>% n_distinct,
+                       n_sites   = garden_osr_poolyr$site %>% n_distinct,
+                       n_sources =  garden_osr_poolyr$source %>% n_distinct,
+                       site   = garden_osr_poolyr$site,
+                       source =  garden_osr_poolyr$source,
+                        block  = garden_osr_poolyr$Block,
                        tempgrow = as.vector(garden_osr_poolyr$tempgrow),
                        tempdorm = as.vector(garden_osr_poolyr$tempdorm),
                        pptdorm=as.vector(garden_osr_poolyr$pptgrow),
                        pptgrow=as.vector(garden_osr_poolyr$pptdorm),
                        N = nrow(garden_osr_poolyr))
 
+
 ```
 
 ```{r}
 sim_pars <- list(
   warmup = 1000, 
-  iter = 4000, 
+  iter = 9000, 
   thin = 3, 
   chains = 3
 )
 ```
 
 ```{r}
-fit_garden_osr_tempgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_tempgrow.stan',
+# library(cmdstanr)
+fit_garden_osr <- stan(
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_climate.stan',
   data = garden_osr_dat,
   warmup = sim_pars$warmup,
   iter = sim_pars$iter,
   thin = sim_pars$thin,
   chains = sim_pars$chains )
-
-fit_garden_osr_tempdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_temporm.stan',
-  data = garden_osr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-fit_garden_osr_pptgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptgrow.stan',
-  data = garden_osr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-fit_garden_osr_pptdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptdorm.stan',
-  data = garden_osr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-
 ```
 
 ```{r}
-traceplot(fit_garden_osr_tempgrow, pars = quote_bare(b0,b_tempgrow,b_tempgrow2))+theme_bw()
-traceplot(fit_garden_osr_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2))+theme_bw()
-traceplot(fit_garden_osr_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2))+theme_bw()
-traceplot(fit_garden_osr_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2))+theme_bw()
+traceplot(fit_garden_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))+theme_bw()
+
+pairs(fit_garden_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))
+
 ```
 
 ```{r}
 ## pull out coefficients
-coef_garden_osr_tempgrow <- rstan::extract(fit_garden_osr_tempgrow,par=c("b0","b_tempgrow","b_tempgrow2"))
-coef_garden_osr_pptgrow <- rstan::extract(fit_garden_osr_pptgrow,par=c("b0","b_pptgrow","b_pptgrow2"))
-coef_garden_osr_tempdorm <- rstan::extract(fit_garden_osr_tempdorm,par=c("b0","b_tempdorm","b_tempdorm2"))
-coef_garden_osr_pptdorm <- rstan::extract(fit_garden_osr_pptdorm,par=c("b0","b_pptdorm","b_pptdorm2"))
+coef_garden_osr <- rstan::extract(fit_garden_osr_tempgrow,pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))
 ```
 
 ```{r}
-posterior_pptgrow <- as.array(fit_garden_osr_pptgrow)
+posterior_osr <- as.array(fit_garden_osr)
 color_scheme_set("orange")
-osr_pptgrow<-mcmc_intervals(posterior_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_pptgrow","b_pptgrow2"),
+osr_pptgrow<-mcmc_intervals(posterior_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow)) + 
+  ggplot2::scale_y_discrete(limits = b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow,
                             labels=c("b0"="b0",
                                      "b_pptgrow"="pptgrow",
-                                     "b_pptgrow2"=expression(pptgrow^2)))+
+                                     "b_tempgrow"="tempgrow",
+                                     "b_pptdorm"="pptdorm",
+                                     "b_tempdorm"="tempdorm",
+                                     "b_pptgrow2"=expression(pptgrow^2),
+                                   "b_tempgrow2"=expression(tempgrow^2),
+                                    "b_pptdorm2"=expression(pptdorm^2),
+                                    "b_tempdorm2"=expression(tempdorm^2))+
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates ")+
   xlim(-0.5,0.5)+
   ggtitle("A") +
-  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
-  theme_pubr()+
-  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 8),
-        axis.text.y  = element_text(size = 10),
-        axis.line.x = element_line(linewidth = 0.1),
-        axis.line.y = element_line(linewidth = 0.1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_rect(colour = "black", size=0.5))
-
-posterior_tempgrow <- as.array(fit_garden_osr_tempgrow)
-osr_tempgrow<-mcmc_intervals(posterior_tempgrow, pars = quote_bare(b0,b_tempgrow,b_tempgrow2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_tempgrow","b_tempgrow2"),
-                            labels=c("b0"="b0",
-                                     "b_tempgrow"="tempgrow",
-                                     "b_tempgrow2"=expression(tempgrow^2)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
-  xlab("Posterior estimates ")+
-  xlim(-1,1)+
-  ggtitle("B") +
-  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
-  theme_pubr()+
-  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 8),
-        axis.text.y  = element_text(size = 10),
-        axis.line.x = element_line(linewidth = 0.1),
-        axis.line.y = element_line(linewidth = 0.1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_rect(colour = "black", size=0.5))
-
-posterior_pptdorm <- as.array(fit_garden_osr_pptdorm)
-osr_pptdorm<-mcmc_intervals(posterior_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_pptdorm","b_pptdorm2"),
-                            labels=c("b0"="b0",
-                                     "b_pptdorm"="pptdorm",
-                                     "b_pptdorm2"=expression(pptdorm^2)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
-  xlab("Posterior estimates ")+
-   xlim(-0.5,0.5)+
-  ggtitle("C") +
-  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
-  theme_pubr()+
-  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 8),
-        axis.text.y  = element_text(size = 10),
-        axis.line.x = element_line(linewidth = 0.1),
-        axis.line.y = element_line(linewidth = 0.1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_rect(colour = "black", size=0.5))
-
-posterior_tempdorm <- as.array(fit_garden_osr_tempdorm)
-osr_tempdorm<-mcmc_intervals(posterior_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_tempdorm","b_tempdorm2"),
-                            labels=c("b0"="b0",
-                                     "b_tempdorm"="tempdorm",
-                                     "b_tempdorm2"=expression(tempdorm^2)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
-  xlab("Posterior estimates ")+
-  xlim(-0.5,0.5)+
-  ggtitle("D") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
