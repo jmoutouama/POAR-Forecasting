@@ -9914,14 +9914,10 @@ mean(OSR)
 ## compare to common garden sex ratios
 #OSR by year
 garden_osr <- poar.clim_seasonal %>% 
-  dplyr::select(year, site, Block,Code,Sex,zpptgrow,zpptdorm,ztempgrow,ztempdorm,flowerN_t1) %>% 
-  group_by(year,zpptgrow,zpptdorm,ztempgrow,ztempdorm,site,Block,Code, Sex) %>% 
+  dplyr::select(year, site, Sex,zpptgrow,zpptdorm,ztempgrow,ztempdorm,flowerN_t1) %>% 
+  group_by(year,zpptgrow,zpptdorm,ztempgrow,ztempdorm,site, Sex) %>% 
   summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_panicles) %>% 
-  na.omit %>% 
-  mutate( site= site %>% as.factor %>% as.numeric,
-          Block = Block %>% as.factor %>% as.numeric,
-          source = Code %>% as.factor %>% as.numeric ) %>%
   dplyr::rename(
     fem_pan ="F",
          mal_pan = "M",
@@ -9936,15 +9932,11 @@ garden_osr <- poar.clim_seasonal %>%
 
 #OSR pooled across years
 garden_osr_poolyr <- poar.clim_seasonal %>% 
-  dplyr::select(site,Block,Code, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,flowerN_t1) %>% 
-  group_by(zpptgrow,zpptdorm,ztempgrow,ztempdorm, site,Block,Code, Sex) %>% 
+  dplyr::select(site, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,flowerN_t1) %>% 
+  group_by(zpptgrow,zpptdorm,ztempgrow,ztempdorm, site, Sex) %>% 
   summarise(total_panicles = sum(flowerN_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_panicles) %>% 
-  na.omit %>% 
-  mutate( site= site %>% as.factor %>% as.numeric,
-          Block = Block %>% as.factor %>% as.numeric,
-          source = Code %>% as.factor %>% as.numeric ) %>%
-  dplyr::rename(fem_pan = "F",
+  rename(fem_pan = "F",
          mal_pan = "M",
          tempdorm=ztempdorm,
          tempgrow=ztempgrow,
@@ -9955,13 +9947,10 @@ garden_osr_poolyr <- poar.clim_seasonal %>%
 
 ##sex ratio by year
 garden_sr <- poar.clim_seasonal %>% 
-  dplyr::select( year, site,Block,Code, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,surv_t1) %>% 
-  group_by(year, zpptgrow,zpptdorm,ztempgrow, ztempdorm, site,Block,Code, Sex) %>% 
+  dplyr::select( year, site, Sex, zpptgrow,zpptdorm,ztempgrow, ztempdorm,surv_t1) %>% 
+  group_by(year, zpptgrow,zpptdorm,ztempgrow, ztempdorm, site, Sex) %>% 
   summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_plants) %>% 
-  mutate( site= site %>% as.factor %>% as.numeric,
-          Block = Block %>% as.factor %>% as.numeric,
-          source = Code %>% as.factor %>% as.numeric ) %>%
   rename(fem = `F`,
          mal = `M`,
          tempdorm=ztempdorm,
@@ -9972,8 +9961,8 @@ garden_sr <- poar.clim_seasonal %>%
          sr = fem/total)
 ##sex ratio pooled across years
 garden_sr_poolyr <- poar.clim_seasonal %>%
-  dplyr::select(site,Block,Code, Sex, zpptgrow, zpptdorm, ztempgrow, ztempdorm, surv_t1) %>% 
-  group_by(zpptgrow,zpptdorm,ztempgrow, ztempdorm, site,Block,Code, Sex) %>% 
+  dplyr::select(site, Sex, zpptgrow, zpptdorm, ztempgrow, ztempdorm, surv_t1) %>% 
+  group_by(zpptgrow,zpptdorm,ztempgrow, ztempdorm, site, Sex) %>% 
   summarise(total_plants = sum(surv_t1,na.rm=T)) %>% 
   spread(key=Sex,value=total_plants) %>% 
   rename(fem = `F`,
@@ -9984,19 +9973,12 @@ garden_sr_poolyr <- poar.clim_seasonal %>%
          pptgrow=zpptgrow) %>% 
   mutate(total=fem+mal,
          sr = fem/total)
-
 ```
 
 ```{r}
 ## Use the same stan model as above to fit these longitudinal trends
 garden_osr_dat <- list(y = garden_osr_poolyr$fem_pan,
                        n_trials = garden_osr_poolyr$tot_pan,
-                       n_blocks = garden_osr_poolyr$Block %>% n_distinct,
-                       n_sites   = garden_osr_poolyr$site %>% n_distinct,
-                       n_sources =  garden_osr_poolyr$source %>% n_distinct,
-                       site   = garden_osr_poolyr$site,
-                       source =  garden_osr_poolyr$source,
-                        block  = garden_osr_poolyr$Block,
                        tempgrow = as.vector(garden_osr_poolyr$tempgrow),
                        tempdorm = as.vector(garden_osr_poolyr$tempdorm),
                        pptdorm=as.vector(garden_osr_poolyr$pptgrow),
@@ -10035,28 +10017,31 @@ pairs(fit_garden_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_temp
 
 ```{r}
 ## pull out coefficients
-coef_garden_osr <- rstan::extract(fit_garden_osr_tempgrow,pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))
+coef_garden_osr <- rstan::extract(fit_garden_osr,pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))
+names(coef_garden_osr)
 ```
 
 ```{r}
 posterior_osr <- as.array(fit_garden_osr)
 color_scheme_set("orange")
-osr_pptgrow<-mcmc_intervals(posterior_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow)) + 
-  ggplot2::scale_y_discrete(limits = b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow,
+osr<-mcmc_intervals(posterior_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow)) + 
+   ggplot2::scale_y_discrete(limits = c("b0","b_tempgrow","b_pptgrow","b_pptdorm","b_tempdorm","b_pptgrow2","b_pptdorm2","b_tempgrow2","b_tempdorm2","b_tempdormpptdorm","b_tempgrowpptgrow"),
                             labels=c("b0"="b0",
                                      "b_pptgrow"="pptgrow",
                                      "b_tempgrow"="tempgrow",
                                      "b_pptdorm"="pptdorm",
                                      "b_tempdorm"="tempdorm",
+                                     "b_tempdormpptdorm"="tempdormpptdorm",
+                                     "b_tempgrowpptgrow"="tempgrowpptgrow",
                                      "b_pptgrow2"=expression(pptgrow^2),
                                    "b_tempgrow2"=expression(tempgrow^2),
                                     "b_pptdorm2"=expression(pptdorm^2),
-                                    "b_tempdorm2"=expression(tempdorm^2))+
+                                    "b_tempdorm2"=expression(tempdorm^2)))+
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates ")+
-  xlim(-0.5,0.5)+
-  ggtitle("A") +
+  xlim(-1,1)+
+  # ggtitle("A") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
@@ -10073,15 +10058,15 @@ osr_pptgrow<-mcmc_intervals(posterior_osr, pars = quote_bare(b0,b_tempgrow,b_ppt
 ```
 
 ```{r,eval=FALSE}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_ORS.pdf",useDingbats = F,height=6,width=5)
-ggarrange(osr_pptgrow,osr_tempgrow,osr_pptdorm,osr_tempdorm + rremove("ylab"), ncol = 2, nrow = 2)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_ORS.pdf",useDingbats = F,height=4,width=5)
+ggarrange(osr + rremove("ylab"), ncol = 1, nrow = 1)
 dev.off()
 ```
 
 ```{r}
 set.seed(13)
-n_post_draws<-500
-osr_post_draws <- sample.int(length(coef_garden_osr_tempgrow$b0), n_post_draws)
+n_post_draws<-300
+osr_post_draws <- sample.int(length(coef_garden_osr$b0), n_post_draws)
 ```
 
 ```{r}
@@ -10114,64 +10099,89 @@ par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
 
 plot(garden_osr_poolyr$pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
      xlab="Precipitation (grow.season)",ylab="Operational Sex Ratio")
+points(garden_osr_poolyr$pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
 abline(h=0.5,col="gray",lty=2)
 mtext("A",side = 3, adj = 0,cex=1.25)
 for(p in 1:n_post_draws){
   lines(x_pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),
-        invlogit(coef_garden_osr_pptgrow$b0[osr_post_draws[p]] +
-                   coef_garden_osr_pptgrow$b_pptgrow[osr_post_draws[p]] * x_pptgrow +
-                   coef_garden_osr_pptgrow$b_pptgrow2[osr_post_draws[p]] * x_pptgrow* x_pptgrow),
+        invlogit(coef_garden_osr$b0[osr_post_draws[p]] +
+                   coef_garden_osr$b_pptgrow[osr_post_draws[p]] * x_pptgrow +
+                   coef_garden_osr$b_tempgrow[osr_post_draws[p]] * mean(garden_osr_poolyr$tempgrow) +
+                   coef_garden_osr$b_pptdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm) + 
+                   coef_garden_osr$b_tempdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$tempdorm) + 
+                   coef_garden_osr$b_pptgrow2[osr_post_draws[p]] * x_pptgrow* x_pptgrow)+
+          coef_garden_osr$b_tempgrow2[osr_post_draws[p]] * mean(garden_osr_poolyr$tempgrow)* mean(garden_osr_poolyr$tempgrow)+
+       coef_garden_osr$b_pptdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm)* mean(garden_osr_poolyr$pptdorm)+
+       coef_garden_osr$b_tempdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$tempdorm)* mean(garden_osr_poolyr$tempdorm),
         col=alpha("#E6AB02",0.1))
 }
-points(garden_osr_poolyr$pptgrow*sd(garden_osr_poolyr_plot$pptgrow)+mean(garden_osr_poolyr_plot$pptgrow),cex=1.5,
-       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
 
 
 
 plot(garden_osr_poolyr$tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
      xlab="Temperature (grow.season)",ylab="Operational Sex Ratio")
+points(garden_osr_poolyr$tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
 abline(h=0.5,col="gray",lty=2)
 mtext("B",side = 3, adj = 0,cex=1.25)
 for(p in 1:n_post_draws){
   lines(x_tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),
-        invlogit(coef_garden_osr_tempgrow$b0[osr_post_draws[p]] +
-                   coef_garden_osr_tempgrow$b_tempgrow[osr_post_draws[p]] * x_tempgrow +
-                   coef_garden_osr_tempgrow$b_tempgrow2[osr_post_draws[p]] * x_tempgrow* x_tempgrow),
+        invlogit(coef_garden_osr$b0[osr_post_draws[p]] +
+                   coef_garden_osr$b_tempgrow[osr_post_draws[p]] * x_tempgrow +
+                   coef_garden_osr$b_pptgrow[osr_post_draws[p]] * mean(garden_osr_poolyr$pptgrow) +
+                   coef_garden_osr$b_pptdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm) + 
+                   coef_garden_osr$b_tempdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$tempdorm) + 
+                   coef_garden_osr$b_pptgrow2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptgrow)* mean(garden_osr_poolyr$pptgrow))+
+          coef_garden_osr$b_tempgrow2[osr_post_draws[p]] * x_tempgrow* x_tempgrow+
+       coef_garden_osr$b_pptdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm)* mean(garden_osr_poolyr$pptdorm)+
+       coef_garden_osr$b_tempdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$tempdorm)* mean(garden_osr_poolyr$tempdorm),
         col=alpha("#E6AB02",0.1))
 }
-points(garden_osr_poolyr$tempgrow*sd(garden_osr_poolyr_plot$tempgrow)+mean(garden_osr_poolyr_plot$tempgrow),cex=1.5,
-       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
-
 
 
 plot(garden_osr_poolyr$pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
      xlab="Precipitation (dorm.season)",ylab="Operational Sex Ratio")
+points(garden_osr_poolyr$pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
 mtext("C",side = 3, adj = 0,cex=1.25)
 abline(h=0.5,col="gray",lty=2)
 for(p in 1:n_post_draws){
   lines(x_pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),
-        invlogit(coef_garden_osr_pptdorm$b0[osr_post_draws[p]] +
-                   coef_garden_osr_pptdorm$b_pptdorm[osr_post_draws[p]] * x_pptdorm +
-                   coef_garden_osr_pptdorm$b_pptdorm2[osr_post_draws[p]] * x_pptdorm* x_pptdorm),
+        invlogit(coef_garden_osr$b0[osr_post_draws[p]] +
+                   coef_garden_osr$b_pptdorm[osr_post_draws[p]] * x_pptdorm +
+                   coef_garden_osr$b_tempgrow[osr_post_draws[p]] * mean(garden_osr_poolyr$tempgrow) +
+                   coef_garden_osr$b_pptdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm) + 
+                   coef_garden_osr$b_tempdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$tempdorm) + 
+                   coef_garden_osr$b_pptgrow2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptgrow)* mean(garden_osr_poolyr$pptgrow))+
+          coef_garden_osr$b_tempgrow2[osr_post_draws[p]] * mean(garden_osr_poolyr$tempgrow)* mean(garden_osr_poolyr$tempgrow)+
+       coef_garden_osr$b_pptdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm)* mean(garden_osr_poolyr$pptdorm)+
+       coef_garden_osr$b_tempdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$tempdorm)* mean(garden_osr_poolyr$tempdorm),
         col=alpha("#E6AB02",0.1))
 }
-points(garden_osr_poolyr$pptdorm*sd(garden_osr_poolyr_plot$pptdorm)+mean(garden_osr_poolyr_plot$pptdorm),cex=1.5,
-       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
-
 
 plot(garden_osr_poolyr$tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),garden_osr_poolyr$osr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
      xlab="Temperature (dorm.season)",ylab="Operational Sex Ratio")
+points(garden_osr_poolyr$tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),cex=1.5,
+       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
 mtext("D",side = 3, adj = 0,cex=1.25)
 abline(h=0.5,col="gray",lty=2)
 for(p in 1:n_post_draws){
   lines(x_tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),
-        invlogit(coef_garden_osr_tempdorm$b0[osr_post_draws[p]] +
-                   coef_garden_osr_tempdorm$b_tempdorm[osr_post_draws[p]] * x_tempdorm +
-                   coef_garden_osr_tempdorm$b_tempdorm2[osr_post_draws[p]] * x_tempdorm* x_tempdorm),
+        invlogit(coef_garden_osr$b0[osr_post_draws[p]] +
+                   coef_garden_osr$b_tempdorm[osr_post_draws[p]] * x_tempdorm +
+                   coef_garden_osr$b_tempgrow[osr_post_draws[p]] * mean(garden_osr_poolyr$tempgrow) +
+                   coef_garden_osr$b_pptdorm[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm) + 
+                   coef_garden_osr$b_pptgrow[osr_post_draws[p]] * mean(garden_osr_poolyr$pptgrow) + 
+                   coef_garden_osr$b_pptgrow2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptgrow)* mean(garden_osr_poolyr$pptgrow))+
+          coef_garden_osr$b_tempgrow2[osr_post_draws[p]] * mean(garden_osr_poolyr$tempgrow)* mean(garden_osr_poolyr$tempgrow)+
+       coef_garden_osr$b_pptdorm2[osr_post_draws[p]] * mean(garden_osr_poolyr$pptdorm)* mean(garden_osr_poolyr$pptdorm)+
+       coef_garden_osr$b_tempdorm2[osr_post_draws[p]] * x_tempdorm* x_tempdorm,
         col=alpha("#E6AB02",0.1))
 }
-points(garden_osr_poolyr$tempdorm*sd(garden_osr_poolyr_plot$tempdorm)+mean(garden_osr_poolyr_plot$tempdorm),cex=1.5,
-       garden_osr_poolyr$osr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+
 
 dev.off()
 
@@ -10269,32 +10279,8 @@ garden_sr_dat <- list(y = garden_sr_poolyr$fem,
 
 
 ```{r}
-fit_garden_sr_tempgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_tempgrow.stan',
-  data = garden_sr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-fit_garden_sr_tempdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_temporm.stan',
-  data = garden_sr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-fit_garden_sr_pptgrow <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptgrow.stan',
-  data = garden_sr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
-
-fit_garden_sr_pptdorm <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_pptdorm.stan',
+fit_garden_sr <- stan(
+  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_climate.stan',
   data = garden_sr_dat,
   warmup = sim_pars$warmup,
   iter = sim_pars$iter,
@@ -10305,105 +10291,37 @@ fit_garden_sr_pptdorm <- stan(
 
 
 ```{r}
-traceplot(fit_garden_sr_tempgrow, pars = quote_bare(b0,b_tempgrow,b_tempgrow2))+theme_bw()
-traceplot(fit_garden_sr_tempdorm, pars = quote_bare(b0,b_tempdorm,b_tempdorm2))+theme_bw()
-traceplot(fit_garden_sr_pptgrow, pars = quote_bare(b0,b_pptgrow,b_pptgrow2))+theme_bw()
-traceplot(fit_garden_sr_pptdorm, pars = quote_bare(b0,b_pptdorm,b_pptdorm2))+theme_bw()
+traceplot(fit_garden_sr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))+theme_bw()
+
+pairs(fit_garden_sr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))
 ```
 
 ```{r}
 ## pull out coefficients
-coef_garden_sr_tempgrow <- rstan::extract(fit_garden_sr_tempgrow,par=c("b0","b_tempgrow","b_tempgrow2"))
-coef_garden_sr_pptgrow <- rstan::extract(fit_garden_sr_pptgrow,par=c("b0","b_pptgrow","b_pptgrow2"))
-coef_garden_sr_tempdorm <- rstan::extract(fit_garden_sr_tempdorm,par=c("b0","b_tempdorm","b_tempdorm2"))
-coef_garden_sr_pptdorm <- rstan::extract(fit_garden_sr_pptdorm,par=c("b0","b_pptdorm","b_pptdorm2"))
+coef_garden_sr <- rstan::extract(fit_garden_sr,pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))
 ```
 
 ```{r}
-posterior_pptgrow_sr <- as.array(fit_garden_sr_pptgrow)
+posterior_sr <- as.array(fit_garden_sr)
 color_scheme_set("orange")
-sr_pptgrow<-mcmc_intervals(posterior_pptgrow_sr, pars = quote_bare(b0,b_pptgrow,b_pptgrow2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_pptgrow","b_pptgrow2"),
+sr<-mcmc_intervals(posterior_sr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow)) + 
+   ggplot2::scale_y_discrete(limits = c("b0","b_tempgrow","b_pptgrow","b_pptdorm","b_tempdorm","b_pptgrow2","b_pptdorm2","b_tempgrow2","b_tempdorm2","b_tempdormpptdorm","b_tempgrowpptgrow"),
                             labels=c("b0"="b0",
                                      "b_pptgrow"="pptgrow",
-                                     "b_pptgrow2"=expression(pptgrow^2)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
-  xlab("Posterior estimates ")+
-  xlim(-0.3,0.3)+
-  ggtitle("A") +
-  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
-  theme_pubr()+
-  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 8),
-        axis.text.y  = element_text(size = 10),
-        axis.line.x = element_line(linewidth = 0.1),
-        axis.line.y = element_line(linewidth = 0.1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_rect(colour = "black", size=0.5))
-
-posterior_tempgrow_sr <- as.array(fit_garden_sr_tempgrow)
-sr_tempgrow<-mcmc_intervals(posterior_tempgrow_sr, pars = quote_bare(b0,b_tempgrow,b_tempgrow2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_tempgrow","b_tempgrow2"),
-                            labels=c("b0"="b0",
                                      "b_tempgrow"="tempgrow",
-                                     "b_tempgrow2"=expression(tempgrow^2)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
-  xlab("Posterior estimates ")+
-  xlim(-0.3,0.3)+
-  ggtitle("B") +
-  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
-  theme_pubr()+
-  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 8),
-        axis.text.y  = element_text(size = 10),
-        axis.line.x = element_line(linewidth = 0.1),
-        axis.line.y = element_line(linewidth = 0.1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_rect(colour = "black", size=0.5))
-
-posterior_pptdorm_sr <- as.array(fit_garden_sr_pptdorm)
-sr_pptdorm<-mcmc_intervals(posterior_pptdorm_sr, pars = quote_bare(b0,b_pptdorm,b_pptdorm2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_pptdorm","b_pptdorm2"),
-                            labels=c("b0"="b0",
                                      "b_pptdorm"="pptdorm",
-                                     "b_pptdorm2"=expression(pptdorm^2)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
-  xlab("Posterior estimates ")+
-   xlim(-0.3,0.3)+
-  ggtitle("C") +
-  # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
-  # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
-  theme_pubr()+
-  theme(axis.title.x = element_text(family = "Helvetica",colour="black", size = 10),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(size = 8),
-        axis.text.y  = element_text(size = 10),
-        axis.line.x = element_line(linewidth = 0.1),
-        axis.line.y = element_line(linewidth = 0.1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_rect(colour = "black", size=0.5))
-
-posterior_tempdorm_sr <- as.array(fit_garden_sr_tempdorm)
-sr_tempdorm<-mcmc_intervals(posterior_tempdorm_sr, pars = quote_bare(b0,b_tempdorm,b_tempdorm2)) + 
-  ggplot2::scale_y_discrete(limits = c("b0","b_tempdorm","b_tempdorm2"),
-                            labels=c("b0"="b0",
                                      "b_tempdorm"="tempdorm",
-                                     "b_tempdorm2"=expression(tempdorm^2)))+
+                                     "b_tempdormpptdorm"="tempdormpptdorm",
+                                     "b_tempgrowpptgrow"="tempgrowpptgrow",
+                                     "b_pptgrow2"=expression(pptgrow^2),
+                                   "b_tempgrow2"=expression(tempgrow^2),
+                                    "b_pptdorm2"=expression(pptdorm^2),
+                                    "b_tempdorm2"=expression(tempdorm^2)))+
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates ")+
-  xlim(-0.3,0.3)+
-  ggtitle("D") +
+  xlim(-1,1)+
+  # ggtitle("A") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
   theme_pubr()+
@@ -10421,15 +10339,15 @@ sr_tempdorm<-mcmc_intervals(posterior_tempdorm_sr, pars = quote_bare(b0,b_tempdo
 
 
 ```{r,eval=FALSE}
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_SR.pdf",useDingbats = F,height=6,width=5)
-ggarrange(sr_pptgrow,sr_tempgrow,sr_pptdorm,sr_tempdorm + rremove("ylab"), ncol = 2, nrow = 2)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_SR.pdf",useDingbats = F,height=4,width=5)
+ggarrange(sr + rremove("ylab"), ncol = 1, nrow = 1)
 dev.off()
 ```
 
 ```{r}
 set.seed(13)
-n_post_draws<-500
-sr_post_draws <- sample.int(length(coef_garden_sr_tempgrow$b0), n_post_draws)
+n_post_draws<-300
+sr_post_draws <- sample.int(length(coef_garden_sr$b0), n_post_draws)
 ```
 
 
@@ -10454,65 +10372,91 @@ pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecastin
 par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
 
 plot(garden_sr_poolyr$pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
-     xlab="Precipitation (grow.season)",ylab="Proportion female plants")
+     xlab="Precipitation (grow.season)",ylab="Proportion of female plants")
+points(garden_sr_poolyr$pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),cex=1.5,
+       garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
 abline(h=0.5,col="gray",lty=2)
 mtext("A",side = 3, adj = 0,cex=1.25)
 for(p in 1:n_post_draws){
   lines(x_pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),
-        invlogit(coef_garden_sr_pptgrow$b0[sr_post_draws[p]] +
-                   coef_garden_sr_pptgrow$b_pptgrow[sr_post_draws[p]] * x_pptgrow +
-                   coef_garden_sr_pptgrow$b_pptgrow2[sr_post_draws[p]] * x_pptgrow* x_pptgrow),
+        invlogit(coef_garden_sr$b0[osr_post_draws[p]] +
+                   coef_garden_sr$b_pptgrow[sr_post_draws[p]] * x_pptgrow +
+                   coef_garden_sr$b_tempgrow[sr_post_draws[p]] * mean(garden_sr_poolyr$tempgrow) +
+                   coef_garden_sr$b_pptdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm) + 
+                   coef_garden_sr$b_tempdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$tempdorm) + 
+                   coef_garden_sr$b_pptgrow2[sr_post_draws[p]] * x_pptgrow* x_pptgrow)+
+          coef_garden_osr$b_tempgrow2[sr_post_draws[p]] * mean(garden_sr_poolyr$tempgrow)* mean(garden_sr_poolyr$tempgrow)+
+       coef_garden_sr$b_pptdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm)* mean(garden_sr_poolyr$pptdorm)+
+       coef_garden_sr$b_tempdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$tempdorm)* mean(garden_sr_poolyr$tempdorm),
         col=alpha("#E6AB02",0.1))
 }
-points(garden_sr_poolyr$pptgrow*sd(garden_sr_poolyr_plot$pptgrow)+mean(garden_sr_poolyr_plot$pptgrow),cex=1.5,
-       garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
 
 
 
 plot(garden_sr_poolyr$tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
-     xlab="Temerature (grow.season)",ylab="Proportion female plants")
+     xlab="Temerature (grow.season)",ylab="Proportion of female plants")
 abline(h=0.5,col="gray",lty=2)
 mtext("B",side = 3, adj = 0,cex=1.25)
-for(p in 1:n_post_draws){
-  lines(x_tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),
-        invlogit(coef_garden_sr_tempgrow$b0[sr_post_draws[p]] +
-                   coef_garden_sr_tempgrow$b_tempgrow[sr_post_draws[p]] * x_tempgrow +
-                   coef_garden_sr_tempgrow$b_tempgrow2[sr_post_draws[p]] * x_tempgrow* x_tempgrow),
-        col=alpha("#E6AB02",0.1))
-}
 points(garden_sr_poolyr$tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),cex=1.5,
        garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+for(p in 1:n_post_draws){
+  lines(x_tempgrow*sd(garden_sr_poolyr_plot$tempgrow)+mean(garden_sr_poolyr_plot$tempgrow),
+        invlogit(coef_garden_sr$b0[sr_post_draws[p]] +
+                   coef_garden_sr$b_tempgrow[sr_post_draws[p]] * x_tempgrow +
+                   coef_garden_sr$b_pptgrow[sr_post_draws[p]] * mean(garden_sr_poolyr$pptgrow) +
+                   coef_garden_sr$b_pptdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm) + 
+                   coef_garden_sr$b_tempdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$tempdorm) + 
+                   coef_garden_sr$b_pptgrow2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptgrow)* mean(garden_sr_poolyr$pptgrow))+
+          coef_garden_sr$b_tempgrow2[sr_post_draws[p]] * x_tempgrow* x_tempgrow+
+       coef_garden_sr$b_pptdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm)* mean(garden_sr_poolyr$pptdorm)+
+       coef_garden_sr$b_tempdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$tempdorm)* mean(garden_sr_poolyr$tempdorm),
+        col=alpha("#E6AB02",0.1))
+}
 
 
 
 plot(garden_sr_poolyr$pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
-     xlab="Precipitation (dorm.season)",ylab="Proportion female plants")
+     xlab="Precipitation (dorm.season)",ylab="Proportion of female plants")
 mtext("C",side = 3, adj = 0,cex=1.25)
 abline(h=0.5,col="gray",lty=2)
-for(p in 1:n_post_draws){
-  lines(x_pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),
-        invlogit(coef_garden_sr_pptdorm$b0[sr_post_draws[p]] +
-                   coef_garden_sr_pptdorm$b_pptdorm[sr_post_draws[p]] * x_pptdorm +
-                   coef_garden_sr_pptdorm$b_pptdorm2[sr_post_draws[p]] * x_pptdorm* x_pptdorm),
-        col=alpha("#E6AB02",0.1))
-}
 points(garden_sr_poolyr$pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),cex=1.5,
        garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+for(p in 1:n_post_draws){
+  lines(x_pptdorm*sd(garden_sr_poolyr_plot$pptdorm)+mean(garden_sr_poolyr_plot$pptdorm),
+        invlogit(coef_garden_sr$b0[osr_post_draws[p]] +
+                   coef_garden_sr$b_pptdorm[sr_post_draws[p]] * x_pptdorm +
+                   coef_garden_sr$b_tempgrow[sr_post_draws[p]] * mean(garden_sr_poolyr$tempgrow) +
+                   coef_garden_sr$b_pptdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm) + 
+                   coef_garden_sr$b_tempdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$tempdorm) + 
+                   coef_garden_sr$b_pptgrow2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptgrow)* mean(garden_sr_poolyr$pptgrow))+
+          coef_garden_sr$b_tempgrow2[sr_post_draws[p]] * mean(garden_sr_poolyr$tempgrow)* mean(garden_sr_poolyr$tempgrow)+
+       coef_garden_sr$b_pptdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm)* mean(garden_sr_poolyr$pptdorm)+
+       coef_garden_sr$b_tempdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$tempdorm)* mean(garden_sr_poolyr$tempdorm),
+        col=alpha("#E6AB02",0.1))
+}
 
 
 plot(garden_sr_poolyr$tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),garden_sr_poolyr$sr,ylim=c(0,1),cex.lab=1.2,cex.axis=1.2,
-     xlab="Temperature (dorm.season)",ylab="Proportion female plants")
+     xlab="Temperature (dorm.season)",ylab="Proportion of female plants")
 mtext("D",side = 3, adj = 0,cex=1.25)
 abline(h=0.5,col="gray",lty=2)
-for(p in 1:n_post_draws){
-  lines(x_tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),
-        invlogit(coef_garden_sr_tempdorm$b0[sr_post_draws[p]] +
-                   coef_garden_sr_tempdorm$b_tempdorm[sr_post_draws[p]] * x_tempdorm +
-                   coef_garden_sr_tempdorm$b_tempdorm2[sr_post_draws[p]] * x_tempdorm* x_tempdorm),
-        col=alpha("#E6AB02",0.1))
-}
 points(garden_sr_poolyr$tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),cex=1.5,
        garden_sr_poolyr$sr,lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+for(p in 1:n_post_draws){
+  lines(x_tempdorm*sd(garden_sr_poolyr_plot$tempdorm)+mean(garden_sr_poolyr_plot$tempdorm),
+        invlogit(coef_garden_sr$b0[sr_post_draws[p]] +
+                   coef_garden_sr$b_tempdorm[sr_post_draws[p]] * x_tempdorm +
+                   coef_garden_sr$b_tempgrow[sr_post_draws[p]] * mean(garden_sr_poolyr$tempgrow) +
+                   coef_garden_sr$b_pptdorm[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm) + 
+                   coef_garden_sr$b_pptgrow[sr_post_draws[p]] * mean(garden_sr_poolyr$pptgrow) + 
+                   coef_garden_sr$b_pptgrow2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptgrow)* mean(garden_osr_poolyr$pptgrow))+
+          coef_garden_sr$b_tempgrow2[sr_post_draws[p]] * mean(garden_sr_poolyr$tempgrow)* mean(garden_sr_poolyr$tempgrow)+
+       coef_garden_sr$b_pptdorm2[sr_post_draws[p]] * mean(garden_sr_poolyr$pptdorm)* mean(garden_sr_poolyr$pptdorm)+
+       coef_garden_sr$b_tempdorm2[sr_post_draws[p]] * x_tempdorm* x_tempdorm,
+        col=alpha("#E6AB02",0.1))
+}
+
+
 
 dev.off()
 
