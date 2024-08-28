@@ -65,10 +65,10 @@ library(tidyverse)
 options(dplyr.summarise.inform = FALSE)
 library(bayesplot)
 # install.packages("countreg",repos = "http://R-Forge.R-project.org")
-library(countreg)
+#library(countreg)
 library(rmutil)
 library(actuar)
-library(SPEI)
+#library(SPEI)
 library(LaplacesDemon)
 library(ggpubr)
 library(raster)
@@ -249,7 +249,7 @@ dev.off()
 
 
 ```{r,eval=FALSE}
-Location<-readRDS("/Users/jm200/Downloads/poar_ms_quantities.rds")
+Location<-readRDS("data/poar_ms_quantities.rds")
 surveypo<-Location$survey_site_table[,c(1,2,3,5)]
 surveypo$Population<-c(rep("Natural population survey"))
 exp_pop<-Location$exp_site_table[,c(3,4)]
@@ -389,8 +389,8 @@ crs(Poa_longlat) <- CRS1
 
 ```{r}
 jacob_path<-"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Future and historical data"
-# tom_path<-"C:/Users/tm9/Dropbox/Miller Lab -- Moutouama/Future and historical data"
-choose_path<-jacob_path
+tom_path<-"C:/Users/tm9/Dropbox/Miller Lab -- Moutouama/Future and historical data"
+choose_path<-tom_path
 ```
 
 ```{r}
@@ -441,6 +441,32 @@ clim_miroc85<-data.frame(Conditions_miroc85)
 ```
 
 *Raw data*
+
+One of the observation years was much cooler and wetter than the other, especially in the dormant season (see site_year_weather.pdf). We want to know which one was closer to the long-term average, and which year was unusual. 
+```{r}
+normal_vs_obs<-left_join(poar_2015_2016,cbind(Poa_longlat@coords,clim_current), by=c("Longitude","Latitude"))
+pdf("Manuscript/Figures/clim_norm_vs_weather.pdf",height = 6,width = 7,useDingbats = F)
+par(mar = c(4, 4, 2, 5),mfrow=c(2,2))
+plot(normal_vs_obs$tempgrow.y,normal_vs_obs$tempgrow.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Growing season temp",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+legend("topleft",legend=c(2015,2016),pch=c(1,16))
+plot(normal_vs_obs$pptgrow.y,normal_vs_obs$pptgrow.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Growing season precip",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+plot(normal_vs_obs$tempdorm.y,normal_vs_obs$tempdorm.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Dormant season temp",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+plot(normal_vs_obs$pptdorm.y,normal_vs_obs$pptdorm.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Dormant season precip",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+dev.off()
+```
+
 
 ```{r,eval=FALSE}
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/MIROC.pdf",height = 7,width = 7,useDingbats = F)
@@ -6372,7 +6398,7 @@ foreach::getDoParWorkers()#how many workers are available? (optional)
 
 ```{r}
 ppt<-terra::rast(clim_1990_2019[[3]])
-study_area<-terra::vect("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/USA_vector_polygon/States_shapefile.shp")
+study_area<-terra::vect("data/USA_vector_polygon/States_shapefile.shp")
 study_area <- study_area[(study_area$State_Name %in% c("TEXAS","OKLAHOMA","KANSAS")), ]
 plot(study_area)
 ```
@@ -6381,7 +6407,7 @@ plot(study_area)
 ```{r}
 crop_study_area <- terra::crop(ppt, study_area,mask=TRUE)
 crop_study_area_raster<-raster::raster(crop_study_area)
-coordinates_study_area<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/coordinate10_study_area.csv")
+coordinates_study_area<-read.csv("data/coordinate10_study_area.csv")
 ```
 
 ```{r}
@@ -6408,6 +6434,9 @@ head(poar_occ_raw) # to view the first few records the occurrence dataset use
 ```{r}
 poar_occ <- subset(poar_occ_raw,(!is.na(lat))&(!is.na(lon))) # here we remove erroneous coordinates, where either the latitude or longitude is missing
 cat(nrow(poar_occ_raw)-nrow(poar_occ), "records are removed") # Show the number of records that are removed from the dataset. 
+#this dropped a lot -- have a look at what gets removed
+poar_occ_raw %>% filter((is.na(lat))|(is.na(lon))) %>% View
+
 poar_occ %>% 
   dplyr::select(country,lon, lat, year,basisOfRecord)%>% 
   filter(country=="United States")->poar_occ_clean # We want only occurrence data for the US
@@ -6431,12 +6460,12 @@ hist(poar_occ_unique$year,main="",xlim=c(1901,2019),ylim=c(0,200),col="orange2",
 ```{r}
 poar_occ_unique %>% 
   dplyr::select(lon, lat, year)%>% 
-  filter(year %in% (1990:2019) & as.numeric(lon >=-126.374160))->poar_occ_1990_2019 #  filter from 1990 to 2019 to match climatic data.
+  filter(year %in% (1890:2019) & as.numeric(lon >=-126.374160))->poar_occ_1990_2019 #  filter from 1990 to 2019 to match climatic data.
 ```
 
 
 ```{r}
-Locationinfo<-read_rds("/Users/jm200/Downloads/poar_ms_quantities.rds")
+Locationinfo<-read_rds("data/poar_ms_quantities.rds")
 survey<-Locationinfo$survey_site_table[,2:3]
 garden<-Locationinfo$exp_site_table[,3:4]
 Locationinfo$survey_site_table %>% 
@@ -6466,6 +6495,70 @@ crop_pptgrow_raster <- terra::crop(pptgrow_raster, study_area,mask=TRUE)
 crop_tempgrow_raster <- terra::crop(tempgrow_raster, study_area,mask=TRUE)
 ```
 
+Tom's version of the map+climate figure.
+```{r tom_map}
+par(mfrow=c(1,3))
+plot(study_area,xlab="Longitude",ylab="Latitude")
+plot(data_gbif,add=T,pch = 1,cex=0.5,col=alpha("darkgrey",0.75))
+plot(garden,add=T,pch = 21,col="black",cex =3,bg=unique(poar_2015_2016$site_col))
+#plot(sourcepop,add=T,pch = 21,col="black",bg="red",cex =0.85)
+
+plot(clim_past$pptdorm,clim_past$tempdorm,xlab="Precipitation (mm)",ylab="Temperature (C)",col=unique(poar_2015_2016$site_col),cex=0.5,xlim=c(150,550),ylim=c(23,34),pch=16)
+#points(clim_current$pptdorm,clim_current$tempdorm,col=unique(poar_2015_2016$site_col),cex=1,pch=16)
+arrows(clim_past$pptdorm,clim_past$tempdorm,
+       clim_current$pptdorm,clim_current$tempdorm,
+       length=0.1,col=unique(poar_2015_2016$site_col))
+#points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
+arrows(clim_current$pptdorm,clim_current$tempdorm,
+       clim_miroc45$pptdorm,clim_miroc45$tempdorm,
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=2)
+#points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
+arrows(clim_current$pptdorm,clim_current$tempdorm,
+       clim_miroc85$pptdorm,clim_miroc85$tempdorm,
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=3)
+
+
+plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=unique(poar_2015_2016$site_col),cex=0.5,xlim=c(190,840),ylim=c(7,22),pch=16)
+#points(clim_current$pptgrow,clim_current$tempgrow,col=unique(poar_2015_2016$site_col),cex=1,pch=16)
+arrows(clim_past$pptgrow,clim_past$tempgrow,
+       clim_current$pptgrow,clim_current$tempgrow,
+       length=0.1,col=unique(poar_2015_2016$site_col))
+#points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
+arrows(clim_current$pptgrow,clim_current$tempgrow,
+       clim_miroc45$pptgrow,clim_miroc45$tempgrow,
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=2)
+#points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
+arrows(clim_current$pptgrow,clim_current$tempgrow,
+       clim_miroc85$pptgrow,clim_miroc85$tempgrow,
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=3)
+
+```
+
+```{r tom_map_v2}
+pdf("Manuscript/Figures/tom_map_v2.pdf",width=11,height=4)
+par(mfrow=c(1,3))
+plot(study_area,xlab="Longitude",ylab="Latitude")
+plot(data_gbif,add=T,pch = 1,cex=1,col=alpha("darkgrey",0.75))
+plot(garden,add=T,pch = "+",col="black",cex =3,bg=unique(poar_2015_2016$site_col))
+plot(sourcepop,add=T,pch = 21,col="black",bg="red",cex =1)
+
+plot(clim_past$pptdorm,clim_past$tempdorm,xlab="Precipitation (mm)",ylab="Temperature (C)",col=alpha("black",0.25),cex=2,xlim=c(150,550),ylim=c(23,34),pch=16)
+points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=alpha("blue",0.25),cex=2,pch=16)
+points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=alpha("red",0.25),cex=2,pch=16)
+points(poar_2015_2016$pptdorm,poar_2015_2016$tempdorm,col="black",cex=2,pch="+")
+title(main="Dormant season",adj=0)
+legend("topright",legend=c("Past (1901-30)","Observed (2014-16)","RCP4.5 (2071-2100)","RCP8.5 (2071-2100)"),pch=c(16,3,16,16),col=c(alpha("black",0.25),"black",alpha("blue",0.25),alpha("red",0.25)))
+#points(clim_current$pptdorm,clim_current$tempdorm,col="black",cex=1,pch=16)
+
+
+plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=alpha("black",0.25),cex=2,xlim=c(190,840),ylim=c(7,22),pch=16)
+points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=alpha("blue",0.25),cex=2,pch=16)
+points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=alpha("red",0.25),cex=2,pch=16)
+points(poar_2015_2016$pptgrow,poar_2015_2016$tempgrow,col="black",cex=2,pch="+")
+title(main="Growing season",adj=0)
+#points(clim_current$pptgrow,clim_current$tempgrow,col="black",cex=1,pch=16)
+dev.off()
+```
 
 
 ```{r}
