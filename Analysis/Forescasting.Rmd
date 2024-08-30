@@ -440,6 +440,25 @@ Conditions_miroc85 <- terra::extract(clim_miroc_85,Poa_longlat)
 clim_miroc85<-data.frame(Conditions_miroc85)
 ```
 
+How much have the sites changed and by how much are they expected to change?
+```{r}
+past_current_change<-(clim_current - clim_past)/(1990-1901)
+range(past_current_change$tempdorm);mean(past_current_change$tempdorm)
+range(past_current_change$tempgrow);mean(past_current_change$tempgrow)
+range(past_current_change$pptdorm);mean(past_current_change$pptdorm)
+range(past_current_change$pptgrow);mean(past_current_change$pptgrow)
+
+current_miroc45_change<- (clim_miroc45 - clim_current)/(2070-1990)
+range(current_miroc45_change$tempdorm);mean(current_miroc45_change$tempdorm)
+range(current_miroc45_change$tempgrow);mean(current_miroc45_change$tempgrow)
+
+current_miroc85_change<- (clim_miroc85 - clim_current)/(2070-1990)
+range(current_miroc85_change$tempdorm);mean(current_miroc85_change$tempdorm)
+range(current_miroc85_change$tempgrow);mean(current_miroc85_change$tempgrow)
+
+```
+
+
 *Raw data*
 
 One of the observation years was much cooler and wetter than the other, especially in the dormant season (see site_year_weather.pdf). We want to know which one was closer to the long-term average, and which year was unusual. 
@@ -6510,13 +6529,13 @@ arrows(clim_past$pptdorm,clim_past$tempdorm,
        clim_current$pptdorm,clim_current$tempdorm,
        length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
 #points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
-arrows(clim_current$pptdorm,clim_current$tempdorm,
-       clim_miroc45$pptdorm,clim_miroc45$tempdorm,
-       length=0.1,col=unique(poar_2015_2016$site_col),lty=2,lwd=2)
+#arrows(clim_current$pptdorm,clim_current$tempdorm,
+#       clim_miroc45$pptdorm,clim_miroc45$tempdorm,
+#       length=0.1,col=unique(poar_2015_2016$site_col),lty=2,lwd=2)
 #points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
 arrows(clim_current$pptdorm,clim_current$tempdorm,
        clim_miroc85$pptdorm,clim_miroc85$tempdorm,
-       length=0.1,col=unique(poar_2015_2016$site_col),lty=3,lwd=2)
+       length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
 
 
 plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=unique(poar_2015_2016$site_col),cex=0.5,xlim=c(190,840),ylim=c(7,22),pch=16)
@@ -6525,13 +6544,13 @@ arrows(clim_past$pptgrow,clim_past$tempgrow,
        clim_current$pptgrow,clim_current$tempgrow,
        length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
 #points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
-arrows(clim_current$pptgrow,clim_current$tempgrow,
-       clim_miroc45$pptgrow,clim_miroc45$tempgrow,
-       length=0.1,col=unique(poar_2015_2016$site_col),lty=2,lwd=2)
+#arrows(clim_current$pptgrow,clim_current$tempgrow,
+#       clim_miroc45$pptgrow,clim_miroc45$tempgrow,
+#       length=0.1,col=unique(poar_2015_2016$site_col),lty=2,lwd=2)
 #points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
 arrows(clim_current$pptgrow,clim_current$tempgrow,
        clim_miroc85$pptgrow,clim_miroc85$tempgrow,
-       length=0.1,col=unique(poar_2015_2016$site_col),lty=3,lwd=2)
+       length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
 dev.off()
 ```
 
