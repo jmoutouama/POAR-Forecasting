@@ -227,31 +227,34 @@ Specifically, we asked:
 %--------------------------------------------------------------------
 \section*{Materials and methods}
 \subsection*{Study species and climate context}
-Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) (Figure \ref{fig:study_design}) \citep{hitchcock1971manual}\jacob{}{I have updated the map}.\tom{}{I think the GBIF records greatly underestimate the distribution, especially in Oklahoma. Compare this to the county records map in the Am Nat paper. I am not sure how that happens--I assumed that GBIF would be pulling all those county records. } 
-\tom{Latitudinal limits of the Texas bluegrass distribution span 7.74 \degree C to 16.94 \degree C of temperature during the dormant season and 24.38 \degree C to 28.80 \degree C  during the dormant season. 
-Longitudinal limits span 244.9 mm to 901.5 mm of precipitation during the growing season and 156.3 mm to 373.3 mm. }{Rather than just describe climate, this would be a good place to say more about climate change. For example, summer temperatures have increased by XX-XX degrees C since 1900, and climate models predict another XX-XX degrees of warming by 2100. Compare summer warming to winter warming, and compare temperature change to precipitation change. All of this sets the stage for why this is an important system to forecast climate change responses.}
-
+Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, summer-dormant cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) (Figure \ref{fig:study_design}) \citep{hitchcock1971manual}. 
 Texas bluegrass grows between October and May, flowers in spring, and goes dormant during the hot summer months of June to September \citep{kindiger2004interspecific}. 
-Following this life history, we divide the calendar year into growing (October 1 - May 31) and dormant (June 1 - September 30) seasons. 
+Following this life history, we divide the calendar year into growing (October 1 - May 31) and dormant (June 1 - September 30) seasons in the analyses below. 
 Biological sex is genetically based and the birth (seed) sex ratio is 1:1 \citep{renganayaki2005identification}. 
 Females and males are morphologically indistinguishable except for their inflorescences. 
 Like all grasses, this species is wind pollinated \citep{hitchcock1971manual} and most male-female pollen transfer occurs within 10-15m \citep{compagnoni2017can}. 
 Surveys of 22 natural populations throughout the species' distribution indicated that operational sex ratio (the female fraction of inflorescences) ranged from 0.007 to 0.986 with a mean of 0.404 \citep{miller2022two}. 
 
+Latitudinal limits of the Texas bluegrass distribution span 7.74 \degree C to 16.94 \degree C of temperature during the dormant season and 24.38 \degree C to 28.80 \degree C  during the dormant season. 
+Longitudinal limits span 244.9 mm to 901.5 mm of precipitation during the growing season and 156.3 mm to 373.3 mm. 
+This region has experienced \textit{ca.} 0.5 \degree C of climate warming since 1900, with faster warming  during the cool-season months ($0.0055 \degree C / yr$) than the hot summers ($0.0046\degree C / yr$) (Fig. \ref{}), with no consistent changes in precipitation (time series figure).
+Future warming is projected to accelerate to $0.03-0.06\degree C / yr$ by the end of the century depending on the season and forecast model (time series figure). 
+\tom{}{Rather than just describe climate, this would be a good place to say more about climate change, which I have added. All of this sets the stage for why this is an important system to forecast climate change responses.}
+
 \subsection*{Common garden experiment}
 \subsubsection*{Experimental design}
 We conducted a range-wide common garden experiment to quantify sex-specific demographic responses to climate variation. 
 Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
-The experiment was installed at 14 sites throughout and, in some cases, beyond the natural range of Texas bluegrass that sampled a broad range of temperature and precipitation (Figure \ref{fig:study_design}).\tom{}{A few comments about figure 1 (I cannot comment in the legend). Please update the gray diamonds as GBIF occurrences, not natural population surveys. Please add ``mm'' and ``\degree C'' to the titles. It would also be good to spell out ``growing'' and ``dormant'' seasons.}
+The experiment was installed at 14 sites throughout and, in some cases, beyond the natural range of Texas bluegrass that sampled a broad range of latitude and longitude (Figure \ref{fig:study_design}A).
 At each site, we established 14 blocks. 
-For each block we planted three female and three male individuals that were clonally propagated from females and males from eight natural source populations (Figure \ref{fig:study_design}); because sex is genetically-based, clones never deviated from their expected sex. 
+For each block we planted three female and three male individuals that were clonally propagated from females and males from eight natural source populations (Figure \ref{fig:study_design}A); because sex is genetically-based, clones never deviated from their expected sex. 
 The experiment was established in November 2013 with a total of \tom{\# female and \# male plants}{Add numbers.}, and was censused in May of 2014, 2015, and 2016. 
 At each census, we collected data on survival, size (number of tillers), and number of panicles (reproductive inflorescences). 
-For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions years, since the start of the experiment did not include the full 2013-14 transition year. 
+For the analyses that follow, we focus on the 2014-15 and 2015-16 transition years, since the start of the experiment did not include the full 2013-14 transition year. 
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[width=0.90\linewidth]{Figures/POAR_survey_garden_map.pdf}
+    \includegraphics[width=\linewidth]{Figures/tom_map_v2.pdf}
   \caption{\textbf{Maps of 30-year (1990-2019) climate normals and study sites used for demographic monitoring of \emph{Poa arachnifera} in Texas, Kansas and Oklahoma in the United States}.
   Precipitation is in mm and temperature is in \degree C.
   We surveyed 22 natural populations (grey diamond).
@@ -262,7 +265,7 @@ For the analyses that follow, we focus on the 2014-15 and 2015-16 transitions ye
 \end{figure}
 
 \subsubsection*{Climatic data collection}
-We gathered downscaled monthly temperature and precipitation for each site from Chelsa to describe observed climate conditions during our study period \citep{karger2017climatologies}.
+We gathered downscaled monthly temperature and precipitation for each site from Chelsa \citep{karger2017climatologies} to describe observed climate conditions during our study period.
 These climate data were used as covariates in vital rate regressions. 
 %We prefer temperature and precipitation because they capture the most the climate in the study region \colorbox{BurntOrange}{Source}. 
 We aligned the climatic years to match demographic transition years (June 1 -- May 31) and growing and dormant seasons within each year.
@@ -274,9 +277,9 @@ All the GCMs were downloaded from Chelsa \citep{sanderson2015representative}.
 We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, an intermediate-to-pessimistic scenario assuming a radiative forcing amounting to 4.5 $W m^{-2}$ by 2100, and RCP8.5, a pessimistic emission scenario which projects a radiative forcing of 8.5 $W m^{-2}$ by 2100 \citep{thomson2011rcp4, schwalm2020rcp8}. 
 
 Projection data for the three 30-year periods included warmer or colder conditions than observed in our experiment, so extending our inferences to these conditions required some extrapolation, as we describe below. 
-However, across all sites, both study years were 2-3\degree C warmer than their corresponding 1990--2019 temperature normals (Fig. \ref{Sup:climate_normal_weather}). 
+However, across all sites, both study years were 2-3\degree C warmer than their corresponding ``current'' temperature normals (Fig. \ref{Sup:climate_normal_weather}). 
 Additionally, the 2014--15 growing season was substantially wetter and cooler across the study region than 2015--16 (Fig. \ref{Sup:climate_variation}). 
-Thus, the geographic and inter-annual replication of the common garden experiment provided good coverage of most past, present, and future conditions throughout the study region (Fig. \ref{Sup:projectionMIROC}, Fig. \ref{Sup:projectionACCESS}, Fig. \ref{Sup:projectionCESM1}, Fig. \ref{Sup:projectionCMCC}). 
+Combined, the geographic and inter-annual replication of the common garden experiment provided good coverage of most past and future conditions throughout the study region (Fig. \ref{fig:study_design}B,C). 
 
 \subsubsection*{Sex-specific demographic responses to climatic variation across common garden sites}
 We used individual-level measurements of survival, growth (change in number of tillers), flowering, and number of panicles (conditional on flowering) to develop Bayesian mixed effect models describing how each vital rate varies as a function of sex, size, and four climate covariates (precipitation and temperature of growing and dormant season). 
@@ -331,7 +334,6 @@ We assessed the quality of the models using posterior predictive checks \citep{p
 %To understand the effect of climate on vital rates, we got the 95 \% credible interval of the posterior distribution. 
 %Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
  
-
 \subsection*{Two-sex and female-dominant matrix projection models}
 We used the climate-dependent vital rate regressions estimated above, combined with additional data sources, to build female-dominant and two-sex versions of a climate-explicit matrix projection model (MPMs) structured by the discrete state variables size (number of tillers) and sex.
 The female-dominant and two-sex versions of the model both allow for sex-specific response to climate and differ only in the feedback between operational sex ratio and seed fertilization. 
@@ -401,10 +403,10 @@ Because LTRE contributions are additive, we summed across vital rates to compare
 
 \subsection*{Population viability across the climatic niche and geographic range}
 % A species' ecological niche can be defined as the range of resources and conditions allowing its populations to self- sustained  ($\lambda > 1$) \citep{maguire1973niche,hutchinson1978introduction,diez2014probabilistic}.
-To understand how climate shapes the niche and geographic range of Texas bluegrass, we estimated the probability of self- sustaining populations, which is Pr ($\lambda \ge 1$) conditional to temperature and precipitation of the dormant and growing seasons.
+To understand how climate shapes the niche and geographic range of Texas bluegrass, we estimated the probability of self- sustaining populations (Pr ($\lambda \ge 1$)) conditional to temperature and precipitation of the dormant and growing seasons.
 Pr ($\lambda > 1$) was calculated for the two-sex model and the female dominant MPMs using the proportion of the 300 posterior samples that lead to a $\lambda \ge 1$ \citep{diez2014probabilistic}.
 Population viability in climate niche space was then represented as a contour plot with values of Pr ($\lambda > 1$) at given temperature and precipitation for the growing season, holding dormant season climate constant, and vice versa. 
-We also visualized how our common garden sites have moved and are expected to move through climate space through time due to climate change. 
+%We also visualized how our common garden sites have moved and are expected to move through climate space through time due to climate change. 
 
 Pr ($\lambda > 1$) was also mapped onto geographic layers of three US states (Texas, Oklahoma and Kansas) to delineate past, current and future potential geographic distribution of the species.
 To do so, we estimated Pr ($\lambda > 1$) conditional to all climate covariates for each pixel ($\sim$25 km2) for each time period (past, present, future).
@@ -468,7 +470,7 @@ Similarly population fitness was maximized between 27 and 31 \degree C and decre
 Population growth rate was most sensitive to change in temperature of the growing season and temperature of the dormant season (Figure \ref{Sup:LTRE}).
 Despite contribution for both sexes, females have a higher contribution to population dynamics than males (Figure \ref{Sup:LTRETemp}; Figure \ref{Sup:LTREppt}).
 For both sexes, the reduction of $\lambda$ for high value of temperature  (dormant and growing season) was driven by a reduction of survival rate, growth rate, and a reduction in number of panicles (Figure \ref{fig:lambda_LTRE}F, H, G, L).
-However, the change of population growth rate for high value of precipitation was not driven by change in vital rates.
+\tom{However, the change of population growth rate for high value of precipitation was not driven by change in vital rates.}{This statement cannot be true.}
 
 \begin{figure}[H]
 	\begin{center}
@@ -707,6 +709,194 @@ This research was supported by National Science Foundation Division of Environme
 % 		\includegraphics[width=0.95\linewidth]{Figures/Varianceexplained.pdf}
 % 		\caption{Relation between precipitation and temperature for each season (growing and dormant). $R^2$ indicates the value of proportion of explained variance between the temperature and precipitation}
 % 		\label{Sup:Correlation}
+% \end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{Figures/PPC.pdf}
+	\caption{Posterior predictive checks. Consistency between real data and simulated values suggests that the fitted vital rate models accurately describes the data. Graph shows density curves for the observed data (light orange ) along with the simulated values (dark orange).}
+	\label{Sup:PPC}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.99\linewidth]{Figures/Posterior_mean.pdf}
+	\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+		pptgrow is  the precipitation of growing season,
+		Tempgrow is the temperature of growing season,
+		pptdorm is the temperature of dormant season,
+		Tempdorm is the temperature of dormant season.}
+	\label{Sup:Posterior}
+\end{figure}
+
+
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.80\linewidth]{Figures/gardens_OSR.pdf}
+		\caption{\textbf{Significant Operantional Sex Ratio response accross climate gradient}.
+			(A, B) Proportion of panicules that were females across precipitation and temperature of the growing season; (C, D) Proportion of of panicules that were females across precipitation and temperature of the dormant season.}
+		\label{Sup:gardens_OSR}
+	\end{center}
+\end{figure}
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.75\linewidth]{Figures/Posterior_ORS.pdf}
+%	\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+%		pptgrow is  the precipitation of growing season,
+%		Tempgrow is the temperature of growing season,
+%		pptdorm is the temperature of dormant season,
+%		Tempdorm is the temperature of dormant season.}
+%	\label{Sup:PosteriorOSR}
+%\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\linewidth]{Figures/gardens_SR.pdf}
+		\caption{\textbf{Variation in sex-ratio accross climate gradient}.
+			(A, B) Proportion of plants that were females across precipitation and temperature of the growing season; (C, D) Proportion of plants that were females across precipitation and temperature of the dormant season.}
+		\label{Sup:gardens_SR}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{Figures/Posterior_SR.pdf}
+	\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+		pptgrow is  the precipitation of growing season,
+		Tempgrow is the temperature of growing season,
+		pptdorm is the temperature of dormant season,
+		Tempdorm is the temperature of dormant season.}
+	\label{Sup:PosteriorSR}
+\end{figure}
+
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics[width=0.99\linewidth]{Figures/POAR_SR.pdf}
+%   \caption{Change in Sex ratio (proportion of female) over time (past, present, future).
+%   The means for each model are shown as vertical dashed lines.}
+%   \label{Sup:srall}
+%   \end{center}
+% \end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.80\linewidth]{Figures/POAR_OSR_MIROC_CES_ACC.pdf}
+		\caption{Change in Operational Sex Ratio (proportion of female) over time (past, present, future).
+			Future projections were based on A) MIROC 5, B) CES, C) ACC.
+			The means for each model are shown as vertical dashed lines.}
+		\label{Sup:osrall}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.65\linewidth]{Figures/Fig_LTRE.pdf}
+		\caption{Life Table Response Experiment: The bar represent the relative importance of each predictors.}
+		\label{Sup:LTRE}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\linewidth]{Figures/LTRE_Temperature.pdf}
+		\caption{Life table response experiment decomposition of the sensitivity of $\lambda$ to seasonal climate into additive vital rate contributions of males and females based on posterior mean parameter estimates.
+			(A) Temperature of growing season (contribution of female), (B) Temperature of growing season (contribution of male),  (C) Temperature of dormant season (contribution of female) and (D) Temperature of dormant season (contribution of male).}
+		\label{Sup:LTRETemp}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\linewidth]{Figures/LTRE_Precipitation.pdf}
+		\caption{Life table response experiment decomposition of the sensitivity of $\lambda$ to seasonal climate into additive vital rate contributions of males and females based on posterior mean parameter estimates.
+			(A) Precipitation of growing season (contribution of female), (B) Precipitation of growing season (contribution of male),  (C) Precipitation of dormant season (contribution of female) and (D) Precipitation of dormant season (contribution of male).}
+		\label{Sup:LTREppt}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.99\linewidth]{Figures/Niche_overestimation.pdf}
+		\caption{ Assessment of the statistical difference between the two-sex models and the female dominant model for the dormant and growing season. 
+			Plots show the density of Pr ($\lambda$) > 1 values for female dominant (pink) and two-sex models (violet) for each season. 
+			The means for each model are shown as vertical dashed lines. }
+		\label{Sup:Niche_overestimation}
+	\end{center}
+\end{figure}
+
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics[width=0.95\linewidth]{Figures/lambda_CI.pdf}
+%   \caption{Population growth rate ($\lambda$) as a function of seasonal climate (2015-2017), predicted by the two-sex matrix projection model that incorporates sex-specific demographic responses to climate with sex ratio-dependent seed fertilization.
+% We show the mean posterior distribution of $\lambda$ in solid lines, and the 5, 25, 50, 75, and 95\% percentiles of parameter uncertainty in shaded gold color.
+% The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1)}
+%   \label{Sup:lambda2sex}
+%   \end{center}
+% \end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\linewidth]{Figures/Fig_geoPrlambda_ces.pdf}
+		\caption{Climate change favors range shift toward the North edge of the current range.
+			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
+			Future projections were based on the CESM1-BGC model.
+			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
+			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
+		\label{Sup:geoprojces}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\linewidth]{Figures/Fig_geoPrlambdaacc.pdf}
+		\caption{Climate change favors range shift toward the North edge of the current range.
+			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
+			Future projections were based on the  ACCESS model.
+			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
+			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts.}
+		\label{Sup:geoprojcmc}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\linewidth]{Figures/Fig_geoPrlambda_miroc.pdf}
+		\caption{Climate change favors range shift toward the North edge of the current range.
+			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
+			Future projections were based on the MIROC5 model.
+			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
+			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts.}
+		\label{Sup:geoprojmiroc}
+	\end{center}
+\end{figure}
+
+
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics[width=0.75\linewidth]{Figures/OSR.pdf}
+%   \caption{A two‐dimensional representation of the Operational Sex Ratio (OSR) over time (past, present and future climate conditions). 
+%   OSR represents the proportion of females. 
+%   Contours show predicted values of OSR conditional on precipitation and temperature of the dormant and growing season.
+%   Operational Sex Ratio during the dormant season for the two sex model (A), Operational Sex Ratio during the growing season for the two sex model (B).
+%   "\begin{normalsize}\textbf{o}\end{normalsize}": Past, "\begin{normalsize}\textbf{+}\end{normalsize}": Current,"\begin{large}\textbf{*}\end{large}": RCP 4.5,"\begin{tiny}$\blacksquare$\end{tiny}": RCP 8.5.}
+%   \label{Sup:OSR}
+%   \end{center}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics[width=0.85\linewidth]{Figures/SR.pdf}
+%   \caption{A two‐dimensional representation of the  Sex Ratio (SR) over time (past, present and future climate conditions). 
+%   Contours show predicted values of SR conditional on precipitation and temperature of the dormant and growing season.
+%   Sex Ratio during the dormant season for the two sex model (A),Sex Ratio during the growing season for the two sex model (B).}
+%   \label{Sup:SR}
+%   \end{center}
 % \end{figure}
 
 \section {Supporting Methods}
