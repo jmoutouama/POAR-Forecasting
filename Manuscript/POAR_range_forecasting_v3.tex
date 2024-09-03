@@ -255,11 +255,10 @@ For the analyses that follow, we focus on the 2014-15 and 2015-16 transition yea
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=\linewidth]{Figures/tom_map_v2.pdf}
-  \caption{\textbf{Maps of 30-year (1990-2019) climate normals and study sites used for demographic monitoring of \emph{Poa arachnifera} in Texas, Kansas and Oklahoma in the United States}.
-  Precipitation is in mm and temperature is in \degree C.
-  We surveyed 22 natural populations (grey diamond).
-  The common garden sites were installed on 14 sites (black circle) collected from 7 sources populations (red circle).
-  See also (Figure \ref{Sup:temp_variation}, Figure \ref{Sup:pr_variation}) for more details about climate variation across the study sites since the beginning of last century.}
+  \caption{\textbf{Experimental gardens and climate of the study region}. 
+  	\textbf{A}: Map of 14 experimental garden sites (crosses) in Texas, Oklahoma, and Kansas relative to GBIF occurrences of \textit{Poa arachnifera} (gray points). Red points indicate source populations for plants used in the common garden experiment. 
+  	\textbf{B,C}: Past, future, and observed climate space for growing and dormant seasons. Crosses show observed conditions for the sites and years of the common garden experiment. Gray points show historical (1901-1930) climate normals, and blue and red points show end-of-century (2071-2100) climate normals for RCP4.5 and RCP8.5 projections, respectively, form MIROC5. 
+  See also (Figure \ref{Sup:clim_change} for more information about historical and projected climate change in the study region.}
   \label{fig:study_design}
   \end{center}
 \end{figure}
@@ -416,12 +415,12 @@ Because of the amount of the computation involved, we use 100 posterior samples 
 
 \section*{Results}
 
-\subsection*{Sex specific demographic response to climatic gradient}
-We found strong demographic responses to climate drivers across our Texas bluegrass common garden sites and evidence for demographic differences between the sexes. 
-\tom{}{I am skipping the rest of this section for now because I think the figure needs to be re-worked and that will change the rest of this paragraph. I also think this section should include the common garden sex ratio results, since they are connected to the vital rate responses.}
-
-
-
+\subsection*{Sex specific demographic response and sex ratio variation across climatic conditions}
+We found strong demographic responses to climate drivers across our Texas bluegrass common garden sites and years, and evidence for demographic differences between the sexes. 
+Regression coefficients related to sex and/or sex:size interactions were significantly non-zero (95\% credible intervals excluding zero) for most vital rates (Fig. \ref{Sup:Posterior}), suggesting sexual divergence in demography. 
+Females generally had an advantage over males, especially in survival and flowering (Fig. \ref{fig:vital_rates}). 
+Vital rate regressions also revealed significant interactions between sex and climate drivers, especially in vegetative growth (Fig. \ref{Sup:Posterior})B. 
+\tom{}{I am skipping the rest of this section for now because I think we need a different visualization for the vital rates. I also think this section should include the common garden sex ratio results, since they are connected to the vital rate responses.}
 
 % Plant size and sex interaction was significant for all vitals rates (Fig. \ref{Sup:Posterior}), suggesting a sexual dimorphism.
 % For survival, flowering and reproduction the interaction between temperature and precipitation of the growing season and dormant season was not significant (Fig. \ref{Sup:Posterior}). 
@@ -450,57 +449,31 @@ We found strong demographic responses to climate drivers across our Texas bluegr
 	\end{center}
 \end{figure}
 
-
-\subsection*{Climate change alters population viability}
-We estimated population growth rate variation across species range as a function of each climatic variable given the average of the three other climatic variables using two models: \jacob{a female dominant model and a two-sex model}{I have now provided the methods for this contrast.}.
-For both models, population growth rate decreased toward high precipitation of growing season (Figure \ref{fig:lambda_LTRE}A).
-In contrast population growth rate increased with an increase in precipitation of the dormant season (Figure \ref{fig:lambda_LTRE}C).
-Furthermore, population growth rate was maximized between 14 and 17 \degree C and decreased bellow zero beyond 18 \degree C during the growing season (Figure \ref{fig:lambda_LTRE}B).
-Similarly population fitness was maximized between 27 and 31 \degree C and decreased bellow zero just beyond 20 \degree C during the dormant season (Figure \ref{fig:lambda_LTRE}D).
-% Across species niche population persistence was maximized at higher temperature during the dormant season ( 27 to 31) and intermediate temperature during the growing season (11 to 20).
-\jacob{}{I think we should keep this figure. The 2-D niche plots are the better representation of these results, because there are temp*precip interactions that we cannot see here but you can see in the 2-D niche plot. However a model with the 4 predictors together will also give a beter approximation of lambda than the 2D. I added the conditional part in the description of the results. I see the 2D as a way of showing the difference in niche.That said if you really want to remove this I am down you have more experience than me.}
-
-\jacob{We have also detected a strong association between predicted lambda and different ranges of climate (past, present and future).
-	% However, the magnitude of the effect of future climate on population growth rate was different between emissions scenarios.
-	Under past climate conditions, population growth rate decreased below one for temperature of the growing season.
-	Populations will still be viable under moderate gas emission (RCP4.5). 
-	However high gas emission (RCP8.5) will alter population viability (Figure \ref{fig:lambda_LTRE}B, D).}{I changed how I write the first sentence to remove the "effect of climate on". Again I don't mind removeing the Figure.  }
-
-% \subsection*{Temperature as a driver of population growth rate decline }
-Population growth rate was most sensitive to change in temperature of the growing season and temperature of the dormant season (Figure \ref{Sup:LTRE}).
-Despite contribution for both sexes, females have a higher contribution to population dynamics than males (Figure \ref{Sup:LTRETemp}; Figure \ref{Sup:LTREppt}).
-For both sexes, the reduction of $\lambda$ for high value of temperature  (dormant and growing season) was driven by a reduction of survival rate, growth rate, and a reduction in number of panicles (Figure \ref{fig:lambda_LTRE}F, H, G, L).
-\tom{However, the change of population growth rate for high value of precipitation was not driven by change in vital rates.}{This statement cannot be true.}
-
-\begin{figure}[H]
-	\begin{center}
-		\includegraphics[width=1\linewidth]{Figures/lambda_past_present_future.pdf}
-		\caption{\textbf{Predicted population growth rate ($\lambda$) in different ranges of climate}.
-			(A) Precipitation of the growing season, (B) Temperature of the growing season, (C) Precipitation of the dormant season, (D) Temperature of the dormant season.
-			The grey curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
-			The orange curve represents the prediction by the female dominant matrix projection model.
-			The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1).
-			Lower panels below each data panel shows  ranges of climate values for different time period (past climate, present and future climates).
-			For future climate, we show a Representation Concentration Pathways (RCP) 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs (MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM).
-			% Life table response experiment decomposition of the sensitivity of $\lambda$ to seasonal climate into additive vital rate contributions of males and females based on posterior mean parameter estimates.
-			%  (A) Temperature of growing season (contribution of female), (B) Temperature of growing season (contribution of male),  (C) Temperature of dormant season (contribution of female) and (D) Temperature of dormant season (contribution of male).
-		}
-		\label{fig:lambda_LTRE}
-	\end{center}
-\end{figure}
+Across common garden sites, operational sex ratio (proportion of female panicles) of the experimental populations was female-biased on average (STATS), reflecting the overall greater rates of female vs. male flowering rather than bias in the underlying population composition (all sites were planted with equal numbers of females and males). 
+Across sites and years, OSR variation was significantly predicted by [describe sex ratio analyses].
 
 
+\subsection*{Climate drivers of population viability across niche space}
+Putting all vital rates together in the MPM framework reveals how climate shapes fitness variation across niche dimensions and geographic space, and how accounting for sex structure modifies these inferences. 
+Figure \ref{fig:niche} shows the estimated probability of population viability ($\lambda \ge 1$) across seasonal climate niche space; these probabilities account for uncertainty in the vital rate parameters as well as process error related to spatial heterogeneity and genotypic variation. 
+For both female-dominant and two-sex models, fitness variation across niche space was dominated by temperature, with weaker effects of precipitation (compare vertical and horizontal contours in Fig. \ref{fig:niche}). 
+These visual trends are supported by LTRE decomposition indicating that variation in fitness across climatic conditions is most strongly driven by responses to growing and dormant season temperature, with weaker interactive effects of precipitation that modulate the effects of temperature (Figure \ref{Sup:LTRE}). 
+LTRE analysis also showed that declines in population viability at high and low temperatures were driven most strongly by reductions in vegetative growth and panicle production, with stronger contributions from females than males (Figure \ref{Sup:LTRETemp}). 
+Intermediate temperatures of both growing and dormant seasons were associated with near-certain projections of population viability $Pr(\lambda \ge 1) \approx 1$, and high and low temperature extremes during both seasons were associated with low niche suitability ($Pr(\lambda \ge 1) < 0.2$). 
+Higher precipitation slightly expanded the range of suitable temperatures during the dormant season (Fig. \ref{fig:niche}A), and the reverse was true in the growing season (Fig. \ref{fig:niche}B). 
+\tom{Points in Fig. \ref{fig:niche} show that climate change forecasted for the common garden locations would move many of them toward lower-suitabiltiy regions of niche space associated with high growing and dormant season temperatures (see also Fig. \ref{fig:lambda_LTRE}).}{I think we should redraw this without countours so that the points are more readable. I would also change the point types and sizes.} 
 
-\subsection*{Climatic change induces niche and range shifts}
+While the female-dominant and two-sex models were generally in agreement about high confidence in intermediate temperature optima, they differed around the edges of niche space (\tom{Fig. \ref{fig:niche}C,D}{All multi-panel figures need letter labels.},\ref{fig:lambda_LTRE}). 
+The female-dominant model over-predicted population viability, especially with respect to growing season temperature. 
+For example, the female-dominant model \tom{predicted}{I think I am switching tenses. We will need to clean this up.} that, for most levels of precipitation, warm average growing season (winter) temperatures of $\sim 20\degree C$ had high suitability ($Pr(\lambda \ge 1) > 0.9$), while the two-sex model indicated that these conditions were most likely unsuitable ($Pr(\lambda \ge 1) < 0.5$). 
+Similarly, at low winter temperatures that the two-sex model identifies with high certainty as unsuitable ($Pr(\lambda \ge 1) < 0.1$), the female-dominant model is more optimistic ($Pr(\lambda \ge 1) > 0.4$). 
+Across niche space related to growing season temperature and precipitation, the female-dominant model over-predicts population viability by ca. 10\%, on average (Fig. \ref{fig:niche}D, Fig. \ref{Sup:Niche_overestimation}B). 
+The difference between female-dominant and two-sex models was qualitatively similar but weaker in magnitude for niche dimensions of the dormant season (Fig. \ref{fig:niche}C, Fig. \ref{Sup:Niche_overestimation}A). 
 
-Female dominant model and  two-sex models predicts a niche shift in \emph{Poa arachnifera} populations (Figure \ref{fig:niche}). 
-However, the female dominant model underestimated the magnitude of niche shifts (Figure \ref{fig:niche}E, F; -0.16[-0.29,-0.03]).
-Female dominant model and the two-sex models agree that viable populations of \emph{P. arichnifera} were only predicted at the center of the range for current climatic conditions (Figure \ref{fig:geoprojacc}).
-Although \emph{P. arichnifera} was predicted to have suitable habitats in the center of the range under current climate, global  warming is projected to reduce much of these suitable habitats (Figure \ref{fig:geoprojacc}). 
-If the species is able to disperse far and if there is no physical barriers, most of the current suitable habitats will move toward the Northern range edge as a results of niche shifts. 
-Niche shift underestimation by the female dominant model led to a geographic range underestimation by the female dominant model.  
-
-
+Female-dominant and two-sex models diverged most strongly in regions of niche space that favored strongly female-biased operational sex ratios (Fig. WE NEED A FIGURE FOR THIS). 
+This suggests mate limitation as the biological mechanism underlying model differences. 
+The two-sex model accounts for feedbacks between OSR and female fertility, with reduced seed viability at OSR exceeding $\sim$ 75\% female panicles (Fig. WE NEED A FIGURE FOR THIS).
+Lacking this feedback, the female-dominant model over-predicts population viability in regions of niche space where male flowering is not sufficient to maximize seed set. 
 
 \begin{figure}[H]
 	\begin{center}
@@ -515,6 +488,22 @@ Niche shift underestimation by the female dominant model led to a geographic ran
 	\end{center}
 \end{figure}
 
+\subsection*{Climatic change induces shifts in geographic niche and population OSR}
+Projecting the climatic niche onto geographic space, we find that suitable niche conditions for Texas bluegrass are shifting north under climate change (Fig. \ref{fig:geoprojacc}). 
+Under past (1901-1930) and present (1990-2019) conditions, the two-sex and female-dominant models predict widespread suitability with high confidence ($Pr(\lambda \ge 1) \approx 1$) across much of Texas and Oklahoma. 
+For both models, the predicted geographic niche generally corresponds well to independent observations of the Texas bluegrass distribution (\tom{Fig.}{I think we should add the GBIF records to the map.}).
+The predicted geographic niche is more expansive than the observed distribution, particularly at southern, western, and eastern edges, suggesting some degree of range disequilibrium (e.g., due to dispersal limitation), geographic bias in occurrence observations, and/or model mis-specification. 
+Comparing past to present conditions, the geographic niche for both models has shifted slightly poleward, with reductions in viability at the southern margins and expansions of viability at northern margins. 
+The northward shift of suitable niche conditions is even more pronounced in projections to end-of-century (2071-2100) conditions, with the most dramatic changes in the most pessimistic (RCP8.5) scenario (\tom{Fig.}{Here and throughout, we need to reference specific figure panels by letter label.}). 
+In fact, under the pessimistic scenario, Texas bluegrass will have very little remaining climate sutability in the state of Texas by the end of the 21st century. 
+The predicted poleward niche shift is consistent across different global circulation models (SUPP FIGURES). 
+
+Female-dominant and two-sex models are in broad agreement about northward migration of the climatic niche, but the geographic projections reveal hotspots of disagreement where the female-dominant model over-predicts climate suitability and under-predicts the likelihood of range shifts (Fig. \ref{fig:geoprojacc}). 
+These hotspots are generally regions of predicted female bias in the operational sex ratio (Fig. WE NEED A FIGURE FOR THIS.) 
+The strongest contrast between the two models is in the pessimistic climate change scenario (RCP8.5), where the female-dominant model over-predicts population viability by ca. 25\% across much of the region (Fig. WE NEED A FIGURE SHOWING THE DISTRIBUTION OF THE DIFFERENCE). 
+Accordingly, the OSR of Texas bluegrass across its range is projected to be ca. 75\% female panicles, on average, by end of century under RCP8.5, an increase from ca. 60\% female under projections for past and current conditions (Fig. \ref{fig:srprojcmc}). 
+The more optimistic climate change scenario (RCP4.5) predicts an intermediate shift in OSR, with hotspots of change becoming strongly female-biased but most of the range remaining near current levels of 60\% female (Fig. \ref{fig:srprojcmc}; WE NEED A MAP SHOWING WHERE OSR IS BECOMING MORE BIASED). 
+
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.99\linewidth]{Figures/Fig_geoPrlambdacmc.pdf}
@@ -528,17 +517,10 @@ Niche shift underestimation by the female dominant model led to a geographic ran
 	\end{center}
 \end{figure}
 
-\subsection*{Female bias in sex-ratio in response to climate climate change}
-\tom{}{I moved this section because it only makes sense with respect to the geographic projections, because the histograms are showing distributions across the study region. Are these locations conditional on lambda greater than 1 or Pr lambda greater than some value?}
-Operational-Sex Ratio (proportion of females panicles) increased significantly with an increase of precipitation and temperature of the growing season and precipitation and temperature of dormant season (Figure \ref{Sup:gardens_OSR}, Figure \ref{Sup:PosteriorOSR}). 
-Similarly, the proportion of female plants increased with an increase of temperature of growing season and temperature of dormant season (Figure \ref{Sup:gardens_SR} B, D, Figure \ref{Sup:PosteriorSR}).
-However, the proportion of female plants did not vary significantly with precipitation of dormant and growing season (Figure \ref{Sup:gardens_SR} A, C). 
-Future climate drive to extreme female-biased in \emph{Poa arachnifera} populations (Figure \ref{fig:srprojcmc}, Figure \ref{Sup:osrall}). 
-
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.8\linewidth]{Figures/POAR_OSR.pdf}
-		\caption{Change in Operational Sex Ratio (proportion of female panicule) over time (past, present, future).
+		\caption{Change in Operational Sex Ratio (proportion of female panicle) over time (past, present, future).
 			Future projections were based on the CMCC-CM model.
 			The mean sex ratio for each time period is shown as vertical dashed line.}
 		\label{fig:srprojcmc}
@@ -648,52 +630,15 @@ This research was supported by National Science Foundation Division of Environme
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.95\linewidth]{Figures/fig_tas_past_present_future.pdf}
-	\caption{Temperature variation across the study sites from 1990 to 2100,
-		ds: Dormant season, dg: Growing season.}
-	\label{Sup:temp_variation}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.95\linewidth]{Figures/fig_pr_past_present_future.pdf}
-	\caption{Precipitation variation across the study sites from 1990 to 2100.
-		ds: Dormant season, dg: Growing season.}
-	\label{Sup:pr_variation}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.95\linewidth]{Figures/MIROC.pdf}
-	\caption{Past, Observed, present and future (MIROC Model) climate data across the study area.}
-	\label{Sup:projectionMIROC}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.99\linewidth]{Figures/ACCESS.pdf}
-	\caption{Past, Observed, present and future (ACCESS Model) climate data across the study area.}
-	\label{Sup:projectionACCESS}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.99\linewidth]{Figures/CESM1.pdf}
-	\caption{Past, Observed, present and future (CESM1 Model) climate data across the study area.}
-	\label{Sup:projectionCESM1}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.99\linewidth]{Figures/CMCC.pdf}
-	\caption{Past, Observed, present and future (CMCC Model) climate data across the study area.}
-	\label{Sup:projectionCMCC}
+	\includegraphics[width=0.959\linewidth]{Figures/tom_map_v1.pdf}
+	\caption{Common garden locations in Texas, Oklahoma, and Kansas (points) and corresponding changes in growing and dormant season climate. FINISH LEGEND.}
+	\label{Sup:climate_variation}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.959\linewidth]{Figures/site_year_weather.pdf}
-	\caption{Seasonal climate variation (temperature in \degree C and precipitation in $mm$) across the common garden sites during the 2014--15 and 2015--16 census periods. Each color represents a site and lines connect the same site between years.}
+	\caption{Seasonal climate variation (temperature in \degree C and precipitation in $mm$) across the common garden sites during the 2014--15 and 2015--16 census years. Each color represents a site and lines connect the same site between years.}
 	\label{Sup:climate_variation}
 \end{figure}
 
@@ -703,14 +648,6 @@ This research was supported by National Science Foundation Division of Environme
 	\caption{Comparison of 30-year (1990-2019) climate normals and observed weather conditions at common garden sites during the 2014--15 and 2015--16 census periods. Temperature is in \degree C and precipitation is in $mm$. Colors represent sites and lines show the $y=x$ relationship.}
 	\label{Sup:climate_normal_weather}
 \end{figure}
-
-% \begin{figure}[H]
-% 		\centering
-% 		\includegraphics[width=0.95\linewidth]{Figures/Varianceexplained.pdf}
-% 		\caption{Relation between precipitation and temperature for each season (growing and dormant). $R^2$ indicates the value of proportion of explained variance between the temperature and precipitation}
-% 		\label{Sup:Correlation}
-% \end{figure}
-
 
 \begin{figure}[H]
 	\centering
@@ -730,7 +667,22 @@ This research was supported by National Science Foundation Division of Environme
 	\label{Sup:Posterior}
 \end{figure}
 
-
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=1\linewidth]{Figures/lambda_past_present_future.pdf}
+		\caption{\textbf{Predicted population growth rate ($\lambda$) in different ranges of climate}.
+			(A) Precipitation of the growing season, (B) Temperature of the growing season, (C) Precipitation of the dormant season, (D) Temperature of the dormant season.
+			The grey curve shows prediction by the two-sex matrix projection model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			The orange curve represents the prediction by the female dominant matrix projection model.
+			The dashed horizontal line indicates the limit of population viability ($\lambda$ = 1).
+			Lower panels below each data panel shows  ranges of climate values for different time period (past climate, present and future climates).
+			For future climate, we show a Representation Concentration Pathways (RCP) 4.5 and 8.5. Values of ($\lambda$) are derived from the mean climate variables across 4 GCMs (MIROC5, ACCESS1-3, CESM1-BGC, CMCC-CM).
+			% Life table response experiment decomposition of the sensitivity of $\lambda$ to seasonal climate into additive vital rate contributions of males and females based on posterior mean parameter estimates.
+			%  (A) Temperature of growing season (contribution of female), (B) Temperature of growing season (contribution of male),  (C) Temperature of dormant season (contribution of female) and (D) Temperature of dormant season (contribution of male).
+		}
+		\label{fig:lambda_LTRE}
+	\end{center}
+\end{figure}
 
 \begin{figure}[H]
 	\begin{center}
@@ -740,17 +692,6 @@ This research was supported by National Science Foundation Division of Environme
 		\label{Sup:gardens_OSR}
 	\end{center}
 \end{figure}
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=0.75\linewidth]{Figures/Posterior_ORS.pdf}
-%	\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
-%		pptgrow is  the precipitation of growing season,
-%		Tempgrow is the temperature of growing season,
-%		pptdorm is the temperature of dormant season,
-%		Tempdorm is the temperature of dormant season.}
-%	\label{Sup:PosteriorOSR}
-%\end{figure}
 
 \begin{figure}[H]
 	\begin{center}
