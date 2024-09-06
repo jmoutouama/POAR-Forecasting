@@ -6441,10 +6441,11 @@ plot(coordinates_study_area,add=T)
 ## Download occurrence data from gbif for *Poa arachnifera*
 
 ```{r}
-library(dismo)
+#library(dismo)
 # dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
-poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
-# load("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Herbaruim Project/Data/Occurence/aghy_occ_raw.rdata")
+#poar_occ_raw <- gbif(genus="Poa",species="arachnifera",download=TRUE)
+#write.csv(poar_occ_raw,"data/poar_occ_raw.csv")
+poar_occ_raw<-read.csv("data/poar_occ_raw.csv")
 head(poar_occ_raw) # to view the first few records the occurrence dataset use
 ```
 
@@ -6529,13 +6530,13 @@ arrows(clim_past$pptdorm,clim_past$tempdorm,
        clim_current$pptdorm,clim_current$tempdorm,
        length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
 #points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
-#arrows(clim_current$pptdorm,clim_current$tempdorm,
-#       clim_miroc45$pptdorm,clim_miroc45$tempdorm,
-#       length=0.1,col=unique(poar_2015_2016$site_col),lty=2,lwd=2)
+arrows(clim_current$pptdorm,clim_current$tempdorm,
+      clim_miroc45$pptdorm,clim_miroc45$tempdorm,
+      length=0.1,col=unique(poar_2015_2016$site_col),lty=1,lwd=1)
 #points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
 arrows(clim_current$pptdorm,clim_current$tempdorm,
        clim_miroc85$pptdorm,clim_miroc85$tempdorm,
-       length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=3,lwd=1)
 
 
 plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=unique(poar_2015_2016$site_col),cex=0.5,xlim=c(190,840),ylim=c(7,22),pch=16)
@@ -6544,13 +6545,13 @@ arrows(clim_past$pptgrow,clim_past$tempgrow,
        clim_current$pptgrow,clim_current$tempgrow,
        length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
 #points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
-#arrows(clim_current$pptgrow,clim_current$tempgrow,
-#       clim_miroc45$pptgrow,clim_miroc45$tempgrow,
-#       length=0.1,col=unique(poar_2015_2016$site_col),lty=2,lwd=2)
+arrows(clim_current$pptgrow,clim_current$tempgrow,
+      clim_miroc45$pptgrow,clim_miroc45$tempgrow,
+      length=0.1,col=unique(poar_2015_2016$site_col),lty=1,lwd=1)
 #points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
 arrows(clim_current$pptgrow,clim_current$tempgrow,
        clim_miroc85$pptgrow,clim_miroc85$tempgrow,
-       length=0.1,col=unique(poar_2015_2016$site_col),lwd=2)
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=3,lwd=1)
 dev.off()
 ```
 
