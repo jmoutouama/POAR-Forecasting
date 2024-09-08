@@ -1,8 +1,8 @@
-# PROJECT: Forecasting range shifts of a dioecious plant species under climate change
-# PURPOSE: Build vital rate models (survival, growth, flowering,fertility) for subsequent use in MPMs. 
-## Note: Raster files are too large to provide in public repository. They are stored on a local machine
-### AUTHOR: Jacob Moutouama, Aldo Compagnoni and Tom Miller
-#### DATE LAST MODIFIED (Y-M-D): 2024-08-03
+# Project: Forecasting range shifts of a dioecious plant species under climate change
+# Purpose: Build vital rate models (survival, growth, flowering,fertility) for subsequent use in MPMs. 
+# Note: Raster files are too large to provide in public repository. They are stored on a local machine
+# Authors: Jacob Moutouama, Aldo Compagnoni and Tom Miller
+# Date last modified (Y-M-D): 2024-08-03
 
 # remove all objects and clear workspace
 rm(list = ls(all=TRUE))
