@@ -1,3 +1,54 @@
+@article{ellner2022critical,
+	title={A critical comparison of integral projection and matrix projection models for demographic analysis: Comment},
+	author={Ellner, Stephen P and Adler, Peter B and Childs, Dylan Z and Hooker, Giles and Miller, Tom E and Rees, Mark},
+	journal={Ecology},
+	year={2022}
+}
+
+@article{shelton2010ecological,
+  title={The ecological and evolutionary drivers of female-biased sex ratios: two-sex models of perennial seagrasses},
+  author={Shelton, Andrew Olaf},
+  journal={The American Naturalist},
+  volume={175},
+  number={3},
+  pages={302--315},
+  year={2010},
+  publisher={The University of Chicago Press}
+}
+
+@article{gerber2014two,
+  title={Two-sex matrix models in assessing population viability: when do male dynamics matter?},
+  author={Gerber, Leah R and White, Easton R},
+  journal={Journal of Applied Ecology},
+  volume={51},
+  number={1},
+  pages={270--278},
+  year={2014},
+  publisher={Wiley Online Library}
+}
+
+@article{lynch2014climate,
+  title={How climate extremes—not means—define a species' geographic range boundary via a demographic tipping point},
+  author={Lynch, Heather J and Rhainds, Marc and Calabrese, Justin M and Cantrell, Stephen and Cosner, Chris and Fagan, William F},
+  journal={Ecological Monographs},
+  volume={84},
+  number={1},
+  pages={131--149},
+  year={2014},
+  publisher={Wiley Online Library}
+}
+
+@article{elderd2016quantifying,
+  title={Quantifying demographic uncertainty: Bayesian methods for integral projection models},
+  author={Elderd, Bret D and Miller, Tom EX},
+  journal={Ecological Monographs},
+  volume={86},
+  number={1},
+  pages={125--144},
+  year={2016},
+  publisher={Wiley Online Library}
+}
+
 @article{ehrlen2015predicting,
   title={Predicting changes in the distribution and abundance of species under environmental change},
   author={Ehrl{\'e}n, Johan and Morris, William F},
@@ -20,7 +71,16 @@
   publisher={Wiley Online Library}
 }
 
-@article{miller2011confronting,
+@article{miller2011sex,
+  title={Sex-biased dispersal and the speed of two-sex invasions},
+  author={Miller, Tom EX and Shaw, Allison K and Inouye, Brian D and Neubert, Michael G},
+  journal={The American Naturalist},
+  volume={177},
+  number={5},
+  pages={549--561},
+  year={2011},
+  publisher={University of Chicago Press Chicago, IL}
+}@article{miller2011confronting,
   title={Confronting two-sex demographic models with data},
   author={Miller, Tom EX and Inouye, Brian D},
   journal={Ecology},
@@ -1100,7 +1160,7 @@ year = {1930},
   volume  = {22},
 }
 
-@Article{,
+@Article{brms,
   author   = {Paul-Christian Bürkner},
   journal  = {Journal of Statistical Software},
   title    = {{brms}: An {R} Package for {Bayesian} Multilevel Models Using {Stan}},

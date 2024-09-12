@@ -2091,6 +2091,25 @@ data_miroc85_fd<-data.frame(lambda_miroc85)
 # write_rds(data_miroc85_fd,"C:/Users/jm200/Documents/Projection/2024/Geoprojectfd/data_miroc85_fd.rds")
 
 # Fig 4. Geography ----
+## Download occurrence data from gbif for Poa arachnifera -----
+# dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
+#poar_occ_raw <- dismo::gbif(genus="Poa",species="arachnifera",download=TRUE)
+#write.csv(poar_occ_raw,"data/poar_occ_raw.csv")
+poar_occ_raw<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/poar_occ_raw.csv")
+head(poar_occ_raw) # to view the first few records the occurrence dataset use
+poar_occ <- subset(poar_occ_raw,(!is.na(lat))&(!is.na(lon))) # here we remove erroneous coordinates, where either the latitude or longitude is missing
+cat(nrow(poar_occ_raw)-nrow(poar_occ), "records are removed") # Show the number of records that are removed from the dataset. 
+poar_occ %>% 
+  dplyr::select(country,lon, lat,year)%>% 
+  dplyr::rename(Longitude=lon,Latitude=lat) %>% 
+  filter(year %in% (1901:2024) & as.numeric(Longitude >=-126.374160) &  as.numeric(Longitude <=-95) & country=="United States") %>% 
+  unique() %>% 
+  arrange(Latitude)->gbif
+
+coordinates(gbif) <- ~ Longitude + Latitude
+CRS1 <- CRS("+init=epsg:4326") # WGS 84
+crs(gbif) <- CRS1
+
 ## Read the lambda for all iterations
 ### Two sex models
 lambbacurrent <- read.csv("https://www.dropbox.com/scl/fi/5xl6vxw456m942qbtynqi/poar_current_1-400K.csv?rlkey=y76suoez6xbk21xkh52iaym9k&dl=1", stringsAsFactors = F) 
@@ -2123,10 +2142,10 @@ lambbapast %>%
   pivot_wider(
     names_from = posterior_id, 
     values_from = lambda_diff)->pivot_lambda_past
-dim(pivot_lambda_past) 
+#dim(pivot_lambda_past) 
 
 pivot_lambda_past_final<-pivot_lambda_past[,-c(1:8)]
-prob_lambda_past_post<-c()
+prob_lambda_past_post<-c() 
 for(l in 1:nrow(pivot_lambda_past_final)){
   prob_lambda_past_post[l]<-mean(pivot_lambda_past_final[l,]>1,na.rm=T)
 }
@@ -2164,6 +2183,7 @@ for(l in 1:ncol(geo_lambbacurrent_fd)){
 lam_prob_current_fd<-data.frame(clim_current_values[,9:10],Prlambda=prob_lambda_current_fd)
 
 ### Future conditions
+#### MIROC 5----
 lambbamiroc45 %>% 
   unique %>% 
   pivot_wider( values_from = 'lambda_diff',
@@ -2237,6 +2257,7 @@ Time_names <- c("Past"="Past",
 
 Fig_geoPrlambdamiroc<-ggplot()+
   geom_tile(data = subset(dat_miroc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  geom_point(aes(x=-100,y=35))+
   # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
   labs(x = "Longitude", y = "Latitude")+
   scale_fill_gradientn(
@@ -2280,6 +2301,215 @@ Fig_geoPrlambdamiroc<-ggplot()+
 
 # Fig_geoPrlambdamiroc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,lambda_map_Prpast_fd,lambda_map_Prcurrent_fd,lambda_map_miroc45_fd,lambda_map_miroc85_fd,lambda_map_Prpast_diff,lambda_map_Prcurrent_diff,lambda_map_Prmiroc45_diff,lambda_map_Prmiroc85_diff,common.legend = FALSE,ncol = 4, nrow = 3)
 # ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width =9, height = 10)
+
+#### ACCESS ----
+lambbaacc45 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdaacc_45
+# dim(pivot_lambdaacc_45)
+pivot_lambdaacc_45_final<-pivot_lambdaacc_45[,-c(1:8)]
+prob_lambdaacc_45_post<-c()
+for(l in 1:nrow(pivot_lambdaacc_45_final)){
+  prob_lambdaacc_45_post[l]<-mean(pivot_lambdaacc_45_final[l,]>1,na.rm=T)
+}
+lambaacc_prob_45<-data.frame(pivot_lambdaacc_45[,1:8],Prlambda=prob_lambdaacc_45_post)
+geo_prlambdaacc_45 <- merge(x = lambaacc_prob_45,y =climate_acc_45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+
+lambbaacc85 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdacc_85
+pivot_lambdacc_85_final<-pivot_lambdacc_85[,-c(1:8)]
+prob_lambdaacc_85_post<-c()
+for(l in 1:nrow(pivot_lambdacc_85_final)){
+  prob_lambdaacc_85_post[l]<-mean(pivot_lambdacc_85_final[l,]>1,na.rm=T)
+}
+lambdaacc_prob_85<-data.frame(pivot_lambdacc_85[,1:8],Prlambda=prob_lambdaacc_85_post)
+geo_prlambdaacc_85 <- merge(x = lambdaacc_prob_85,y =climate_acc_85_values,by=c("pptdorm","tempdorm")) 
+
+prob_lambda_acc45_fd<-c()
+for(l in 1:ncol(geo_lambba_acc45_fd)){
+  prob_lambda_acc45_fd[l]<-mean(geo_lambba_acc45_fd[,l]>1,na.rm=T)
+}
+lam_prob_acc45_fd<-data.frame(climate_acc_45_values[,9:10],Prlambda=prob_lambda_acc45_fd)
+prob_lambda_acc85_fd<-c()
+dim(geolambba_acc85_fd)
+for(l in 1:ncol(geolambba_acc85_fd)){
+  prob_lambda_acc85_fd[l]<-mean(geolambba_acc85_fd[,l]>1,na.rm=T)
+}
+lam_prob_acc85_fd<-data.frame(climate_acc_85_values[,9:10],Prlambda=prob_lambda_acc85_fd)
+
+geo_prlambda_acc45_fd_twosex<-left_join(lam_prob_acc45_fd,geo_prlambdaacc_45,by=c("x","y"))
+geo_prlambda_acc45_fd_twosex$Prlambda<-geo_prlambda_acc45_fd_twosex$Prlambda.x-geo_prlambda_acc45_fd_twosex$Prlambda.y
+geo_prlambda_acc85_fd_twosex<-left_join(lam_prob_acc85_fd,geo_prlambdaacc_85,by=c("x","y"))
+geo_prlambda_acc85_fd_twosex$Prlambda<-geo_prlambda_acc85_fd_twosex$Prlambda.x-geo_prlambda_acc85_fd_twosex$Prlambda.y
+
+dat_acc_map<-rbind(geo_prlambda_past[,c("x","y","Prlambda")],lam_prob_past_fd[,c("x","y","Prlambda")],geo_prlambda_past_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_current[,c("x","y","Prlambda")],lam_prob_current_fd[,c("x","y","Prlambda")],geo_prlambda_current_fd_twosex[,c("x","y","Prlambda")],geo_prlambdaacc_45[,c("x","y","Prlambda")],lam_prob_acc45_fd[,c("x","y","Prlambda")],geo_prlambda_acc45_fd_twosex[,c("x","y","Prlambda")],geo_prlambdaacc_85[,c("x","y","Prlambda")],lam_prob_acc85_fd[,c("x","y","Prlambda")],geo_prlambda_acc85_fd_twosex[,c("x","y","Prlambda")])
+
+dat_acc_map$Time<-c(rep("Past",nrow(geo_prlambda_past)+nrow(lam_prob_past_fd)+nrow(geo_prlambda_past_fd_twosex)),rep("Present",3*nrow(geo_prlambda_current)),rep("RCP45",3*nrow(geo_prlambdaacc_45)),rep("RCP85",3*nrow(geo_prlambdaacc_85)))
+
+dat_acc_map$model<-c(rep("B",nrow(geo_prlambda_past)),rep("A",nrow(lam_prob_past_fd)),rep("C",nrow(geo_prlambda_past_fd_twosex)),
+                     rep("B",nrow(geo_prlambda_current)),rep("A",nrow(lam_prob_current_fd)),rep("C",nrow(geo_prlambda_current_fd_twosex)),
+                     rep("B",nrow(geo_prlambdaacc_45)),rep("A",nrow(lam_prob_acc45_fd)),rep("C",nrow(geo_prlambda_acc45_fd_twosex)),
+                     
+                     rep("B",nrow(geo_prlambdaacc_85)),rep("A",nrow(lam_prob_acc85_fd)),rep("C",nrow(geo_prlambda_acc85_fd_twosex)) 
+)
+
+Fig_geoPrlambdaacc<-ggplot()+
+  geom_tile(data = subset(dat_acc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[F]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+    limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_acc_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[FM]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+    limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_acc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  scale_fill_gradientn(
+    name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
+    colours = colorspace::diverge_hcl(7),
+    na.value = "transparent",
+    breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
+    limits=c(-0.5,0.5))+
+  facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  theme_light()+
+  theme(legend.position = "bottom",
+        legend.title = element_text(size = 8),
+        legend.text  = element_text(size = 7),
+        strip.text.x = element_text(
+          size = 10, color = "grey40", face = "bold"
+        ),
+        strip.text.y = element_text(
+          size = 10, color = "grey40", face = "bold"),
+        strip.background = element_rect(
+          color="black", fill="white", size=0.5, linetype="solid"
+        )
+  )
+
+Fig_geoPrlambdaacc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_acc45_fd,lambda_map_acc85_fd,ncol=4,nrow=2,
+                              common.legend = TRUE)
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaacc.pdf", Fig_geoPrlambdaacc, width = 9, height = 10)
+
+
+# Figure: density plot -----
+d_past_lambda_fd <- density(lam_prob_past_fd$Prlambda,na.rm=TRUE)
+d_past_lambda_2sex <- density(geo_prlambda_past$Prlambda,na.rm=TRUE)
+d_past_lambda_fd_2sex <- density(geo_prlambda_past_fd_twosex$Prlambda,na.rm=TRUE)
+
+d_current_lambda_fd <- density(lam_prob_current_fd$Prlambda,na.rm=TRUE)
+d_current_lambda_2sex <- density(geo_prlambda_current$Prlambda,na.rm=TRUE)
+d_current_lambda_fd_2sex <- density(geo_prlambda_miroc45_fd_twosex$Prlambda,na.rm=TRUE)
+
+d_miroc45_lambda_fd <- density(lam_prob_miroc45_fd$Prlambda,na.rm=TRUE)
+d_miroc45_lambda_2sex <- density(geo_prlambda_miroc45$Prlambda,na.rm=TRUE)
+d_miroc45_lambda_fd_2sex <- density(geo_prlambda_miroc45_fd_twosex$Prlambda,na.rm=TRUE)
+d_miroc85_lambda_fd <- density(lam_prob_miroc85_fd$Prlambda,na.rm=TRUE)
+d_miroc85_lambda_2sex <- density(geo_prlambda_miroc85$Prlambda,na.rm=TRUE)
+d_miroc85_lambda_fd_2sex <- density(geo_prlambda_miroc85_fd_twosex$Prlambda,na.rm=TRUE)
+
+d_acc45_lambda_fd <- density(lam_prob_acc45_fd$Prlambda,na.rm=TRUE)
+d_acc45_lambda_2sex <- density(geo_prlambdaacc_45$Prlambda,na.rm=TRUE)
+d_acc85_lambda_fd <- density(lam_prob_acc85_fd$Prlambda,na.rm=TRUE)
+d_acc85_lambda_2sex <- density(geo_prlambdaacc_85$Prlambda,na.rm=TRUE)
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Densityplot_lambda_Miroc5.pdf",width=5,height=5,useDingbats = F)
+par(mar=c(5,5,1.5,0.5),mfrow=c(2,1))
+plot(d_past_lambda_fd, lwd = 2, main = "", xlab = "",xlim=c(0,1),ylim=c(0,13),col = "#7570B3")
+# mtext( "A",side = 3, adj = 0,cex=1.25)
+abline(v=mean(lam_prob_past_fd$Prlambda,na.rm=TRUE),lty=2,col="#7570B3")
+
+lines(d_current_lambda_fd, lwd = 2,col = "#0072B2")
+abline(v=mean(lam_prob_current_fd$Prlambda,na.rm=TRUE),lty=2,col="#0072B2")
+
+lines(d_miroc45_lambda_fd, lwd = 2,col = "#E6AB02")
+abline(v=mean(lam_prob_miroc45_fd$Prlambda,na.rm=TRUE),lty=2,col="#E6AB02")
+
+lines(d_miroc85_lambda_fd, lwd = 2,col = "#E7298A")
+abline(v=mean(lam_prob_miroc85_fd$Prlambda,na.rm=TRUE),lty=2,col="#E7298A")
+
+
+legend(0.01,10,bty="n",legend=c("Past","Present","RCP 4.5","RCP 8.5"),lwd=c(2,2,2,2),lty=1,col=c("#7570B3","#0072B2","#E6AB02","#E7298A"),cex=0.8)
+
+plot(d_past_lambda_2sex, lwd = 2, main = "", xlab = "Operational Sex Ratio (proportion of female panicle)",xlim=c(0,1),ylim=c(0,13),col = "#7570B3")
+# mtext( "A",side = 3, adj = 0,cex=1.25)
+abline(v=mean(geo_prlambda_past$Prlambda,na.rm=TRUE),lty=2,col="#7570B3")
+
+lines(d_current_lambda_2sex, lwd = 2,col = "#0072B2")
+abline(v=mean(geo_prlambda_current$Prlambda,na.rm=TRUE),lty=2,col="#0072B2")
+
+lines(d_miroc45_lambda_2sex, lwd = 2,col = "#E6AB02")
+abline(v=mean(geo_prlambda_miroc45$Prlambda,na.rm=TRUE),lty=2,col="#E6AB02")
+
+lines(d_miroc85_lambda_2sex, lwd = 2,col = "#E7298A")
+abline(v=mean(geo_prlambda_miroc85$Prlambda,na.rm=TRUE),lty=2,col="#E7298A")
+
+
+dev.off()
+
+plot(d_past_lambda_fd_2sex, lwd = 2, main = "", xlab = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),xlim=c(-0.3,0.3),ylim=c(0,40),col = "#7570B3")
+# mtext( "A",side = 3, adj = 0,cex=1.25)
+abline(v=mean(geo_prlambda_past_fd_twosex$Prlambda,na.rm=TRUE),lty=2,col="#7570B3")
+
+lines(d_current_lambda_fd_2sex, lwd = 2,col = "#0072B2")
+abline(v=mean(geo_prlambda_current_fd_twosex$Prlambda,na.rm=TRUE),lty=2,col="#0072B2")
+
+lines(d_miroc45_lambda_fd_2sex, lwd = 2,col = "#E6AB02")
+abline(v=mean(geo_prlambda_miroc45_fd_twosex$Prlambda,na.rm=TRUE),lty=2,col="#E6AB02")
+
+lines(d_miroc85_lambda_fd_2sex, lwd = 2,col = "#E7298A")
+abline(v=mean(geo_prlambda_miroc85_fd_twosex$Prlambda,na.rm=TRUE),lty=2,col="#E7298A")
+
+
+legend(0.1,25,bty="n",legend=c("Past","Present","RCP 4.5","RCP 8.5"),lwd=c(2,2,2,2),lty=1,col=c("#7570B3","#0072B2","#E6AB02","#E7298A"),cex=0.8)
+
+
+
+
+par(mar=c(5,5,1.5,0.5),mfrow=c(2,1))
+plot(d_past_lambda_fd, lwd = 2, main = "", xlab = "Operational Sex Ratio (proportion of female panicle)",xlim=c(0,1),ylim=c(0,13),col = "#7570B3")
+# mtext( "A",side = 3, adj = 0,cex=1.25)
+abline(v=mean(lam_prob_past_fd$Prlambda,na.rm=TRUE),lty=2,col="#7570B3")
+
+lines(d_current_lambda_fd, lwd = 2,col = "#0072B2")
+abline(v=mean(lam_prob_current_fd$Prlambda,na.rm=TRUE),lty=2,col="#0072B2")
+
+lines(d_acc45_lambda_fd, lwd = 2,col = "#E6AB02")
+abline(v=mean(lam_prob_acc45_fd$Prlambda,na.rm=TRUE),lty=2,col="#E6AB02")
+
+lines(d_acc85_lambda_fd, lwd = 2,col = "#E7298A")
+abline(v=mean(lam_prob_acc85_fd$Prlambda,na.rm=TRUE),lty=2,col="#E7298A")
+
+
+legend(0.01,10,bty="n",legend=c("Past","Present","RCP 4.5","RCP 8.5"),lwd=c(2,2,2,2),lty=1,col=c("#7570B3","#0072B2","#E6AB02","#E7298A"),cex=0.8)
+
+plot(d_past_lambda_2sex, lwd = 2, main = "", xlab = "Operational Sex Ratio (proportion of female panicle)",xlim=c(0,1),ylim=c(0,13),col = "#7570B3")
+# mtext( "A",side = 3, adj = 0,cex=1.25)
+abline(v=mean(geo_prlambda_past$Prlambda,na.rm=TRUE),lty=2,col="#7570B3")
+
+lines(d_current_lambda_2sex, lwd = 2,col = "#0072B2")
+abline(v=mean(geo_prlambda_current$Prlambda,na.rm=TRUE),lty=2,col="#0072B2")
+
+lines(d_miroc45_lambda_2sex, lwd = 2,col = "#E6AB02")
+abline(v=mean(geo_prlambda_miroc45$Prlambda,na.rm=TRUE),lty=2,col="#E6AB02")
+
+lines(d_miroc85_lambda_2sex, lwd = 2,col = "#E7298A")
+abline(v=mean(geo_prlambda_miroc85$Prlambda,na.rm=TRUE),lty=2,col="#E7298A")
+
+
+
 
 
 
