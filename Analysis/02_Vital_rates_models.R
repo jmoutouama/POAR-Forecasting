@@ -1,5 +1,5 @@
 # Project: Forecasting range shifts of a dioecious plant species under climate change
-# Purpose: Build vital rate models (survival, growth, flowering,fertility) for subsequent use in MPMs. 
+# Purpose: Build vital rate models (survival, growth,flowering, fertility) for subsequent use in MPMs. 
 # Note: Raster files are too large to provide in public repository. They are stored on a local machine
 # Authors: Jacob Moutouama, Aldo Compagnoni and Tom Miller
 # Date last modified (Y-M-D): 2024-08-03
@@ -851,7 +851,6 @@ tempdorm_seq <- seq(min(poar_surv_binned$tempdorm),max(poar_surv_binned$tempdorm
 
 # set up figure
 sex_cols <- RColorBrewer::brewer.pal(8, "Dark2")[c(2,1)]
-# sex_cols <- c("black","white")
 sex_lty <- c(1,1)
 bin_shapes <- 15
 diff_col <- RColorBrewer::brewer.pal(8, "Dark2")[6]
@@ -1371,7 +1370,7 @@ with(poar_panic_binned,{
     if(i==1){mtext("#panicles",side=2,line=3,cex=1.5)}
     mylabel3 <- paste(graph[[13]])
     mtext(mylabel3,side = 3, adj = 0,cex=1.75) 
-    mtext("Precipitation (grow. season)",side=1,line=3,cex=1.3)
+    mtext("Growing season precip",side=1,line=3,cex=1.3)
     for(s in 1:2){
       points(pptgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2,ylim=c(0,12))
@@ -1424,7 +1423,7 @@ with(poar_panic_binned,{
     # if(i==1){mtext("#panicles",side=2,line=3,cex=1.3)}
     mylabel3 <- paste(graph[[14]])
     mtext(mylabel3,side = 3, adj = 0,cex=1.5)    
-    mtext("Temperature (grow. season)",side=1,line=3,cex=1.3)
+    mtext("Growing season temp",side=1,line=3,cex=1.3)
     for(s in 1:2){
       points(tempgrow[Sex==s & size_bin==i]*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -1466,7 +1465,7 @@ with(poar_panic_binned,{
     # if(i==1){mtext("#panicles",side=2,line=3,cex=1.3)}
      mylabel3 <- paste(graph[[15]])
      mtext(mylabel3,side = 3, adj = 0,cex=1.5)    
-     mtext("Precipitation (dorm. season)",side=1,line=3,cex=1.3)
+     mtext("Dormant season precip",side=1,line=3,cex=1.3)
     for(s in 1:2){
       points(pptdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -1510,7 +1509,7 @@ with(poar_panic_binned,{
     # if(i==1){mtext("#panicles",side=2,line=3,cex=1.3)}
     mylabel3 <- paste(graph[[16]])
     mtext(mylabel3,side = 3, adj = 0,cex=1.5)   
-    mtext("Temperature (dorm. season)",side=1,line=3,cex=1.3)
+    mtext("Dormant season temp",side=1,line=3,cex=1.3)
     for(s in 1:2){
       points(tempdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mean_panic[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=7*(bin_n/max(bin_n)),lwd=2)
@@ -1778,50 +1777,27 @@ for(p in 1:n_post_draws){
 
 # define quantiles of posterior samples
 sex_diff_surv_mean_grow <- sex_diff_grow_mean_grow <- sex_diff_flow_mean_grow <- sex_diff_panic_mean_grow <- matrix(NA,size_bin_num,nrow(climgrow))
-sex_diff_surv_95_grow <- sex_diff_surv_75_grow <- sex_diff_surv_50_grow <- sex_diff_surv_25_grow <- array(NA,dim=c(size_bin_num,nrow(climgrow),2))
-sex_diff_grow_95_grow <- sex_diff_grow_75_grow <- sex_diff_grow_50_grow <- sex_diff_grow_25_grow <- array(NA,dim=c(size_bin_num,nrow(climgrow),2))
-sex_diff_flow_95_grow <- sex_diff_flow_75_grow <- sex_diff_flow_50_grow <- sex_diff_flow_25_grow <- array(NA,dim=c(size_bin_num,nrow(climgrow),2))
-sex_diff_panic_95_grow <- sex_diff_panic_75_grow <- sex_diff_panic_50_grow <- sex_diff_panic_25_grow <- array(NA,dim=c(size_bin_num,nrow(climgrow),2))
   
   for(s in 1:size_bin_num){
     for(l in 1:nrow(climgrow)){
       sex_diff_surv_mean_grow[s,l] <- mean(surv_sex_diff_post_grow[s,l,],na.rm=TRUE)
-      sex_diff_surv_95_grow[s,l,] <- quantile(surv_sex_diff_post_grow[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-      sex_diff_surv_75_grow[s,l,] <- quantile(surv_sex_diff_post_grow[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-      sex_diff_surv_50_grow[s,l,] <- quantile(surv_sex_diff_post_grow[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-      sex_diff_surv_25_grow[s,l,] <- quantile(surv_sex_diff_post_grow[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
-      
       sex_diff_grow_mean_grow[s,l] <- mean(grow_sex_diff_post_grow[s,l,],na.rm=TRUE)
-      sex_diff_grow_95_grow[s,l,] <- quantile(grow_sex_diff_post_grow[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-      sex_diff_grow_75_grow[s,l,] <- quantile(grow_sex_diff_post_grow[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-      sex_diff_grow_50_grow[s,l,] <- quantile(grow_sex_diff_post_grow[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-      sex_diff_grow_25_grow[s,l,] <- quantile(grow_sex_diff_post_grow[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
-      
       sex_diff_flow_mean_grow[s,l] <- mean(flow_sex_diff_post_grow[s,l,],na.rm=TRUE)
-      sex_diff_flow_95_grow[s,l,] <- quantile(flow_sex_diff_post_grow[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-      sex_diff_flow_75_grow[s,l,] <- quantile(flow_sex_diff_post_grow[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-      sex_diff_flow_50_grow[s,l,] <- quantile(flow_sex_diff_post_grow[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-      sex_diff_flow_25_grow[s,l,] <- quantile(flow_sex_diff_post_grow[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
-      
       sex_diff_panic_mean_grow[s,l] <- mean(panic_sex_diff_post_grow[s,l,],na.rm=TRUE)
-      sex_diff_panic_95_grow[s,l,] <- quantile(panic_sex_diff_post_grow[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-      sex_diff_panic_75_grow[s,l,] <- quantile(panic_sex_diff_post_grow[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-      sex_diff_panic_50_grow[s,l,] <- quantile(panic_sex_diff_post_grow[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-      sex_diff_panic_25_grow[s,l,] <- quantile(panic_sex_diff_post_grow[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
       
     }
   }
 
 scal_breaks_diff_surv_growing <- c(seq(-0.3, 0.2, length.out = 101))
-scal_breaks_diff_grow_growing <- c(seq(-10, 40, length.out = 101))
+scal_breaks_diff_grow_growing <- c(seq(-5, 36, length.out = 101))
 scal_breaks_diff_flow_growing <- c(seq(-0.2, 0.21, length.out = 101))
-scal_breaks_diff_panic_growing <- c(seq(-4, 1, length.out = 101))
+scal_breaks_diff_panic_growing <- c(seq(-3.5, 0.25, length.out = 101))
 
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Vital_rate_growing_3D.pdf",width=9,height=8,useDingbats = F)
 par(mar=c(5,5,2,3),mfrow=c(2,2))
 
 mtrx_surv_growing <- matrix(as.vector(sex_diff_surv_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_surv_growing,col=colorspace::diverge_hcl(100),xlab="Precipitation (growing. season)",ylab="Temperature (growing. season)",main="",breaks = scal_breaks_diff_surv_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_surv_growing,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_surv_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
@@ -1830,7 +1806,7 @@ mtext("Survival",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "A",side = 3, adj = 0,cex=1.2)
 
 mtrx_grow_growing <- matrix(as.vector(sex_diff_grow_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_grow_growing,col=colorspace::diverge_hcl(100),xlab="Precipitation (growing. season)",ylab="Temperature (growing. season)",main="",breaks = scal_breaks_diff_grow_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_grow_growing,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_grow_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=2, line=0.3, cex=0.6)) 
@@ -1839,7 +1815,7 @@ mtext("Growth",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "B",side = 3, adj = 0,cex=1.2)
 
 mtrx_flow_growing <- matrix(as.vector(sex_diff_flow_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_flow_growing,col=colorspace::diverge_hcl(100),xlab="Precipitation (growing. season)",ylab="Temperature (growing. season)",main="",breaks = scal_breaks_diff_flow_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_flow_growing,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_flow_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=2, line=0.3, cex=0.6)) 
@@ -1848,7 +1824,7 @@ mtext("Flowering",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "C",side = 3, adj = 0,cex=1.2)
 
 mtrx_panic_growing <- matrix(as.vector(sex_diff_panic_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_panic_growing,col=colorspace::diverge_hcl(100),xlab="Precipitation (growing. season)",ylab="Temperature (growing. season)",main="",breaks = scal_breaks_diff_panic_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_panic_growing,col=colorspace::diverge_hcl(100),xlab="Growing season temp",ylab="Growing season temp",main="",breaks = scal_breaks_diff_panic_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=2, line=0.3, cex=0.6)) 
@@ -2087,49 +2063,26 @@ for(p in 1:n_post_draws){
 
 #define quantiles of posterior samples
 sex_diff_surv_mean_dorm <- sex_diff_grow_mean_dorm <- sex_diff_flow_mean_dorm <- sex_diff_panic_mean_dorm <- matrix(NA,size_bin_num,nrow(climdorm))
-sex_diff_surv_95_dorm <- sex_diff_surv_75_dorm <- sex_diff_surv_50_dorm <- sex_diff_surv_25_dorm <- array(NA,dim=c(size_bin_num,nrow(climdorm),2))
-sex_diff_grow_95_dorm <- sex_diff_grow_75_dorm <- sex_diff_grow_50_dorm <- sex_diff_grow_25_dorm <- array(NA,dim=c(size_bin_num,nrow(climdorm),2))
-sex_diff_flow_95_dorm <- sex_diff_flow_75_dorm <- sex_diff_flow_50_dorm <- sex_diff_flow_25_dorm <- array(NA,dim=c(size_bin_num,nrow(climdorm),2))
-sex_diff_panic_95_dorm <- sex_diff_panic_75_dorm <- sex_diff_panic_50_dorm <- sex_diff_panic_25_dorm <- array(NA,dim=c(size_bin_num,nrow(climdorm),2))
 for(s in 1:size_bin_num){
   for(l in 1:nrow(climdorm)){
     sex_diff_surv_mean_dorm[s,l] <- mean(surv_sex_diff_post_dorm[s,l,],na.rm=TRUE)
-    sex_diff_surv_95_dorm[s,l,] <- quantile(surv_sex_diff_post_dorm[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-    sex_diff_surv_75_dorm[s,l,] <- quantile(surv_sex_diff_post_dorm[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-    sex_diff_surv_50_dorm[s,l,] <- quantile(surv_sex_diff_post_dorm[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-    sex_diff_surv_25_dorm[s,l,] <- quantile(surv_sex_diff_post_dorm[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
-    
-    sex_diff_grow_mean_dorm[s,l] <- mean(grow_sex_diff_post_dorm[s,l,])
-    sex_diff_grow_95_dorm[s,l,] <- quantile(grow_sex_diff_post_dorm[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-    sex_diff_grow_75_dorm[s,l,] <- quantile(grow_sex_diff_post_dorm[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-    sex_diff_grow_50_dorm[s,l,] <- quantile(grow_sex_diff_post_dorm[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-    sex_diff_grow_25_dorm[s,l,] <- quantile(grow_sex_diff_post_dorm[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
-    
-    sex_diff_flow_mean_dorm[s,l] <- mean(flow_sex_diff_post_dorm[s,l,])
-    sex_diff_flow_95_dorm[s,l,] <- quantile(flow_sex_diff_post_dorm[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-    sex_diff_flow_75_dorm[s,l,] <- quantile(flow_sex_diff_post_dorm[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-    sex_diff_flow_50_dorm[s,l,] <- quantile(flow_sex_diff_post_dorm[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-    sex_diff_flow_25_dorm[s,l,] <- quantile(flow_sex_diff_post_dorm[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
-    
-    sex_diff_panic_mean_dorm[s,l] <- mean(panic_sex_diff_post_dorm[s,l,])
-    sex_diff_panic_95_dorm[s,l,] <- quantile(panic_sex_diff_post_dorm[s,l,],probs=c(0.025,0.975),na.rm=TRUE)
-    sex_diff_panic_75_dorm[s,l,] <- quantile(panic_sex_diff_post_dorm[s,l,],probs=c(0.125,0.875),na.rm=TRUE)
-    sex_diff_panic_50_dorm[s,l,] <- quantile(panic_sex_diff_post_dorm[s,l,],probs=c(0.25,0.75),na.rm=TRUE)
-    sex_diff_panic_25_dorm[s,l,] <- quantile(panic_sex_diff_post_dorm[s,l,],probs=c(0.375,0.625),na.rm=TRUE)
+    sex_diff_grow_mean_dorm[s,l] <- mean(grow_sex_diff_post_dorm[s,l,],na.rm=TRUE)
+    sex_diff_flow_mean_dorm[s,l] <- mean(flow_sex_diff_post_dorm[s,l,],na.rm=TRUE)
+    sex_diff_panic_mean_dorm[s,l] <- mean(panic_sex_diff_post_dorm[s,l,],na.rm=TRUE)
     
   }
 }
 
 scal_breaks_diff_surv_dormant <- c(seq(0, 0.6, length.out = 101))
-scal_breaks_diff_grow_dormant <- c(seq(-37,83, length.out = 101))
-scal_breaks_diff_flow_dormant <- c(seq(-0.1, 0.25, length.out = 101))
-scal_breaks_diff_panic_dormant <- c(seq(-3.8, 2.2, length.out = 101))
+scal_breaks_diff_grow_dormant <- c(seq(-36,84, length.out = 101))
+scal_breaks_diff_flow_dormant <- c(seq(0, 0.21, length.out = 101))
+scal_breaks_diff_panic_dormant <- c(seq(-3.8, 2.5, length.out = 101))
 
 
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Vital_rate_dormant_3D.pdf",width=9,height=8,useDingbats = F)
 par(mar=c(5,5,2,3),mfrow=c(2,2))
 mtrx_surv_dormant <- matrix(as.vector(sex_diff_surv_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_surv_dormant,col=colorspace::diverge_hcl(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",breaks = scal_breaks_diff_surv_dormant,cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_surv_dormant,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_surv_dormant,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6))
@@ -2137,7 +2090,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Survival",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "A",side = 3, adj = 0,cex=1.2)
 mtrx_grow_dormant <- matrix(as.vector(sex_diff_grow_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_grow_dormant,col=colorspace::diverge_hcl(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",breaks = scal_breaks_diff_grow_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_grow_dormant,col=colorspace::diverge_hcl(100),xlab="Dorm. season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_grow_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
@@ -2145,7 +2098,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Growth",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "B",side = 3, adj = 0,cex=1.2)
 mtrx_flow_dormant <- matrix(as.vector(sex_diff_flow_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_flow_dormant,col=colorspace::diverge_hcl(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",breaks = scal_breaks_diff_flow_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_flow_dormant,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_flow_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
@@ -2153,7 +2106,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Flowering",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "C",side = 3, adj = 0,cex=1.2)
 mtrx_panic_dormant <- matrix(as.vector(sex_diff_panic_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_panic_dormant,col=colorspace::diverge_hcl(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",breaks = scal_breaks_diff_panic_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_panic_dormant,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temperature",main="",breaks = scal_breaks_diff_panic_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 

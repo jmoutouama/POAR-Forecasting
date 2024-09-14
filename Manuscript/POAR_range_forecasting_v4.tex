@@ -94,7 +94,7 @@
 \author[1]{Jacob K. Moutouama\,\textit{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
 \author[2]{Aldo Compagnoni\,\textit{0000-0001-8302-7492}}
 \author[1]{Tom E.X. Miller\,\textit{0000-0003-3208-6067}}
-\affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, TX USA}
+\affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, Texas, USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 \date{} % clear date
 %\renewcommand\Authands{ and }
@@ -119,7 +119,7 @@
 \bigskip 
 \noindent\textbf{Data accessibility statement:} All data used in this paper are  publicly available and cited appropriately \citep{dryaddata}. 
 Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. 
-During peer review, our code (Stan, Bash and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
+During peer review, our code (Stan and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
 
 \bigskip 
 \noindent\textbf{Conflict of interest statement:} None.
@@ -411,7 +411,7 @@ Vital rate regressions also revealed significant interactions between sex and cl
 			Points show means by site for females (orange) and males (green). 
 			Points sizes are proportional to the sample sizes of the mean and are jittered.
 			Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values.
-			Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.
+			%Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.
 			% Statistical results are shown in Figure \ref{Sup:Posterior}.
 		}
 		\label{fig:vital_rates}
@@ -448,11 +448,12 @@ Lacking this feedback, the female-dominant model over-predicts population viabil
 	\begin{center}
 		\includegraphics[width=0.95\linewidth]{Figures/niche_dormant_growing.pdf}
 		\caption{\textbf{A two‐dimensional representation of the predicted niche shift over time (past, present and future climate conditions)}. 
-			Contours on the first four panels show predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$) conditional on precipitation and temperature of the dormant and growing season.
+			%Contours on the first four panels show predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$) conditional on precipitation and temperature of the dormant and growing season.
 			% (A) Niche ( Pr ($\lambda$ > 1)) of dormant season for female dominant model, (B) Niche of growing season for female dominant model.
 			% (C) Niche ( Pr ($\lambda$ > 1))of dormant season for the two sex model, (B) Niche of growing season for the two-sex model.
-			The last two panels show difference in niche estimation between the female dominant model and the two-sex model for each season.
-			"\begin{normalsize}\textbf{o}\end{normalsize}": Past, "\begin{normalsize}\textbf{+}\end{normalsize}": Current,"\begin{large}\textbf{*}\end{large}": RCP 4.5,"\begin{tiny}$\blacksquare$\end{tiny}": RCP 8.5.}
+			%The last two panels show difference in niche estimation between the female dominant model and the two-sex model for each season.
+			"\begin{normalsize}\textbf{o}\end{normalsize}": Past, "\begin{normalsize}\textbf{+}\end{normalsize}": Current,"\begin{large}\textbf{*}\end{large}": RCP 4.5,"\begin{large}\textbf{-}\end{large}": RCP 8.5.
+			}
 		\label{fig:niche}
 	\end{center}
 \end{figure}
@@ -850,12 +851,11 @@ To understand the impact of climatic variation across common garden sites on sex
 \begin{align}\label{eq:sr_fn}
 \begin{split}
 	\nu =   \omega_{0}+ \omega_{1}pptgrow + \omega_{2}pptdorm + \omega_{3}tempgrow + \omega_{4}tempdorm + \\
-	  \omega_{5}pptgrow^2 + \omega_{6}pptdorm^2 + \omega_{7}tempgrow^2 + \omega_{8}tempdorm^2 \\
+	  \omega_{5}pptgrow^2 + \omega_{6}pptdorm^2 + \omega_{7}tempgrow^2 + \omega_{8}tempdorm^2 + \epsilon\\
 \end{split}
 \end{align}
 \noindent where $OSR$ is the proportion of panicles that were female or proportion of female individuals in the experimental populations, c is the climate. 
-$\omega_{0}$ is the intercept, $\omega_{1}$, .... $\omega_{8}$ are the climate dependent slopes.
-%$\epsilon$ is error term.
+$\omega_{0}$ is the intercept, $\omega_{1}$, .... $\omega_{8}$ are the climate dependent slopes. $\epsilon$ is error term.
 
 \subsection{Sex ratio experiment} \label {sssec:experiment}
 To estimate the probability of seed viability,  the germination rate and the effect of sex-ratio variation on female reproductive success, we conducted a sex-ratio experiment at one site near the center of the range to estimate the effect of sex-ratio variation on female reproductive success.

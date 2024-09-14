@@ -887,12 +887,13 @@ mtrx_diff_grow<- matrix(niche_diff_grow, nrow = 30, dimnames = list(all_pptgrow_
 # Fig 3. Niche 
 
 scal_breaks <- c(seq(0, 1, length.out = 101))
+# scal_breaks <- seq(0, 1, length.out=101,labels=c(0.00, 0.25, 0.50, 0.75, 1.00),limits=c(0,1)
 scal_breaks_diff <- c(seq(-0.2, 0.80, length.out = 101))
 scal_breaks_diff_dorm <- c(seq(-0.05, 0.30, length.out = 101))
 
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing.pdf",width=8,height=10,useDingbats = F)
 par(mar=c(5,5,2,2),mfrow=c(3,2))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",scal_breaks,cex.lab=1.2,
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
@@ -903,7 +904,7 @@ text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=2)
 text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=2)
 text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=2)
 text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="",scal_breaks,cex.lab=1.2,
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Growing season precip",ylab="Growing season tem",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
@@ -914,7 +915,7 @@ text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=2)
 text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=2)
 text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)
 text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_2sex,col=topo.colors(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="",scal_breaks,cex.lab=1.2,
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_2sex,col=topo.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
@@ -925,7 +926,7 @@ text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=2)
 text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=2)
 text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=2)
 text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_2sex,col=topo.colors(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="",scal_breaks,cex.lab=1.2,
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_2sex,col=topo.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
@@ -936,24 +937,24 @@ text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=2)
 text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=2)
 text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)
 text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,col=colorspace::diverge_hcl(100),xlab="Precipitation (dorm. season)",ylab="Temperature (dorm. season)",main="" ,scal_breaks_diff_dorm,cex.lab=1.2,
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="" ,breaks=scal_breaks_diff_dorm,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
 # contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,add=T,labcex=0.75,col="black") 
 mtext( "E",side = 3, adj = 0,cex=1.2)
-mtext("FM-F",side = 3, adj = 0.5,cex=1,line=0.3)
+mtext("F-FM",side = 3, adj = 0.5,cex=1,line=0.3)
 text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=2)
 text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=2)
 text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=2)
 text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,col=colorspace::diverge_hcl(100),xlab="Precipitation (grow. season)",ylab="Temperature (grow. season)",main="",scal_breaks_diff,cex.lab=1.2,
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks=scal_breaks_diff,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
 # contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,add=T,labcex=0.75,col="black") 
 mtext( "F",side = 3, adj = 0,cex=1.2)
-mtext("FM-F",side = 3, adj = 0.5,cex=1,line=0.3)
+mtext("F-FM",side = 3, adj = 0.5,cex=1,line=0.3)
 text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=2)
 text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=2)
 text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)

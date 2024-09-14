@@ -249,7 +249,7 @@ pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecastin
 par(mfrow=c(1,3))
 plot(study_area,xlab="Longitude",ylab="Latitude",cex.lab=1.2)
 plot(gbif,add=T,pch = 23,col="grey50",bg="grey",cex =0.55)
-plot(garden,add=T,pch = 3,col="black",cex =3,bg=unique(poar_2015_2016$site_col))
+plot(garden,add=T,pch = 3,col="black",cex =2,bg=unique(poar_2015_2016$site_col))
 plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
 mtext( "A",side = 3, adj = 0,cex=1.25,line=0.2)
 legend(-106, 28.5, 
