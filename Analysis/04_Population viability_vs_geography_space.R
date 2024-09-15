@@ -2093,22 +2093,19 @@ data_miroc85_fd<-data.frame(lambda_miroc85)
 # Fig 4. Geography ----
 ## Download occurrence data from gbif for Poa arachnifera -----
 # dir.create("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/occurence")
-#poar_occ_raw <- dismo::gbif(genus="Poa",species="arachnifera",download=TRUE)
-#write.csv(poar_occ_raw,"data/poar_occ_raw.csv")
-poar_occ_raw<-read.csv("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/data/poar_occ_raw.csv")
-head(poar_occ_raw) # to view the first few records the occurrence dataset use
+poar_occ_raw <- dismo::gbif(genus="Poa",species="arachnifera",download=TRUE) 
+head(poar_occ_raw) 
 poar_occ <- subset(poar_occ_raw,(!is.na(lat))&(!is.na(lon))) # here we remove erroneous coordinates, where either the latitude or longitude is missing
 cat(nrow(poar_occ_raw)-nrow(poar_occ), "records are removed") # Show the number of records that are removed from the dataset. 
 poar_occ %>% 
   dplyr::select(country,lon, lat,year)%>% 
   dplyr::rename(Longitude=lon,Latitude=lat) %>% 
-  filter(year %in% (1901:2024) & as.numeric(Longitude >=-126.374160) &  as.numeric(Longitude <=-95) & country=="United States") %>% 
+  filter(year %in% (1901:2024) & as.numeric(Longitude >=-102) &  as.numeric(Longitude <=-95) & country=="United States") %>% 
   unique() %>% 
   arrange(Latitude)->gbif
-
-coordinates(gbif) <- ~ Longitude + Latitude
-CRS1 <- CRS("+init=epsg:4326") # WGS 84
-crs(gbif) <- CRS1
+# coordinates(gbif) <- ~ Longitude + Latitude
+# CRS1 <- CRS("+init=epsg:4326") # WGS 84
+# crs(gbif) <- CRS1
 
 ## Read the lambda for all iterations
 ### Two sex models
@@ -2254,10 +2251,13 @@ Time_names <- c("Past"="Past",
                 "RCP85"="RCP 8.5"
 )
 
+occplot<-data.frame(gbif,Time=c(rep("Past",3*nrow(gbif)),rep("Present",3*nrow(gbif)),rep("RCP45",3*nrow(gbif)),rep("RCP85",3*nrow(gbif))))
+occplot$model<-c(rep("A",nrow(gbif)),rep("B",nrow(gbif)),rep("C",nrow(gbif)))
 
+                    
 Fig_geoPrlambdamiroc<-ggplot()+
   geom_tile(data = subset(dat_miroc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
-  geom_point(aes(x=-100,y=35))+
+  #geom_point(data = subset(occplot, Time_names=="Present" & model == "A"), aes(x = Longitude, y = Latitude),size=0.01)+
   # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
   labs(x = "Longitude", y = "Latitude")+
   scale_fill_gradientn(
@@ -2268,6 +2268,7 @@ Fig_geoPrlambdamiroc<-ggplot()+
     limits=c(0,1))+
   new_scale_fill() +
   geom_tile(data = subset(dat_miroc_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  #geom_point(data = subset(occplot, Time_names=="Present" & model == "B"), aes(x = Longitude, y = Latitude),size=0.01)+
   # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
   labs(x = "Longitude", y = "Latitude")+
   scale_fill_gradientn(
@@ -2278,6 +2279,7 @@ Fig_geoPrlambdamiroc<-ggplot()+
     limits=c(0,1))+
   new_scale_fill() +
   geom_tile(data = subset(dat_miroc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  # geom_point(data = occplot, aes(x = Longitude, y = Latitude),Time="Present",size=0.1)+
   scale_fill_gradientn(
     name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
     colours = colorspace::diverge_hcl(7),
@@ -2285,6 +2287,7 @@ Fig_geoPrlambdamiroc<-ggplot()+
     breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
     limits=c(-0.5,0.5))+
   facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  geom_point(data = subset(occplot, Time=="Present" & model==c("A","B")), aes(x = Longitude, y = Latitude),size=1,alpha = 1/5)+
   theme_light()+
   theme(legend.position = "bottom",
         legend.title = element_text(size = 8),
@@ -2299,8 +2302,8 @@ Fig_geoPrlambdamiroc<-ggplot()+
         )
   )
 
-# Fig_geoPrlambdamiroc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Prmiroc45, lambda_map_Prmiroc85,lambda_map_Prpast_fd,lambda_map_Prcurrent_fd,lambda_map_miroc45_fd,lambda_map_miroc85_fd,lambda_map_Prpast_diff,lambda_map_Prcurrent_diff,lambda_map_Prmiroc45_diff,lambda_map_Prmiroc85_diff,common.legend = FALSE,ncol = 4, nrow = 3)
-# ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width =9, height = 10)
+
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambda_miroc.pdf", Fig_geoPrlambdamiroc, width =9, height = 10)
 
 #### ACCESS ----
 lambbaacc45 %>% 
@@ -2385,6 +2388,7 @@ Fig_geoPrlambdaacc<-ggplot()+
     breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
     limits=c(-0.5,0.5))+
   facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  geom_point(data = subset(occplot, Time=="Present" & model==c("A","B")), aes(x = Longitude, y = Latitude),size=1.5,alpha = 1/5)+
   theme_light()+
   theme(legend.position = "bottom",
         legend.title = element_text(size = 8),
@@ -2399,10 +2403,113 @@ Fig_geoPrlambdaacc<-ggplot()+
         )
   )
 
-Fig_geoPrlambdaacc<-ggarrange(lambda_map_Prpast, lambda_map_Prcurrent, lambda_map_Pracc45, lambda_map_Pracc85,lambda_map_Prpast_fd, lambda_map_Prcurrent_fd,lambda_map_acc45_fd,lambda_map_acc85_fd,ncol=4,nrow=2,
-                              common.legend = TRUE)
 ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdaacc.pdf", Fig_geoPrlambdaacc, width = 9, height = 10)
 
+#### CMC----
+lambbacmc45 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdacmc_45
+pivot_lambdacmc_45_final<-pivot_lambdacmc_45[,-c(1:8)]
+prob_lambdacmc_45_post<-c()
+for(l in 1:nrow(pivot_lambdacmc_45_final)){
+  prob_lambdacmc_45_post[l]<-mean(pivot_lambdacmc_45_final[l,]>1,na.rm=T)
+}
+lamcmc_prob_45<-data.frame(pivot_lambdacmc_45[,1:8],Prlambda=prob_lambdacmc_45_post)
+
+geo_prlambdacmc_45 <- merge(x = lamcmc_prob_45,y =climate_cmc_45_values,by=c("pptdorm","tempdorm"),all.x=TRUE) 
+
+lambbacmc85 %>% 
+  unique %>% 
+  pivot_wider( values_from = 'lambda_diff',
+               names_from  = 'posterior_id' )->pivot_lambdacmc_85
+# dim(pivot_lambda_current)
+pivot_lambdacmc_85_final<-pivot_lambdacmc_85[,-c(1:8)]
+dim(pivot_lambdacmc_85_final)
+# Calculate probability of lambda above 1
+prob_lambdacmc_85_post<-c()
+for(l in 1:nrow(pivot_lambdacmc_85_final)){
+  prob_lambdacmc_85_post[l]<-mean(pivot_lambdacmc_85_final[l,]>1,na.rm=T)
+}
+lamcmc_prob_85<-data.frame(pivot_lambdacmc_85[,1:8],Prlambda=prob_lambdacmc_85_post)
+geo_prlambdacmc_85 <- merge(x = lamcmc_prob_85,y =climate_cmc_85_values,by=c("pptdorm","tempdorm")) # merge the demographic data with climatic data for each
+prob_lambda_cmc45_fd<-c()
+dim(geo_lambba_cmc45_fd)
+for(l in 1:ncol(geo_lambba_cmc45_fd)){
+  prob_lambda_cmc45_fd[l]<-mean(geo_lambba_cmc45_fd[,l]>1,na.rm=T)
+}
+lam_prob_cmc45_fd<-data.frame(climate_cmc_45_values[,9:10],Prlambda=prob_lambda_cmc45_fd)
+prob_lambda_cmc85_fd<-c()
+for(l in 1:ncol(geolambba_cmc85_fd)){
+  prob_lambda_cmc85_fd[l]<-mean(geolambba_cmc85_fd[,l]>1,na.rm=T)
+}
+lam_prob_cmc85_fd<-data.frame(climate_cmc_85_values[,9:10],Prlambda=prob_lambda_cmc85_fd)
+
+geo_prlambda_cmc45_fd_twosex<-left_join(lam_prob_cmc45_fd,geo_prlambdacmc_45,by=c("x","y"))
+geo_prlambda_cmc45_fd_twosex$Prlambda<-geo_prlambda_cmc45_fd_twosex$Prlambda.x-geo_prlambda_cmc45_fd_twosex$Prlambda.y
+
+geo_prlambda_cmc85_fd_twosex<-left_join(lam_prob_cmc85_fd,geo_prlambdacmc_85,by=c("x","y"))
+geo_prlambda_cmc85_fd_twosex$Prlambda<-geo_prlambda_cmc85_fd_twosex$Prlambda.x-geo_prlambda_cmc85_fd_twosex$Prlambda.y
+
+dat_cmc_map<-rbind(geo_prlambda_past[,c("x","y","Prlambda")],lam_prob_past_fd[,c("x","y","Prlambda")],geo_prlambda_past_fd_twosex[,c("x","y","Prlambda")],geo_prlambda_current[,c("x","y","Prlambda")],lam_prob_current_fd[,c("x","y","Prlambda")],geo_prlambda_current_fd_twosex[,c("x","y","Prlambda")],geo_prlambdacmc_45[,c("x","y","Prlambda")],lam_prob_cmc45_fd[,c("x","y","Prlambda")],geo_prlambda_cmc45_fd_twosex[,c("x","y","Prlambda")],geo_prlambdacmc_85[,c("x","y","Prlambda")],lam_prob_cmc85_fd[,c("x","y","Prlambda")],geo_prlambda_cmc85_fd_twosex[,c("x","y","Prlambda")])
+
+
+
+dat_cmc_map$Time<-c(rep("Past",nrow(geo_prlambda_past)+nrow(lam_prob_past_fd)+nrow(geo_prlambda_past_fd_twosex)),rep("Present",3*nrow(geo_prlambda_current)),rep("RCP45",3*nrow(geo_prlambdacmc_45)),rep("RCP85",3*nrow(geo_prlambdacmc_85)))
+
+dat_cmc_map$model<-c(rep("B",nrow(geo_prlambda_past)),rep("A",nrow(lam_prob_past_fd)),rep("C",nrow(geo_prlambda_past_fd_twosex)),
+                     rep("B",nrow(geo_prlambda_current)),rep("A",nrow(lam_prob_current_fd)),rep("C",nrow(geo_prlambda_current_fd_twosex)),
+                     rep("B",nrow(geo_prlambdacmc_45)),rep("A",nrow(lam_prob_cmc45_fd)),rep("C",nrow(geo_prlambda_cmc45_fd_twosex)),
+                     
+                     rep("B",nrow(geo_prlambdacmc_85)),rep("A",nrow(lam_prob_cmc85_fd)),rep("C",nrow(geo_prlambda_cmc85_fd_twosex)) 
+)
+
+
+Fig_geoPrlambdacmc<-ggplot()+
+  geom_tile(data = subset(dat_cmc_map, model == "A"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[F]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+    limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_cmc_map, model == "B"), aes(x = x, y = y, fill = Prlambda))+
+  # facet_grid(model~Time,scales='free_x', space='free_x',labeller = labeller(model = model_names,Time=Time_names)) +
+  labs(x = "Longitude", y = "Latitude")+
+  scale_fill_gradientn(
+    name = expression("Pr " (lambda[FM]) > 1),
+    colours = terrain.colors(100),
+    na.value = "transparent",
+    breaks = seq(0, 1, length.out=5),labels=c(0.00, 0.25, 0.50, 0.75, 1.00),
+    limits=c(0,1))+
+  new_scale_fill() +
+  geom_tile(data = subset(dat_cmc_map, model == "C"), aes(x = x, y = y, fill = Prlambda))+
+  scale_fill_gradientn(
+    name = expression(paste(Delta,"Pr " (lambda[F-FM]))> 1),
+    colours = colorspace::diverge_hcl(7),
+    na.value = "transparent",
+    breaks = seq(-0.5, 0.5, length.out=5),labels=c(-0.5,-0.25,0.00,0.25,0.5),
+    limits=c(-0.5,0.5))+
+  facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
+  geom_point(data = subset(occplot, Time=="Present" & model==c("A","B")), aes(x = Longitude, y = Latitude),size=1.5,alpha = 1/5)+
+  theme_light()+
+  theme(legend.position = "bottom",
+        legend.title = element_text(size = 8),
+        legend.text  = element_text(size = 7),
+        strip.text.x = element_text(
+          size = 12, color = "grey40", face = "bold"
+        ),
+        strip.text.y = element_text(
+          size = 12, color = "grey40", face = "bold"),
+        strip.background = element_rect(
+          color="black", fill="white", size=0.5, linetype="solid"
+        )
+  )
+
+ggsave("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Fig_geoPrlambdacmc.pdf", Fig_geoPrlambdacmc, width = 9, height = 10)
 
 # Figure: density plot -----
 d_past_lambda_fd <- density(lam_prob_past_fd$Prlambda,na.rm=TRUE)
@@ -2411,7 +2518,7 @@ d_past_lambda_fd_2sex <- density(geo_prlambda_past_fd_twosex$Prlambda,na.rm=TRUE
 
 d_current_lambda_fd <- density(lam_prob_current_fd$Prlambda,na.rm=TRUE)
 d_current_lambda_2sex <- density(geo_prlambda_current$Prlambda,na.rm=TRUE)
-d_current_lambda_fd_2sex <- density(geo_prlambda_miroc45_fd_twosex$Prlambda,na.rm=TRUE)
+d_current_lambda_fd_2sex <- density(geo_prlambda_current_fd_twosex$Prlambda,na.rm=TRUE)
 
 d_miroc45_lambda_fd <- density(lam_prob_miroc45_fd$Prlambda,na.rm=TRUE)
 d_miroc45_lambda_2sex <- density(geo_prlambda_miroc45$Prlambda,na.rm=TRUE)
