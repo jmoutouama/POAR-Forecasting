@@ -1789,15 +1789,17 @@ sex_diff_surv_mean_grow <- sex_diff_grow_mean_grow <- sex_diff_flow_mean_grow <-
   }
 
 scal_breaks_diff_surv_growing <- c(seq(-0.3, 0.2, length.out = 101))
-scal_breaks_diff_grow_growing <- c(seq(-5, 36, length.out = 101))
+scal_breaks_diff_grow_growing <- c(seq(-30, 40, length.out = 101))
 scal_breaks_diff_flow_growing <- c(seq(-0.2, 0.21, length.out = 101))
-scal_breaks_diff_panic_growing <- c(seq(-3.5, 0.25, length.out = 101))
+scal_breaks_diff_panic_growing <- c(seq(-3.6, 3, length.out = 101))
 
+# library(wesanderson)
+# pal <- wes_palette("Zissou1", 100, type = "continuous")
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Vital_rate_growing_3D.pdf",width=9,height=8,useDingbats = F)
 par(mar=c(5,5,2,3),mfrow=c(2,2))
 
 mtrx_surv_growing <- matrix(as.vector(sex_diff_surv_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_surv_growing,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_surv_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_surv_growing,col=cm.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_surv_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
@@ -1806,7 +1808,7 @@ mtext("Survival",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "A",side = 3, adj = 0,cex=1.2)
 
 mtrx_grow_growing <- matrix(as.vector(sex_diff_grow_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_grow_growing,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_grow_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_grow_growing,col=cm.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_grow_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=2, line=0.3, cex=0.6)) 
@@ -1815,7 +1817,7 @@ mtext("Growth",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "B",side = 3, adj = 0,cex=1.2)
 
 mtrx_flow_growing <- matrix(as.vector(sex_diff_flow_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_flow_growing,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_flow_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_flow_growing,col=cm.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_diff_flow_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=2, line=0.3, cex=0.6)) 
@@ -1824,7 +1826,7 @@ mtext("Flowering",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "C",side = 3, adj = 0,cex=1.2)
 
 mtrx_panic_growing <- matrix(as.vector(sex_diff_panic_mean_grow), nrow = 30, dimnames = list(pptgrow_seq,tempgrow_seq))
-fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_panic_growing,col=colorspace::diverge_hcl(100),xlab="Growing season temp",ylab="Growing season temp",main="",breaks = scal_breaks_diff_panic_growing,cex.lab=1.2,
+fields::image.plot(pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),mtrx_panic_growing,col=cm.colors(100),xlab="Growing season temp",ylab="Growing season temp",main="",breaks = scal_breaks_diff_panic_growing,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=2, line=0.3, cex=0.6)) 
@@ -2073,16 +2075,16 @@ for(s in 1:size_bin_num){
   }
 }
 
-scal_breaks_diff_surv_dormant <- c(seq(0, 0.6, length.out = 101))
-scal_breaks_diff_grow_dormant <- c(seq(-36,84, length.out = 101))
-scal_breaks_diff_flow_dormant <- c(seq(0, 0.21, length.out = 101))
-scal_breaks_diff_panic_dormant <- c(seq(-3.8, 2.5, length.out = 101))
+scal_breaks_diff_surv_dormant <- c(seq(-0.6, 0.6, length.out = 101))
+scal_breaks_diff_grow_dormant <- c(seq(-85,87, length.out = 101))
+scal_breaks_diff_flow_dormant <- c(seq(-0.2, 0.25, length.out = 101))
+scal_breaks_diff_panic_dormant <- c(seq(-3.8, 3, length.out = 101))
 
 
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Vital_rate_dormant_3D.pdf",width=9,height=8,useDingbats = F)
 par(mar=c(5,5,2,3),mfrow=c(2,2))
 mtrx_surv_dormant <- matrix(as.vector(sex_diff_surv_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_surv_dormant,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_surv_dormant,cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_surv_dormant,col=cm.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_surv_dormant,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6))
@@ -2090,7 +2092,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Survival",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "A",side = 3, adj = 0,cex=1.2)
 mtrx_grow_dormant <- matrix(as.vector(sex_diff_grow_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_grow_dormant,col=colorspace::diverge_hcl(100),xlab="Dorm. season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_grow_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_grow_dormant,col=cm.colors(100),xlab="Dorm. season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_grow_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
@@ -2098,7 +2100,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Growth",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "B",side = 3, adj = 0,cex=1.2)
 mtrx_flow_dormant <- matrix(as.vector(sex_diff_flow_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_flow_dormant,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_flow_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_flow_dormant,col=cm.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_flow_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
@@ -2106,7 +2108,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Flowering",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "C",side = 3, adj = 0,cex=1.2)
 mtrx_panic_dormant <- matrix(as.vector(sex_diff_panic_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_panic_dormant,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temperature",main="",breaks = scal_breaks_diff_panic_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_panic_dormant,col=cm.colors(100),xlab="Dormant season precip",ylab="Dormant season temperature",main="",breaks = scal_breaks_diff_panic_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 
