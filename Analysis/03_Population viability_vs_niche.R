@@ -1010,8 +1010,8 @@ Timedorm<-system.time(
 ## write output as a dataframe
 data_dormant_niche<-data.frame(lambda_dorm_post)
 dim(data_dormant_niche)
-write_csv(data_dormant_niche,"C:/Users/jm200/Documents/Projection/2024/Data niche/data_dormant_niche.csv")
-write_rds(data_dormant_niche,"C:/Users/jm200/Documents/Projection/2024/Data niche/data_dormant_niche.rds")
+# write_csv(data_dormant_niche,"C:/Users/jm200/Documents/Projection/2024/Data niche/data_dormant_niche.csv")
+# write_rds(data_dormant_niche,"C:/Users/jm200/Documents/Projection/2024/Data niche/data_dormant_niche.rds")
 
 nichedormant_fd<-readRDS(url("https://www.dropbox.com/scl/fi/u0yeohxrienfp96hopvl5/data_dormant_niche.rds?rlkey=lhum5y9ymqtpkegkw75seruuc&dl=1"))
 prob_lambda_dorm_post_fd<-c()
@@ -1275,4 +1275,30 @@ text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)
 text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
 dev.off()
 
+# Density  plot----
 
+dx_dorm <- density(unique(prob_lambda_dorm_post_fd))
+dy_dorm <- density(unique(prob_lambda_dorm_post))
+dx_grow <- density(unique(prob_lambda_grow_post_fd))
+dy_grow <- density(unique(prob_lambda_grow_post))
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Niche_overestimation.pdf",width=8,height=4,useDingbats = F)
+par(mar=c(5,5,1.5,0.5),mfrow=c(1,2))
+plot(dx_dorm, lwd = 2, main = "", xlab = expression("Pr " (lambda) > 1),xlim=c(0,1),ylim=c(0,1.5),
+     col = "red")
+abline(v=mean(prob_lambda_dorm_post_fd),lty=2,col="red")
+polygon(dx_dorm, col = rgb(1, 0, 0, alpha = 0.5))
+mtext("Dormant season",side = 3, adj = 0.5,cex=1)
+lines(dy_dorm, lwd = 2, col = "blue")
+abline(v=mean(prob_lambda_dorm_post),lty=2,col="blue")
+polygon(dy_dorm, col = rgb(0, 0, 1, alpha = 0.5))
+
+plot(dx_grow, lwd = 2, main = "", xlab = expression("Pr " (lambda) > 1),xlim=c(0,1),
+     col = "red")
+abline(v=mean(prob_lambda_grow_post_fd),lty=2,col="red")
+polygon(dx_grow, col = rgb(1, 0, 0, alpha = 0.5))
+mtext("Growing season",side = 3, adj = 0.5,cex=1)
+lines(dy_grow, lwd = 2, col = "blue")
+abline(v=mean(prob_lambda_grow_post),lty=2,col="blue")
+polygon(dy_grow, col = rgb(0, 0, 1, alpha = 0.5))
+dev.off()

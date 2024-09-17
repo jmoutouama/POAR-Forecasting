@@ -2286,6 +2286,7 @@ Fig_geoPrlambdamiroc<-ggplot()+
     limits=c(-0.5,0.5))+
   facet_grid(model~Time,labeller = labeller(model = model_names,Time=Time_names))+
   geom_point(data = subset(occplot, Time=="Present" & model==c("A","B")), aes(x = Longitude, y = Latitude),size=1,alpha = 1/5)+
+ # annotate('text', label = LETTERS[1:12], x=-104, y=38)+
   theme_light()+
   theme(legend.position = "bottom",
         legend.title = element_text(size = 8),

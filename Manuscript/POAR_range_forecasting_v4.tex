@@ -418,9 +418,8 @@ Vital rate regressions also revealed significant interactions between sex and cl
 	\end{center}
 \end{figure}
 
-\tom{Across common garden sites, operational sex ratio (proportion of female panicles) of the experimental populations was female-biased on average (STATS), reflecting the overall greater rates of female vs. male flowering rather than bias in the underlying population composition (all sites were planted with equal numbers of females and males). 
-Across sites and years, OSR variation was significantly predicted by [describe sex ratio analyses].}{I am not sure what the new sex ratio results look like, so not sure if we are keeping this.}
-
+Across common garden sites, operational sex ratio (proportion of female panicles) of the experimental populations was female-biased on average ($\approx 60$ \%), reflecting the overall greater rates of female vs. male flowering rather than bias in the underlying population composition (all sites were planted with equal numbers of females and males). 
+In addition, across sites and years, OSR  was higher at extreme values of temperature (Figure \ref{Sup:gardens_OSR}, Figure \ref{Sup:posterior_OSR}). 
 
 \subsection*{Climate drivers of population viability across niche space}
 Putting all vital rates together in the MPM framework reveals how climate shapes fitness variation across niche dimensions and geographic space, and how accounting for sex structure modifies these inferences. 
@@ -459,18 +458,18 @@ Lacking this feedback, the female-dominant model over-predicts population viabil
 \end{figure}
 
 \subsection*{Climatic change induces shifts in geographic niche and population OSR}
-Projecting the climatic niche onto geographic space, we find that suitable niche conditions for Texas bluegrass are shifting north under climate change (Fig. \ref{fig:geoprojacc}). 
+Projecting the climatic niche onto geographic space, we find that suitable niche conditions for Texas bluegrass are shifting north under climate change (Fig. \ref{fig:geoprojcmc}). 
 Under past (1901-1930) and present (1990-2019) conditions, the two-sex and female-dominant models predict widespread suitability with high confidence ($Pr(\lambda \ge 1) \approx 1$) across much of Texas and Oklahoma. 
-For both models, the predicted geographic niche generally corresponds well to independent observations of the Texas bluegrass distribution (\tom{Fig.}{I think we should add the GBIF records to the map.}).
+For both models, the predicted geographic niche generally corresponds well to independent observations of the Texas bluegrass distribution (Fig. \ref{fig:geoprojcmc}).
 The predicted geographic niche is more expansive than the observed distribution, particularly at southern, western, and eastern edges, suggesting some degree of range disequilibrium (e.g., due to dispersal limitation), geographic bias in occurrence observations, and/or model mis-specification. 
 Comparing past to present conditions, the geographic niche for both models has shifted slightly poleward, with reductions in viability at the southern margins and expansions of viability at northern margins. 
-The northward shift of suitable niche conditions is even more pronounced in projections to end-of-century (2071-2100) conditions, with the most dramatic changes in the most pessimistic (RCP8.5) scenario (\tom{Fig.}{Here and throughout, we need to reference specific figure panels by letter label.}). 
-In fact, under the pessimistic scenario, Texas bluegrass will have very little remaining climate sutability in the state of Texas by the end of the 21st century. 
-The predicted poleward niche shift is consistent across different global circulation models (Figure \ref{Sup:geoprojces}, Figure \ref{Sup:geoprojcmc}, Figure \ref{Sup:geoprojmiroc}). 
+The northward shift of suitable niche conditions is even more pronounced in projections to end-of-century (2071-2100) conditions, with the most dramatic changes in the most pessimistic (RCP8.5) scenario (\jacob{Fig. \ref{fig:geoprojcmc}.}{I am not sure if we need title for each panel. }). 
+In fact, under the pessimistic scenario, Texas bluegrass will have very little remaining climate suitability in the state of Texas by the end of the 21st century. 
+The predicted poleward niche shift is consistent across different global circulation models (Figure \ref{Sup:geoprojces}, Figure \ref{Sup:geoprojacc}, Figure \ref{Sup:geoprojmiroc}). 
 
 Female-dominant and two-sex models are in broad agreement about northward migration of the climatic niche, but the geographic projections reveal hotspots of disagreement where the female-dominant model over-predicts climate suitability and under-predicts the likelihood of range shifts (Fig. \ref{fig:geoprojacc}). 
 These hotspots are generally regions of predicted female bias in the operational sex ratio (Fig. WE NEED A FIGURE FOR THIS.) 
-The strongest contrast between the two models is in the pessimistic climate change scenario (RCP8.5), where the female-dominant model over-predicts population viability by \tom{ca. 25\%}{I just eyeballed this. Real number should come from the histograms.} across much of the region (Fig. WE NEED A FIGURE SHOWING THE DISTRIBUTION OF THE DIFFERENCE) and under-estimates the magnitude of a potential range shift. 
+The strongest contrast between the two models is in the pessimistic climate change scenario (RCP8.5), where the female-dominant model over-predicts population viability by \tom{ca. 25\%}{I just eyeballed this. Real number should come from the histograms.} across much of the region (Figure \ref{Sup:geo_overestimation}) and under-estimates the magnitude of a potential range shift. 
 In this scenario, a broad swath of the current distribution that is forecasted to by effectively unsuitable ($Pr(\lambda \ge 1) \approx 0$) by the two-sex model is identified as marginally suitable ($Pr(\lambda \ge 1) \approx 0.5$) by the female-dominant model. 
 Accordingly, the OSR of Texas bluegrass across its range is projected to be ca. 75\% female panicles, on average, by end of century under RCP8.5, an increase from ca. 60\% female under projections for past and current conditions (Fig. \ref{fig:srprojcmc}). 
 The more optimistic climate change scenario (RCP4.5) predicts an intermediate shift in OSR, with hotspots of change becoming strongly female-biased but most of the range remaining near current levels of 60\% female (Fig. \ref{fig:srprojcmc}; WE NEED A MAP SHOWING WHERE OSR IS BECOMING MORE BIASED). 
@@ -484,7 +483,7 @@ The more optimistic climate change scenario (RCP4.5) predicts an intermediate sh
 			Future projections were based on the CMCC-CM model.
 			The black dots on panel B and F indicate all known presence points collected from GBIF. 
 			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts. }
-		\label{fig:geoprojacc}
+		\label{fig:geoprojcmc}
 	\end{center}
 \end{figure}
 
@@ -655,11 +654,24 @@ We thank the institutions who hosted us at their field station facilities, inclu
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.80\linewidth]{Figures/gardens_OSR.pdf}
-		\caption{\textbf{Significant Operantional Sex Ratio response accross climate gradient}.
-			(A, B) Proportion of panicules that were females across precipitation and temperature of the growing season; (C, D) Proportion of of panicules that were females across precipitation and temperature of the dormant season.}
+		\caption{\textbf{Significant Operational Sex Ratio response across climate gradient}.
+			(A, B) Proportion of panicles that were females across  temperature of the growing and dormant season }
 		\label{Sup:gardens_OSR}
 	\end{center}
 \end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.80\linewidth]{Figures/Posterior_ORS.pdf}
+		\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+		pptgrow is  the precipitation of growing season,
+		Tempgrow is the temperature of growing season,
+		pptdorm is the temperature of dormant season,
+		Tempdorm is the temperature of dormant season.}
+		\label{Sup:posterior_OSR}
+	\end{center}
+\end{figure}
+
 
 \begin{figure}[H]
 	\begin{center}
@@ -786,7 +798,7 @@ We thank the institutions who hosted us at their field station facilities, inclu
 			Future projections were based on the  ACCESS model.
 			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
 			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda$ > 1) , confirming that our study approach can reasonably predict range shifts.}
-		\label{Sup:geoprojcmc}
+		\label{Sup:geoprojacc}
 	\end{center}
 \end{figure}
 
@@ -803,6 +815,14 @@ We thank the institutions who hosted us at their field station facilities, inclu
 	\end{center}
 \end{figure}
 
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.99\linewidth]{Figures/Densityplot_lambda_GCMs.pdf}
+		\caption{ Assessment of the statistical difference between the two-sex models and the female dominant model across and beyond species range for 4 GCMs. 
+			The means for each model are shown as vertical dashed lines. }
+		\label{Sup:geo_overestimation}
+	\end{center}
+\end{figure}
 
 % \begin{figure}[H]
 %   \begin{center}
