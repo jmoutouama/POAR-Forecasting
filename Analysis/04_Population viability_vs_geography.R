@@ -1,5 +1,5 @@
 # Project: Forecasting range shifts of a dioecious plant species under climate change
-# Purpose: Projecting population viability across geographic space for two sex and female dominant model. 
+# Question: How do sex-specific vital rates combine to determine the influence of climate variation on population growth rate (λ) ?
 # Note: Raster files are too large to provide in public repository. They are stored on a local machine.
 # Authors: Jacob Moutouama, Aldo Compagnoni and Tom Miller
 # Date last modified (Y-M-D): 2024-08-03
@@ -321,7 +321,7 @@ viabVr %>%
   dplyr::select(SeedN)  %>% 
   na.omit->seeds
 
-# Vital rates informatiom ----
+# Vital rates information ----
 fit_allsites_season <- readRDS(url("https://www.dropbox.com/scl/fi/1sbhjorfv15ianvdwli96/fit_1.5_0.5.rds?rlkey=rm9sxy29qzc7himps7n6y0xw6&dl=1")) #ignore warning from readRDS
 
 # pull out stan coefficients
@@ -2155,7 +2155,7 @@ for(l in 1:ncol(geo_lambbapast_fd)){
 clim_past_values_clean<-na.omit(clim_past_values)
 lam_prob_past_fd<-data.frame(clim_past_values_clean[,9:10],Prlambda=prob_lambda_past_fd)
 
-### Present conditions
+### Present conditions -----
 lambbacurrent %>% 
   unique %>% 
   pivot_wider( values_from = 'lambda_diff',
@@ -2177,7 +2177,7 @@ for(l in 1:ncol(geo_lambbacurrent_fd)){
 }
 lam_prob_current_fd<-data.frame(clim_current_values[,9:10],Prlambda=prob_lambda_current_fd)
 
-### Future conditions
+### Future conditions -----
 #### MIROC 5----
 lambbamiroc45 %>% 
   unique %>% 
