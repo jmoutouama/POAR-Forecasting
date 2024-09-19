@@ -2108,7 +2108,7 @@ contour(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),temp
 mtext("Flowering",side = 3, adj = 0.5,cex=1.2,line=0.3)
 mtext( "C",side = 3, adj = 0,cex=1.2)
 mtrx_panic_dormant <- matrix(as.vector(sex_diff_panic_mean_dorm), nrow = 30, dimnames = list(pptdorm_seq,tempdorm_seq))
-fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_panic_dormant,col=cm.colors(100),xlab="Dormant season precip",ylab="Dormant season temperature",main="",breaks = scal_breaks_diff_panic_dormant, cex.lab=1.2,
+fields::image.plot(pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),mtrx_panic_dormant,col=cm.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_diff_panic_dormant, cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,legend.mar = 4,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste(Delta," (F-M)")), side=3, font=3, line=0.3, cex=0.6)) 

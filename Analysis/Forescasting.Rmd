@@ -9326,9 +9326,10 @@ dev.off()
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/POAR_OSR_MIROC_CES_ACC.pdf",width=5,height=7,useDingbats = F)
 par(mar=c(5,5,1.5,0.5),mfrow=c(3,1))
 
-plot(d_past_OSR, lwd = 2, main = "", xlab = "Operational Sex Ratio (proportion of female panicle)",xlim=c(0,1),
+plot(d_past_OSR, lwd = 2, main = "", xlab = "Operational Sex Ratio",xlim=c(0,1),
      col = "#7570B3")
 mtext( "A",side = 3, adj = 0,cex=1.25)
+mtext("CESM1-BGC",side = 3, adj = 0.5,cex=1,line=0.3)
 abline(v=mean(sr_past$OSR_final,na.rm=TRUE),lty=2,col="#7570B3")
 
 lines(d_current_OSR, lwd = 2,col = "#0072B2")
@@ -9341,9 +9342,10 @@ lines(d_ces85_OSR, lwd = 2,col = "#E7298A")
 abline(v=mean(sr_ces_85$OSR_final,na.rm=TRUE),lty=2,col="#E7298A")
 
 
-plot(d_past_OSR, lwd = 2, main = "", xlab = "Operational Sex Ratio (proportion of female panicle)",xlim=c(0,1),
+plot(d_past_OSR, lwd = 2, main = "", xlab = "Operational Sex Ratio",xlim=c(0,1),
      col = "#7570B3")
 mtext( "B",side = 3, adj = 0,cex=1.25)
+mtext("ACCESS1-3",side = 3, adj = 0.5,cex=1,line=0.3)
 abline(v=mean(sr_past$OSR_final,na.rm=TRUE),lty=2,col="#7570B3")
 
 lines(d_current_OSR, lwd = 2,col = "#0072B2")
@@ -9356,9 +9358,10 @@ lines(d_acc85_OSR, lwd = 2,col = "#E7298A")
 abline(v=mean(sr_acc_85$OSR_final,na.rm=TRUE),lty=2,col="#E7298A")
 
 
-plot(d_past_OSR, lwd = 2, main = "", xlab = "Operational Sex Ratio (proportion of female panicle)",xlim=c(0,1),
+plot(d_past_OSR, lwd = 2, main = "", xlab = "Operational Sex Ratio",xlim=c(0,1),
      col = "#7570B3")
 mtext( "C",side = 3, adj = 0,cex=1.25)
+mtext("MIROC 5",side = 3, adj = 0.5,cex=1,line=0.3)
 abline(v=mean(sr_past$OSR_final,na.rm=TRUE),lty=2,col="#7570B3")
 
 lines(d_current_OSR, lwd = 2,col = "#0072B2")

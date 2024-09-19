@@ -1341,6 +1341,184 @@ for(l in 1:ncol(geolambba_ces85_fd)){
 lam_prob_ces85_fd<-data.frame(climate_ces_85_values[,9:10],Prlambda=prob_lambda_ces85_fd)
 
 # Sex ratio derived from models----
+# Importing sex ratio
+# Current
+zclim_current = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_current)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_current$zpptgrow<-(clim_current$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_current$ztempgrow<-(clim_current$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_current$zpptdorm<-(clim_current$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_current$ztempdorm<-(clim_current$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## Past
+zclim_past = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_past)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_past$zpptgrow<-(clim_past$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_past$ztempgrow<-(clim_past$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_past$zpptdorm<-(clim_past$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_past$ztempdorm<-(clim_past$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## MIROC45
+zclim_miroc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_miroc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_miroc45$zpptgrow<-(clim_miroc45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_miroc45$ztempgrow<-(clim_miroc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_miroc45$zpptdorm<-(clim_miroc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_miroc45$ztempdorm<-(clim_miroc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## ACCESS45
+zclim_acc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_acc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_acc45$zpptgrow<-(clim_access45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_acc45$ztempgrow<-(clim_access45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_acc45$zpptdorm<-(clim_access45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_acc45$ztempdorm<-(clim_access45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## CMC45
+zclim_cmc45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_cmc45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_cmc45$zpptgrow<-(clim_cmcc45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_cmc45$ztempgrow<-(clim_cmcc45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_cmc45$zpptdorm<-(clim_cmcc45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_cmc45$ztempdorm<-(clim_cmcc45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## CES45
+zclim_ces45 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_ces45)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_ces45$zpptgrow<-(clim_cesm45$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_ces45$ztempgrow<-(clim_cesm45$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_ces45$zpptdorm<-(clim_cesm45$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_ces45$ztempdorm<-(clim_cesm45$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## Gather the data in to a single dataset
+data_site_pptgrow45<-data.frame(zclim_miroc45$zpptgrow,zclim_acc45$zpptgrow,zclim_cmc45$zpptgrow,zclim_ces45$zpptgrow)
+data_site_tempgrow45<-data.frame(zclim_miroc45$ztempgrow,zclim_acc45$ztempgrow,zclim_cmc45$ztempgrow,zclim_ces45$ztempgrow)
+data_site_pptdorm45<-data.frame(zclim_miroc45$zpptdorm,zclim_acc45$zpptdorm,zclim_cmc45$zpptdorm,zclim_ces45$zpptdorm)
+data_site_tempdorm45<-data.frame(zclim_miroc45$ztempdorm,zclim_acc45$ztempdorm,zclim_cmc45$ztempdorm,zclim_ces45$ztempdorm)
+data_site_45<-data.frame(zpptgrow=rowMeans(data_site_pptgrow45),ztempgrow=rowMeans(data_site_tempgrow45),zpptdorm=rowMeans(data_site_pptdorm45),ztempdorm=rowMeans(data_site_tempdorm45))
+
+## MIROC85
+
+zclim_miroc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_miroc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_miroc85$zpptgrow<-(clim_miroc85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_miroc85$ztempgrow<-(clim_miroc85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_miroc85$zpptdorm<-(clim_miroc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_miroc85$ztempdorm<-(clim_miroc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## ACCESS85
+zclim_acc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_acc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_acc85$zpptgrow<-(clim_access85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_acc85$ztempgrow<-(clim_access85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_acc85$zpptdorm<-(clim_access85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_acc85$ztempdorm<-(clim_access85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## CMC85
+zclim_cmc85 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_cmc85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_cmc85$zpptgrow<-(clim_cmcc85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_cmc85$ztempgrow<-(clim_cmcc85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_cmc85$zpptdorm<-(clim_cmcc85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_cmc85$ztempdorm<-(clim_cmcc85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+## CES85
+zclim_ces85 = data.frame(matrix(nrow = 14, ncol = 4)) 
+colnames(zclim_ces85)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
+zclim_ces85$zpptgrow<-(clim_cesm85$pptgrow-mean(poar_2015_2016$pptgrow))/sd(poar_2015_2016$pptgrow)
+zclim_ces85$ztempgrow<-(clim_cesm85$tempgrow-mean(poar_2015_2016$tempgrow))/sd(poar_2015_2016$tempgrow)
+zclim_ces85$zpptdorm<-(clim_cesm85$pptdorm-mean(poar_2015_2016$pptdorm))/sd(poar_2015_2016$pptdorm)
+zclim_ces85$ztempdorm<-(clim_cesm85$tempdorm-mean(poar_2015_2016$tempdorm))/sd(poar_2015_2016$tempdorm)
+
+data_site_pptgrow85<-data.frame(zclim_miroc85$zpptgrow,zclim_acc85$zpptgrow,zclim_cmc85$zpptgrow,zclim_ces85$zpptgrow)
+data_site_tempgrow85<-data.frame(zclim_miroc85$ztempgrow,zclim_acc85$ztempgrow,zclim_cmc85$ztempgrow,zclim_ces85$ztempgrow)
+data_site_pptdorm85<-data.frame(zclim_miroc85$zpptdorm,zclim_acc85$zpptdorm,zclim_cmc85$zpptdorm,zclim_ces85$zpptdorm)
+data_site_tempdorm85<-data.frame(zclim_miroc85$ztempdorm,zclim_acc85$ztempdorm,zclim_cmc85$ztempdorm,zclim_ces85$ztempdorm)
+data_site_85<-data.frame(zpptgrow=rowMeans(data_site_pptgrow85),ztempgrow=rowMeans(data_site_tempgrow85),zpptdorm=rowMeans(data_site_pptdorm85),ztempdorm=rowMeans(data_site_tempdorm85))
+
+
+data_past_present_45_85<-rbind(zclim_past,zclim_current,data_site_45,data_site_85)
+
+
+sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/i4e5amud3v0td6jz10j86/SR_OSR_dorm.csv?rlkey=bk1gyfcjn68umysxazydgqrmo&dl=1"))
+all_pptdorm_seq<-seq(min(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
+all_tempdorm_seq<-seq(min(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),max(data_past_present_45_85$ztempdorm*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),length.out=30)
+
+OSR_mtrx_dorm <- matrix(sexratio_dormant$OSR, nrow = 30, dimnames = list(all_pptdorm_seq,all_tempdorm_seq))
+
+sexratio_growing <- read_csv(url("https://www.dropbox.com/scl/fi/vr2pkz8ot2v6azqf18y0t/OSR_grow.csv?rlkey=l1h2re7kf7q155fuwg8m5m8ot&dl=1"))
+all_pptgrow_seq<-seq(min(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),max(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow)),length.out=30)
+all_tempgrow_seq<-seq(min(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),max(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),length.out=30)
+OSR_mtrx_grow <- matrix(sexratio_growing$OSR, nrow = 30, dimnames = list(all_pptgrow_seq,all_tempgrow_seq))
+
+scal_breaks_dorm <- c(seq(0, 1, length.out = 101))
+scal_breaks_grow <- c(seq(0.5, 1, length.out = 101))
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
+par(mar=c(5,5,1,1),mfrow=c(2,1))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,na.omit(OSR_mtrx_dorm),col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="",breaks = scal_breaks) 
+contour(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,add=T,labcex=0.75,col="black") 
+mtext("A",side = 3, adj = 0,cex=1.25)
+text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
+text(x=x_past_d,y=y_past_d,"o",col="black")
+text(x=x_miroc45_d,y=y_miroc45_d,"*",col="black",cex=2)
+text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=4.5)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="")
+contour(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,add=T,labcex=0.75,col="black")
+mtext("B",side = 3, adj = 0,cex=1.25)
+# title(main="B" ,adj=0,cex.main=1.4,font=1)
+text(x=x_current_g,y=y_current_g,"+",col="black",cex=1.5)
+text(x=x_past_g,y=y_past_g,"o",col="black")
+text(x=x_miroc45_g,y=y_miroc45_g,"*",col="black",cex=2)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
+text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
+dev.off()
+
+x_current_d<-clim_current$pptdorm
+y_current_d<-clim_current$tempdorm
+x_past_d<-clim_past$pptdorm
+y_past_d<-clim_past$tempdorm
+x_miroc45_d<-clim_miroc45$pptdorm
+y_miroc45_d<-clim_miroc45$tempdorm
+x_miroc85_d<-clim_miroc85$pptdorm
+y_miroc85_d<-clim_miroc85$tempdorm
+
+x_current_g<-clim_current$pptgrow
+y_current_g<-clim_current$tempgrow
+x_past_g<-clim_past$pptgrow
+y_past_g<-clim_past$tempgrow
+x_miroc45_g<-clim_miroc45$pptgrow
+y_miroc45_g<-clim_miroc45$tempgrow
+x_miroc85_g<-clim_miroc85$pptgrow
+y_miroc85_g<-clim_miroc85$tempgrow
+
+
+
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
+par(mar=c(5,5,1,1),mfrow=c(2,1))
+fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,na.omit(OSR_mtrx_dorm),col=topo.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks = scal_breaks_dorm,cex.lab=1.2,
+                   legend.width=1, legend.shrink=0.75,legend.mar = 4,
+                   axis.args=list(cex.axis=0.6),
+                   legend.args=list(text="OSR", side=3, font=3, line=0.3, cex=0.6)) 
+# contour(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,add=T,labcex=0.75,col="black") 
+text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=1)
+text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=1)
+text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=1)
+text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=1)
+# mtext("Survival",side = 3, adj = 0.5,cex=1.2,line=0.3)
+mtext( "A",side = 3, adj = 0,cex=1.2)
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,col=topo.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks = scal_breaks_grow,cex.lab=1.2,
+                   legend.width=1, legend.shrink=0.75,legend.mar = 4,
+                   axis.args=list(cex.axis=0.6),
+                   legend.args=list(text="OSR", side=3, font=3, line=0.3, cex=0.6)) 
+# contour(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,add=T,labcex=0.75,col="black") 
+text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=1)
+text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=1)
+text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=1)
+text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=1)
+# mtext("Survival",side = 3, adj = 0.5,cex=1.2,line=0.3)
+mtext( "B",side = 3, adj = 0,cex=1.2)
+dev.off()
+
 
 # Importing the data on Proportion of female (SR) and proportion of female panicles (OSR)
 sexratio_past<-read_csv(url("https://www.dropbox.com/scl/fi/yfv9b4w857wg8hcnasg6b/future_spatial_past.csv?rlkey=1q5xovdf33g2woql3p56iq9dr&dl=1"))

@@ -398,6 +398,125 @@ mean_coefp<- lapply(rstan::extract(fit_full, pars = quote_bare(b0_p,bsex_p,bsex_
 
 mean_coefv<-lapply(rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d)) ,mean)
 
+# set up female and male parameter vectors to run the Matrix
+F_params <- M_params <- c()
+## survival
+F_params$surv_mu <- mean_coefs$b0_s
+F_params$surv_size <- mean_coefs$bsize_s
+F_params$surv_pptgrow <- mean_coefs$bpptgrow_s 
+F_params$surv_pptdorm <- mean_coefs$bpptdorm_s 
+F_params$surv_tempgrow <- mean_coefs$btempgrow_s 
+F_params$surv_tempdorm <- mean_coefs$btempdorm_s  
+F_params$surv_tempdorm_pptdorm<-mean_coefs$btempdormpptdorm_s
+F_params$surv_tempgrow_pptgrow<-mean_coefs$btempgrowpptgrow_s
+F_params$surv_pptgrow2<-mean_coefs$bpptgrow2_s
+F_params$surv_pptdorm2<-mean_coefs$bpptdorm2_s
+F_params$surv_tempgrow2<-mean_coefs$btempgrow2_s
+F_params$surv_tempdorm2<-mean_coefs$btempdorm2_s
+M_params$surv_mu <- mean_coefs$b0_s + mean_coefs$bsex_s  
+M_params$surv_size <- mean_coefs$bsize_s + mean_coefs$bsizesex_s
+M_params$surv_pptgrow <- mean_coefs$bpptgrow_s  + mean_coefs$bpptgrowsex_s 
+M_params$surv_pptdorm <- mean_coefs$bpptdorm_s  + mean_coefs$bpptdormsex_s 
+M_params$surv_tempgrow <- mean_coefs$btempgrow_s + mean_coefs$btempgrowsex_s #
+M_params$surv_tempdorm <-  mean_coefs$btempdorm_s  + mean_coefs$btempdormsex_s  
+M_params$surv_tempdorm_pptdorm<-mean_coefs$btempdormpptdorm_s + mean_coefs$btempdormpptdormsex_s
+M_params$surv_tempgrow_pptgrow<-mean_coefs$btempgrowpptgrow_s + mean_coefs$btempgrowpptgrowsex_s
+M_params$surv_pptgrow2<-mean_coefs$bpptgrow2_s + mean_coefs$bpptgrow2sex_s
+M_params$surv_pptdorm2<-mean_coefs$bpptdorm2_s + mean_coefs$bpptdorm2sex_s
+M_params$surv_tempgrow2<-mean_coefs$btempgrow2_s + mean_coefs$btempgrow2sex_s
+M_params$surv_tempdorm2<-mean_coefs$btempdorm2_s + mean_coefs$btempdorm2sex_s
+## growth
+F_params$grow_mu <- mean_coefg$b0_g
+F_params$grow_size <- mean_coefg$bsize_g
+F_params$grow_pptgrow <- mean_coefg$bpptgrow_g 
+F_params$grow_pptdorm <- mean_coefg$bpptdorm_g 
+F_params$grow_tempgrow <- mean_coefg$btempgrow_g 
+F_params$grow_tempdorm <- mean_coefg$btempdorm_g  
+F_params$grow_tempdorm_pptdorm<-mean_coefg$btempdormpptdorm_g
+F_params$grow_tempgrow_pptgrow<-mean_coefg$btempgrowpptgrow_g
+F_params$grow_pptgrow2<-mean_coefg$bpptgrow2_g
+F_params$grow_pptdorm2<-mean_coefg$bpptdorm2_g
+F_params$grow_tempgrow2<-mean_coefg$btempgrow2_g
+F_params$grow_tempdorm2<-mean_coefg$btempdorm2_g
+F_params$sigma_g <- mean_coefg$sigma 
+M_params$grow_mu <- mean_coefg$b0_g + mean_coefg$bsex_g  
+M_params$grow_size <- mean_coefg$bsize_g + mean_coefg$bsizesex_g
+M_params$grow_pptgrow <- mean_coefg$bpptgrow_g  + mean_coefg$bpptgrowsex_g 
+M_params$grow_pptdorm <- mean_coefg$bpptdorm_g  + mean_coefg$bpptdormsex_g 
+M_params$grow_tempgrow <- mean_coefg$btempgrow_g + mean_coefg$btempgrowsex_g #
+M_params$grow_tempdorm <-  mean_coefg$btempdorm_g  + mean_coefg$btempdormsex_g  
+M_params$grow_tempdorm_pptdorm<-mean_coefg$btempdormpptdorm_g + mean_coefg$btempdormpptdormsex_g
+M_params$grow_tempgrow_pptgrow<-mean_coefg$btempgrowpptgrow_g + mean_coefg$btempgrowpptgrowsex_g
+M_params$grow_pptgrow2<-mean_coefg$bpptgrow2_g + mean_coefg$bpptgrow2sex_g
+M_params$grow_pptdorm2<-mean_coefg$bpptdorm2_g + mean_coefg$bpptdorm2sex_g
+M_params$grow_tempgrow2<-mean_coefg$btempgrow2_g + mean_coefg$btempgrow2sex_g
+M_params$grow_tempdorm2<-mean_coefg$btempdorm2_g + mean_coefg$btempdorm2sex_g
+M_params$sigma_g <- mean_coefg$sigma 
+## flowering
+F_params$flow_mu <- mean_coeff$b0_f
+F_params$flow_size <- mean_coeff$bsize_f
+F_params$flow_pptgrow <- mean_coeff$bpptgrow_f 
+F_params$flow_pptdorm <- mean_coeff$bpptdorm_f 
+F_params$flow_tempgrow <- mean_coeff$btempgrow_f 
+F_params$flow_tempdorm <- mean_coeff$btempdorm_f  
+F_params$flow_tempdorm_pptdorm<-mean_coeff$btempdormpptdorm_f
+F_params$flow_tempgrow_pptgrow<-mean_coeff$btempgrowpptgrow_f
+F_params$flow_pptgrow2<-mean_coeff$bpptgrow2_f
+F_params$flow_pptdorm2<-mean_coeff$bpptdorm2_f
+F_params$flow_tempgrow2<-mean_coeff$btempgrow2_f
+F_params$flow_tempdorm2<-mean_coeff$btempdorm2_f
+M_params$flow_mu <- mean_coeff$b0_f + mean_coeff$bsex_f  
+M_params$flow_size <- mean_coeff$bsize_f + mean_coeff$bsizesex_f
+M_params$flow_pptgrow <- mean_coeff$bpptgrow_f  + mean_coeff$bpptgrowsex_f 
+M_params$flow_pptdorm <- mean_coeff$bpptdorm_f  + mean_coeff$bpptdormsex_f 
+M_params$flow_tempgrow <- mean_coeff$btempgrow_f + mean_coeff$btempgrowsex_f #
+M_params$flow_tempdorm <-  mean_coeff$btempdorm_f  + mean_coeff$btempdormsex_f  
+M_params$flow_tempdorm_pptdorm<-mean_coeff$btempdormpptdorm_f + mean_coeff$btempdormpptdormsex_f
+M_params$flow_tempgrow_pptgrow<-mean_coeff$btempgrowpptgrow_f + mean_coeff$btempgrowpptgrowsex_f
+M_params$flow_pptgrow2<-mean_coeff$bpptgrow2_f + mean_coeff$bpptgrow2sex_f
+M_params$flow_pptdorm2<-mean_coeff$bpptdorm2_f + mean_coeff$bpptdorm2sex_f
+M_params$flow_tempgrow2<-mean_coeff$btempgrow2_f + mean_coeff$btempgrow2sex_f
+M_params$flow_tempdorm2<-mean_coeff$btempdorm2_f + mean_coeff$btempdorm2sex_f
+## panicles
+F_params$panic_mu <- mean_coefp$b0_p
+F_params$panic_size <- mean_coefp$bsize_p
+F_params$panic_pptgrow <- mean_coefp$bpptgrow_p 
+F_params$panic_pptdorm <- mean_coefp$bpptdorm_p 
+F_params$panic_tempgrow <- mean_coefp$btempgrow_p 
+F_params$panic_tempdorm <- mean_coefp$btempdorm_p  
+F_params$panic_tempdorm_pptdorm<-mean_coefp$btempdormpptdorm_p
+F_params$panic_tempgrow_pptgrow<-mean_coefp$btempgrowpptgrow_p
+F_params$panic_pptgrow2<-mean_coefp$bpptgrow2_p
+F_params$panic_pptdorm2<-mean_coefp$bpptdorm2_p
+F_params$panic_tempgrow2<-mean_coefp$btempgrow2_p
+F_params$panic_tempdorm2<-mean_coefp$btempdorm2_p
+M_params$panic_mu <- mean_coefp$b0_p + mean_coefp$bsex_p  
+M_params$panic_size <- mean_coefp$bsize_p + mean_coefp$bsizesex_p
+M_params$panic_pptgrow <- mean_coefp$bpptgrow_p  + mean_coefp$bpptgrowsex_p 
+M_params$panic_pptdorm <- mean_coefp$bpptdorm_p  + mean_coefp$bpptdormsex_p 
+M_params$panic_tempgrow <- mean_coefp$btempgrow_p + mean_coefp$btempgrowsex_p #
+M_params$panic_tempdorm <-  mean_coefp$btempdorm_p  + mean_coefp$btempdormsex_p  
+M_params$panic_tempdorm_pptdorm<-mean_coefp$btempdormpptdorm_p + mean_coefp$btempdormpptdormsex_p
+M_params$panic_tempgrow_pptgrow<-mean_coefp$btempgrowpptgrow_p + mean_coefp$btempgrowpptgrowsex_p
+M_params$panic_pptgrow2<-mean_coefp$bpptgrow2_p + mean_coefp$bpptgrow2sex_p
+M_params$panic_pptdorm2<-mean_coefp$bpptdorm2_p + mean_coefp$bpptdorm2sex_p
+M_params$panic_tempgrow2<-mean_coefp$btempgrow2_p + mean_coefp$btempgrow2sex_p
+M_params$panic_tempdorm2<-mean_coefp$btempdorm2_p + mean_coefp$btempdorm2sex_p
+## seed viability and misc fertility params
+F_params$v0 <- mean_coefv$v0 
+F_params$a_v <- mean_coefv$a_v 
+F_params$ov_per_inf <- mean_coefv$lambda_d 
+F_params$germ <- mean_coefv$m 
+F_params$PSR <- 0.5
+## use POAU seedling survival for females and males
+F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+## set max size equal between the sexes
+F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+
+# Relation lambda and each climatic variable.
+cbPalette <- c("#999999", "#E69F00")
+
+
 ## Format data for past, present,future to estimate species niche across each season. 
 zclim_current = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_current)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -483,9 +602,305 @@ data_site_85<-data.frame(zpptgrow=rowMeans(data_site_pptgrow85),ztempgrow=rowMea
 
 data_past_present_45_85<-rbind(zclim_past,zclim_current,data_site_45,data_site_85)
 # write_csv(data_past_present_45_85,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/Climatic data/Niche/data_past_present_45_85.csv")
-data_niche<-cbind(data_past_present_45_85)
+
+
+# Predicted response of λ to climate change--
+## Precipitation growing season----
+all_pptgrow_seq <- seq(min(data_past_present_45_85$zpptgrow),max(data_past_present_45_85$zpptgrow),length.out=30)
+
+lambda_pptgrow_all<-lambda_pptgrow_all_2sex<-SR_pptgrow_all<-OSR_pptgrow_all<-c()
+ssd_pptgrow_all<-matrix(NA,(F_params$max_size+1)*2,length(all_pptgrow_seq))
+max_yrs <- 30
+
+for (i in 1:length(all_pptgrow_seq)) {
+  #linear model for comparison
+  mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           zpptgrow=all_pptgrow_seq[i],
+                           ztempgrow=0,
+                           zpptdorm=0,
+                           ztempdorm=0,
+                           rfx=rfx_fun())$MEGAmat
+  lambda_pptgrow_all[i] <- popbio::lambda(mat)
+  # 2-sex model
+  lambda_run <- lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=all_pptgrow_seq[i],
+                                 ztempgrow=0,
+                                 zpptdorm=0,
+                                 ztempdorm=0,
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)
+  lambda_pptgrow_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
+  SR_pptgrow_all[i] <- lambda_run$SRtracker[max_yrs]
+  OSR_pptgrow_all[i] <- lambda_run$OSRtracker[max_yrs]
+  ssd_pptgrow_all[,i] <- lambda_run$n0
+}
+
+
+### Temperature growing season
+all_tempgrow_seq <- seq(min(data_past_present_45_85$ztempgrow),max(data_past_present_45_85$ztempgrow),length.out=30)
+
+lambda_tempgrow_all<-lambda_tempgrow_all_2sex<-SR_tempgrow_all<-OSR_tempgrow_all<-c()
+ssd_tempgrow_all<-matrix(NA,(F_params$max_size+1)*2,length(all_tempgrow_seq))
+max_yrs <- 30
+
+for (i in 1:length(all_tempgrow_seq)) {
+  #linear model for comparison
+  mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           zpptgrow=0,
+                           ztempgrow=all_tempgrow_seq[i],
+                           zpptdorm=0,
+                           ztempdorm=0,
+                           rfx=rfx_fun())$MEGAmat
+  lambda_tempgrow_all[i] <- popbio::lambda(mat)
+  # 2-sex model
+  lambda_run <- lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=0,
+                                 ztempgrow=all_tempgrow_seq[i],
+                                 zpptdorm=0,
+                                 ztempdorm=0,
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)
+  lambda_tempgrow_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
+  SR_tempgrow_all[i] <- lambda_run$SRtracker[max_yrs]
+  OSR_tempgrow_all[i] <- lambda_run$OSRtracker[max_yrs]
+  ssd_tempgrow_all[,i] <- lambda_run$n0
+}
+
+### Precipitation dormant season
+all_pptdorm_seq <- seq(min(data_past_present_45_85$zpptdorm),max(data_past_present_45_85$zpptdorm),length.out=30)
+
+lambda_pptdorm_all<-lambda_pptdorm_all_2sex<-SR_pptdorm_all<-OSR_pptdorm_all<-c()
+ssd_pptdorm_all<-matrix(NA,(F_params$max_size+1)*2,length(all_pptdorm_seq))
+max_yrs <- 30
+
+
+for (i in 1:length(all_pptdorm_seq)) {
+  #linear model for comparison
+  mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           zpptgrow=0,
+                           ztempgrow=0,
+                           zpptdorm=all_pptdorm_seq[i],
+                           ztempdorm=0,
+                           rfx=rfx_fun())$MEGAmat
+  lambda_pptdorm_all[i] <- popbio::lambda(mat)
+  # 2-sex model
+  lambda_run <- lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=0,
+                                 ztempgrow=0,
+                                 zpptdorm=all_pptdorm_seq[i],
+                                 ztempdorm=0,
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)
+  lambda_pptdorm_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
+  SR_pptdorm_all[i] <- lambda_run$SRtracker[max_yrs]
+  OSR_pptdorm_all[i] <- lambda_run$OSRtracker[max_yrs]
+  ssd_pptdorm_all[,i] <- lambda_run$n0
+}
+
+### Temperature of the dormant season
+all_tempdorm_seq <- seq(min(data_past_present_45_85$ztempdorm),max(data_past_present_45_85$ztempdorm),length.out=30)
+lambda_tempdorm_all<-lambda_tempdorm_all_2sex<-SR_tempdorm_all<-OSR_tempdorm_all<-c()
+ssd_tempdorm_all<-matrix(NA,(F_params$max_size+1)*2,length(all_tempdorm_seq))
+max_yrs <- 30
+
+for (i in 1:length(all_tempdorm_seq)) {
+  #linear model for comparison
+  mat <- megamatrix_delay( F_params=F_params,
+                           M_params=M_params,
+                           twosex=F,
+                           grow_perturb=0,
+                           surv_perturb=0,
+                           flow_perturb=0,
+                           fert_perturb=0,
+                           viab_perturb=0,
+                           zpptgrow=0,
+                           ztempgrow=0,
+                           zpptdorm=0,
+                           ztempdorm=all_tempdorm_seq[i],
+                           rfx=rfx_fun())$MEGAmat
+  lambda_tempdorm_all[i] <- popbio::lambda(mat)
+  # 2-sex model
+  lambda_run <- lambdaSim_delay( F_params=F_params,
+                                 M_params=M_params,
+                                 grow_perturb=0,
+                                 surv_perturb=0,
+                                 flow_perturb=0,
+                                 fert_perturb=0,
+                                 viab_perturb=0,
+                                 zpptgrow=0,
+                                 ztempgrow=0,
+                                 zpptdorm=0,
+                                 ztempdorm=all_tempdorm_seq[i],
+                                 rfx = rfx_fun(),
+                                 max.yrs = max_yrs)
+  lambda_tempdorm_all_2sex[i] <- lambda_run$lambdatracker[max_yrs]
+  SR_tempdorm_all[i] <- lambda_run$SRtracker[max_yrs]
+  OSR_tempdorm_all[i] <- lambda_run$OSRtracker[max_yrs]
+  ssd_tempdorm_all[,i] <- lambda_run$n0
+}
+
+rect_pptgrow <- data.frame(xmin = c((min(zclim_past$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (min(zclim_current$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (min(data_site_45$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)),
+                                    (min(data_site_85$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow))), xmax = c((max(zclim_past$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (max(zclim_current$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)), (max(data_site_45$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow)),
+                                                                                                                                    (max(data_site_85$zpptgrow)*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow))),                               
+                           Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+
+rect_tempgrow <- data.frame(xmin = c((min(zclim_past$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (min(zclim_current$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (min(data_site_45$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),
+                                     (min(data_site_85$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow))), xmax = c((max(zclim_past$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (max(zclim_current$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)), (max(data_site_45$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),
+                                                                                                                                        (max(data_site_85$ztempgrow)*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow))),                                                                                                  Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+
+rect_pptdorm <- data.frame(xmin = c((min(zclim_past$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (min(zclim_current$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (min(data_site_45$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),
+                                    (min(data_site_85$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm))), xmax = c((max(zclim_past$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (max(zclim_current$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)), (max(data_site_45$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),                                                        (max(data_site_85$zpptdorm)*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm))),
+                           Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+
+
+rect_tempdorm <- data.frame(xmin = c((min(zclim_past$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (min(zclim_current$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (min(data_site_45$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),
+                                     (min(data_site_85$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm))), xmax = c((max(zclim_past$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (max(zclim_current$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)), (max(data_site_45$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm)),
+                                                                                                                                        (max(data_site_85$ztempdorm)*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm))),                                                     
+                            Time = c("Past", "Present", "RCP4.5","RCP8.5"))
+colors <- c("Past" = "#009E73", "Present" = "#0072B2", "RCP4.5" = "#D55E00","RCP8.5"="#D81B60")
+
+
+layout.matrix <- rbind(matrix(1:4, nrow = 2, ncol = 2, byrow = F),
+                       matrix(5:8, nrow = 2, ncol = 2, byrow = F))
+#print figure
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/lambda_past_present_future.pdf",height = 8,width = 7,useDingbats = F)
+
+layout(mat = layout.matrix,
+       heights = c(rep(c(2, 0.5),2),rep(c(2, 2),4)), # Heights of the two rows
+       widths = c(2, 2, 2,2))
+# layout.show(16)
+
+# par(oma=c(5,1,1.5,0.5))
+par(oma=c(8,1,3,0.5))
+par(mar=c(0,5,0,0))
+plot(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all,ylim=c(0,9),
+     xlab=" ",ylab="",type="n",xaxt="n");box()
+# title(LETTERS[1],adj=0,cex.main=1.75)
+mtext( "A",side = 3, adj = 0,cex=1.25)
+mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1)
+abline(h = 1,lty=2,col="black")
+lines (all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all,col="#E69F00", lwd=3)
+lines(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all_2sex, col = "#999999",lwd=3) 
+legend(460, 8.5, legend=c("Female dominant", "Two-sex"),
+       col=c("#E69F00", "#999999"), lty=1:1, cex=1.2,bty = "n",lwd=3,seg.len =2:2)
+
+par(mar=c(1.75,5,0.25,0))
+plot(all_pptgrow_seq*sd(poar_2015_2016$pptgrow)+mean(poar_2015_2016$pptgrow),lambda_pptgrow_all,ylim=c(0,2.5),
+     xlab=" ",ylab="",yaxt="n",type="n")
+mtext("Time",side=2,line=1,cex=1.)
+mtext("Growing season precip",side=1,line=2.75,cex=1.)
+segments(x0 = rect_pptgrow[1,1],y0 = 2, x1 = rect_pptgrow[1,2],y1 = 2, col= colors[1],lwd = 4) 
+segments(x0 = rect_pptgrow[2,1],y0 = 1.5, x1 = rect_pptgrow[2,2],y1 =1.5, col = colors[2],lwd = 4) 
+segments(x0 = rect_pptgrow[3,1],y0 = 1, x1 = rect_pptgrow[3,2],y1 =1, col = colors[3],lwd = 4) 
+segments(x0 = rect_pptgrow[4,1],y0 = 0.5, x1 = rect_pptgrow[4,2],y1 = 0.5, col = colors[4],lwd = 4) 
+
+par(mar=c(0,5,0,0))
+plot(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all,ylim=c(0,5),
+     xlab="Growing season temp ",ylab=" ",xaxt="n",type="n");box()
+mtext( "B",side = 3, adj = 0,cex=1.25)
+# mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1.)
+# title(LETTERS[2],adj=0,cex.main=1.75)
+abline(h = 1,lty=2,col="black")
+lines(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all,col="#E69F00", lwd=3)
+lines(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all_2sex, col = "#999999",lwd=3)   
+
+par(mar=c(1.75,5,0.25,0))
+plot(all_tempgrow_seq*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow),lambda_tempgrow_all,ylim=c(0,2.5),
+     xlab=" ",ylab=" ",yaxt="n",type="n");box()
+mtext("Growing season temp",side=1,line=2.75,cex=1.)
+segments(x0 = rect_tempgrow[1,1],y0 = 2, x1 = rect_tempgrow[1,2],y1 = 2, col= colors[1],lwd = 4) 
+segments(x0 = rect_tempgrow[2,1],y0 = 1.5, x1 = rect_tempgrow[2,2],y1 =1.5, col = colors[2],lwd = 4) 
+segments(x0 = rect_tempgrow[3,1],y0 = 1, x1 = rect_tempgrow[3,2],y1 =1, col = colors[3],lwd = 4) 
+segments(x0 = rect_tempgrow[4,1],y0 = 0.5, x1 = rect_tempgrow[4,2],y1 = 0.5, col = colors[4],lwd = 4) 
+
+
+par(mar=c(0,5,2.80,0))
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all,ylim=c(0,6),
+     xlab=" ",ylab=" ",xaxt="n",type="n");box()
+mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1.)
+# title(LETTERS[3],adj=0,cex.main=1.75)
+mtext( "C",side = 3, adj = 0,cex=1.25)
+# mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1.2)
+abline(h = 1,lty=2,col="black")
+lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all,col="#E69F00", lwd=3)
+lines(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all_2sex, col = "#999999",lwd=3)
+
+par(mar=c(1.75,5,0.25,0))
+plot(all_pptdorm_seq*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm),lambda_pptdorm_all,ylim=c(0,2.5),
+     xlab=" ",ylab=" ",yaxt="n",type="n")
+mtext("Dormant season precip",side=1,line=2.75,cex=1.)
+mtext("Time",side=2,line=1.5,cex=1.)
+segments(x0 = rect_pptdorm[1,1], x1 = rect_pptdorm[1,2], y0 = 2, y1 = 2, col = colors[1],lwd = 4)
+segments(x0 = rect_pptdorm[2,1], x1 = rect_pptdorm[2,2], y0 = 1.5, y1 = 1.5, col = colors[2],lwd = 4) 
+segments(x0 = rect_pptdorm[3,1], x1 = rect_pptdorm[3,2], y0 = 1, y1 = 1, col = colors[3],lwd = 4)
+segments(x0 = rect_pptdorm[4,1], x1 = rect_pptdorm[4,2], y0 = 0.5, y1 = 0.5, col = colors[4],lwd = 4)
+
+par(mar=c(0,5,2.80,0))
+plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all,ylim=c(0,5),xlab=" ",ylab=" ",xaxt="n",type="n");box()
+# mtext(expression(paste("Population growth rate, ", lambda)),side=2,line=3,cex=1.)
+# title(LETTERS[4],adj=0,cex.main=1.75)
+mtext( "D",side = 3, adj = 0,cex=1.25)
+abline(h = 1,lty=2,col="black")
+lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all,col="#E69F00", lwd=3)
+lines(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all_2sex, col = "#999999",lwd=3)
+
+par(mar=c(1.75,5,0.25,0))
+plot(all_tempdorm_seq*sd(poar_2015_2016$tempdorm)+mean(poar_2015_2016$tempdorm),lambda_tempdorm_all,ylim=c(0,2.5),
+     xlab=" ",ylab=" ",yaxt="n",type="n")
+mtext("Dormant season temp",side=1,line=2.75,cex=1.)
+segments(x0 = rect_tempdorm[1,1], x1 = rect_tempdorm[1,2], y0 = 2, y1 = 2, col = colors[1],lwd = 4)
+segments(x0 = rect_tempdorm[2,1], x1 = rect_tempdorm[2,2], y0 = 1.5, y1 = 1.5, col = colors[2],lwd = 4) 
+segments(x0 = rect_tempdorm[3,1], x1 = rect_tempdorm[3,2], y0 = 1, y1 = 1, col = colors[3],lwd = 4)
+segments(x0 = rect_tempdorm[4,1], x1 = rect_tempdorm[4,2], y0 = 0.5, y1 = 0.5, col = colors[4],lwd = 4)
+# legend(31, 2.5, legend=c("Past", "Present", "RCP4.5","RCP8.5"),
+#        col=colors, lty=1:1, seg.len =0.5:0.5,bty ="n",cex=0.75,lwd = 5)
+text(29, 2.1, "Past",cex=1.)
+text(30.3, 1.6, "Present",cex=1.)
+text(32, 1.1, "RCP 4.5",cex=1.)
+text(28, 0.5, "RCP 8.5",cex=1.)
+dev.off()
 
 # Niche Projection----
+data_niche<-cbind(data_past_present_45_85)
 # The estimation of the species niche (Probability of lambda being higher than 1) was estimated using a local cluster. Even with that cluster, running the code below will take a while (week or month depending on number of core available).  
 # Creating a “cluster” of CPUs 
 parallel::detectCores() # found out how many cores are available to simultaneous execute different pieces of a larger computation across multiple computing processors or cores
@@ -498,7 +913,6 @@ print(my.cluster) #check cluster definition (optional)
 doParallel::registerDoParallel(cl = my.cluster) #register it to be used by %dopar%
 foreach::getDoParRegistered() #check if it is registered (optional)
 foreach::getDoParWorkers() #how many workers are available? (optional)
-
 ## Two sex models -----
 ### Dormant season ----
 clim_dorm_post<-expand.grid(pptdorm=seq(min(data_niche$zpptdorm),max(data_niche$zpptdorm),length.out=30),tempdorm=seq(min(data_niche$ztempdorm),max(data_niche$ztempdorm),length.out=30))
