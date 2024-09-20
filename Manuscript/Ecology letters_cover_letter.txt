@@ -1,0 +1,16 @@
+To the Editorial Board:
+
+We would like to submit our manuscript titled “Forecasting Range Shifts of a Dioecious Plant Species Under Climate Change” for publication in Ecology Letters.
+
+Recent studies on dioecious plants suggest that future climate change may favor male-biased sex ratios. However, the vast majority of models used to forecast population viability and range shifts in response to climate change do not account for sex ratio bias, and thus do not consider the potential for females and males to differ in their sensitivity to climate drivers.
+
+In this study, we utilized a unique dataset on a dioecious plant (Texas bluegrass) collected from a common garden experiment distributed over a dramatic environmental gradient in the southern Great Plains, USA. We used Bayesian statistics and mathematical models to investigate whether accounting for the complexity of sex structure affects predictions of dioecious species’ responses to climate change. Our findings demonstrate that considering only one sex can lead to an underestimation of the impact of climate change on dioecious species, particularly in regions of their range that are biased toward one sex.
+
+Our paper lies at the interface of population biology and conservation biology, making it well suited for Ecology Letters.
+
+We have opted out of double-blind review because this paper builds upon our previous work (one component of our modeling framework is published elsewhere), so our identities could be easily deduced. Our identities are also evident from our GitHub repository, where we direct reviewers to find all data and code necessary to reproduce our analyses.
+
+Sincerely,
+Jacob Moutouama
+Aldo Compagnoni
+Tom Miller

@@ -384,23 +384,23 @@ garden_osr_dat <- list(y = garden_osr_poolyr$fem_pan,
                        pptdorm=as.vector(garden_osr_poolyr$pptgrow),
                        pptgrow=as.vector(garden_osr_poolyr$pptdorm),
                        N = nrow(garden_osr_poolyr))
-sim_pars <- list(
-  warmup = 1000, 
-  iter = 9000, 
-  thin = 3, 
-  chains = 3
-)
+# sim_pars <- list(
+#   warmup = 1000, 
+#   iter = 9000, 
+#   thin = 3, 
+#   chains = 3
+# )
 
 # library(cmdstanr)
-fit_garden_osr <- stan(
-  file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_climate.stan',
-  data = garden_osr_dat,
-  warmup = sim_pars$warmup,
-  iter = sim_pars$iter,
-  thin = sim_pars$thin,
-  chains = sim_pars$chains )
+# fit_garden_osr <- stan(
+#   file = '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/stan/poar_garden_climate.stan',
+#   data = garden_osr_dat,
+#   warmup = sim_pars$warmup,
+#   iter = sim_pars$iter,
+#   thin = sim_pars$thin,
+#   chains = sim_pars$chains )
 
-saveRDS(fit_garden_osr, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/fit_garden_osr.rds')
+# saveRDS(fit_garden_osr, '/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/fit_garden_osr.rds')
 fit_garden_osr <- readRDS(url("https://www.dropbox.com/scl/fi/leogofl0m0gp35xv8zeh1/fit_garden_osr.rds?rlkey=i0b3exnhscocbh14bw7u0kxwe&dl=1"))
 
 traceplot(fit_garden_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_pptdorm,b_tempgrow,b_tempdorm,b_pptgrow2,b_pptdorm2,b_tempgrow2,b_tempdorm2,b_tempdormpptdorm,b_tempgrowpptgrow))+theme_bw()
@@ -429,7 +429,7 @@ osr<-mcmc_intervals(posterior_osr, pars = quote_bare(b0,b_tempgrow,b_pptgrow,b_p
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
   labs(color = "Interaction type:")+
   xlab("Posterior estimates ")+
-  xlim(-1,1)+
+  xlim(-2,2)+
   # ggtitle("A") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
