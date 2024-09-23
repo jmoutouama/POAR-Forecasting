@@ -1466,7 +1466,7 @@ data_site_85<-data.frame(zpptgrow=rowMeans(data_site_pptgrow85),ztempgrow=rowMea
 
 
 data_past_present_45_85<-rbind(zclim_past,zclim_current,data_site_45,data_site_85)
-
+##2 D sex ratio plots----
 
 sexratio_dormant<-read_csv(url("https://www.dropbox.com/scl/fi/i4e5amud3v0td6jz10j86/SR_OSR_dorm.csv?rlkey=bk1gyfcjn68umysxazydgqrmo&dl=1"))
 all_pptdorm_seq<-seq(min(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),max(data_past_present_45_85$zpptdorm*sd(poar_2015_2016$pptdorm)+mean(poar_2015_2016$pptdorm)),length.out=30)
@@ -1479,27 +1479,9 @@ all_pptgrow_seq<-seq(min(data_past_present_45_85$zpptgrow*sd(poar_2015_2016$pptg
 all_tempgrow_seq<-seq(min(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),max(data_past_present_45_85$ztempgrow*sd(poar_2015_2016$tempgrow)+mean(poar_2015_2016$tempgrow)),length.out=30)
 OSR_mtrx_grow <- matrix(sexratio_growing$OSR, nrow = 30, dimnames = list(all_pptgrow_seq,all_tempgrow_seq))
 
+
 scal_breaks_dorm <- c(seq(0, 1, length.out = 101))
 scal_breaks_grow <- c(seq(0.5, 1, length.out = 101))
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
-par(mar=c(5,5,1,1),mfrow=c(2,1))
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,na.omit(OSR_mtrx_dorm),col=topo.colors(100),xlab="Precipitation dormant",ylab="Temperature dormant",main="",breaks = scal_breaks) 
-contour(all_pptdorm_seq,all_tempdorm_seq,OSR_mtrx_dorm,add=T,labcex=0.75,col="black") 
-mtext("A",side = 3, adj = 0,cex=1.25)
-text(x=x_current_d,y=y_current_d,"+",col="black",cex=1.5)
-text(x=x_past_d,y=y_past_d,"o",col="black")
-text(x=x_miroc45_d,y=y_miroc45_d,"*",col="black",cex=2)
-text(x=x_miroc85_d,y=y_miroc85_d,".",col="black",cex=4.5)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,col=topo.colors(100),xlab="Precipitation growing",ylab="Temperature growing",main="")
-contour(all_pptgrow_seq,all_tempgrow_seq,OSR_mtrx_grow,add=T,labcex=0.75,col="black")
-mtext("B",side = 3, adj = 0,cex=1.25)
-# title(main="B" ,adj=0,cex.main=1.4,font=1)
-text(x=x_current_g,y=y_current_g,"+",col="black",cex=1.5)
-text(x=x_past_g,y=y_past_g,"o",col="black")
-text(x=x_miroc45_g,y=y_miroc45_g,"*",col="black",cex=2)
-text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
-text(x=x_miroc85_g,y=y_miroc85_g,".",col="black",cex=4.5)
-dev.off()
 
 x_current_d<-clim_current$pptdorm
 y_current_d<-clim_current$tempdorm
@@ -1518,8 +1500,6 @@ x_miroc45_g<-clim_miroc45$pptgrow
 y_miroc45_g<-clim_miroc45$tempgrow
 x_miroc85_g<-clim_miroc85$pptgrow
 y_miroc85_g<-clim_miroc85$tempgrow
-
-
 
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/OSR.pdf",width=5,height=7,useDingbats = F)
 par(mar=c(5,5,1,1),mfrow=c(2,1))
