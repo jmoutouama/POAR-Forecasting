@@ -310,6 +310,7 @@ viabVr %>%
   dplyr::select(SeedN)  %>% 
   na.omit->seeds
 
+
 # Sex ratio for observed data----
 garden_osr <- poar.clim_seasonal %>% 
   dplyr::select(year, site, Sex,zpptgrow,zpptdorm,ztempgrow,ztempdorm,flowerN_t1) %>% 
@@ -1009,6 +1010,33 @@ F_params$PSR <- 0.5
 F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
 ## set max size equal between the sexes
 F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+
+# Seed viability figure ---- 
+viab_dat   <- viabVr %>% 
+  select( plot, totS, yesMaybe, sr_f ) %>% 
+  rename( SR        = sr_f,
+          y_viab = yesMaybe,
+          tot_seeds_viab = totS) %>% 
+  select(y_viab, tot_seeds_viab, SR ) %>% 
+  na.omit
+
+viab_pars <- rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d))
+post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
+#print figure
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/seed_viabitility.pdf",useDingbats = F)
+plot(jitter(viab_dat$SR,75),jitter((viab_dat$y_viab / viab_dat$tot_seeds_viab),75),
+     type="n",xlab="Operational sex ratio",
+     ylab="Seed viability",cex.lab=1.2)
+for(p in 1:n_post_draws){
+  lines(seq(0,1,0.01),
+        viab_pars$v0[post_draws[p]] * (1 - seq(0,1,0.01) ^ viab_pars$a_v[post_draws[p]]),
+        col=alpha("#E6AB02",0.1))
+}
+points(jitter(viab_dat$SR,75),jitter((viab_dat$y_viab / viab_dat$tot_seeds_viab),75),
+       cex = 5 * (viab_dat$tot_seeds_viab / max(viab_dat$tot_seeds_viab)),lwd=2,col=alpha("#E6AB02",1),bg="#E6AB02",pch=21)
+dev.off()
+
+
 
 # Sex ratio observed data----
 ### Climate values across species range
