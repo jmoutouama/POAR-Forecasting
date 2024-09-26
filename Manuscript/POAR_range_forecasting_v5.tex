@@ -91,9 +91,9 @@
 
 %-------------------------------------------------------------------------
 \title{Forecasting range shifts of a dioecious plant species under climate change}
-\author[1]{Jacob K. Moutouama\,\textit{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
-\author[2]{Aldo Compagnoni\,\textit{0000-0001-8302-7492}}
-\author[1]{Tom E.X. Miller\,\textit{0000-0003-3208-6067}}
+\author[1]{Jacob K. Moutouama\,\orcidlink{0000-0003-1599-1671} \thanks{Corresponding author: jmoutouama@gmail.com}}
+\author[2]{Aldo Compagnoni\,\orcidlink{0000-0001-8302-7492}}
+\author[1]{Tom E.X. Miller\,\orcidlink{0000-0003-3208-6067}}
 \affil[1]{Program in Ecology and Evolutionary Biology, Department of BioSciences, Rice University, Houston, Texas, USA}
 \affil[2]{Institute of Biology, Martin Luther University Halle-Wittenberg, Halle, Germany; and German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany}
 \date{} % clear date
@@ -108,35 +108,35 @@
 \renewcommand{\baselinestretch}{1.2}
 \maketitle
 
-\noindent\textbf{Running header:} Forecasting range shifts
+%\noindent\textbf{Running header:} Forecasting range shifts
 \bigskip 
 
-\noindent\textbf{Keywords:} demography, forecasting, global warming, matrix projection model, population dynamics, sex ratio, range limits
+%\noindent\textbf{Keywords:} demography, forecasting, global warming, matrix projection model, population dynamics, sex ratio, range limits
 
-\bigskip 
-\noindent\textbf{Submitted to:} \textit{Ecology letters} (Letter)
-
-\bigskip 
-\noindent\textbf{Data accessibility statement:} All data used in this paper are  publicly available and cited appropriately \citep{dryaddata}. 
-Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. 
-During peer review, our code (Stan and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
-
-\bigskip 
-\noindent\textbf{Conflict of interest statement:} None.
-
-\bigskip
-\noindent\textbf{Authorship statement:}
-J.K.M., A.C. and T.E.X.M. designed the study.
-A.C. and T.E.X.M. collected the data. 
-All authors conducted the statistical analyses and modeling.
-J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
-
-\bigskip
-\noindent\textbf{Abstract:}\\
-\noindent\textbf{Main Text:}\\
-\noindent\textbf{Figures: 6}\\
-\noindent\textbf{Tables: 0}\\
-\noindent\textbf{References: 106}
+%\bigskip 
+%\noindent\textbf{Submitted to:} \textit{Ecology letters} (Letter)
+%
+%\bigskip 
+%\noindent\textbf{Data accessibility statement:} All data used in this paper are  publicly available and cited appropriately \citep{dryaddata}. 
+%Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. 
+%During peer review, our code (Stan and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
+%
+%\bigskip 
+%\noindent\textbf{Conflict of interest statement:} None.
+%
+%\bigskip
+%\noindent\textbf{Authorship statement:}
+%J.K.M., A.C. and T.E.X.M. designed the study.
+%A.C. and T.E.X.M. collected the data. 
+%All authors conducted the statistical analyses and modeling.
+%J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
+%
+%\bigskip
+%\noindent\textbf{Abstract:}\\
+%\noindent\textbf{Main Text:}\\
+%\noindent\textbf{Figures: 6}\\
+%\noindent\textbf{Tables: 0}\\
+%\noindent\textbf{References: 106}
 
 \newpage
 \linenumbers
@@ -146,12 +146,15 @@ J.K.M. drafted the manuscript, and T.E.X.M contributed to revisions.
 %150 words limit for Ecology letter. The number now is 166
 %Tom made changes here that increase word count
 Global warming has triggered an urgent need for predicting the reorganization of Earth's biodiversity.
-Currently, the  majority of models used to forecast population viability and range shifts in response to climate change ignore the the complication of sex structure, and thus the potential for females and males to differ in their sensitivity to climate drivers. 
+Currently, the  vast majority of models used to forecast population viability and range shifts in response to climate change ignore the  complication of sex structure, and thus the potential for females and males to differ in their sensitivity to climate drivers. 
 % For dioecious species, it is unclear how commonly unique climate sensitivities of females and males could influence projections for species-level responses to climate change. 
 We developed demographic models of range limitation, parameterized from geographically distributed common garden experiments, with females and males of a dioecious grass species (\textit{Poa arachnifera}) throughout and beyond its range in the south-central U.S. 
 Female-dominant and two-sex model versions both predict that  climate change will alter population viability and will induce a poleward niche shift beyond current northern limits.
 However, the magnitude of niche shift was underestimated by the female-dominant model, because females have broader temperature tolerance than males and become mate-limited under female-biased sex ratios.
 Our result illustrate how explicit accounting for both sexes could enhance population viability forecasts and conservation planning for dioecious species in response to climate change.
+
+\bigskip
+\noindent\textbf{Keywords:} demography, forecasting, global warming, matrix projection model, population dynamics, sex ratio, range limits
 
 %--------------------------------------------------------------------
 \newpage
@@ -162,7 +165,7 @@ Niches and geographic ranges are often limited by climatic factors including tem
 Therefore, any substantial changes in the magnitude of these climatic factors could impact population viability, with implications for range expansions or contractions based on which regions of a species' range become more or less suitable  \citep{davis2001range, pease1989model}. 
 
 Forecasting range shifts for dioecious species (most animals and ca. 7\% of plant species) is complicated by the potential for sexual niche differentiation, i.e. distinct responses of females and males to shared climate drivers \citep{Tognetti2012,pottier2021sexual,hultine2016climate,morrison2016causes}. 
-\jacob{For instance, the lower cost of reproduction for one sex (male or female) may allow that sex to invest its energy toward other functions that that result in  higher growth rates, greater clonality, or even improved survival rates compared to the other sex, leading to sexual niche differentiation \citep{bruijning2017surviving}.}{I added this to talk about the cost of reproduction explaining niche differentiation as you suggested}
+For instance, the lower cost of reproduction for one sex (male or female) may allow that sex to invest its energy toward other functions that that result in  higher growth rates, greater clonality, or even improved survival rates compared to the other sex, leading to sexual niche differentiation \citep{bruijning2017surviving}.
 Accounting for sexual niche differentiation is a long-standing challenge in accurately predicting which sex will successfully track environmental change and how this will impact population viability and range shifts \citep{jones1999sex,gissi2023exploring}. 
 Populations in which males are rare under current climatic conditions could experience low reproductive success due to sperm or pollen limitation that may lead to population decline in response to climate change that disproportionately favors females \citep{eberhart2017sex}.
 In contrast, climate change could expand male habitat suitability (e.g. upslope movement), which might increase seed set for mate-limited females and favor range expansion \citep{petry2016sex}. 
@@ -185,7 +188,7 @@ Finally, structured demographic models can be used to identify which aspects of 
 For example, Life Table Response Experiments (LTRE) built from structured models have become widely used to understand the relative importance of covariates in explaining variation in population growth rate  \citep{ellner2016data,hernandez2023exact,czachura2020demographic}.
 
 In this study, we combined geographically-distributed common garden experiments, hierarchical Bayesian statistical modeling, two-sex population projection modeling, and climate back-casting and forecasting to understand demographic responses to climate change and their implications for past, present, and future range dynamics. 
-Our work focused on the dioecious plant Texas bluegrass (\textit{Poa arachnifera}), which is distributed along environmental gradients in the south-central U.S. corresponding to variation in temperature across latitude and precipitation across longitude (Fig. \ref{Sup:long_lat_garden}A)\jacob{}{I added this Figure because it its the best one illustrating what we are saying here}. 
+Our work focused on the dioecious plant Texas bluegrass (\textit{Poa arachnifera}), which is distributed along environmental gradients in the south-central U.S. corresponding to variation in temperature across latitude and precipitation across longitude (Fig. \ref{Sup:long_lat_garden}A). 
 This region has experienced rapid climate warming since 1900 and this is projected to continue through the end of the century (Fig. \ref{fig:study_design} ). 
 Our previous study showed that, despite evidence for differentiation of climatic niche between sexes, the female niche mattered the most in driving longitudinal range limits of Texas bluegrass \citep{miller2022two}. 
 However, that study used a single proxy variable (longitude) to represent environmental variation related to aridity and did not consider variation in temperature, which is the much stronger dimension of forecasted climate change in this region (Fig. \ref{Sup:climate_normal_weather}). 
@@ -299,7 +302,7 @@ In the context of the model, OSR is defined as the fraction of panicles that are
 The summations tally the total number of female and male panicles over the size distribution, giving the fraction of total panicles that are female. 
 We focus on the female fraction of panicles and not female fraction of reproductive individuals because panicle number can vary widely depending on size; we assume that few males with many panicles vs. many males with few panicles are interchangeable pollination environments. 
 Eq. \ref{eq:viab_MPM} has the properties that seed fertilization is maximized at $v_{0}$ as OSR approaches 100\% male, goes to zero as OSR approaches 100\% female, and parameter $\alpha$ controls how female seed viability declines as male panicles become rare. 
-We estimated these parameters using data from a sex ratio manipulation experiment, conducted in the center of the range, in which seed fertilization was measured in plots of varying OSR; this experiment is described elsewhere  \citep{compagnoni2017can} and is summarized in \tom{Supplementary Method \ref{sssec:experiment}}{I think the supplement should also include a data figure showing the fit of the model to the experimental data.}. 
+We estimated these parameters using data from a sex ratio manipulation experiment, conducted in the center of the range, in which seed fertilization was measured in plots of varying OSR; this experiment is described elsewhere  \citep{compagnoni2017can} and is summarized in Supplementary Method \ref{sssec:experiment}. 
 This experiment also provided estimates for seed number per panicle ($d$) and germination rate ($m$). 
 Lacking data on climate-dependence, we assume that seed fertilization, seed number, and germination rate do not vary with climate.  
 
@@ -341,7 +344,6 @@ This LTRE decomposes the sensitivity of $\lambda$ to climate according to:
 
 \noindent where, $\theta^{F}_{i}$ and $\theta^{M}_{i}$ represent sex-specific parameters (the regression coefficients of the vital rate functions). 
 Because LTRE contributions are additive, we summed across vital rates to compare the total contributions of female and male parameters.
-\jacob{}{Let's talk about this}\tom{}{I do not agree. It is true that you can compute this, but only by ``turning off'' the interaction by holding the interacting variable constant. I still think this needs to be better addressed in both LTRE analyses.}
 
 \subsection*{Population viability across the climatic niche and geographic range}
 % A species' ecological niche can be defined as the range of resources and conditions allowing its populations to self- sustained  ($\lambda > 1$) \citep{maguire1973niche,hutchinson1978introduction,diez2014probabilistic}.
@@ -410,11 +412,11 @@ Points in Fig. \ref{fig:niche} show that climate change forecasted for the commo
 
 While the female-dominant and two-sex models were generally in agreement about high confidence in intermediate temperature optima, they differed around the edges of niche space (Fig. \ref{fig:niche}C,D,\ref{fig:lambda_LTRE}). 
 The female-dominant model over-predicted population viability, especially with respect to growing season temperature. 
-For example, the female-dominant model \tom{predicted}{I think I am switching tenses. We will need to clean this up.} that, for most levels of precipitation, warm growing season (winter) temperatures of $\sim 20\degree C$ had high suitability ($Pr(\lambda \ge 1) > 0.9$), while the two-sex model indicated that these conditions were most likely unsuitable ($Pr(\lambda \ge 1) < 0.5$). 
+For example, the female-dominant model predicted that, for most levels of precipitation, warm growing season (winter) temperatures of $\sim 20\degree C$ had high suitability ($Pr(\lambda \ge 1) > 0.9$), while the two-sex model indicated that these conditions were most likely unsuitable ($Pr(\lambda \ge 1) < 0.5$). 
 Similarly, at low winter temperatures that the two-sex model identifies with high certainty as unsuitable ($Pr(\lambda \ge 1) < 0.1$), the female-dominant model is more optimistic ($Pr(\lambda \ge 1) > 0.4$). 
 Across growing season climate space, the female-dominant model over-estimates population viability by ca.  9.23\%, on average (Fig. \ref{fig:niche}D, Fig. \ref{Sup:Niche_overestimation}B). 
 The difference between female-dominant and two-sex models was qualitatively similar but weaker in magnitude for niche dimensions of the dormant season (Fig. \ref{fig:niche}C, Fig. \ref{Sup:Niche_overestimation}A). 
-Female-dominant and two-sex models diverged most strongly in regions of niche space that favored strongly female-biased operational sex ratios \jacob{(Fig. \ref{Sup:OSR})}{The scale is correct. Let's talk about this}\tom{}{I like it! But is the scale correct on panel A?}. 
+Female-dominant and two-sex models diverged most strongly in regions of niche space that favored strongly female-biased operational sex ratios (Fig. \ref{Sup:OSR}). 
 This suggests mate limitation as the biological mechanism underlying model differences. 
 The two-sex model accounts for feedbacks between OSR and female fertility, with reduced seed viability at OSR exceeding $\sim$ 75\% female panicles (Fig. \ref{Sup:seed_ORS})
 Lacking this feedback, the female-dominant model over-predicts population viability in regions of niche space where male flowering is not sufficient to maximize seed set. 
