@@ -954,7 +954,7 @@ with(poar_surv_binned,{
     plot(pptdorm[size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_surv[size_bin==i],type="n",ylim=c(0,1),
          xlab=" ",ylab=" ",xaxt="n");box()
      mylabel3 <- paste(graph[[3]])
-     mtext(mylabel3,side = 3, adj = 0,cex=1.2)
+     mtext(mylabel3,side = 3, adj = 0,cex=1.5)
     for(s in 1:2){
       points(pptdorm[Sex==s & size_bin==i]*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),mean_surv[Sex==s & size_bin==i],
              bg=sex_cols[s],pch=21,cex=5*(bin_n/max(bin_n)),lwd=2)
