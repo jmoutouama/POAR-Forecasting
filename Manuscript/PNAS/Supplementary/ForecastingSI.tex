@@ -118,20 +118,6 @@ Given that germination was conditional on seed viability, the probability of suc
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{clim_norm_vs_weather.pdf}
-\caption{Comparison of 30-year (1990-2019) climate normals and observed weather conditions at common garden sites during the 2014--15 and 2015--16 census periods. Temperature is in \degree C and precipitation is in $mm$. Colors represent sites and lines show the $y=x$ relationship.}
-\label{Sup:climate_normal_weather}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.75\linewidth]{PPC.pdf}
-\caption{Posterior predictive checks. Consistency between real data and simulated values suggests that the fitted vital rate models accurately describes the data. Graph shows density curves for the observed data (light orange ) along with the simulated values (dark orange).}
-\label{Sup:PPC}
-\end{figure}
-
-\begin{figure}
-\centering
 \includegraphics[width=0.99\linewidth]{Posterior_mean.pdf}
 \caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
 		pptgrow is  the precipitation of growing season,
@@ -186,16 +172,6 @@ Given that germination was conditional on seed viability, the probability of suc
 \label{Sup:posterior_SR}
 \end{figure}
 
-
-\begin{figure}
-\centering
-\includegraphics[width=0.80\linewidth]{POAR_OSR_MIROC_CES_ACC.pdf}
-\caption{Change in Operational Sex Ratio (proportion of female) over time (past, present, future).
-			Future projections were based on A) MIROC 5, B) CES, C) ACC.
-			The means for each model are shown as vertical dashed lines.}
-\label{Sup:osrall}
-\end{figure}
-
 \begin{figure}
 \centering
 \includegraphics[width=0.65\linewidth]{Fig_LTRE.pdf}
@@ -227,6 +203,7 @@ Given that germination was conditional on seed viability, the probability of suc
 \label{fig:lambda_LTRE}
 \end{figure}
 
+
 \begin{figure}
 \centering
 \includegraphics[width=0.99\linewidth]{Niche_overestimation.pdf}
@@ -257,12 +234,66 @@ Given that germination was conditional on seed viability, the probability of suc
 
 \begin{figure}
 \centering
+\includegraphics[width=0.95\linewidth]{Fig_geoPrlambda_ces.pdf}
+\caption{Climate change favors range shift toward the North edge of the current range.
+			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
+			Future projections were based on the CESM1-BGC model.
+			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
+			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda > 1$) , confirming that our study approach can reasonably predict range shifts. }
+\label{Sup:geoprojces}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.95\linewidth]{Fig_geoPrlambdaacc.pdf}
+\caption{Climate change favors range shift toward the North edge of the current range.
+			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
+			Future projections were based on the  ACCESS model.
+			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
+			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda > 1$) , confirming that our study approach can reasonably predict range shifts.}
+\label{Sup:geoprojacc}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.95\linewidth]{Fig_geoPrlambda_miroc.pdf}
+\caption{Climate change favors range shift toward the North edge of the current range.
+			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
+			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
+			Future projections were based on the MIROC5 model.
+			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
+			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda > 1$) , confirming that our study approach can reasonably predict range shifts.}
+\label{Sup:geoprojmiroc}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.99\linewidth]{Densityplot_lambda_GCMs.pdf}
+\caption{ Assessment of the statistical difference between the two-sex models and the female dominant model across and beyond species range for 4 GCMs. 
+			The means for each model are shown as vertical dashed lines. }
+\label{Sup:geo_overestimation}
+\end{figure}
+
+\begin{figure}
+\centering
 \includegraphics[width=.9\linewidth]{POAR_OSR.pdf}
 \caption{Change in Operational Sex Ratio (proportion of female panicle) over time (past, present, future).
 			Future projections were based on the CMCC-CM model.
 			The mean sex ratio for each time period is shown as vertical dashed line.
 			}
 \label{Sup:srprojcmc}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.80\linewidth]{POAR_OSR_MIROC_CES_ACC.pdf}
+\caption{Change in Operational Sex Ratio (proportion of female) over time (past, present, future).
+			Future projections were based on A) MIROC 5, B) CES, C) ACC.
+			The means for each model are shown as vertical dashed lines.}
+\label{Sup:osrall}
 \end{figure}
 
 
@@ -307,49 +338,27 @@ Given that germination was conditional on seed viability, the probability of suc
 \end{figure}
 
 
-\begin{figure}
-\centering
-\includegraphics[width=0.95\linewidth]{Fig_geoPrlambda_ces.pdf}
-\caption{Climate change favors range shift toward the North edge of the current range.
-			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
-			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
-			Future projections were based on the CESM1-BGC model.
-			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
-			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda > 1$) , confirming that our study approach can reasonably predict range shifts. }
-\label{Sup:geoprojces}
-\end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.95\linewidth]{Fig_geoPrlambdaacc.pdf}
-\caption{Climate change favors range shift toward the North edge of the current range.
-			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
-			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
-			Future projections were based on the  ACCESS model.
-			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
-			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda > 1$) , confirming that our study approach can reasonably predict range shifts.}
-\label{Sup:geoprojacc}
+\includegraphics[width=\textwidth]{clim_norm_vs_weather.pdf}
+\caption{Comparison of 30-year (1990-2019) climate normals and observed weather conditions at common garden sites during the 2014--15 and 2015--16 census periods. Temperature is in \degree C and precipitation is in $mm$. Colors represent sites and lines show the $y=x$ relationship.}
+\label{Sup:climate_normal_weather}
 \end{figure}
+
+
 
 \begin{figure}
 \centering
-\includegraphics[width=0.95\linewidth]{Fig_geoPrlambda_miroc.pdf}
-\caption{Climate change favors range shift toward the North edge of the current range.
-			(A) Past, (B) Current, (C and D) Future predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the two-sex model that incorporates sex- specific demographic responses to climate with sex ratio dependent seed fertilization.
-			(E) Past, (F) Current, (G and F) Future  predicted range shift based on the predicted probabilities of self- sustaining populations, Pr ($\lambda > 1$), using the female dominant model.
-			Future projections were based on the MIROC5 model.
-			The black dots on panel B and F indicate all known presence points collected from GBIF from 1990 to 2019, which corresponds to the current condition in our prediction. 
-			The occurrences of GBIFs are distributed in with higher population fitness habitat Pr ($\lambda > 1$) , confirming that our study approach can reasonably predict range shifts.}
-\label{Sup:geoprojmiroc}
+\includegraphics[width=0.75\linewidth]{PPC.pdf}
+\caption{Posterior predictive checks. Consistency between real data and simulated values suggests that the fitted vital rate models accurately describes the data. Graph shows density curves for the observed data (light orange ) along with the simulated values (dark orange).}
+\label{Sup:PPC}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.99\linewidth]{Densityplot_lambda_GCMs.pdf}
-\caption{ Assessment of the statistical difference between the two-sex models and the female dominant model across and beyond species range for 4 GCMs. 
-			The means for each model are shown as vertical dashed lines. }
-\label{Sup:geo_overestimation}
-\end{figure}
+
+
+
+
 
 \newpage
 
