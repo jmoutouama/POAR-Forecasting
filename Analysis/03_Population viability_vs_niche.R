@@ -516,7 +516,6 @@ F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seas
 # Relation lambda and each climatic variable.
 cbPalette <- c("#999999", "#E69F00")
 
-
 ## Format data for past, present,future to estimate species niche across each season. 
 zclim_current = data.frame(matrix(nrow = 14, ncol = 4)) 
 colnames(zclim_current)<-c("zpptgrow","ztempgrow","zpptdorm","ztempdorm")
@@ -901,7 +900,7 @@ dev.off()
 
 # Niche Projection----
 data_niche<-cbind(data_past_present_45_85)
-# The estimation of the species niche (Probability of lambda being higher than 1) was estimated using a local cluster. Even with that cluster, running the code below will take a while (week or month depending on number of core available).  
+# The estimation of the species niche (Probability of lambda being higher than 1) was estimated using a local cluster. Even with that cluster, running the code below will take a while (weeks depending on number of core available on you local machine).  
 # Creating a “cluster” of CPUs 
 parallel::detectCores() # found out how many cores are available to simultaneous execute different pieces of a larger computation across multiple computing processors or cores
 n.cores <- parallel::detectCores() - 1 # define the number of cores we want to use
@@ -1069,9 +1068,8 @@ Timedorm<-system.time(
 )
 
 ## write output as a dataframe
-data_dormant_niche<-data.frame(lambda_dorm_post)
-# write_rds(data_dormant_niche,"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/data_dormant_niche.rds")
-nichedormant<-readRDS(url("https://www.dropbox.com/scl/fi/ejueiyu58g96eqlb60js4/data_dormant_niche.rds?rlkey=8xjqn6reelmqtcbzm1na61g2m&dl=1"))
+nichedormant<-data.frame(lambda_dorm_post)
+
 prob_lambda_dorm_post<-c()
 for(l in 1:ncol(nichedormant)){
   prob_lambda_dorm_post[l]<-mean(nichedormant[,l]>1,na.rm=T)
@@ -1235,10 +1233,8 @@ Timegrow<-system.time(
     }
 )
 
-data_growing_niche<-data.frame(lambda_grow_post)
-## write output as a rds and csv and rds
-# write_rds(data_growing_niche,"YOUR DIRECTORY/data_growing_niche.rds")
-nichegrowing <- readRDS(url("https://www.dropbox.com/scl/fi/ggxrqzgz2wwmo1mec2d5m/data_growing_niche.rds?rlkey=6uv4l0e2ajovdit7gt778aexw&dl=1"))
+nichegrowing<-data.frame(lambda_grow_post)
+
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
   prob_lambda_grow_post[l]<-mean(nichegrowing[,l]>1,na.rm=T)
@@ -1422,12 +1418,8 @@ Timedorm<-system.time(
     }
 )
 ## write output as a dataframe
-data_dormant_niche<-data.frame(lambda_dorm_post)
-dim(data_dormant_niche)
-# write_csv(data_dormant_niche,"C:/Users/jm200/Documents/Projection/2024/Data niche/data_dormant_niche.csv")
-# write_rds(data_dormant_niche,"C:/Users/jm200/Documents/Projection/2024/Data niche/data_dormant_niche.rds")
+nichedormant_fd<-data.frame(lambda_dorm_post)
 
-nichedormant_fd<-readRDS(url("https://www.dropbox.com/scl/fi/u0yeohxrienfp96hopvl5/data_dormant_niche.rds?rlkey=lhum5y9ymqtpkegkw75seruuc&dl=1"))
 prob_lambda_dorm_post_fd<-c()
 for(l in 1:ncol(nichedormant_fd)){
   prob_lambda_dorm_post_fd[l]<-mean(nichedormant_fd[,l]>1,na.rm=T)
@@ -1591,11 +1583,10 @@ Timegrow<-system.time(
       
     }
 )
-data_growing_niche<-data.frame(clim_grow_post,Pr=prob_lambda_grow_post)
+nichegrowing_fd<-data.frame(clim_grow_post,Pr=prob_lambda_grow_post)
 
 # read in resul
 
-nichegrowing_fd <- readRDS(url("https://www.dropbox.com/scl/fi/xgi4mzlgwrw1k73n6sdkw/data_growing_niche.rds?rlkey=7gw2nh7mw67ind2dhs9mbfszy&dl=1"))
 prob_lambda_grow_post_fd<-c()
 for(l in 1:ncol(nichegrowing_fd)){
   prob_lambda_grow_post_fd[l]<-mean(nichegrowing_fd[,l]>1,na.rm=T)

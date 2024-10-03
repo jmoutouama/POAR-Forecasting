@@ -149,6 +149,45 @@ crop_tempgrow_raster <- terra::crop(tempgrow_raster, study_area,mask=TRUE)
 
 
 # Maps (Figure 1) ----
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/tom_map_v2.pdf",width=11,height=5)
+
+par(mfrow=c(1,3))
+plot(study_area,xlab="Longitude",ylab="Latitude",cex.lab=1.2)
+plot(gbif,add=T,pch = 23,col="grey50",bg="grey",cex =0.55)
+plot(garden,add=T,pch = 3,col="black",cex =2,bg=unique(poar_2015_2016$site_col))
+plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
+mtext( "A",side = 3, adj = 0,cex=1.25,line=0.2)
+legend(-106, 28.5, 
+       legend=c( "GBIF occurences","Common garden sites","Source populations"),
+       pch = c(23,3,21),
+       pt.cex=c(0.55,2,1),
+       col = c("grey50","black","black"),
+       pt.bg=c("grey","black","red"),
+       cex = 0.9, 
+       bty = "n", 
+       horiz = F , 
+)
+
+plot(clim_past$pptdorm,clim_past$tempdorm,xlab="Precipitation (mm)",ylab="Temperature (C)",col=alpha("black",0.25),cex=2,xlim=c(150,550),ylim=c(23,34),pch=16,cex.lab=1.2)
+points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=alpha("blue",0.25),cex=2,pch=16)
+points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=alpha("red",0.25),cex=2,pch=16)
+points(poar_2015_2016$pptdorm,poar_2015_2016$tempdorm,col="black",cex=2,pch=3)
+mtext( "B",side = 3, adj = 0,cex=1.25)
+title(main="Dormant season",adj=0.5,line=0.5)
+legend("topright",legend=c("Past (1901-1930)","Observed (2014-2016)","RCP4.5 (2071-2100)","RCP8.5 (2071-2100)"),pch=c(16,3,16,16),col=c(alpha("black",0.25),"black",alpha("blue",0.25),alpha("red",0.25)),cex = 0.9)
+#points(clim_current$pptdorm,clim_current$tempdorm,col="black",cex=1,pch=16)
+
+
+plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=alpha("black",0.25),cex=2,xlim=c(190,840),ylim=c(7,22),pch=16,cex.lab=1.2)
+points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=alpha("blue",0.25),cex=2,pch=16)
+points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=alpha("red",0.25),cex=2,pch=16)
+points(poar_2015_2016$pptgrow,poar_2015_2016$tempgrow,col="black",cex=2,pch=3)
+mtext( "C",side = 3, adj = 0,cex=1.25)
+title(main="Growing season",adj=0.5,line=0.5)
+#points(clim_current$pptgrow,clim_current$tempgrow,col="black",cex=1,pch=16)
+dev.off()
+
+# Maps Supplemenatry material ----
 pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/POAR_survey_garden_map.pdf",width=7,height=8,useDingbats = F)
 par(mar=c(5,5,1.5,0.5),mfrow=c(2,2))
 plot(crop_pptdorm_raster,xlab="Longitude",ylab="Latitude")
@@ -248,41 +287,25 @@ arrows(clim_current$pptgrow,clim_current$tempgrow,
 dev.off()
 
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/tom_map_v2.pdf",width=11,height=5)
 
-par(mfrow=c(1,3))
-plot(study_area,xlab="Longitude",ylab="Latitude",cex.lab=1.2)
-plot(gbif,add=T,pch = 23,col="grey50",bg="grey",cex =0.55)
-plot(garden,add=T,pch = 3,col="black",cex =2,bg=unique(poar_2015_2016$site_col))
-plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
-mtext( "A",side = 3, adj = 0,cex=1.25,line=0.2)
-legend(-106, 28.5, 
-       legend=c( "GBIF occurences","Common garden sites","Source populations"),
-       pch = c(23,3,21),
-       pt.cex=c(0.55,2,1),
-       col = c("grey50","black","black"),
-       pt.bg=c("grey","black","red"),
-       cex = 0.9, 
-       bty = "n", 
-       horiz = F , 
-)
-
-plot(clim_past$pptdorm,clim_past$tempdorm,xlab="Precipitation (mm)",ylab="Temperature (C)",col=alpha("black",0.25),cex=2,xlim=c(150,550),ylim=c(23,34),pch=16,cex.lab=1.2)
-points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=alpha("blue",0.25),cex=2,pch=16)
-points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=alpha("red",0.25),cex=2,pch=16)
-points(poar_2015_2016$pptdorm,poar_2015_2016$tempdorm,col="black",cex=2,pch=3)
-mtext( "B",side = 3, adj = 0,cex=1.25)
-title(main="Dormant season",adj=0.5,line=0.5)
-legend("topright",legend=c("Past (1901-1930)","Observed (2014-2016)","RCP4.5 (2071-2100)","RCP8.5 (2071-2100)"),pch=c(16,3,16,16),col=c(alpha("black",0.25),"black",alpha("blue",0.25),alpha("red",0.25)),cex = 0.9)
-#points(clim_current$pptdorm,clim_current$tempdorm,col="black",cex=1,pch=16)
-
-
-plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=alpha("black",0.25),cex=2,xlim=c(190,840),ylim=c(7,22),pch=16,cex.lab=1.2)
-points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=alpha("blue",0.25),cex=2,pch=16)
-points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=alpha("red",0.25),cex=2,pch=16)
-points(poar_2015_2016$pptgrow,poar_2015_2016$tempgrow,col="black",cex=2,pch=3)
-mtext( "C",side = 3, adj = 0,cex=1.25)
-title(main="Growing season",adj=0.5,line=0.5)
-#points(clim_current$pptgrow,clim_current$tempgrow,col="black",cex=1,pch=16)
+normal_vs_obs<-left_join(poar_2015_2016,cbind(garden@coords,clim_current), by=c("Longitude","Latitude"))
+pdf("Manuscript/Figures/clim_norm_vs_weather.pdf",height = 6,width = 7,useDingbats = F)
+par(mar = c(4, 4, 2, 5),mfrow=c(2,2))
+plot(normal_vs_obs$tempgrow.y,normal_vs_obs$tempgrow.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Growing season temp",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+legend("topleft",legend=c(2015,2016),pch=c(1,16))
+plot(normal_vs_obs$pptgrow.y,normal_vs_obs$pptgrow.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Growing season precip",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+plot(normal_vs_obs$tempdorm.y,normal_vs_obs$tempdorm.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Dormant season temp",xlab="30-year normal",ylab="Observed")
+abline(0,1)
+plot(normal_vs_obs$pptdorm.y,normal_vs_obs$pptdorm.x,
+     pch=normal_vs_obs$year_pch,col=normal_vs_obs$site_col,cex=2,
+     main="Dormant season precip",xlab="30-year normal",ylab="Observed")
+abline(0,1)
 dev.off()
-
