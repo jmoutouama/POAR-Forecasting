@@ -10,13 +10,17 @@ Note: Due to the large number of files in the repository, not all files are desc
 
 Note: *Raster files are too large to be provided in a public repository and are stored on a local machine. [Here](https://www.dropbox.com/scl/fo/em8fok5gqwyhsum1hmier/ALoREAEAcgsADRWDyCqR4FA?rlkey=d92vrqi4ue5osdd857qcjlb9r&dl=1) is  is the link to download the rasters.*
 
-**Poa_pra** *(.csv)* - Precipitation data.
+**POAR_common_garden_demography** *(.csv)* - Precipitation data for each site.
 
-**Poa_tas** *(.csv)* - Temperature data.
+**Poa_pra** *(.csv)* - Precipitation data for each site.
+
+**Poa_tas** *(.csv)* - Temperature data for each site.
 
 **poar_ms_quantities** *(.rds)* - Data for field and experiment data.
 
 **poar_season** *(.rds)* - Vital models output.
+
+**USA_vector_polygon** *(folder)* - A folder with  the United Sates files.
 
 ## Scripts
 
