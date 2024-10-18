@@ -5,6 +5,7 @@ Note: Due to the large number of files in the repository, not all files are desc
 ## Data
 Note: Raster files are too large to be provided in a public repository and are stored on a local machine. Here is the link to download them.
 ## Scripts 
+
 **01_Map** *(.R)* - Generate all the maps used in the manuscript.
 
 **02_Vital_rates_models** *(.R)* - Vital rate models (survival, growth,flowering, fertility) for subsequent use in MPMs. This is computationally intensive and may take a while.
@@ -20,3 +21,7 @@ Note: Raster files are too large to be provided in a public repository and are s
 **twosexMPMLTRE** *(.R)* - Function used in Matrix Projection Models.
 
 **poar_season** *(.stan)* - code stan used for the vital rates models.
+
+## Others
+
+**Manuscript** *(folder)* - A folder with code and various other objects used to generate the manuscript, including figures.
