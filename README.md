@@ -1,7 +1,15 @@
 # Overview
 This repository contains files to reproduce the analysis for “Forecasting Range Shifts of Dioecious Plant Species Under Climate Change.”
-# Folders
-Below is a description of all the files included in this repository:
+# Files
+Note: Due to the large number of files in the repository, not all files are described below.
 ## Data
 Note: Raster files are too large to be provided in a public repository and are stored on a local machine. Here is the link to download them.
-## Analysis 
+## Scripts 
+**01_Map** *(.R)* - Generate all the maps used in the manuscript.
+**02_Vital_rates_models** *(.R)* - Vital rate models (survival, growth,flowering, fertility) for subsequent use in MPMs. This is computationally intensive and may take a while.
+**03_Population viability_vs_niche** *(.R)* - Matrix Projection Models from vital (survival, growth, flowering,fertility) to estimate species niche . This is computationally intensive and may take a while.
+**04_Population viability_vs_geography** *(.R)* - Projection of the Probabibility of viability into geographic space. This is computationally intensive and may take a while.
+**05_climate_vs_Sex_ratio** *(.R)* - Sex ratio models. This is computationally intensive and may take a while.
+**06_LTRE** *(.R)* - Life Table Response Experiment. This is computationally intensive and may take a while.
+**twosexMPMLTRE** *(.R)* - Function used in Matrix Projection Models.
+**poar_season** *(.R)* - code stan used for the vital rates models.
