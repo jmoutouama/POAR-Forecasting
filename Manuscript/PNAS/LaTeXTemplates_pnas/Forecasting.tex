@@ -91,7 +91,7 @@ Given the additional complexity and data needs, forecasts of range dynamics for 
 %Finally, structured demographic models can be used to identify which aspects of climate are the most important drivers of population dynamics.
 %For example, Life Table Response Experiments (LTRE) built from structured models have become widely used to understand the relative importance of covariates in explaining variation in population growth rate  \citep{ellner2016data}.}{Let's discuss, but I might suggest cutting this paragraph from the Intro for PNAS. It does not provide much new information and in some way it distracts from the sex structure questions that are developed above and below.}
 %
-\tom{In this study,}{Most of my comments are about how you needed more changes to accommodate the PNAS format. Because the methods come at the end, readers need to be given enough information here to understand the results that will follow. SO my suggestion is to think about making this paragraph maximally informative with respect to the methods, so that the results make sense.} we combined geographically-distributed common garden experiments, hierarchical Bayesian statistical modeling, two-sex population projection modeling, and climate back-casting and forecasting to understand demographic responses to climate change and their implications for past, present, and future range dynamics. 
+In this study,  we combined geographically-distributed common garden experiments, hierarchical Bayesian statistical modeling, two-sex population projection modeling, and climate back-casting and forecasting to understand demographic responses to climate change and their implications for past, present, and future range dynamics. 
 Our work focused on the dioecious plant Texas bluegrass (\textit{Poa arachnifera}), which  grows between October and May, flowers in spring, and goes dormant during the hot summer months of June to September \citep{kindiger2004interspecific}. 
 The species is distributed along environmental gradients in the south-central U.S. corresponding to variation in temperature of dormant and growing season across latitude and precipitation of dormant and growing season across longitude (Fig. S1). 
 This region has experienced rapid climate warming since 1900 and warming is projected to continue through the end of the century (Fig. \ref{fig:study_design}, Fig. S2). 
@@ -143,7 +143,7 @@ Across growing season climate space, the female-dominant model over-estimates po
 The difference between female-dominant and two-sex models was qualitatively similar but weaker in magnitude for niche dimensions of the dormant season (Fig. \ref{fig:niche}C, Fig. S11). 
 Female-dominant and two-sex models diverged most strongly in regions of niche space that favored strongly female-biased operational sex ratios (Fig. S12).
 This suggests mate limitation as the biological mechanism underlying model differences. 
-\tom{The two-sex model accounts for feedbacks between OSR and female fertility, with reduced seed viability at OSR exceeding $\sim$ 75\% female panicles (Fig. S13).}{Readers should understand that this came from a separate experiment.}
+The two-sex model accounts for feedbacks between OSR and female fertility, with reduced seed viability at OSR exceeding $\sim$ 75\% female panicles (Fig. S13).
 Lacking this feedback, the female-dominant model over-predicts population viability in regions of niche space where male flowering is not sufficient to maximize seed set. 
 
 \subsection*{Climatic change induces shifts in geographic niche and population OSR}
@@ -161,7 +161,7 @@ These hotspots are generally regions of predicted female bias in the operational
 The strongest contrast between the two models is in the pessimistic climate change scenario (RCP8.5), where the female-dominant model over-predicts population viability by as much as 20\% across much of the region (Fig. S21) and thus under-estimates the magnitude of a potential range shift. 
 In this scenario, a broad swath of the current distribution that is forecasted to be unsuitable ($Pr(\lambda \ge 1) \approx 0$) by the two-sex model is identified as marginally suitable ($Pr(\lambda \ge 1) \approx 0.5$) by the female-dominant model. 
 That difference arises because the two-sex model recognizes that strongly female-biased sex ratios cannot support viable populations. 
-The OSR of Texas bluegrass across its range is projected to be ca. 75\% female panicles, on average, by end of century under RCP8.5, an increase from ca. 60\% female under projections for past and current conditions (Fig. S22,  Fig. S23). 
+The OSR of Texas bluegrass across its range is projected to be ca. 75\% female panicles, on average, by end of century under RCP8.5, an increase from ca. 60\% female under projections for past and current conditions (Fig. S22). 
 The more optimistic climate change scenario (RCP4.5) predicts an intermediate shift in OSR, with hotspots of change at northern and southern range edges becoming strongly female-biased but most of the range remaining near current levels of 60\% female (Fig. S17 to Fig. S20). 
 
 \section*{Discussion}
@@ -239,7 +239,7 @@ Latitudinal limits of the Texas bluegrass distribution span 7.74 \degree C to 16
 Longitudinal limits span 244.9 mm to 901.5 mm of precipitation during the growing season and 156.3 mm to 373.3 mm during the dormant season. 
 This region has experienced \textit{ca.} 0.5 \degree C of climate warming since 1900, with faster warming during the cool-season months ($0.0055 \degree C / yr$) than the hot summers ($0.0046\degree C / yr$) (Fig. S2).
 Future warming is projected to accelerate to $0.03-0.06\degree C / yr$ by the end of the century depending on the season and forecast model. 
-On the other hand, precipitation has increased over the past century for much of the region but is forecasted to decline back to early-20th century levels \tom{(Fig. S2).}{Notice that figure 2 is missing these panels.} 
+On the other hand, precipitation has increased over the past century for much of the region but is forecasted to decline back to early-20th century levels (Fig. S2).
 
 \subsection*{Common garden experiment}
 \subsubsection*{Experimental design}
@@ -368,7 +368,8 @@ Because of the amount of the computation involved, we use 100 posterior samples 
 \section*{Data, Materials, and Software Availability}
 All data used in this paper are  publicly available and cited appropriately \citep{dryaddata}. 
 Should the paper be accepted, all computer scripts supporting the results will be archived in a Zenodo package, with the DOI included at the end of the article. 
-\tom{During peer review, our code (Stan and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. }{Make sure that your github repo has a clear ReadMe file that will make it easy for reviewers to find and understand the code.}
+During peer review, our code (Stan and R) is available at \url{https://github.com/jmoutouama/POAR-Forecasting}. 
+
 \acknow{This research was supported by National Science Foundation Division of Environmental Biology awards 2208857 and 2225027. 
 We thank the organizations and institutions who hosted us at their field station facilities, including The Nature Conservancy, Sam Houston State University, University of Texas, Texas A\&M University, Texas Tech University, Lake Lewisville Environmental Learning Area, Wichita State University, and Pittsburgh State University. }
 
@@ -389,6 +390,7 @@ We thank the organizations and institutions who hosted us at their field station
 			}
 \label{fig:study_design}
 \end{figure}
+\clearpage
 
 \begin{figure}[H]
 \centering
@@ -411,6 +413,7 @@ We thank the organizations and institutions who hosted us at their field station
 			}
 \label{fig:vital_rates}
 \end{figure}
+\clearpage
 
 \begin{figure}[H]
 \centering
@@ -424,6 +427,7 @@ We thank the organizations and institutions who hosted us at their field station
 			}
 \label{fig:niche}
 \end{figure}
+\clearpage
 
 \begin{figure}[H]
 \centering
