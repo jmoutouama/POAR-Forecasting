@@ -6,7 +6,7 @@ This repository contains files for “Forecasting Range Shifts of Dioecious Plan
 
 Note: Due to the large number of files in the repository, not all files are described below.
 
-# Data
+## data 
 
 Note: *Raster files are too large to be provided in a public repository and are stored on a local machine. [Here](https://www.dropbox.com/scl/fo/em8fok5gqwyhsum1hmier/ALoREAEAcgsADRWDyCqR4FA?rlkey=d92vrqi4ue5osdd857qcjlb9r&dl=1) is  is the link to download the rasters.*
 
@@ -18,7 +18,7 @@ Note: *Raster files are too large to be provided in a public repository and are 
 
 **poar_season** *(.rds)* - Vital models output.
 
-# Scripts
+## Scripts
 
 **01_Map**  *(.R)* - Generate all the maps used in the manuscript.
 
@@ -36,6 +36,6 @@ Note: *Raster files are too large to be provided in a public repository and are 
 
 **poar_season** *(.stan)* - code stan used for the vital rates models.
 
-# Others
+## Others
 
 **Manuscript** *(folder)* - A folder with code and various other objects used to generate the manuscript, including figures.
