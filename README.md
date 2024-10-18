@@ -36,6 +36,6 @@ Note: *Raster files are too large to be provided in a public repository and are 
 
 **poar_season** *(.stan)* - code stan used for the vital rates models.
 
-## Others
+# Others
 
 **Manuscript** *(folder)* - A folder with code and various other objects used to generate the manuscript, including figures.
