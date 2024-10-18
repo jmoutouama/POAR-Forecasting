@@ -1070,6 +1070,7 @@ Timedorm<-system.time(
 ## write output as a dataframe
 nichedormant<-data.frame(lambda_dorm_post)
 
+nichedormant<-readRDS(url("https://www.dropbox.com/scl/fi/ejueiyu58g96eqlb60js4/data_dormant_niche.rds?rlkey=8xjqn6reelmqtcbzm1na61g2m&dl=1"))
 prob_lambda_dorm_post<-c()
 for(l in 1:ncol(nichedormant)){
   prob_lambda_dorm_post[l]<-mean(nichedormant[,l]>1,na.rm=T)
@@ -1234,7 +1235,7 @@ Timegrow<-system.time(
 )
 
 nichegrowing<-data.frame(lambda_grow_post)
-
+nichegrowing <- readRDS(url("https://www.dropbox.com/scl/fi/ggxrqzgz2wwmo1mec2d5m/data_growing_niche.rds?rlkey=6uv4l0e2ajovdit7gt778aexw&dl=1"))
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
   prob_lambda_grow_post[l]<-mean(nichegrowing[,l]>1,na.rm=T)
@@ -1419,7 +1420,7 @@ Timedorm<-system.time(
 )
 ## write output as a dataframe
 nichedormant_fd<-data.frame(lambda_dorm_post)
-
+nichedormant_fd<-readRDS(url("https://www.dropbox.com/scl/fi/u0yeohxrienfp96hopvl5/data_dormant_niche.rds?rlkey=lhum5y9ymqtpkegkw75seruuc&dl=1"))
 prob_lambda_dorm_post_fd<-c()
 for(l in 1:ncol(nichedormant_fd)){
   prob_lambda_dorm_post_fd[l]<-mean(nichedormant_fd[,l]>1,na.rm=T)
@@ -1584,7 +1585,7 @@ Timegrow<-system.time(
     }
 )
 nichegrowing_fd<-data.frame(clim_grow_post,Pr=prob_lambda_grow_post)
-
+nichegrowing_fd <- readRDS(url("https://www.dropbox.com/scl/fi/xgi4mzlgwrw1k73n6sdkw/data_growing_niche.rds?rlkey=7gw2nh7mw67ind2dhs9mbfszy&dl=1"))
 # read in resul
 
 prob_lambda_grow_post_fd<-c()
@@ -1659,7 +1660,7 @@ text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
 fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="" ,breaks=scal_breaks_diff_dorm,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
-                   legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
+                   legend.args=list(text=expression(paste(Delta, "Pr")), side=3, font=2, line=0.3, cex=0.5))  
 # contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,add=T,labcex=0.75,col="black") 
 mtext( "E",side = 3, adj = 0,cex=1.2)
 mtext("F-FM",side = 3, adj = 0.5,cex=1,line=0.3)
@@ -1670,7 +1671,7 @@ text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
 fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks=scal_breaks_diff,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
-                   legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
+                   legend.args=list(text=expression(paste(Delta, "Pr")), side=3, font=2, line=0.3, cex=0.5))  
 # contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,add=T,labcex=0.75,col="black") 
 mtext( "F",side = 3, adj = 0,cex=1.2)
 mtext("F-FM",side = 3, adj = 0.5,cex=1,line=0.3)
