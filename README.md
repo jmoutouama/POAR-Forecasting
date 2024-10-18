@@ -4,6 +4,18 @@ This repository contains files to reproduce the analysis for “Forecasting Rang
 Note: Due to the large number of files in the repository, not all files are described below.
 ## Data
 Note: Raster files are too large to be provided in a public repository and are stored on a local machine. Here is the link to download them.
+
+**Poa_pra** *(.csv)* - Preciptation data.
+
+**Poa_tas** *(.csv)* - Temperature data.
+
+**Poa_tas** *(.csv)* - Temperature data.
+
+**poar_ms_quantities** *(.rds)* - Data for field and experiement data.
+
+**poar_season** *(.rds)* - Vital models output.
+
+
 ## Scripts 
 
 **01_Map** *(.R)* - Generate all the maps used in the manuscript.
