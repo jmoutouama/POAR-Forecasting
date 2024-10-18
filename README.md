@@ -28,11 +28,11 @@ Note: Raster files are too large to be provided in a public repository and are s
 
 **04_Population viability_vs_geography**  *(.R)* - Projection of the Probabibility of viability into geographic space. This is computationally intensive and may take a while.
 
-**05_climate_vs_Sex_ratio ** *(.R)* - Sex ratio models. This is computationally intensive and may take a while.
+**05_climate_vs_Sex_ratio** *(.R)* - Sex ratio models. This is computationally intensive and may take a while.
 
 **06_LTRE** *(.R)* - Life Table Response Experiment. This is computationally intensive and may take a while.
 
-**twosexMPMLTRE ** *(.R)* - Function used in Matrix Projection Models.
+**twosexMPMLTRE** *(.R)* - Function used in Matrix Projection Models.
 
 **poar_season** *(.stan)* - code stan used for the vital rates models.
 
