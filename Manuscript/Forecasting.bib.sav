@@ -639,17 +639,6 @@ year = {1930},
   publisher = {The Royal Society London},
 }
 
-@Misc{schwinning2022common,
-  author    = {Schwinning, Susanne and Lortie, Christopher J and Esque, Todd C and DeFalco, Lesley A},
-  title     = {What common-garden experiments tell us about climate responses in plants},
-  year      = {2022},
-  journal   = {Journal of Ecology},
-  number    = {5},
-  pages     = {986--996},
-  publisher = {Wiley Online Library},
-  volume    = {110},
-}
-
 @Article{sanderson2015representative,
   author    = {Sanderson, Benjamin M and Knutti, Reto and Caldwell, Peter},
   journal   = {Journal of Climate},
@@ -1281,6 +1270,28 @@ year = {1930},
   pages     = {1424--1432},
   volume    = {115},
   publisher = {National Acad Sciences},
+}
+
+@Misc{schwinning2022common,
+  author    = {Schwinning, Susanne and Lortie, Christopher J and Esque, Todd C and DeFalco, Lesley A},
+  title     = {What common-garden experiments tell us about climate responses in plants},
+  year      = {2022},
+  journal   = {Journal of Ecology},
+  number    = {5},
+  pages     = {986--996},
+  publisher = {Wiley Online Library},
+  volume    = {110},
+}
+
+@Article{heilbuth2000lower,
+  author    = {Heilbuth, Jana C},
+  journal   = {The American Naturalist},
+  title     = {Lower species richness in dioecious clades},
+  year      = {2000},
+  number    = {3},
+  pages     = {221--241},
+  volume    = {156},
+  publisher = {The University of Chicago Press},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
