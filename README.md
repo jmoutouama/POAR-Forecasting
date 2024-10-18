@@ -12,7 +12,7 @@ Note: Raster files are too large to be provided in a public repository and are s
 
 # Scripts
 
-\*01_Map\*\* \*(.R)\* - Generate all the maps used in the manuscript.
+**01_Map**  *(.R)* - Generate all the maps used in the manuscript.
 
 \*\*02_Vital_rates_models\*\* \*(.R)\* - Vital rate models (survival, growth, flowering, fertility) for subsequent use in MPMs. This is computationally intensive and may take a while.
 
