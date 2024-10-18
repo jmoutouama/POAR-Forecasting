@@ -8,7 +8,7 @@ Note: Due to the large number of files in the repository, not all files are desc
 
 # Data
 
-Note: Raster files are too large to be provided in a public repository and are stored on a local machine. [Here]([[https://www.dropbox.com/scl/fo/em8fok5gqwyhsum1hmier/ALoREAEAcgsADRWDyCqR4FA?rlkey=d92vrqi4ue5osdd857qcjlb9r&dl=1]{.underline}](https://www.dropbox.com/scl/fo/em8fok5gqwyhsum1hmier/ALoREAEAcgsADRWDyCqR4FA?rlkey=d92vrqi4ue5osdd857qcjlb9r&dl=1)) is the link to download the rasters.
+Note: *Raster files are too large to be provided in a public repository and are stored on a local machine. [Here}(https://www.dropbox.com/scl/fo/em8fok5gqwyhsum1hmier/ALoREAEAcgsADRWDyCqR4FA?rlkey=d92vrqi4ue5osdd857qcjlb9r&dl=1) is  is the link to download the rasters.*
 
 **Poa_pra** *(.csv)* - Precipitation data.
 
