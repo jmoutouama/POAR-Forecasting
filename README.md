@@ -19,4 +19,4 @@ Note: Raster files are too large to be provided in a public repository and are s
 
 **twosexMPMLTRE** *(.R)* - Function used in Matrix Projection Models.
 
-**poar_season** *(.R)* - code stan used for the vital rates models.
+**poar_season** *(.stan)* - code stan used for the vital rates models.
