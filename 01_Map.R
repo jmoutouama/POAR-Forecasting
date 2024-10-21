@@ -1,5 +1,5 @@
 # Project: Forecasting range shifts of a dioecious plant species under climate change
-# Purpose: Map of Common garden experiment for Poa arachnifera across a climatic gradient. 
+# Purpose: Maps of Common garden experiment for Poa arachnifera across a climatic gradient. 
 # Note: Raster files are too large to provide in public repository. They are stored on a local machine
 # Authors: Jacob Moutouama, Aldo Compagnoni and Tom Miller
 # Date last modified (Y-M-D): 2024-08-02

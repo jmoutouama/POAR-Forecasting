@@ -1,5 +1,5 @@
 # Project: Forecasting range shifts of a dioecious plant species under climate change
-# Purpose: How do sex-specific vital rates combine to determine the influence of climate variation on population growth rate (λ)? ? ( Life Table Response experiment)
+# Purpose: Effect of climate covariates on population growth rate (λ)? ? ( Life Table Response experiment)
 # Note: Raster files are too large to provide in public repository. They are stored on a local machine.
 # Authors: Jacob Moutouama, Aldo Compagnoni and Tom Miller
 # Date last modified (Y-M-D): 2024-08-03
@@ -845,7 +845,7 @@ for(l in 1:length(all_pptdorm_seq)){
 ## write LTRE output based on posterior mean parameters
 # write_rds(list(dp_dpptdorm=dp_dpptdorm,dlambda_dp=dlambda_dp),"/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/Forecasting Models output/POAR_LTREPPTDORM.rds")
 
-POAR_LTRE_PPTDORM <- readRDS(url("https://www.dropbox.com/scl/fi/fppc6kjqx1cgayk7wf95w/POAR_LTREPPTDORM.rds?rlkey=qrv2r9atakg7e2hlhof4xoyzs&dl=1"))
+#POAR_LTRE_PPTDORM <- readRDS(url("https://www.dropbox.com/scl/fi/fppc6kjqx1cgayk7wf95w/POAR_LTREPPTDORM.rds?rlkey=qrv2r9atakg7e2hlhof4xoyzs&dl=1"))
 # put it all together 
 LTRE_PPTDORM_out <- POAR_LTRE_PPTDORM$dp_dpptdorm * POAR_LTRE_PPTDORM$dlambda_dp
 

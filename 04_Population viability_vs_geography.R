@@ -360,7 +360,7 @@ via_coef <- rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d))
 
 # Matrix model (lambda vs climate)----
 ##load MPM functions
-source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/twosexMPMLTRE.R")
+source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/twosexMPMLTRE.R")
 # source("/Users/tm9/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/twosexMPMLTRE.R")
 
 ## read in the seedling survival data from Poa autumnalis
@@ -514,12 +514,1544 @@ print(my.cluster) #check cluster definition (optional)
 doParallel::registerDoParallel(cl = my.cluster) #register it to be used by %dopar%
 foreach::getDoParRegistered() #check if it is registered (optional)
 foreach::getDoParWorkers() #how many workers are available? (optional)
-## Two sex models -----
 
-## Female dominant models ----
 n_post_draws<-100 
 post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
 
+## Two sex models -----
+max_yrs<-30
+### Present----
+lambda_post_current_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_current_values))
+dim(lambda_post_current_2s)
+F_params <- M_params <- list()
+Timecurrent_2s<-system.time(
+  lambda_post_current_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(clim_current_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=clim_current_values[l,5],
+                      ztempgrow=clim_current_values[l,6],
+                      zpptdorm=clim_current_values[l,7],
+                      ztempdorm=clim_current_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbacurrent<-data.frame(lambda_post_current_2s)
+
+### Past----
+clim_past_values_clean<-na.omit(clim_past_values)
+lambda_post_past_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_past_values_clean))
+F_params <- M_params <- list()
+Timepast_2s<-system.time(
+  lambda_post_past_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(clim_past_values_clean),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=clim_past_values_clean[l,5],
+                      ztempgrow=clim_past_values_clean[l,6],
+                      zpptdorm=clim_past_values_clean[l,7],
+                      ztempdorm=clim_past_values_clean[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbapast<-data.frame(lambda_post_past_2s)
+
+### Future----
+#### ACCESS 45----
+lambda_post_acc45_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_acc_45_values))
+dim(lambda_post_acc45)
+
+F_params <- M_params <- list()
+Timeacc45_2s<-system.time(
+  lambda_post_acc45_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(climate_acc_45_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=climate_acc_45_values[l,5],
+                      ztempgrow=climate_acc_45_values[l,6],
+                      zpptdorm=climate_acc_45_values[l,7],
+                      ztempdorm=climate_acc_45_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbaacc45<-data.frame(lambda_post_acc45_2s)
+
+#### ACCESS 85----
+lambda_post_acc85_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_acc_85_values))
+dim(lambda_post_acc85)
+
+F_params <- M_params <- list()
+Timeacc85_2s<-system.time(
+  lambda_post_acc85_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(climate_acc_85_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=climate_acc_85_values[l,5],
+                      ztempgrow=climate_acc_85_values[l,6],
+                      zpptdorm=climate_acc_85_values[l,7],
+                      ztempdorm=climate_acc_85_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbaacc85<-data.frame(lambda_post_acc85_2s)
+
+#### CESM 45----
+lambda_post_ces45_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_ces_45_values))
+F_params <- M_params <- list()
+Timeces45_2s<-system.time(
+  lambda_post_ces45_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(climate_ces_45_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=climate_ces_45_values[l,5],
+                      ztempgrow=climate_ces_45_values[l,6],
+                      zpptdorm=climate_ces_45_values[l,7],
+                      ztempdorm=climate_ces_45_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbaces45<-data.frame(lambda_post_ces45_2s)
+
+#### CESM 85----
+lambda_post_ces85_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_ces_85_values))
+F_params <- M_params <- list()
+Timeces85_2s<-system.time(
+  lambda_post_ces85_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(climate_ces_85_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=climate_ces_85_values[l,5],
+                      ztempgrow=climate_ces_85_values[l,6],
+                      zpptdorm=climate_ces_85_values[l,7],
+                      ztempdorm=climate_ces_85_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbaces85<-data.frame(lambda_post_ces85_2s)
+
+#### CMCM 45----
+lambda_post_cmc45_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_cmc_45_values))
+
+F_params <- M_params <- list()
+Timecmc45_2s<-system.time(
+  lambda_post_cmc45_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(climate_cmc_45_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=climate_cmc_45_values[l,5],
+                      ztempgrow=climate_cmc_45_values[l,6],
+                      zpptdorm=climate_cmc_45_values[l,7],
+                      ztempdorm=climate_cmc_45_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbacmc45<-data.frame(lambda_post_cmc45_2s)
+
+#### CMCM 85----
+lambda_post_cmc85_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_cmc_85_values))
+
+F_params <- M_params <- list()
+Timecmc85_2s<-system.time(
+  lambda_post_cmc85_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(climate_cmc_85_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=climate_cmc_85_values[l,5],
+                      ztempgrow=climate_cmc_85_values[l,6],
+                      zpptdorm=climate_cmc_85_values[l,7],
+                      ztempdorm=climate_cmc_85_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbacmc85<-data.frame(lambda_post_cmc85_2s)
+
+#### MIROC 45----
+lambda_post_miroc45_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_miroc_45_values))
+dim(lambda_post_current_2s)
+F_params <- M_params <- list()
+Timemiroc45_2s<-system.time(
+  lambda_post_miroc45_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(clim_miroc_45_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=clim_miroc_45_values[l,5],
+                      ztempgrow=clim_miroc_45_values[l,6],
+                      zpptdorm=clim_miroc_45_values[l,7],
+                      ztempdorm=clim_miroc_45_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbamiroc45<-data.frame(lambda_post_miroc45_2s)
+
+#### MIROC 85----
+lambda_post_miroc85_2s<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_miroc_85_values))
+dim(lambda_post_current_2s)
+F_params <- M_params <- list()
+Timemiroc85_2s<-system.time(
+  lambda_post_miroc85_2s<-foreach(p=1:n_post_draws,.combine='rbind') %:% 
+    foreach(l=1:nrow(clim_miroc_85_values),.combine='c') %dopar% {
+      #set up param vectors
+      ## survival
+      F_params$surv_mu <- surv_coef$b0_s[post_draws[p]]
+      F_params$surv_size <- surv_coef$bsize_s[post_draws[p]]
+      F_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]] 
+      F_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]]
+      F_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] 
+      F_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]]
+      F_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]]
+      F_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]]
+      F_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]]
+      F_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]]
+      F_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]]
+      M_params$surv_mu <- surv_coef$b0_s[post_draws[p]] + surv_coef$bsex_s[post_draws[p]]  
+      M_params$surv_size <- surv_coef$bsize_s[post_draws[p]] + surv_coef$bsizesex_s[post_draws[p]]
+      M_params$surv_pptgrow <- surv_coef$bpptgrow_s[post_draws[p]]  + surv_coef$bpptgrowsex_s[post_draws[p]] 
+      M_params$surv_tempgrow <- surv_coef$btempgrow_s[post_draws[p]] + surv_coef$btempgrowsex_s[post_draws[p]] 
+      M_params$surv_pptdorm <- surv_coef$bpptdorm_s[post_draws[p]] + surv_coef$bpptdormsex_s[post_draws[p]] 
+      M_params$surv_tempdorm <- surv_coef$btempdorm_s[post_draws[p]] + surv_coef$btempdormsex_s[post_draws[p]]
+      M_params$surv_tempgrow_pptgrow<-surv_coef$btempgrowpptgrow_s[post_draws[p]] + surv_coef$btempgrowpptgrowsex_s[post_draws[p]]
+      M_params$surv_tempdorm_pptdorm<-surv_coef$btempdormpptdorm_s[post_draws[p]] + surv_coef$btempdormpptdormsex_s[post_draws[p]]
+      M_params$surv_pptgrow2<-surv_coef$bpptgrow2_s[post_draws[p]] + surv_coef$bpptgrow2sex_s[post_draws[p]]
+      M_params$surv_tempgrow2<-surv_coef$btempgrow2_s[post_draws[p]] + surv_coef$btempgrow2sex_s[post_draws[p]]
+      M_params$surv_pptdorm2<-surv_coef$bpptdorm2_s[post_draws[p]] + surv_coef$bpptdorm2sex_s[post_draws[p]]
+      M_params$surv_tempdorm2<-surv_coef$btempdorm2_s[post_draws[p]] + surv_coef$btempdorm2sex_s[post_draws[p]]
+      ## growth
+      F_params$grow_mu <- grow_coef$b0_g[post_draws[p]]
+      F_params$grow_size <- grow_coef$bsize_g[post_draws[p]]
+      F_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]] 
+      F_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]
+      F_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] 
+      F_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] 
+      F_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]]
+      F_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] 
+      F_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]]
+      F_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]]
+      F_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] 
+      F_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] 
+      F_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      M_params$grow_mu <- grow_coef$b0_g[post_draws[p]] + grow_coef$bsex_g[post_draws[p]]  
+      M_params$grow_size <- grow_coef$bsize_g[post_draws[p]] + grow_coef$bsizesex_g[post_draws[p]]
+      M_params$grow_pptgrow <- grow_coef$bpptgrow_g[post_draws[p]]  + grow_coef$bpptgrowsex_g[post_draws[p]] 
+      M_params$grow_pptdorm <- grow_coef$bpptdorm_g[post_draws[p]]  + grow_coef$bpptdormsex_g[post_draws[p]] 
+      M_params$grow_tempgrow <- grow_coef$btempgrow_g[post_draws[p]] + grow_coef$btempgrowsex_g[post_draws[p]] 
+      M_params$grow_tempdorm <- grow_coef$btempdorm_g[post_draws[p]] + grow_coef$btempdormsex_g[post_draws[p]]
+      M_params$grow_tempgrow_pptgrow<-grow_coef$btempgrowpptgrow_g[post_draws[p]] + grow_coef$btempgrowpptgrowsex_g[post_draws[p]]
+      M_params$grow_tempdorm_pptdorm<-grow_coef$btempdormpptdorm_g[post_draws[p]] + grow_coef$btempdormpptdormsex_g[post_draws[p]]
+      M_params$grow_pptgrow2<-grow_coef$bpptgrow2_g[post_draws[p]] + grow_coef$bpptgrow2sex_g[post_draws[p]]
+      M_params$grow_tempgrow2<-grow_coef$btempgrow2_g[post_draws[p]] + grow_coef$btempgrow2sex_g[post_draws[p]]
+      M_params$grow_pptdorm2<-grow_coef$bpptdorm2_g[post_draws[p]] + grow_coef$bpptdorm2sex_g[post_draws[p]]
+      M_params$grow_tempdorm2<-grow_coef$btempdorm2_g[post_draws[p]] + grow_coef$btempdorm2sex_g[post_draws[p]]
+      M_params$sigma_g <- grow_coef$sigma[post_draws[p]] 
+      ## flowering
+      F_params$flow_mu <- flow_coef$b0_f[post_draws[p]]
+      F_params$flow_size <- flow_coef$bsize_f[post_draws[p]]
+      F_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]] 
+      F_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] 
+      F_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] 
+      F_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]]
+      F_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]]
+      F_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]]
+      F_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]]
+      F_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]]
+      F_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]]
+      F_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]]
+      M_params$flow_mu <- flow_coef$b0_f[post_draws[p]] + flow_coef$bsex_f[post_draws[p]]  
+      M_params$flow_size <- flow_coef$bsize_f[post_draws[p]] + flow_coef$bsizesex_f[post_draws[p]]
+      M_params$flow_pptgrow <- flow_coef$bpptgrow_f[post_draws[p]]  + flow_coef$bpptgrowsex_f[post_draws[p]] 
+      M_params$flow_tempgrow <- flow_coef$btempgrow_f[post_draws[p]] + flow_coef$btempgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm <- flow_coef$btempdorm_f[post_draws[p]] +  flow_coef$btempdormsex_f[post_draws[p]]  
+      M_params$flow_pptdorm <- flow_coef$bpptdorm_f[post_draws[p]] + flow_coef$bpptdormsex_f[post_draws[p]] 
+      M_params$flow_tempgrow_pptgrow<-flow_coef$btempgrowpptgrow_f[post_draws[p]] + flow_coef$btempgrowpptgrowsex_f[post_draws[p]]
+      M_params$flow_tempdorm_pptdorm<-flow_coef$btempdormpptdorm_f[post_draws[p]] + flow_coef$btempdormpptdormsex_f[post_draws[p]]
+      M_params$flow_pptgrow2<-flow_coef$bpptgrow2_f[post_draws[p]] + flow_coef$bpptgrow2sex_f[post_draws[p]]
+      M_params$flow_tempgrow2<-flow_coef$btempgrow2_f[post_draws[p]] + flow_coef$btempgrow2sex_f[post_draws[p]]
+      M_params$flow_pptdorm2<-flow_coef$bpptdorm2_f[post_draws[p]] +  flow_coef$bpptdorm2sex_f[post_draws[p]]
+      M_params$flow_tempdorm2<-flow_coef$btempdorm2_f[post_draws[p]] + flow_coef$btempdorm2sex_f[post_draws[p]]
+      ## panicles
+      F_params$panic_mu <- panic_coef$b0_p[post_draws[p]]
+      F_params$panic_size <- panic_coef$bsize_p[post_draws[p]]
+      F_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]] 
+      F_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] 
+      F_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] 
+      F_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]]
+      F_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]]
+      F_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]]
+      F_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]]
+      F_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]]
+      F_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]]
+      F_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]]
+      M_params$panic_mu <- panic_coef$b0_p[post_draws[p]] + panic_coef$bsex_p[post_draws[p]]  
+      M_params$panic_size <- panic_coef$bsize_p[post_draws[p]] + panic_coef$bsizesex_p[post_draws[p]]
+      M_params$panic_pptgrow <- panic_coef$bpptgrow_p[post_draws[p]]  + panic_coef$bpptgrowsex_p[post_draws[p]] 
+      M_params$panic_tempgrow <- panic_coef$btempgrow_p[post_draws[p]] + panic_coef$btempgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm <- panic_coef$btempdorm_p[post_draws[p]] +  panic_coef$btempdormsex_p[post_draws[p]]  
+      M_params$panic_pptdorm <- panic_coef$bpptdorm_p[post_draws[p]] + panic_coef$bpptdormsex_p[post_draws[p]] 
+      M_params$panic_tempgrow_pptgrow<-panic_coef$btempgrowpptgrow_p[post_draws[p]] + panic_coef$btempgrowpptgrowsex_p[post_draws[p]]
+      M_params$panic_tempdorm_pptdorm<-panic_coef$btempdormpptdorm_p[post_draws[p]] + panic_coef$btempdormpptdormsex_p[post_draws[p]]
+      M_params$panic_pptgrow2<-panic_coef$bpptgrow2_p[post_draws[p]] + panic_coef$bpptgrow2sex_p[post_draws[p]]
+      M_params$panic_tempgrow2<-panic_coef$btempgrow2_p[post_draws[p]] + panic_coef$btempgrow2sex_p[post_draws[p]]
+      M_params$panic_pptdorm2<-panic_coef$bpptdorm2_p[post_draws[p]] + panic_coef$bpptdorm2sex_p[post_draws[p]]
+      M_params$panic_tempdorm2<-panic_coef$btempdorm2_p[post_draws[p]] + panic_coef$btempdorm2sex_p[post_draws[p]]
+      ## seed viability and misc fertility params
+      F_params$v0 <- via_coef$v0[post_draws[p]] 
+      F_params$a_v <- via_coef$a_v[post_draws[p]] 
+      F_params$ov_per_inf <- via_coef$lambda_d[post_draws[p]] 
+      F_params$germ <- via_coef$m[post_draws[p]] 
+      F_params$PSR <- 0.5
+      ## use POAU seedling survival for females and males
+      F_params$sdlg_surv <- M_params$sdlg_surv <- sdlg_surv$sdlg_surv
+      ## set max size equal between the sexes
+      F_params$max_size <- M_params$max_size <- round(quantile(na.omit((poar.clim_seasonal$tillerN_t1)),probs=0.95))
+      ## pull out the rfx variances
+      rfx <- rfx_fun(site_tau_s = surv_coef$site_tau_s[post_draws[p]],
+                     block_tau_s = surv_coef$block_tau_s[post_draws[p]],
+                     source_tau_s = surv_coef$source_tau_s[post_draws[p]],
+                     site_tau_g = grow_coef$site_tau_g[post_draws[p]],
+                     block_tau_g = grow_coef$block_tau_g[post_draws[p]],
+                     source_tau_g = grow_coef$source_tau_g[post_draws[p]],
+                     site_tau_f = flow_coef$site_tau_f[post_draws[p]],
+                     block_tau_f = flow_coef$block_tau_f[post_draws[p]],
+                     source_tau_f = flow_coef$source_tau_f[post_draws[p]],
+                     site_tau_p = panic_coef$site_tau_p[post_draws[p]],
+                     block_tau_p = panic_coef$block_tau_p[post_draws[p]],
+                     source_tau_p = panic_coef$source_tau_p[post_draws[p]])
+      #Estimation+process error
+      lambdaSim_delay(F_params=F_params,
+                      M_params=M_params,
+                      grow_perturb=0,
+                      surv_perturb=0,
+                      flow_perturb=0,
+                      fert_perturb=0,
+                      viab_perturb=0,
+                      zpptgrow=clim_miroc_85_values[l,5],
+                      ztempgrow=clim_miroc_85_values[l,6],
+                      zpptdorm=clim_miroc_85_values[l,7],
+                      ztempdorm=clim_miroc_85_values[l,8],
+                      rfx = rfx_fun(),
+                      max.yrs = max_yrs)$lambdatracker[max_yrs]
+      
+    }
+)
+
+lambbamiroc85<-data.frame(lambda_post_miroc85_2s)
+
+## Female dominant models ----
 ### Present----
 # lambda_post_dorm <- Fdom_lambda_dorm  <- matrix(NA,nrow=n_post_draws,ncol=length(pptdorm_seq))
 lambda_post_current<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_current_values))
@@ -679,11 +2211,6 @@ geo_lambbacurrent_fd<-data.frame(lambda_post_current)
 
 ### Past----
 clim_past_values_clean<-na.omit(clim_past_values)
-summary(clim_past_values_clean)
-dim(clim_past_values_clean)
-n_post_draws<-100 
-post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
-# lambda_post_dorm <- Fdom_lambda_dorm  <- matrix(NA,nrow=n_post_draws,ncol=length(pptdorm_seq))
 lambda_post_past<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_past_values_clean))
 dim(lambda_post_past)
 # lambda_dorm_post<-c()
@@ -1309,7 +2836,6 @@ geo_lambba_ces45_fd<-data.frame(lambda_ces45)
 
 lambda_post_ces85<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_ces_85_values))
 dim(lambda_post_ces85)
-# lambda_dorm_post<-c()
 
 #### CESM 85-----
 F_params <- M_params <- list()
@@ -1772,7 +3298,7 @@ Timecmc5<-system.time(
 geolambba_cmc85_fd<-data.frame(lambda_cmc85)
 
 #### MIROC 45----
-lambda_post_miroc45<-matrix(NA,nrow=n_post_draws,ncol=nrow(climate_cmc_45_values))
+lambda_post_miroc45<-matrix(NA,nrow=n_post_draws,ncol=nrow(clim_miroc_45_values))
 #dim(lambda_post_cmc5)
 F_params <- M_params <- list()
 Timemiroc45<-system.time(
@@ -2096,30 +3622,6 @@ poar_occ %>%
 # CRS1 <- CRS("+init=epsg:4326") # WGS 84
 # crs(gbif) <- CRS1
 
-## Read the lambda for all iterations
-### Two sex models
-lambbacurrent <- read.csv("https://www.dropbox.com/scl/fi/5xl6vxw456m942qbtynqi/poar_current_1-400K.csv?rlkey=y76suoez6xbk21xkh52iaym9k&dl=1", stringsAsFactors = F) 
-lambbapast <- read.csv("https://www.dropbox.com/scl/fi/l1509slfkm5lpecbpscfp/poar_past_1-400K.csv?rlkey=83pxzva68d98qk090kk1kmfkt&dl=1", stringsAsFactors = F)
-lambbamiroc45 <- read.csv("https://www.dropbox.com/scl/fi/kq7p7zpnr4n910ed9lf1n/poar_miroc45_1-400K.csv?rlkey=0381obcnwjhzjkcx5kj8krmua&dl=1", stringsAsFactors = F)
-lambbamiroc85 <- read.csv("https://www.dropbox.com/scl/fi/tzat8n3x9dgj4mr2kj2a0/poar_miroc85_1-400K.csv?rlkey=yv10l7v2ii4ljossoviebyp59&dl=1", stringsAsFactors = F)
-lambbacmc45 <- read.csv("https://www.dropbox.com/scl/fi/ekjo0ezv0gn2pfoj69blt/poar_cmc45_1-400K.csv?rlkey=25x99ojbmc021qswxl2ehzq3t&dl=1", stringsAsFactors = F)
-lambbacmc85 <- read.csv("https://www.dropbox.com/scl/fi/299bagx6imcgm534bcmhs/poar_cmc85_1-400K.csv?rlkey=fd4qs8grnkyua7o99w0oz9pyt&dl=1", stringsAsFactors = F)
-lambbaacc45 <- read.csv("https://www.dropbox.com/scl/fi/973dwzsk6y7hzpoov5ljo/poar_acc45_1-400K.csv?rlkey=qsib01gvqjjgmye7pofnmvm7n&dl=1", stringsAsFactors = F)
-lambbaacc85 <- read.csv("https://www.dropbox.com/scl/fi/ybt7vyi1693nselqqkxhc/poar_acc85_1-400K.csv?rlkey=pfzooz6p1p0bw2dnvydm2gdzf&dl=1", stringsAsFactors = F)
-lambbaces45 <- read.csv("https://www.dropbox.com/scl/fi/8ml4oep2lssgg4xd3eon6/poar_ces45_1-400K.csv?rlkey=71ow2cfxcs6uk7iyqfcdijn1y&dl=1", stringsAsFactors = F)
-lambbaces85 <- read.csv("https://www.dropbox.com/scl/fi/84d3crazogxfj5p2id4to/poar_ces85_1-400K.csv?rlkey=raur7uo6w3flwippbrom69uqb&dl=1", stringsAsFactors = F)
-
-### Female dominant model
-geo_lambbacurrent_fd <- 
-geo_lambbapast_fd <- 
-geo_lambda_miroc45_fd<-
-geo_lambba_miroc85_fd <- 
-geo_lambba_cmc45_fd <- 
-geolambba_cmc85_fd <- 
-geo_lambba_acc45_fd <- 
-geolambba_acc85_fd <- 
-geo_lambba_ces45_fd <- 
-geolambba_ces85_fd <- 
 
 ## Estimating Probability of lambda being higher than 1 across the landscape---- 
 ### Past conditions-----
