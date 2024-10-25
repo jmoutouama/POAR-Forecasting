@@ -241,11 +241,11 @@ par(mfrow=c(1,3))
 plot(study_area,xlab="Longitude",ylab="Latitude",cex=2,cex.lab=1.2)
 plot(gbif,add=T,pch = 23,col="grey50",bg="grey",cex =0.55)
 plot(garden,add=T,pch = 21,col="black",cex =2,bg=unique(poar_2015_2016$site_col))
-plot(source,add=T,pch = 21,col="black",bg="red",cex =1)
+plot(source,add=T,pch = 3,col="black",bg="red",cex =2)
 mtext( "A",side = 3, adj = 0,cex=1.25,line=0.2)
 legend(-106, 28.5, 
        legend=c( "GBIF occurences","Common garden sites","Source populations"),
-       pch = c(23,1,21),
+       pch = c(23,1,3),
        pt.cex=c(0.55,2,1),
        col = c("grey50","black","black"),
        pt.bg=c("grey","white","red"),
@@ -264,17 +264,17 @@ arrows(clim_past$pptdorm,clim_past$tempdorm,
 #points(clim_miroc45$pptdorm,clim_miroc45$tempdorm,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
 arrows(clim_current$pptdorm,clim_current$tempdorm,
        clim_miroc45$pptdorm,clim_miroc45$tempdorm,
-       length=0.1,col=unique(poar_2015_2016$site_col),lty=1,lwd=1)
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=5,lwd=1)
 #points(clim_miroc85$pptdorm,clim_miroc85$tempdorm,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
 arrows(clim_current$pptdorm,clim_current$tempdorm,
        clim_miroc85$pptdorm,clim_miroc85$tempdorm,
        length=0.1,col=unique(poar_2015_2016$site_col),lty=3,lwd=1)
 
-legend("topright",legend=c("Past (1901-1930)","Observed (2014-2016)","RCP4.5 (2071-2100)","RCP8.5 (2071-2100)"),lty=c(1,1,3),lwd=c(2,1,1),col=unique(poar_2015_2016$site_col),cex = 0.9)
+legend("topright",legend=c("Past (1901-1930)","Observed (2014-2016)","RCP4.5 (2071-2100)","RCP8.5 (2071-2100)"),lty=c(1,1,5,3),lwd=c(2,1,1,1),col="black",cex = 0.9)
 #points(clim_current$pptdorm,clim_current$tempdorm,col="black",cex=1,pch=16)
 
 
-plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=unique(poar_2015_2016$site_col),cex=0.5,xlim=c(190,840),ylim=c(7,22),pch=16,cex.lab=1.2)
+plot(clim_past$pptgrow,clim_past$tempgrow,xlab="Precipitation (mm)",ylab="Temperature (C)",col=unique(poar_2015_2016$site_col),cex=2,xlim=c(190,840),ylim=c(7,22),pch=16,cex.lab=1.2)
 mtext( "C",side = 3, adj = 0,cex=1.25)
 title(main="Growing season",adj=0.5,line=0.5)
 #points(clim_current$pptgrow,clim_current$tempgrow,col=unique(poar_2015_2016$site_col),cex=1,pch=16)
@@ -284,7 +284,7 @@ arrows(clim_past$pptgrow,clim_past$tempgrow,
 #points(clim_miroc45$pptgrow,clim_miroc45$tempgrow,col=unique(poar_2015_2016$site_col),cex=1.5,pch=1)
 arrows(clim_current$pptgrow,clim_current$tempgrow,
        clim_miroc45$pptgrow,clim_miroc45$tempgrow,
-       length=0.1,col=unique(poar_2015_2016$site_col),lty=1,lwd=1)
+       length=0.1,col=unique(poar_2015_2016$site_col),lty=5,lwd=1)
 #points(clim_miroc85$pptgrow,clim_miroc85$tempgrow,col=unique(poar_2015_2016$site_col),cex=2,pch=1)
 arrows(clim_current$pptgrow,clim_current$tempgrow,
        clim_miroc85$pptgrow,clim_miroc85$tempgrow,

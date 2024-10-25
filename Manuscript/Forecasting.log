@@ -1,6 +1,7 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  13 AUG 2024 14:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.9)  22 OCT 2024 10:39
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **Forecasting.tex
 (./Forecasting.tex
@@ -806,7 +807,7 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 )))
-(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Sweave.sty
+(/usr/local/texlive/texmf-local/tex/latex/Sweave/tex/latex/Sweave.sty
 Package: Sweave 
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/ifthen.sty
@@ -837,7 +838,7 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count336
 \l__pdf_internal_box=\box77
 )
-(./Forecasting.aux)
+No file Forecasting.aux.
 \openout1 = `Forecasting.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
@@ -858,7 +859,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
 LaTeX Font Info:    ... okay on input line 63.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
 LaTeX Font Info:    ... okay on input line 63.
-
 (/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count337
@@ -913,7 +913,6 @@ Package caption Info: End \AtBeginDocument code.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 63.
-(./Forecasting.out) (./Forecasting.out)
 \@outlinefile=\write5
 \openout5 = `Forecasting.out'.
 
@@ -945,7 +944,6 @@ Package microtype Info: Tracking enabled.
 Package microtype Info: Using tracking set `all'.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
-
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-ppl.cfg
 File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 )
@@ -1022,9 +1020,13 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 7.91925pt on input line 69.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 6.25204pt on input line 69.
+
+
+Package natbib Warning: Citation `dryaddata' on page 1 undefined on input line 
+78.
+
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 8
 0.
-
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
@@ -1059,40 +1061,459 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [2] [3] [4]
+ [2]
+
+Package natbib Warning: Citation `bertrand2011changes' on page 3 undefined on i
+nput line 118.
+
+
+Package natbib Warning: Citation `gamelon2017interactions' on page 3 undefined 
+on input line 118.
+
+
+Package natbib Warning: Citation `smith2024extreme' on page 3 undefined on inpu
+t line 118.
+
+
+Package natbib Warning: Citation `Tognetti2012' on page 3 undefined on input li
+ne 119.
+
+
+Package natbib Warning: Citation `jones1999sex' on page 3 undefined on input li
+ne 120.
+
+
+Package natbib Warning: Citation `gissi2023exploring' on page 3 undefined on in
+put line 120.
+
+
+Package natbib Warning: Citation `pottier2021sexual' on page 3 undefined on inp
+ut line 121.
+
+
+Package natbib Warning: Citation `ellis2017does' on page 3 undefined on input l
+ine 121.
+
+
+Package natbib Warning: Citation `Elena' on page 3 undefined on input line 121.
+
+
+
+Package natbib Warning: Citation `miller2011confronting' on page 3 undefined on
+ input line 122.
+
+
+Package natbib Warning: Citation `lee2016synthesis' on page 3 undefined on inpu
+t line 132.
+
+
+Package natbib Warning: Citation `sexton2009evolution' on page 3 undefined on i
+nput line 133.
+
+
+Package natbib Warning: Citation `davis2001range' on page 3 undefined on input 
+line 134.
+
+
+Package natbib Warning: Citation `pease1989model' on page 3 undefined on input 
+line 134.
+
+
+Package natbib Warning: Citation `pottier2021sexual' on page 3 undefined on inp
+ut line 135.
+
+
+Package natbib Warning: Citation `hultine2016climate' on page 3 undefined on in
+put line 135.
+
+
+Package natbib Warning: Citation `morrison2016causes' on page 3 undefined on in
+put line 135.
+
+
+Package natbib Warning: Citation `eberhart2017sex' on page 3 undefined on input
+ line 136.
+
+
+Package natbib Warning: Citation `petry2016sex' on page 3 undefined on input li
+ne 137.
+
+
+Package natbib Warning: Citation `davis2001range' on page 3 undefined on input 
+line 140.
+
+
+Package natbib Warning: Citation `evans2016towards' on page 3 undefined on inpu
+t line 140.
+
+
+Package natbib Warning: Citation `czachura2020demographic' on page 3 undefined 
+on input line 140.
+
+
+Package natbib Warning: Citation `merow2017climate' on page 3 undefined on inpu
+t line 141.
+
+
+Package natbib Warning: Citation `schwinning2022common' on page 3 undefined on 
+input line 141.
+
+
+Package natbib Warning: Citation `schultz2022climate' on page 3 undefined on in
+put line 141.
+
+
+Package natbib Warning: Citation `ehrlen2015predicting' on page 3 undefined on 
+input line 142.
+
+
+Package natbib Warning: Citation `louthan2022climate' on page 3 undefined on in
+put line 142.
+
+
+Package natbib Warning: Citation `dahlgren2016demography' on page 3 undefined o
+n input line 142.
+
+
+Package natbib Warning: Citation `leicht2007comparative' on page 3 undefined on
+ input line 143.
+
+
+Package natbib Warning: Citation `maguire1973niche' on page 3 undefined on inpu
+t line 144.
+
+
+Package natbib Warning: Citation `hutchinson1978introduction' on page 3 undefin
+ed on input line 144.
+
+
+Package natbib Warning: Citation `diez2014probabilistic' on page 3 undefined on
+ input line 144.
+
+
+Package natbib Warning: Citation `ellner2016data' on page 3 undefined on input 
+line 147.
+
+
+Package natbib Warning: Citation `hernandez2023exact' on page 3 undefined on in
+put line 147.
+
+
+Package natbib Warning: Citation `caswell1989analysis' on page 3 undefined on i
+nput line 148.
+
+
+Package natbib Warning: Citation `o2024nonlinear' on page 3 undefined on input 
+line 148.
+
+
+Package natbib Warning: Citation `morrison2007demographic' on page 3 undefined 
+on input line 148.
+
+
+Package natbib Warning: Citation `iler2019reproductive' on page 3 undefined on 
+input line 148.
+
+[3]
+
+LaTeX Warning: Reference `Sup:temp_variation' on page 4 undefined on input line
+ 154.
+
+
+Package natbib Warning: Citation `miller2022two' on page 4 undefined on input l
+ine 156.
+
+[4]
+
+LaTeX Warning: Reference `fig:study_design' on page 5 undefined on input line 1
+71.
+
+
+Package natbib Warning: Citation `hitchcock1971manual' on page 5 undefined on i
+nput line 171.
+
+
+Package natbib Warning: Citation `kindiger2004interspecific' on page 5 undefine
+d on input line 174.
+
+
+Package natbib Warning: Citation `renganayaki2005identification' on page 5 unde
+fined on input line 176.
+
+
+Package natbib Warning: Citation `hitchcock1971manual' on page 5 undefined on i
+nput line 178.
+
+
+Package natbib Warning: Citation `miller2022two' on page 5 undefined on input l
+ine 179.
+
+
+Package natbib Warning: Citation `miller2022two' on page 5 undefined on input l
+ine 183.
+
+
+LaTeX Warning: Reference `fig:study_design' on page 5 undefined on input line 1
+84.
+
+
+LaTeX Warning: Reference `fig:study_design' on page 5 undefined on input line 1
+86.
+
 [5]
-<Figures/POAR_survey_garden_map.pdf, id=203, 505.89pt x 578.16pt>
+<Figures/POAR_survey_garden_map.pdf, id=51, 505.89pt x 578.16pt>
 File: Figures/POAR_survey_garden_map.pdf Graphic file (type pdf)
 <use Figures/POAR_survey_garden_map.pdf>
 Package pdftex.def Info: Figures/POAR_survey_garden_map.pdf  used on input line
  193.
 (pdftex.def)             Requested size: 422.77664pt x 483.18092pt.
- [6] [7 <./Figures/POAR_survey_garden_map.pdf>] [8] [9] [10] [11] [12]
-[13]
-<Figures/vital_rates.pdf, id=347, 939.51pt x 1011.78pt>
+
+
+LaTeX Warning: Reference `Sup:temp_variation' on page 6 undefined on input line
+ 198.
+
+
+LaTeX Warning: Reference `Sup:pr_variation' on page 6 undefined on input line 1
+98.
+
+
+LaTeX Warning: Reference `Sup:temp_variation' on page 6 undefined on input line
+ 198.
+
+
+LaTeX Warning: Reference `Sup:pr_variation' on page 6 undefined on input line 1
+98.
+
+[6]
+
+Package natbib Warning: Citation `karger2017climatologies' on page 7 undefined 
+on input line 204.
+
+[7 <./Figures/POAR_survey_garden_map.pdf>]
+
+Package natbib Warning: Citation `sanderson2015representative' on page 8 undefi
+ned on input line 214.
+
+
+Package natbib Warning: Citation `thomson2011rcp4' on page 8 undefined on input
+ line 215.
+
+
+Package natbib Warning: Citation `schwalm2020rcp8' on page 8 undefined on input
+ line 215.
+
+
+LaTeX Warning: Reference `Sup:projectionMIROC' on page 8 undefined on input lin
+e 217.
+
+
+LaTeX Warning: Reference `Sup:projectionACCESS' on page 8 undefined on input li
+ne 217.
+
+
+LaTeX Warning: Reference `Sup:projectionCESM1' on page 8 undefined on input lin
+e 217.
+
+
+LaTeX Warning: Reference `Sup:projectionCMCC' on page 8 undefined on input line
+ 217.
+
+
+LaTeX Warning: Reference `Sup:climate_variation' on page 8 undefined on input l
+ine 218.
+
+
+LaTeX Warning: Reference `eq:mu' on page 8 undefined on input line 225.
+
+[8]
+
+Package natbib Warning: Citation `piironen2017comparison' on page 9 undefined o
+n input line 255.
+
+
+LaTeX Warning: Reference `Sup:PPC' on page 9 undefined on input line 255.
+
+
+Package natbib Warning: Citation `rstan' on page 9 undefined on input line 258.
+
+
+[9]
+
+LaTeX Warning: Reference `eq:viab_fn' on page 10 undefined on input line 266.
+
+
+LaTeX Warning: Reference `sec:experiment' on page 10 undefined on input line 26
+7.
+
+
+LaTeX Warning: Reference `eq:viab_fn' on page 10 undefined on input line 286.
+
+[10]
+
+Package natbib Warning: Citation `popbio' on page 11 undefined on input line 30
+6.
+
+
+Package natbib Warning: Citation `ellner2016data' on page 11 undefined on input
+ line 311.
+
+
+Package natbib Warning: Citation `liaw2002classification' on page 11 undefined 
+on input line 313.
+
+[11]
+
+Package natbib Warning: Citation `caswell2000matrix' on page 12 undefined on in
+put line 317.
+
+
+Package natbib Warning: Citation `caswell1989analysis' on page 12 undefined on 
+input line 318.
+
+
+LaTeX Warning: Reference `eq:ltresex' on page 12 undefined on input line 319.
+
+
+LaTeX Warning: Reference `eq:sr_fn' on page 12 undefined on input line 332.
+
+
+Package natbib Warning: Citation `diez2014probabilistic' on page 12 undefined o
+n input line 347.
+
+[12]
+
+Package natbib Warning: Citation `brms' on page 13 undefined on input line 354.
+
+
+
+Package natbib Warning: Citation `RCoreteam' on page 13 undefined on input line
+ 356.
+
+
+LaTeX Warning: Reference `fig:vital_rates' on page 13 undefined on input line 3
+63.
+
+
+LaTeX Warning: Reference `fig:vital_rates' on page 13 undefined on input line 3
+64.
+
+
+LaTeX Warning: Reference `fig:vital_rates' on page 13 undefined on input line 3
+65.
+
+
+LaTeX Warning: Reference `fig:vital_rates' on page 13 undefined on input line 3
+71.
+
+
+LaTeX Warning: Reference `fig:vital_rates' on page 13 undefined on input line 3
+71.
+
+
+LaTeX Warning: Reference `fig:vital_rates' on page 13 undefined on input line 3
+71.
+
+<Figures/vital_rates.pdf, id=121, 939.51pt x 1011.78pt>
 File: Figures/vital_rates.pdf Graphic file (type pdf)
 <use Figures/vital_rates.pdf>
 Package pdftex.def Info: Figures/vital_rates.pdf  used on input line 380.
 (pdftex.def)             Requested size: 375.80544pt x 404.70483pt.
- [14 <./Figures/vital_rates.pdf>]
-<Figures/POAR_OSR.pdf, id=369, 361.35pt x 361.35pt>
+[13]
+
+LaTeX Warning: Reference `Sup:gardens_OSR' on page 14 undefined on input line 4
+04.
+
+
+LaTeX Warning: Reference `Sup:PosteriorOSR' on page 14 undefined on input line 
+404.
+
+
+LaTeX Warning: Reference `Sup:gardens_SR' on page 14 undefined on input line 40
+5.
+
+
+LaTeX Warning: Reference `Sup:PosteriorSR' on page 14 undefined on input line 4
+05.
+
+
+LaTeX Warning: Reference `Sup:gardens_SR' on page 14 undefined on input line 40
+6.
+
+
+LaTeX Warning: Reference `fig:srprojcmc' on page 14 undefined on input line 407
+.
+
+
+LaTeX Warning: Reference `Sup:osrall' on page 14 undefined on input line 407.
+
+[14 <./Figures/vital_rates.pdf>]
+<Figures/POAR_OSR.pdf, id=142, 361.35pt x 361.35pt>
 File: Figures/POAR_OSR.pdf Graphic file (type pdf)
 <use Figures/POAR_OSR.pdf>
 Package pdftex.def Info: Figures/POAR_OSR.pdf  used on input line 411.
 (pdftex.def)             Requested size: 375.80544pt x 375.80617pt.
- [15 <./Figures/POAR_OSR.pdf>]
-<Figures/lambda_past_present_future.pdf, id=397, 505.89pt x 578.16pt>
+
+
+LaTeX Warning: Reference `fig:lambda_LTRE' on page 15 undefined on input line 4
+23.
+
+
+LaTeX Warning: Reference `fig:lambda_LTRE' on page 15 undefined on input line 4
+24.
+
+
+LaTeX Warning: Reference `fig:lambda_LTRE' on page 15 undefined on input line 4
+25.
+
+
+LaTeX Warning: Reference `fig:lambda_LTRE' on page 15 undefined on input line 4
+26.
+
+[15 <./Figures/POAR_OSR.pdf>]
+
+LaTeX Warning: Reference `fig:lambda_LTRE' on page 16 undefined on input line 4
+34.
+
+
+LaTeX Warning: Reference `Sup:LTRE' on page 16 undefined on input line 437.
+
+
+LaTeX Warning: Reference `Sup:LTRETemp' on page 16 undefined on input line 438.
+
+
+
+LaTeX Warning: Reference `Sup:LTREppt' on page 16 undefined on input line 438.
+
+
+LaTeX Warning: Reference `fig:lambda_LTRE' on page 16 undefined on input line 4
+39.
+
+<Figures/lambda_past_present_future.pdf, id=158, 505.89pt x 578.16pt>
 File: Figures/lambda_past_present_future.pdf Graphic file (type pdf)
 <use Figures/lambda_past_present_future.pdf>
 Package pdftex.def Info: Figures/lambda_past_present_future.pdf  used on input 
 line 444.
 (pdftex.def)             Requested size: 469.75502pt x 536.87161pt.
- [16]
+[16]
 Overfull \vbox (17.4416pt too high) has occurred while \output is active []
 
 
 [17 <./Figures/lambda_past_present_future.pdf>]
-<Figures/niche_dormant_growing.pdf, id=423, 578.16pt x 722.7pt>
+
+LaTeX Warning: Reference `fig:niche' on page 18 undefined on input line 465.
+
+
+LaTeX Warning: Reference `fig:niche' on page 18 undefined on input line 468.
+
+
+LaTeX Warning: Reference `fig:geoprojacc' on page 18 undefined on input line 47
+0.
+
+
+LaTeX Warning: Reference `fig:geoprojacc' on page 18 undefined on input line 47
+1.
+
+<Figures/niche_dormant_growing.pdf, id=176, 578.16pt x 722.7pt>
 File: Figures/niche_dormant_growing.pdf Graphic file (type pdf)
 <use Figures/niche_dormant_growing.pdf>
 Package pdftex.def Info: Figures/niche_dormant_growing.pdf  used on input line 
@@ -1102,169 +1523,326 @@ LaTeX Font Info:    Font shape `U/msa/m/n' will be
 (Font)              scaled to size 5.21004pt on input line 485.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 5.21004pt on input line 485.
- [18]
-<Figures/Fig_geoPrlambdacmc.pdf, id=430, 650.43pt x 722.7pt>
+[18]
+<Figures/Fig_geoPrlambdacmc.pdf, id=181, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambdacmc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambdacmc.pdf>
 Package pdftex.def Info: Figures/Fig_geoPrlambdacmc.pdf  used on input line 492
 .
 (pdftex.def)             Requested size: 465.06004pt x 516.74863pt.
  [19 <./Figures/niche_dormant_growing.pdf>] [20 <./Figures/Fig_geoPrlambdacmc.p
-df>] [21] [22] [23]
-(./Forecasting.bbl [24] [25] [26] [27] [28] [29]) [30]
-<Figures/fig_tas_past_present_future.pdf, id=595, 650.43pt x 578.16pt>
+df>]
+
+Package natbib Warning: Citation `chen2024influence' on page 21 undefined on in
+put line 508.
+
+
+LaTeX Warning: Reference `Sup:geoprojces' on page 21 undefined on input line 50
+9.
+
+
+LaTeX Warning: Reference `Sup:geoprojcmc' on page 21 undefined on input line 50
+9.
+
+
+LaTeX Warning: Reference `Sup:geoprojmiroc' on page 21 undefined on input line 
+509.
+
+
+Package natbib Warning: Citation `petry2016sex' on page 21 undefined on input l
+ine 520.
+
+
+Package natbib Warning: Citation `hultine2016climate' on page 21 undefined on i
+nput line 520.
+
+
+Package natbib Warning: Citation `cipollini1994sexual' on page 21 undefined on 
+input line 522.
+
+
+Package natbib Warning: Citation `freeman1976differential' on page 21 undefined
+ on input line 522.
+
+
+Package natbib Warning: Citation `hultine2016climate' on page 21 undefined on i
+nput line 523.
+
+
+Package natbib Warning: Citation `burli2022environmental' on page 21 undefined 
+on input line 524.
+
+
+Package natbib Warning: Citation `cipollini1994sexual' on page 21 undefined on 
+input line 524.
+
+
+Package natbib Warning: Citation `bruijning2017surviving' on page 21 undefined 
+on input line 524.
+
+
+Package natbib Warning: Citation `field2013comparative' on page 21 undefined on
+ input line 524.
+
+
+Package natbib Warning: Citation `mclean2016predicting' on page 21 undefined on
+ input line 553.
+
+
+Package natbib Warning: Citation `sherry2007divergence' on page 21 undefined on
+ input line 553.
+
+
+Package natbib Warning: Citation `iler2019reproductive' on page 21 undefined on
+ input line 553.
+
+
+Package natbib Warning: Citation `reed2021climate' on page 21 undefined on inpu
+t line 553.
+
+
+Package natbib Warning: Citation `konapala2020climate' on page 21 undefined on 
+input line 555.
+
+
+Package natbib Warning: Citation `cleland2007shifting' on page 21 undefined on 
+input line 556.
+
+
+Package natbib Warning: Citation `williams2015life' on page 21 undefined on inp
+ut line 556.
+
+
+Package natbib Warning: Citation `hatfield2015temperature' on page 21 undefined
+ on input line 557.
+
+
+Package natbib Warning: Citation `sletvold2015climate' on page 21 undefined on 
+input line 557.
+
+
+Package natbib Warning: Citation `kremer2012long' on page 21 undefined on input
+ line 558.
+
+
+Package natbib Warning: Citation `corlett2013will' on page 21 undefined on inpu
+t line 558.
+
+
+Package natbib Warning: Citation `duputie2012genetic' on page 21 undefined on i
+nput line 558.
+
+
+Package natbib Warning: Citation `alexander2015novel' on page 21 undefined on i
+nput line 560.
+
+
+Package natbib Warning: Citation `schultz2022climate' on page 21 undefined on i
+nput line 560.
+
+
+Package natbib Warning: Citation `pulliam2000relationship' on page 21 undefined
+ on input line 561.
+
+
+Package natbib Warning: Citation `aguilee2016pollen' on page 21 undefined on in
+put line 561.
+
+[21]
+
+Package natbib Warning: Citation `knight2005pollen' on page 22 undefined on inp
+ut line 567.
+
+
+Package natbib Warning: Citation `haridas2014frequency' on page 22 undefined on
+ input line 567.
+
+
+Package natbib Warning: Citation `sletvold2013climate' on page 22 undefined on 
+input line 569.
+
+[22] [23]
+No file Forecasting.bbl.
+<Figures/fig_tas_past_present_future.pdf, id=228, 650.43pt x 578.16pt>
 File: Figures/fig_tas_past_present_future.pdf Graphic file (type pdf)
 <use Figures/fig_tas_past_present_future.pdf>
 Package pdftex.def Info: Figures/fig_tas_past_present_future.pdf  used on input
  line 605.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
-<Figures/fig_pr_past_present_future.pdf, id=596, 650.43pt x 578.16pt>
+<Figures/fig_pr_past_present_future.pdf, id=229, 650.43pt x 578.16pt>
 File: Figures/fig_pr_past_present_future.pdf Graphic file (type pdf)
 <use Figures/fig_pr_past_present_future.pdf>
 Package pdftex.def Info: Figures/fig_pr_past_present_future.pdf  used on input 
 line 613.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
- [31
+[24
 
  <./Figures/fig_tas_past_present_future.pdf>]
-<Figures/MIROC.pdf, id=612, 505.89pt x 505.89pt>
+<Figures/MIROC.pdf, id=245, 505.89pt x 505.89pt>
 File: Figures/MIROC.pdf Graphic file (type pdf)
 <use Figures/MIROC.pdf>
 Package pdftex.def Info: Figures/MIROC.pdf  used on input line 621.
 (pdftex.def)             Requested size: 446.26582pt x 446.27298pt.
- [32 <./Figures/fig_pr_past_present_future.pdf>]
-<Figures/ACCESS.pdf, id=626, 505.89pt x 505.89pt>
+ [25 <./Figures/fig_pr_past_present_future.pdf>]
+<Figures/ACCESS.pdf, id=261, 505.89pt x 505.89pt>
 File: Figures/ACCESS.pdf Graphic file (type pdf)
 <use Figures/ACCESS.pdf>
 Package pdftex.def Info: Figures/ACCESS.pdf  used on input line 628.
 (pdftex.def)             Requested size: 465.06004pt x 465.06935pt.
-
-[33 <./Figures/MIROC.pdf>]
-<Figures/CESM1.pdf, id=636, 505.89pt x 505.89pt>
+ [26 <./Figures/MIROC.pdf>]
+<Figures/CESM1.pdf, id=272, 505.89pt x 505.89pt>
 File: Figures/CESM1.pdf Graphic file (type pdf)
 <use Figures/CESM1.pdf>
 Package pdftex.def Info: Figures/CESM1.pdf  used on input line 635.
 (pdftex.def)             Requested size: 465.06004pt x 465.06935pt.
- [34 <./Figures/ACCESS.pdf>]
-<Figures/CMCC.pdf, id=646, 505.89pt x 505.89pt>
+ [27 <./Figures/ACCESS.pdf>]
+<Figures/CMCC.pdf, id=283, 505.89pt x 505.89pt>
 File: Figures/CMCC.pdf Graphic file (type pdf)
 <use Figures/CMCC.pdf>
 Package pdftex.def Info: Figures/CMCC.pdf  used on input line 642.
 (pdftex.def)             Requested size: 465.06004pt x 465.06935pt.
- [35 <./Figures/CESM1.pdf>]
-<Figures/site_year_weather.pdf, id=656, 433.62pt x 578.16pt>
+
+[28 <./Figures/CESM1.pdf>]
+<Figures/site_year_weather.pdf, id=295, 433.62pt x 578.16pt>
 File: Figures/site_year_weather.pdf Graphic file (type pdf)
 <use Figures/site_year_weather.pdf>
 Package pdftex.def Info: Figures/site_year_weather.pdf  used on input line 649.
 
 (pdftex.def)             Requested size: 450.49489pt x 600.68997pt.
- [36 <./Figures/CMCC.pdf>]
-<Figures/PPC.pdf, id=666, 433.62pt x 722.7pt>
+ [29 <./Figures/CMCC.pdf>]
+<Figures/PPC.pdf, id=306, 433.62pt x 722.7pt>
 File: Figures/PPC.pdf Graphic file (type pdf)
 <use Figures/PPC.pdf>
 Package pdftex.def Info: Figures/PPC.pdf  used on input line 663.
 (pdftex.def)             Requested size: 352.31625pt x 587.22539pt.
- [37 <./Figures/site_year_weather.pdf>]
-<Figures/Posterior_mean.pdf, id=678, 722.7pt x 867.24pt>
+ [30 <./Figures/site_year_weather.pdf>]
+<Figures/Posterior_mean.pdf, id=318, 722.7pt x 867.24pt>
 File: Figures/Posterior_mean.pdf Graphic file (type pdf)
 <use Figures/Posterior_mean.pdf>
 Package pdftex.def Info: Figures/Posterior_mean.pdf  used on input line 670.
 (pdftex.def)             Requested size: 465.06004pt x 558.0753pt.
- [38 <./Figures/PPC.pdf>]
-<Figures/gardens_OSR.pdf, id=691, 578.16pt x 578.16pt>
+ [31 <./Figures/PPC.pdf>]
+<Figures/gardens_OSR.pdf, id=333, 578.16pt x 289.08pt>
 File: Figures/gardens_OSR.pdf Graphic file (type pdf)
 <use Figures/gardens_OSR.pdf>
 Package pdftex.def Info: Figures/gardens_OSR.pdf  used on input line 681.
-(pdftex.def)             Requested size: 375.80544pt x 375.79955pt.
- [39 <./Figures/Posterior_mean.pdf>]
-<Figures/Posterior_ORS.pdf, id=706, 361.35pt x 433.62pt>
+(pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
+ [32 <./Figures/Posterior_mean.pdf>]
+<Figures/Posterior_ORS.pdf, id=348, 361.35pt x 289.08pt>
 File: Figures/Posterior_ORS.pdf Graphic file (type pdf)
 <use Figures/Posterior_ORS.pdf>
 Package pdftex.def Info: Figures/Posterior_ORS.pdf  used on input line 690.
-(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
- [40 <./Figures/gardens_OSR.pdf>]
-<Figures/gardens_SR.pdf, id=719, 650.43pt x 578.16pt>
+(pdftex.def)             Requested size: 352.31625pt x 281.85406pt.
+<Figures/gardens_SR.pdf, id=349, 650.43pt x 578.16pt>
 File: Figures/gardens_SR.pdf Graphic file (type pdf)
 <use Figures/gardens_SR.pdf>
 Package pdftex.def Info: Figures/gardens_SR.pdf  used on input line 701.
 (pdftex.def)             Requested size: 446.26582pt x 396.69003pt.
- [41 <./Figures/Posterior_ORS.pdf>]
-<Figures/Posterior_SR.pdf, id=733, 361.35pt x 433.62pt>
+
+[33 <./Figures/gardens_OSR.pdf> <./Figures/Posterior_ORS.pdf>]
+<Figures/Posterior_SR.pdf, id=372, 361.35pt x 289.08pt>
 File: Figures/Posterior_SR.pdf Graphic file (type pdf)
 <use Figures/Posterior_SR.pdf>
 Package pdftex.def Info: Figures/Posterior_SR.pdf  used on input line 710.
-(pdftex.def)             Requested size: 352.31625pt x 422.78111pt.
- [42 <./Figures/gardens_SR.pdf>]
-<Figures/POAR_OSR_MIROC_CES_ACC.pdf, id=746, 361.35pt x 505.89pt>
+(pdftex.def)             Requested size: 352.31625pt x 281.85406pt.
+ [34 <./Figures/gardens_SR.pdf>]
+<Figures/POAR_OSR_MIROC_CES_ACC.pdf, id=386, 505.89pt x 433.62pt>
 File: Figures/POAR_OSR_MIROC_CES_ACC.pdf Graphic file (type pdf)
 <use Figures/POAR_OSR_MIROC_CES_ACC.pdf>
 Package pdftex.def Info: Figures/POAR_OSR_MIROC_CES_ACC.pdf  used on input line
  730.
-(pdftex.def)             Requested size: 375.80544pt x 526.12862pt.
- [43 <./Figures/Posterior_SR.pdf>]
-<Figures/Fig_LTRE.pdf, id=760, 361.35pt x 361.35pt>
+(pdftex.def)             Requested size: 375.80544pt x 322.1243pt.
+ [35 <./Figures/Posterior_SR.pdf>]
+<Figures/Fig_LTRE.pdf, id=400, 361.35pt x 361.35pt>
 File: Figures/Fig_LTRE.pdf Graphic file (type pdf)
 <use Figures/Fig_LTRE.pdf>
 Package pdftex.def Info: Figures/Fig_LTRE.pdf  used on input line 740.
 (pdftex.def)             Requested size: 305.33789pt x 305.34044pt.
- [44 <./Figures/POAR_OSR_MIROC_CES_ACC.pdf>]
-<Figures/LTRE_Temperature.pdf, id=770, 505.89pt x 505.89pt>
+ [36 <./Figures/POAR_OSR_MIROC_CES_ACC.pdf>]
+<Figures/LTRE_Temperature.pdf, id=411, 578.16pt x 505.89pt>
 File: Figures/LTRE_Temperature.pdf Graphic file (type pdf)
 <use Figures/LTRE_Temperature.pdf>
 Package pdftex.def Info: Figures/LTRE_Temperature.pdf  used on input line 748.
-(pdftex.def)             Requested size: 446.26582pt x 446.27298pt.
- [45 <./Figures/Fig_LTRE.pdf>]
-<Figures/LTRE_Precipitation.pdf, id=780, 505.89pt x 505.89pt>
+(pdftex.def)             Requested size: 446.26582pt x 390.47824pt.
+ [37 <./Figures/Fig_LTRE.pdf>]
+<Figures/LTRE_Precipitation.pdf, id=424, 505.89pt x 505.89pt>
 File: Figures/LTRE_Precipitation.pdf Graphic file (type pdf)
 <use Figures/LTRE_Precipitation.pdf>
 Package pdftex.def Info: Figures/LTRE_Precipitation.pdf  used on input line 757
 .
 (pdftex.def)             Requested size: 446.26582pt x 446.27298pt.
- [46 <./Figures/LTRE_Temperature.pdf>]
-<Figures/Niche_overestimation.pdf, id=791, 505.89pt x 289.08pt>
+ [38 <./Figures/LTRE_Temperature.pdf>]
+<Figures/Niche_overestimation.pdf, id=436, 578.16pt x 289.08pt>
 File: Figures/Niche_overestimation.pdf Graphic file (type pdf)
 <use Figures/Niche_overestimation.pdf>
 Package pdftex.def Info: Figures/Niche_overestimation.pdf  used on input line 7
 66.
-(pdftex.def)             Requested size: 465.06004pt x 265.7539pt.
- [47 <./Figures/LTRE_Precipitation.pdf>]
-<Figures/Fig_geoPrlambda_ces.pdf, id=802, 650.43pt x 722.7pt>
+(pdftex.def)             Requested size: 465.06004pt x 232.53026pt.
+ [39 <./Figures/LTRE_Precipitation.pdf>]
+<Figures/Fig_geoPrlambda_ces.pdf, id=448, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambda_ces.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambda_ces.pdf>
 Package pdftex.def Info: Figures/Fig_geoPrlambda_ces.pdf  used on input line 78
 6.
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [48 <./Figures/Niche_overestimation.pdf>]
-<Figures/Fig_geoPrlambdaacc.pdf, id=818, 650.43pt x 722.7pt>
+ [40 <./Figures/Niche_overestimation.pdf>]
+<Figures/Fig_geoPrlambdaacc.pdf, id=463, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambdaacc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambdaacc.pdf>
 Package pdftex.def Info: Figures/Fig_geoPrlambdaacc.pdf  used on input line 799
 .
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [49 <./Figures/Fig_geoPrlambda_ces.pdf>]
-<Figures/Fig_geoPrlambda_miroc.pdf, id=834, 650.43pt x 722.7pt>
+ [41 <./Figures/Fig_geoPrlambda_ces.pdf>]
+<Figures/Fig_geoPrlambda_miroc.pdf, id=483, 650.43pt x 722.7pt>
 File: Figures/Fig_geoPrlambda_miroc.pdf Graphic file (type pdf)
 <use Figures/Fig_geoPrlambda_miroc.pdf>
 Package pdftex.def Info: Figures/Fig_geoPrlambda_miroc.pdf  used on input line 
 812.
 (pdftex.def)             Requested size: 446.26582pt x 495.86255pt.
- [50 <./Figures/Fig_geoPrlambdaacc.pdf>] [51 <./Figures/Fig_geoPrlambda_miroc.p
-df>] [52] (./Forecasting.aux)
-Package rerunfilecheck Info: File `Forecasting.out' has not changed.
-(rerunfilecheck)             Checksum: A417B732F05FA37DB71566230B1AF58A;272.
+ [42 <./Figures/Fig_geoPrlambdaacc.pdf>] [43 <./Figures/Fig_geoPrlambda_miroc.p
+df>]
+
+Package natbib Warning: Citation `compagnoni2017can' on page 44 undefined on in
+put line 851.
+
+
+Package natbib Warning: Citation `miller2022two' on page 44 undefined on input 
+line 851.
+
+
+LaTeX Warning: Reference `eq:viab' on page 44 undefined on input line 866.
+
+
+Package natbib Warning: There were undefined citations.
+
+[44] (./Forecasting.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `Forecasting.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Forecasting.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  A417B732F05FA37DB71566230B1AF58A;272.
  )
 (\end occurred inside a group at level 1)
 
 ### semi simple group (level 1) entered at line 103 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 30086 strings out of 476025
- 555239 string characters out of 5790018
- 1883388 words of memory out of 5000000
- 48709 multiletter control sequences out of 15000+600000
- 703418 words of font info for 959 fonts, out of 8000000 for 9000
+ 29786 strings out of 476025
+ 547653 string characters out of 5790018
+ 1872388 words of memory out of 5000000
+ 48477 multiletter control sequences out of 15000+600000
+ 703818 words of font info for 978 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,14n,94p,1253b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,14n,94p,1253b,822s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1278,10 +1856,10 @@ b></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr
 /local/texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/local
 /texlive/2023/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texliv
 e/2023/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Forecasting.pdf (52 pages, 17262829 bytes).
+Output written on Forecasting.pdf (44 pages, 16533845 bytes).
 PDF statistics:
- 977 PDF objects out of 1000 (max. 8388607)
- 812 compressed objects within 9 object streams
- 187 named destinations out of 1000 (max. 500000)
- 252580 words of extra memory for PDF output out of 266212 (max. 10000000)
+ 612 PDF objects out of 1000 (max. 8388607)
+ 461 compressed objects within 5 object streams
+ 103 named destinations out of 1000 (max. 500000)
+ 252564 words of extra memory for PDF output out of 266212 (max. 10000000)
 
