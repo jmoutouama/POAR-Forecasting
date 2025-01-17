@@ -1068,9 +1068,7 @@ Timedorm<-system.time(
 )
 
 ## write output as a dataframe
-lambda_dorm_post<-readRDS(url("https://www.dropbox.com/scl/fi/ejueiyu58g96eqlb60js4/data_dormant_niche.rds?rlkey=8xjqn6reelmqtcbzm1na61g2m&dl=1"))
 nichedormant<-data.frame(lambda_dorm_post)
-
 prob_lambda_dorm_post<-c()
 for(l in 1:ncol(nichedormant)){
   prob_lambda_dorm_post[l]<-mean(nichedormant[,l]>1,na.rm=T)
@@ -1234,7 +1232,6 @@ Timegrow<-system.time(
     }
 )
 
-lambda_grow_post<-readRDS(url("https://www.dropbox.com/scl/fi/ggxrqzgz2wwmo1mec2d5m/data_growing_niche.rds?rlkey=6uv4l0e2ajovdit7gt778aexw&dl=1"))
 nichegrowing<-data.frame(lambda_grow_post)
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
@@ -1419,7 +1416,6 @@ Timedorm<-system.time(
     }
 )
 ## write output as a dataframe
-lambda_dorm_post<-readRDS(url("https://www.dropbox.com/scl/fi/u0yeohxrienfp96hopvl5/data_dormant_niche.rds?rlkey=lhum5y9ymqtpkegkw75seruuc&dl=1"))
 nichedormant_fd<-data.frame(lambda_dorm_post)
 prob_lambda_dorm_post_fd<-c()
 for(l in 1:ncol(nichedormant_fd)){
@@ -1585,8 +1581,7 @@ Timegrow<-system.time(
     }
 )
 nichegrowing_fd<-data.frame(clim_grow_post,Pr=prob_lambda_grow_post)
-# read in resul
-nichegrowing_fd<-readRDS(url("https://www.dropbox.com/scl/fi/xgi4mzlgwrw1k73n6sdkw/data_growing_niche.rds?rlkey=7gw2nh7mw67ind2dhs9mbfszy&dl=1"))
+# read in result
 prob_lambda_grow_post_fd<-c()
 for(l in 1:ncol(nichegrowing_fd)){
   prob_lambda_grow_post_fd[l]<-mean(nichegrowing_fd[,l]>1,na.rm=T)
