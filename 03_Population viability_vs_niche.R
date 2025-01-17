@@ -359,7 +359,7 @@ via_coef <- rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d))
 
 # Matrix model (lambda vs climate)----
 ##load MPM functions
-source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/twosexMPMLTRE.R")
+source("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/twosexMPMLTRE.R")
 # source("/Users/tm9/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Analysis/twosexMPMLTRE.R")
 
 ## read in the seedling survival data from Poa autumnalis
@@ -1068,6 +1068,7 @@ Timedorm<-system.time(
 )
 
 ## write output as a dataframe
+lambda_dorm_post<-readRDS(url("https://www.dropbox.com/scl/fi/ejueiyu58g96eqlb60js4/data_dormant_niche.rds?rlkey=8xjqn6reelmqtcbzm1na61g2m&dl=1"))
 nichedormant<-data.frame(lambda_dorm_post)
 
 prob_lambda_dorm_post<-c()
@@ -1233,6 +1234,7 @@ Timegrow<-system.time(
     }
 )
 
+lambda_grow_post<-readRDS(url("https://www.dropbox.com/scl/fi/ggxrqzgz2wwmo1mec2d5m/data_growing_niche.rds?rlkey=6uv4l0e2ajovdit7gt778aexw&dl=1"))
 nichegrowing<-data.frame(lambda_grow_post)
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
@@ -1417,6 +1419,7 @@ Timedorm<-system.time(
     }
 )
 ## write output as a dataframe
+lambda_dorm_post<-readRDS(url("https://www.dropbox.com/scl/fi/u0yeohxrienfp96hopvl5/data_dormant_niche.rds?rlkey=lhum5y9ymqtpkegkw75seruuc&dl=1"))
 nichedormant_fd<-data.frame(lambda_dorm_post)
 prob_lambda_dorm_post_fd<-c()
 for(l in 1:ncol(nichedormant_fd)){
@@ -1583,7 +1586,7 @@ Timegrow<-system.time(
 )
 nichegrowing_fd<-data.frame(clim_grow_post,Pr=prob_lambda_grow_post)
 # read in resul
-
+nichegrowing_fd<-readRDS(url("https://www.dropbox.com/scl/fi/xgi4mzlgwrw1k73n6sdkw/data_growing_niche.rds?rlkey=7gw2nh7mw67ind2dhs9mbfszy&dl=1"))
 prob_lambda_grow_post_fd<-c()
 for(l in 1:ncol(nichegrowing_fd)){
   prob_lambda_grow_post_fd[l]<-mean(nichegrowing_fd[,l]>1,na.rm=T)
@@ -1607,7 +1610,7 @@ scal_breaks <- c(seq(0, 1, length.out = 101))
 scal_breaks_diff <- c(seq(-0.2, 0.80, length.out = 101))
 scal_breaks_diff_dorm <- c(seq(-0.05, 0.30, length.out = 101))
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing.pdf",width=8,height=10,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing_r1.pdf",width=8,height=10,useDingbats = F)
 par(mar=c(5,5,2,2),mfrow=c(3,2))
 fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
@@ -1616,21 +1619,15 @@ fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors
 # contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,add=T,labcex=0.75,col="black") 
 mtext( "A",side = 3, adj = 0,cex=1.2)
 mtext("Female-dominant model (F)",side = 3, adj = 0.5,cex=1,line=0.3)
-text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=2)
-text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=2)
-text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=2)
-text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Growing season precip",ylab="Growing season tem",main="",breaks=scal_breaks,cex.lab=1.2,
+
+fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,col=topo.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
                    legend.args=list(text=expression(paste("Pr (",lambda, ">1)")), side=3, font=2, line=0.3, cex=0.5))  
 # contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_fd,add=T,labcex=0.75,col="black") 
 mtext( "B",side = 3, adj = 0,cex=1.2)
 mtext("Female-dominant model (F)",side = 3, adj = 0.5,cex=1,line=0.3)
-text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=2)
-text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=2)
-text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)
-text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
+
 fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_2sex,col=topo.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
@@ -1638,10 +1635,7 @@ fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_2sex,col=topo.colo
 # contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_2sex,add=T,labcex=0.75,col="black") 
 mtext( "C",side = 3, adj = 0,cex=1.2)
 mtext("Two-sex model (FM)",side = 3, adj = 0.5,cex=1,line=0.3)
-text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=2)
-text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=2)
-text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=2)
-text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
+
 fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_2sex,col=topo.colors(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
                    axis.args=list(cex.axis=0.6),
@@ -1649,34 +1643,6 @@ fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_2sex,col=topo.colo
 # contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_2sex,add=T,labcex=0.75,col="black") 
 mtext( "D",side = 3, adj = 0,cex=1.2)
 mtext("Two-sex model (FM)",side = 3, adj = 0.5,cex=1,line=0.3)
-text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=2)
-text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=2)
-text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)
-text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,col=colorspace::diverge_hcl(100),xlab="Dormant season precip",ylab="Dormant season temp",main="" ,breaks=scal_breaks_diff_dorm,cex.lab=1.2,
-                   legend.width=1, legend.shrink=0.75,
-                   axis.args=list(cex.axis=0.6),
-                   legend.args=list(text=expression(paste(Delta, "Pr")), side=3, font=2, line=0.3, cex=0.5))  
-# contour(all_pptdorm_seq,all_tempdorm_seq,mtrx_diff_dorm,add=T,labcex=0.75,col="black") 
-mtext( "E",side = 3, adj = 0,cex=1.2)
-mtext("F-FM",side = 3, adj = 0.5,cex=1,line=0.3)
-text(x=x_current_d,y=y_current_d,label = paste0("+"),col="black",cex=2)
-text(x=x_past_d,y=y_past_d,label = paste0("o"),col="black",cex=2)
-text(x=x_miroc45_d,y=y_miroc45_d,label = paste0("*"),col="black",cex=2)
-text(x=x_miroc85_d,y=y_miroc85_d,label = paste0("-"),col="black",cex=2)
-fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,col=colorspace::diverge_hcl(100),xlab="Growing season precip",ylab="Growing season temp",main="",breaks=scal_breaks_diff,cex.lab=1.2,
-                   legend.width=1, legend.shrink=0.75,
-                   axis.args=list(cex.axis=0.6),
-                   legend.args=list(text=expression(paste(Delta, "Pr")), side=3, font=2, line=0.3, cex=0.5))  
-# contour(all_pptgrow_seq,all_tempgrow_seq,mtrx_diff_grow,add=T,labcex=0.75,col="black") 
-mtext( "F",side = 3, adj = 0,cex=1.2)
-mtext("F-FM",side = 3, adj = 0.5,cex=1,line=0.3)
-text(x=x_current_g,y=y_current_g,label = paste0("+"),col="black",cex=2)
-text(x=x_past_g,y=y_past_g,label = paste0("o"),col="black",cex=2)
-text(x=x_miroc45_g,y=y_miroc45_g,label = paste0("*"),col="black",cex=2)
-text(x=x_miroc85_g,y=y_miroc85_g,label = paste0("-"),col="black",cex=2)
-dev.off()
-
 # Density  plot----
 
 dx_dorm <- density(unique(prob_lambda_dorm_post_fd))
@@ -1684,23 +1650,33 @@ dy_dorm <- density(unique(prob_lambda_dorm_post))
 dx_grow <- density(unique(prob_lambda_grow_post_fd))
 dy_grow <- density(unique(prob_lambda_grow_post))
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Niche_overestimation.pdf",width=8,height=4,useDingbats = F)
-par(mar=c(5,5,1.5,0.5),mfrow=c(1,2))
-plot(dx_dorm, lwd = 2, main = "", xlab = expression("Pr " (lambda) > 1),xlim=c(0,1),ylim=c(0,1.5),
+plot(dx_dorm, lwd = 2, main = "", ylab="Density", xlab = expression("Pr " (lambda) > 1),cex.lab=1.2, xlim=c(0,0.965),ylim=c(0,1.5),
      col = "red")
-abline(v=mean(prob_lambda_dorm_post_fd),lty=2,col="red")
+abline(v=mean(prob_lambda_dorm_post_fd),lty=2,lwd = 2,col="red")
 polygon(dx_dorm, col = rgb(1, 0, 0, alpha = 0.5))
-mtext("Dormant season",side = 3, adj = 0.5,cex=1)
+mtext( "E",side = 3, adj = 0,cex=1.2)
+mtext("Dormant season",side = 3, adj = 0.5,cex=1,line=0.3)
 lines(dy_dorm, lwd = 2, col = "blue")
-abline(v=mean(prob_lambda_dorm_post),lty=2,col="blue")
+abline(v=mean(prob_lambda_dorm_post),lty=2,lwd = 2,col="blue")
 polygon(dy_dorm, col = rgb(0, 0, 1, alpha = 0.5))
+legend(-0.05,1.5,
+       legend=c("F","FM"),
+       lwd=c(2,2),lty=c(2,2),
+       col =c("red","blue"),
+       bty="n",cex=1.2)
 
-plot(dx_grow, lwd = 2, main = "", xlab = expression("Pr " (lambda) > 1),xlim=c(0,1),
-     col = "red")
-abline(v=mean(prob_lambda_grow_post_fd),lty=2,col="red")
+plot(dx_grow, lwd = 2, main = "", ylab="Density",xlab = expression("Pr " (lambda) > 1),xlim=c(0,0.965),
+     col = "red",cex.lab=1.2)
+abline(v=mean(prob_lambda_grow_post_fd),lty=2,lwd = 2,col="red")
 polygon(dx_grow, col = rgb(1, 0, 0, alpha = 0.5))
-mtext("Growing season",side = 3, adj = 0.5,cex=1)
+mtext( "F",side = 3, adj = 0,cex=1.2)
+mtext("Growing season",side = 3, adj = 0.5,cex=1,line=0.3)
 lines(dy_grow, lwd = 2, col = "blue")
-abline(v=mean(prob_lambda_grow_post),lty=2,col="blue")
+abline(v=mean(prob_lambda_grow_post),lty=2,lwd = 2,col="blue")
 polygon(dy_grow, col = rgb(0, 0, 1, alpha = 0.5))
+legend(0.05,1.75,
+       legend=c("F","FM"),
+       lwd=c(2,2),lty=c(2,2),
+       col =c("red","blue"),
+       bty="n",cex=1.2)
 dev.off()
