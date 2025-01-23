@@ -441,6 +441,39 @@ ppc_dens_overlay(data_sites_season$y_m, y_m_sim)+
 # dev.off()
 
 ## Posterior mean values for each vital rate -----
+summary(fit_allsites_season, pars=quote_bare(bsizesex_s,bsex_s,
+                               bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
+                               btempgrowpptgrowsex_s,btempdormpptdormsex_s,
+                               bpptgrow2sex_s,bpptdorm2sex_s,btempdorm2sex_s,
+                               btempgrow2sex_s), probs = c(0.025, 0.975))$summary
+
+summary(fit_allsites_season, pars=quote_bare(bsizesex_g,bsex_g,
+                                             bpptgrowsex_g,btempgrowsex_g,bpptdormsex_g,btempdormsex_g,
+                                             btempgrowpptgrowsex_g,btempdormpptdormsex_g,
+                                             bpptgrow2sex_g,bpptdorm2sex_g,btempdorm2sex_g,
+                                             btempgrow2sex_g), probs = c(0.025, 0.975))$summary
+summary(fit_allsites_season, pars=quote_bare(bsizesex_f,bsex_f,
+                                             bpptgrowsex_f,btempgrowsex_f,bpptdormsex_f,btempdormsex_f,
+                                             btempgrowpptgrowsex_f,btempdormpptdormsex_f,
+                                             bpptgrow2sex_f,bpptdorm2sex_f,btempdorm2sex_f,
+                                             btempgrow2sex_f), probs = c(0.025, 0.975))$summary
+
+
+
+
+remotes::install_github("mike-lawrence/ezStan")
+stan_summary(
+  fit_allsites_season,
+  pars = quote_bare(b0_s,bsizesex_s,btempgrowpptgrow_s,btempdormpptdorm_s,bsex_s,bpptdorm_s,
+                    bsize_s,bpptgrow_s,btempgrow_s,btempdorm_s,
+                    bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
+                    btempgrowpptgrowsex_s,btempdormpptdormsex_s,bpptgrow2_s,
+                    btempgrow2_s,btempdorm2_s,bpptgrow2sex_s,bpptdorm2_s,bpptdorm2sex_s,btempdorm2sex_s,
+                    btempgrow2sex_s),
+  probs = c(0.025, 0.975)
+)
+
+# Estimates plots ----
 posterior_season <- as.array(fit_allsites_season)
 color_scheme_set("orange")
 surv_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_s,bsizesex_s,btempgrowpptgrow_s,btempdormpptdorm_s,bsex_s,bpptdorm_s,
@@ -448,7 +481,7 @@ surv_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_s,bsizesex_s,bt
                                                               bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
                                                               btempgrowpptgrowsex_s,btempdormpptdormsex_s,bpptgrow2_s,
                                                               btempgrow2_s,btempdorm2_s,bpptgrow2sex_s,bpptdorm2_s,bpptdorm2sex_s,btempdorm2sex_s,
-                                                              btempgrow2sex_s)) + 
+                                                              btempgrow2sex_s),prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_s","bsex_s", "bsize_s","bsizesex_s",
                                        "bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s",
                                        "bpptgrowsex_s","bpptdormsex_s", "btempdormsex_s","btempgrowsex_s",
@@ -503,7 +536,7 @@ grow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_g,bt
                                                               bpptgrowsex_g,btempgrowsex_g,bpptdormsex_g,btempdormsex_g,
                                                               btempgrowpptgrowsex_g,btempdormpptdormsex_g,bpptgrow2_g,
                                                               btempgrow2_g,btempdorm2_g,bpptgrow2sex_g,bpptdorm2_g,bpptdorm2sex_g,btempdorm2sex_g,
-                                                              btempgrow2sex_g)) + 
+                                                              btempgrow2sex_g),prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_g","bsex_g", "bsize_g","bsizesex_g",
                                        "bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g",
                                        "bpptgrowsex_g","bpptdormsex_g", "btempdormsex_g","btempgrowsex_g",
@@ -839,33 +872,1003 @@ via_coef <- rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d))
 # sample vital rate functions from the join posterior
 pptgrow_seq <- seq(min(poar_surv_binned$pptgrow),max(poar_surv_binned$pptgrow),length.out=30)
 n_post_draws <- 2000
+post_draws <- sample.int(length(surv_coef$b0_s), n_post_draws)
+fem_s_post_pptgrow <- fem_g_post_pptgrow <- fem_f_post_pptgrow<- fem_p_post_pptgrow <-male_s_post_pptgrow <- male_g_post_pptgrow <- male_f_post_pptgrow<- male_p_post_pptgrow<- array(NA,dim=c(size_bin_num,length(pptgrow_seq),n_post_draws))
+for(p in 1:n_post_draws){
+  for(i in 1:size_bin_num){
+    s=1;      
+    fem_s <- invlogit((surv_coef$b0_s[post_draws[p]]) + 
+                        (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i]+
+                        (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                        (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                        (surv_coef$bpptgrow_s[post_draws[p]]) * pptgrow_seq +
+                        (surv_coef$bpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
+                        (surv_coef$btempgrow_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                        (surv_coef$btempdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        (surv_coef$bpptgrowsex_s[post_draws[p]]) * pptgrow_seq * (s-1) +
+                        (surv_coef$bpptdormsex_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
+                        (surv_coef$btempgrowsex_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                        (surv_coef$btempdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempdormpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * pptgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                        (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * pptgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                        (surv_coef$bpptgrow2_s[post_draws[p]]) * (pptgrow_seq^2) +
+                        (surv_coef$bpptdorm2_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 +
+                        (surv_coef$btempgrow2_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 +
+                        (surv_coef$btempdorm2_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 +
+                        (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                        (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 * (s-1) +
+                        (surv_coef$btempgrow2sex_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
+                        (surv_coef$btempdorm2sex_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    fem_g <- exp((grow_coef$b0_g[post_draws[p]]) + 
+                   (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i]+
+                   (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                   (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                   (grow_coef$bpptgrow_g[post_draws[p]]) * pptgrow_seq +
+                   (grow_coef$bpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  +
+                   (grow_coef$btempgrow_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                   (grow_coef$btempdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                   (grow_coef$bpptgrowsex_g[post_draws[p]]) * pptgrow_seq * (s-1) +
+                   (grow_coef$bpptdormsex_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  * (s-1) +
+                   (grow_coef$btempgrowsex_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                   (grow_coef$btempdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempdormpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                   (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * pptgrow_seq * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                   (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * pptgrow_seq * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s]  * (s-1) +
+                   (grow_coef$bpptgrow2_g[post_draws[p]]) * (pptgrow_seq^2) +
+                   (grow_coef$bpptdorm2_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 +
+                   (grow_coef$btempgrow2_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 +
+                   (grow_coef$btempdorm2_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 +
+                   (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                   (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                   (grow_coef$btempgrow2sex_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                   (grow_coef$btempdorm2sex_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    fem_f <- invlogit((flow_coef$b0_f[post_draws[p]]) + 
+                        (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] +
+                        (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                        (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                        (flow_coef$bpptgrow_f[post_draws[p]]) * pptgrow_seq +
+                        (flow_coef$bpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  +
+                        (flow_coef$btempgrow_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                        (flow_coef$btempdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                        (flow_coef$bpptgrowsex_f[post_draws[p]]) * pptgrow_seq * (s-1) +
+                        (flow_coef$bpptdormsex_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  * (s-1) +
+                        (flow_coef$btempgrowsex_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                        (flow_coef$btempdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempdormpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                        (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * pptgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                        (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempgrowpptgrowsex_f)[post_draws[p]] * pptgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s]  * (s-1) +
+                        (flow_coef$bpptgrow2_f[post_draws[p]]) * (pptgrow_seq^2) +
+                        (flow_coef$bpptdorm2_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 +
+                        (flow_coef$btempgrow2_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 +
+                        (flow_coef$btempdorm2_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 +
+                        (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                        (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                        (flow_coef$btempgrow2sex_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                        (flow_coef$btempdorm2sex_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
+                      
+    )
+    
+    fem_p <- exp((panic_coef$b0_p[post_draws[p]]) + 
+                   (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i]+
+                   (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                   (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                   (panic_coef$bpptgrow_p[post_draws[p]]) * pptgrow_seq +
+                   (panic_coef$bpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  +
+                   (panic_coef$btempgrow_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                   (panic_coef$btempdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                   (panic_coef$bpptgrowsex_p[post_draws[p]]) * pptgrow_seq * (s-1) +
+                   (panic_coef$bpptdormsex_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  * (s-1) +
+                   (panic_coef$btempgrowsex_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                   (panic_coef$btempdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempdormpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                   (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * pptgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                   (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * pptgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s]  * (s-1) +
+                   (panic_coef$bpptgrow2_p[post_draws[p]]) * (pptgrow_seq^2) +
+                   (panic_coef$bpptdorm2_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
+                   (panic_coef$btempgrow2_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                   (panic_coef$btempdorm2_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 +
+                   (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                   (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +
+                   (panic_coef$btempgrow2sex_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 * (s-1) +
+                   (panic_coef$btempdorm2sex_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    s=2;       
+    male_s <- invlogit((surv_coef$b0_s[post_draws[p]]) + 
+                         (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i]+
+                         (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                         (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                         (surv_coef$bpptgrow_s[post_draws[p]]) * pptgrow_seq +
+                         (surv_coef$bpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
+                         (surv_coef$btempgrow_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                         (surv_coef$btempdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                         (surv_coef$bpptgrowsex_s[post_draws[p]]) * pptgrow_seq * (s-1) +
+                         (surv_coef$bpptdormsex_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
+                         (surv_coef$btempgrowsex_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                         (surv_coef$btempdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                         (surv_coef$btempdormpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                         (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * pptgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                         (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                         (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * pptgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s]  * (s-1) +
+                         (surv_coef$bpptgrow2_s[post_draws[p]]) * (pptgrow_seq^2) +
+                         (surv_coef$bpptdorm2_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 +
+                         (surv_coef$btempgrow2_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 +
+                         (surv_coef$btempdorm2_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 +
+                         (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                         (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 * (s-1) +
+                         (surv_coef$btempgrow2sex_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
+                         (surv_coef$btempdorm2sex_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    male_g <- exp((grow_coef$b0_g[post_draws[p]]) + 
+                    (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i]+
+                    (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                    (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                    (grow_coef$bpptgrow_g[post_draws[p]]) * pptgrow_seq +
+                    (grow_coef$bpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  +
+                    (grow_coef$btempgrow_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                    (grow_coef$btempdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                    (grow_coef$bpptgrowsex_g[post_draws[p]]) * pptgrow_seq * (s-1) +
+                    (grow_coef$bpptdormsex_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  * (s-1) +
+                    (grow_coef$btempgrowsex_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                    (grow_coef$btempdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempdormpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                    (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * pptgrow_seq * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                    (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempgrowpptgrowsex_g)[post_draws[p]] * pptgrow_seq * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s]  * (s-1) +
+                    (grow_coef$bpptgrow2_g[post_draws[p]]) * (pptgrow_seq^2) +
+                    (grow_coef$bpptdorm2_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 +
+                    (grow_coef$btempgrow2_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 +
+                    (grow_coef$btempdorm2_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 +
+                    (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                    (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                    (grow_coef$btempgrow2sex_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                    (grow_coef$btempdorm2sex_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
+                  
+    )
+    
+    male_f <- invlogit((flow_coef$b0_f[post_draws[p]]) + 
+                         (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i]+
+                         (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                         (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                         (flow_coef$bpptgrow_f[post_draws[p]]) * pptgrow_seq +
+                         (flow_coef$bpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  +
+                         (flow_coef$btempgrow_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                         (flow_coef$btempdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                         (flow_coef$bpptgrowsex_f[post_draws[p]]) * pptgrow_seq * (s-1) +
+                         (flow_coef$bpptdormsex_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  * (s-1) +
+                         (flow_coef$btempgrowsex_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                         (flow_coef$btempdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempdormpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                         (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * pptgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                         (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempgrowpptgrowsex_f)[post_draws[p]] * pptgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s]  * (s-1) +
+                         (flow_coef$bpptgrow2_f[post_draws[p]]) * (pptgrow_seq^2) +
+                         (flow_coef$bpptdorm2_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 +
+                         (flow_coef$btempgrow2_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 +
+                         (flow_coef$btempdorm2_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 +
+                         (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                         (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                         (flow_coef$btempgrow2sex_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                         (flow_coef$btempdorm2sex_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    male_p <- exp((panic_coef$b0_p[post_draws[p]]) + 
+                    (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i]+
+                    (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                    (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                    (panic_coef$bpptgrow_p[post_draws[p]]) * pptgrow_seq +
+                    (panic_coef$bpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  +
+                    (panic_coef$btempgrow_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                    (panic_coef$btempdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                    (panic_coef$bpptgrowsex_p[post_draws[p]]) * pptgrow_seq * (s-1) +
+                    (panic_coef$bpptdormsex_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  * (s-1) +
+                    (panic_coef$btempgrowsex_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                    (panic_coef$btempdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempdormpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                    (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * pptgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                    (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * pptgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s]  * (s-1) +
+                    (panic_coef$bpptgrow2_p[post_draws[p]]) * (pptgrow_seq^2) +
+                    (panic_coef$bpptdorm2_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
+                    (panic_coef$btempgrow2_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                    (panic_coef$btempdorm2_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 +
+                    (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (pptgrow_seq^2) * (s-1) +
+                    (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +
+                    (panic_coef$btempgrow2sex_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 * (s-1) +
+                    (panic_coef$btempdorm2sex_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
+                  
+    )
+    fem_s_post_pptgrow[i,,p] <-  fem_s
+    fem_g_post_pptgrow[i,,p] <-  fem_g
+    fem_f_post_pptgrow[i,,p] <-  fem_f
+    fem_p_post_pptgrow[i,,p] <-  fem_p
+    male_s_post_pptgrow[i,,p] <-  male_s
+    male_g_post_pptgrow[i,,p] <-  male_g
+    male_f_post_pptgrow[i,,p] <-  male_f
+    male_p_post_pptgrow[i,,p] <-  male_p
+  }
+}
+
+fem_s_25_pptgrow <-fem_g_25_pptgrow<-fem_f_25_pptgrow<-fem_p_25_pptgrow<-male_s_25_pptgrow <-male_g_25_pptgrow<-male_f_25_pptgrow<-male_p_25_pptgrow  <- matrix(NA,2,length(pptgrow_seq))
+
+for(s in 1:size_bin_num){
+  for(l in 1:length(pptgrow_seq)){
+    fem_s_25_pptgrow[,l] <- quantile(fem_s_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    male_s_25_pptgrow[,l] <- quantile(male_s_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    
+    fem_g_25_pptgrow[,l] <- quantile(fem_g_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    male_g_25_pptgrow[,l] <- quantile(male_g_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    
+    fem_f_25_pptgrow[,l] <- quantile(fem_f_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    male_f_25_pptgrow[,l] <- quantile(male_f_post_pptgrow[s,l,],probs=c(0.375,0.625))
+ 
+    fem_p_25_pptgrow[,l] <- quantile(fem_p_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    male_p_25_pptgrow[,l] <- quantile(male_p_post_pptgrow[s,l,],probs=c(0.375,0.625))
+  }
+}
+
 ## Temperature of the growing season 
 # sample vital rate functions from the join posterior
 tempgrow_seq <- seq(min(poar_surv_binned$tempgrow),max(poar_surv_binned$tempgrow),length.out=30)
+fem_s_post_tempgrow <- fem_g_post_tempgrow <- fem_f_post_tempgrow<- fem_p_post_tempgrow <-male_s_post_tempgrow <- male_g_post_tempgrow <- male_f_post_tempgrow<- male_p_post_tempgrow<- array(NA,dim=c(size_bin_num,length(tempgrow_seq),n_post_draws))
+for(p in 1:n_post_draws){
+  for(i in 1:size_bin_num){
+    s=1;      
+    fem_s <-invlogit((surv_coef$b0_s[post_draws[p]]) +
+                       (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] +
+                       (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                       (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                       (surv_coef$bpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
+                       (surv_coef$bpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
+                       (surv_coef$btempgrow_s[post_draws[p]]) * tempgrow_seq +
+                       (surv_coef$btempdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                       (surv_coef$bpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
+                       (surv_coef$bpptdormsex_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
+                       (surv_coef$btempdormpptdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                       (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * tempgrow_seq * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
+                       (surv_coef$btempgrowsex_s[post_draws[p]]) * tempgrow_seq * (s-1) +
+                       (surv_coef$btempdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                       (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                       (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * tempgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s]  * (s-1) +
+                       (surv_coef$bpptgrow2_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 +
+                       (surv_coef$bpptdorm2_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 +
+                       (surv_coef$btempgrow2_s[post_draws[p]]) * (tempgrow_seq^2) +
+                       (surv_coef$btempdorm2_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 +
+                       (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 * (s-1) +
+                       (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 * (s-1) +
+                       (surv_coef$btempgrow2sex_s[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                       (surv_coef$btempdorm2sex_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    fem_g <- exp((grow_coef$b0_g[post_draws[p]]) +
+                   (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] +
+                   (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                   (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                   (grow_coef$bpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s]  +
+                   (grow_coef$bpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  +
+                   (grow_coef$btempgrow_g[post_draws[p]]) * tempgrow_seq +
+                   (grow_coef$btempdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                   (grow_coef$bpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * (s-1) +
+                   (grow_coef$bpptdormsex_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  * (s-1) +
+                   (grow_coef$btempdormpptdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] +
+                   (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * tempgrow_seq * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] +
+                   (grow_coef$btempgrowsex_g[post_draws[p]]) * tempgrow_seq * (s-1) +
+                   (grow_coef$btempdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * tempgrow_seq * grow_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s]  * (s-1) +
+                   (grow_coef$bpptgrow2_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 +
+                   (grow_coef$bpptdorm2_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 +
+                   (grow_coef$btempgrow2_g[post_draws[p]]) * (tempgrow_seq^2) +
+                   (grow_coef$btempdorm2_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 +
+                   (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                   (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                   (grow_coef$btempgrow2sex_g[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                   (grow_coef$btempdorm2sex_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    fem_f <- invlogit((flow_coef$b0_f[post_draws[p]]) +
+                        (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] +
+                        (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                        (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                        (flow_coef$bpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s]  +
+                        (flow_coef$bpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  +
+                        (flow_coef$btempgrow_f[post_draws[p]]) * tempgrow_seq +
+                        (flow_coef$btempdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                        (flow_coef$bpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * (s-1) +
+                        (flow_coef$bpptdormsex_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  * (s-1) +
+                        (flow_coef$btempgrowsex_f[post_draws[p]]) * tempgrow_seq * (s-1) +
+                        (flow_coef$btempdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempdormpptdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  +
+                        (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * tempgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s]   +
+                        (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempgrowpptgrowsex_f[post_draws[p]]) * tempgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s]  * (s-1) +
+                        (flow_coef$bpptgrow2_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 +
+                        (flow_coef$bpptdorm2_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 +
+                        (flow_coef$btempgrow2_f[post_draws[p]]) * (tempgrow_seq^2) +
+                        (flow_coef$btempdorm2_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 +
+                        (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                        (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                        (flow_coef$btempgrow2sex_f[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                        (flow_coef$btempdorm2sex_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    
+    fem_p <- exp((panic_coef$b0_p[post_draws[p]]) +
+                   (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] +
+                   (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                   (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                   (panic_coef$bpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s]  +
+                   (panic_coef$bpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  +
+                   (panic_coef$btempgrow_p[post_draws[p]]) * tempgrow_seq +
+                   (panic_coef$btempdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                   (panic_coef$bpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * (s-1) +
+                   (panic_coef$bpptdormsex_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  * (s-1) +
+                   (panic_coef$btempgrowsex_p[post_draws[p]]) * tempgrow_seq * (s-1) +
+                   (panic_coef$btempdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempdormpptdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  +
+                   (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * tempgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s]   +
+                   (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * tempgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s]  * (s-1) +
+                   (panic_coef$bpptgrow2_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
+                   (panic_coef$bpptdorm2_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
+                   (panic_coef$btempgrow2_p[post_draws[p]]) * (tempgrow_seq^2) +
+                   (panic_coef$btempdorm2_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 +
+                   (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
+                   (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +
+                   (panic_coef$btempgrow2sex_p[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                   (panic_coef$btempdorm2sex_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    s=2;
+    male_s <-invlogit((surv_coef$b0_s[post_draws[p]]) +
+                        (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] +
+                        (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                        (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                        (surv_coef$bpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s]  +
+                        (surv_coef$bpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  +
+                        (surv_coef$btempgrow_s[post_draws[p]]) * tempgrow_seq +
+                        (surv_coef$btempdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        (surv_coef$bpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
+                        (surv_coef$bpptdormsex_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s]  * (s-1) +
+                        (surv_coef$btempdormpptdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                        (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * tempgrow_seq * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
+                        (surv_coef$btempgrowsex_s[post_draws[p]]) * tempgrow_seq * (s-1) +
+                        (surv_coef$btempdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * tempgrow_seq * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s]  * (s-1) +
+                        (surv_coef$bpptgrow2_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 +
+                        (surv_coef$bpptdorm2_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 +
+                        (surv_coef$btempgrow2_s[post_draws[p]]) * (tempgrow_seq^2) +
+                        (surv_coef$btempdorm2_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 +
+                        (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 * (s-1) +
+                        (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 * (s-1) +
+                        (surv_coef$btempgrow2sex_s[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                        (surv_coef$btempdorm2sex_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    male_g <- exp((grow_coef$b0_g[post_draws[p]]) +
+                    (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] +
+                    (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                    (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                    (grow_coef$bpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s]  +
+                    (grow_coef$bpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  +
+                    (grow_coef$btempgrow_g[post_draws[p]]) * tempgrow_seq +
+                    (grow_coef$btempdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                    (grow_coef$bpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * (s-1) +
+                    (grow_coef$bpptdormsex_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s]  * (s-1) +
+                    (grow_coef$btempdormpptdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] +
+                    (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * tempgrow_seq * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] +
+                    (grow_coef$btempgrowsex_g[post_draws[p]]) * tempgrow_seq * (s-1) +
+                    (grow_coef$btempdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * tempgrow_seq * grow_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s]  * (s-1) +
+                    (grow_coef$bpptgrow2_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 +
+                    (grow_coef$bpptdorm2_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 +
+                    (grow_coef$btempgrow2_g[post_draws[p]]) * (tempgrow_seq^2) +
+                    (grow_coef$btempdorm2_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 +
+                    (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                    (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                    (grow_coef$btempgrow2sex_g[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                    (grow_coef$btempdorm2sex_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    male_f <- invlogit((flow_coef$b0_f[post_draws[p]]) +
+                         (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] +
+                         (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                         (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                         (flow_coef$bpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s]  +
+                         (flow_coef$bpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  +
+                         (flow_coef$btempgrow_f[post_draws[p]]) * tempgrow_seq +
+                         (flow_coef$btempdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                         (flow_coef$bpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * (s-1) +
+                         (flow_coef$bpptdormsex_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  * (s-1) +
+                         (flow_coef$btempgrowsex_f[post_draws[p]]) * tempgrow_seq * (s-1) +
+                         (flow_coef$btempdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempdormpptdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s]  +
+                         (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * tempgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s]   +
+                         (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempgrowpptgrowsex_f[post_draws[p]]) * tempgrow_seq * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s]  * (s-1) +
+                         (flow_coef$bpptgrow2_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 +
+                         (flow_coef$bpptdorm2_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 +
+                         (flow_coef$btempgrow2_f[post_draws[p]]) * (tempgrow_seq^2) +
+                         (flow_coef$btempdorm2_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 +
+                         (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                         (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                         (flow_coef$btempgrow2sex_f[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                         (flow_coef$btempdorm2sex_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    male_p <- exp((panic_coef$b0_p[post_draws[p]]) +
+                    (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] +
+                    (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                    (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                    (panic_coef$bpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s]  +
+                    (panic_coef$bpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  +
+                    (panic_coef$btempgrow_p[post_draws[p]]) * tempgrow_seq +
+                    (panic_coef$btempdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                    (panic_coef$bpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * (s-1) +
+                    (panic_coef$bpptdormsex_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  * (s-1) +
+                    (panic_coef$btempgrowsex_p[post_draws[p]]) * tempgrow_seq * (s-1) +
+                    (panic_coef$btempdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempdormpptdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s]  +
+                    (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * tempgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s]   +
+                    (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * tempgrow_seq * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s]  * (s-1) +
+                    (panic_coef$bpptgrow2_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
+                    (panic_coef$bpptdorm2_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
+                    (panic_coef$btempgrow2_p[post_draws[p]]) * (tempgrow_seq^2) +
+                    (panic_coef$btempdorm2_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 +
+                    (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
+                    (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +
+                    (panic_coef$btempgrow2sex_p[post_draws[p]]) * (tempgrow_seq^2) * (s-1) +
+                    (panic_coef$btempdorm2sex_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    fem_s_post_tempgrow[i,,p] <-  fem_s
+    fem_g_post_tempgrow[i,,p] <-  fem_g
+    fem_f_post_tempgrow[i,,p] <-  fem_f
+    fem_p_post_tempgrow[i,,p] <-  fem_p
+    male_s_post_tempgrow[i,,p] <-  male_s
+    male_g_post_tempgrow[i,,p] <-  male_g
+    male_f_post_tempgrow[i,,p] <-  male_f
+    male_p_post_tempgrow[i,,p] <-  male_p
+  }
+}
+
+fem_s_25_tempgrow <-fem_g_25_tempgrow<-fem_f_25_tempgrow<-fem_p_25_tempgrow<-male_s_25_tempgrow <-male_g_25_tempgrow<-male_f_25_tempgrow<-male_p_25_tempgrow  <- matrix(NA,2,length(tempgrow_seq))
+
+for(s in 1:size_bin_num){
+  for(l in 1:length(tempgrow_seq)){
+    fem_s_25_tempgrow[,l] <- quantile(fem_s_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    male_s_25_tempgrow[,l] <- quantile(male_s_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    
+    fem_g_25_tempgrow[,l] <- quantile(fem_g_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    male_g_25_tempgrow[,l] <- quantile(male_g_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    
+    fem_f_25_tempgrow[,l] <- quantile(fem_f_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    male_f_25_tempgrow[,l] <- quantile(male_f_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    
+    fem_p_25_tempgrow[,l] <- quantile(fem_p_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    male_p_25_tempgrow[,l] <- quantile(male_p_post_tempgrow[s,l,],probs=c(0.375,0.625))
+  }
+}
 ## Precipitation of the dormant season
 # sample vital rate functions from the join posterior
 pptdorm_seq <- seq(min(poar_surv_binned$pptdorm),max(poar_surv_binned$pptdorm),length.out=30)
+
+fem_s_post_pptdorm <- fem_g_post_pptdorm <- fem_f_post_pptdorm<- fem_p_post_pptdorm <-male_s_post_pptdorm <- male_g_post_pptdorm <- male_f_post_pptdorm<- male_p_post_pptdorm<- array(NA,dim=c(size_bin_num,length(pptdorm_seq),n_post_draws))
+
+for(p in 1:n_post_draws){
+  for(i in 1:size_bin_num){
+    s=1;      
+    fem_s <- invlogit((surv_coef$b0_s[post_draws[p]]) + 
+                        (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i]+
+                        (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                        (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                        (surv_coef$bpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
+                        (surv_coef$bpptdorm_s[post_draws[p]]) *  pptdorm_seq +
+                        (surv_coef$btempgrow_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                        (surv_coef$btempdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        (surv_coef$bpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
+                        (surv_coef$bpptdormsex_s[post_draws[p]]) * pptdorm_seq * (s-1) +
+                        (surv_coef$btempgrowsex_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                        (surv_coef$btempdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempdormpptdorm_s[post_draws[p]]) * pptdorm_seq * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                        (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                        (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                        (surv_coef$bpptgrow2_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 +
+                        (surv_coef$bpptdorm2_s[post_draws[p]]) * (pptdorm_seq^2) +
+                        (surv_coef$btempgrow2_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 +
+                        (surv_coef$btempdorm2_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 +
+                        (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 * (s-1) +
+                        (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                        (surv_coef$btempgrow2sex_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
+                        (surv_coef$btempdorm2sex_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    fem_g <- exp((grow_coef$b0_g[post_draws[p]]) + 
+                   (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i]+
+                   (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                   (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                   (grow_coef$bpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] +
+                   (grow_coef$bpptdorm_g[post_draws[p]]) *  pptdorm_seq +
+                   (grow_coef$btempgrow_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                   (grow_coef$btempdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                   (grow_coef$bpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * (s-1) +
+                   (grow_coef$bpptdormsex_g[post_draws[p]]) * pptdorm_seq * (s-1) +
+                   (grow_coef$btempgrowsex_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                   (grow_coef$btempdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempdormpptdorm_g[post_draws[p]]) * pptdorm_seq * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                   (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                   (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                   (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                   (grow_coef$bpptgrow2_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 +
+                   (grow_coef$bpptdorm2_g[post_draws[p]]) * (pptdorm_seq^2) +
+                   (grow_coef$btempgrow2_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 +
+                   (grow_coef$btempdorm2_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 +
+                   (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                   (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                   (grow_coef$btempgrow2sex_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                   (grow_coef$btempdorm2sex_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    fem_f <- invlogit((flow_coef$b0_f[post_draws[p]]) + 
+                        (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i]+
+                        (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                        (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                        (flow_coef$bpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] +
+                        (flow_coef$bpptdorm_f[post_draws[p]]) *  pptdorm_seq +
+                        (flow_coef$btempgrow_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                        (flow_coef$btempdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                        (flow_coef$bpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * (s-1) +
+                        (flow_coef$bpptdormsex_f[post_draws[p]]) * pptdorm_seq * (s-1) +
+                        (flow_coef$btempgrowsex_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                        (flow_coef$btempdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempdormpptdorm_f[post_draws[p]]) * pptdorm_seq * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                        (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                        (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                        (flow_coef$btempgrowpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                        (flow_coef$bpptgrow2_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 +
+                        (flow_coef$bpptdorm2_f[post_draws[p]]) * (pptdorm_seq^2) +
+                        (flow_coef$btempgrow2_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 +
+                        (flow_coef$btempdorm2_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 +
+                        (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                        (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                        (flow_coef$btempgrow2sex_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                        (flow_coef$btempdorm2sex_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    fem_p <- exp((panic_coef$b0_p[post_draws[p]]) + 
+                   (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i]+
+                   (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                   (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                   (panic_coef$bpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] +
+                   (panic_coef$bpptdorm_p[post_draws[p]]) *  pptdorm_seq +
+                   (panic_coef$btempgrow_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                   (panic_coef$btempdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                   (panic_coef$bpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * (s-1) +
+                   (panic_coef$bpptdormsex_p[post_draws[p]]) * pptdorm_seq * (s-1) +
+                   (panic_coef$btempgrowsex_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                   (panic_coef$btempdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempdormpptdorm_p[post_draws[p]]) * pptdorm_seq * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                   (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                   (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                   (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                   (panic_coef$bpptgrow2_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
+                   (panic_coef$bpptdorm2_p[post_draws[p]]) * (pptdorm_seq^2) +
+                   (panic_coef$btempgrow2_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                   (panic_coef$btempdorm2_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 +
+                   (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
+                   (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                   (panic_coef$btempgrow2sex_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 * (s-1) +
+                   (panic_coef$btempdorm2sex_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    s=2;       
+    male_s <- invlogit((surv_coef$b0_s[post_draws[p]]) + 
+                         (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i]+
+                         (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                         (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                         (surv_coef$bpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
+                         (surv_coef$bpptdorm_s[post_draws[p]]) *  pptdorm_seq +
+                         (surv_coef$btempgrow_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                         (surv_coef$btempdorm_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                         (surv_coef$bpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
+                         (surv_coef$bpptdormsex_s[post_draws[p]]) * pptdorm_seq * (s-1) +
+                         (surv_coef$btempgrowsex_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                         (surv_coef$btempdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * (s-1) +
+                         (surv_coef$btempdormpptdorm_s[post_draws[p]]) * pptdorm_seq * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                         (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                         (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                         (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                         (surv_coef$bpptgrow2_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 +
+                         (surv_coef$bpptdorm2_s[post_draws[p]]) * (pptdorm_seq^2) +
+                         (surv_coef$btempgrow2_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 +
+                         (surv_coef$btempdorm2_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 +
+                         (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 * (s-1) +
+                         (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                         (surv_coef$btempgrow2sex_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
+                         (surv_coef$btempdorm2sex_s[post_draws[p]]) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    male_g <- exp((grow_coef$b0_g[post_draws[p]]) + 
+                    (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i]+
+                    (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                    (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                    (grow_coef$bpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] +
+                    (grow_coef$bpptdorm_g[post_draws[p]]) *  pptdorm_seq +
+                    (grow_coef$btempgrow_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                    (grow_coef$btempdorm_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                    (grow_coef$bpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * (s-1) +
+                    (grow_coef$bpptdormsex_g[post_draws[p]]) * pptdorm_seq * (s-1) +
+                    (grow_coef$btempgrowsex_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                    (grow_coef$btempdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempdormpptdorm_g[post_draws[p]]) * pptdorm_seq * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                    (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                    (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                    (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                    (grow_coef$bpptgrow2_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 +
+                    (grow_coef$bpptdorm2_g[post_draws[p]]) * (pptdorm_seq^2) +
+                    (grow_coef$btempgrow2_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 +
+                    (grow_coef$btempdorm2_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 +
+                    (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                    (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                    (grow_coef$btempgrow2sex_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                    (grow_coef$btempdorm2sex_g[post_draws[p]]) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    male_f <- invlogit((flow_coef$b0_f[post_draws[p]]) + 
+                         (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i]+
+                         (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                         (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                         (flow_coef$bpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] +
+                         (flow_coef$bpptdorm_f[post_draws[p]]) *  pptdorm_seq +
+                         (flow_coef$btempgrow_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                         (flow_coef$btempdorm_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                         (flow_coef$bpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * (s-1) +
+                         (flow_coef$bpptdormsex_f[post_draws[p]]) * pptdorm_seq * (s-1) +
+                         (flow_coef$btempgrowsex_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                         (flow_coef$btempdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempdormpptdorm_f[post_draws[p]]) * pptdorm_seq * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                         (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                         (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                         (flow_coef$btempgrowpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                         (flow_coef$bpptgrow2_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 +
+                         (flow_coef$bpptdorm2_f[post_draws[p]]) * (pptdorm_seq^2) +
+                         (flow_coef$btempgrow2_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 +
+                         (flow_coef$btempdorm2_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 +
+                         (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                         (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                         (flow_coef$btempgrow2sex_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                         (flow_coef$btempdorm2sex_f[post_draws[p]]) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    
+    
+    male_p <- exp((panic_coef$b0_p[post_draws[p]]) + 
+                    (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i]+
+                    (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                    (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                    (panic_coef$bpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] +
+                    (panic_coef$bpptdorm_p[post_draws[p]]) *  pptdorm_seq +
+                    (panic_coef$btempgrow_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                    (panic_coef$btempdorm_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                    (panic_coef$bpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * (s-1) +
+                    (panic_coef$bpptdormsex_p[post_draws[p]]) * pptdorm_seq * (s-1) +
+                    (panic_coef$btempgrowsex_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                    (panic_coef$btempdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempdormpptdorm_p[post_draws[p]]) * pptdorm_seq * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                    (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                    (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] * pptdorm_seq * (s-1) +
+                    (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                    (panic_coef$bpptgrow2_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
+                    (panic_coef$bpptdorm2_p[post_draws[p]]) * (pptdorm_seq^2) +
+                    (panic_coef$btempgrow2_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                    (panic_coef$btempdorm2_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 +
+                    (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
+                    (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (pptdorm_seq^2) * (s-1) +
+                    (panic_coef$btempgrow2sex_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 * (s-1) +
+                    (panic_coef$btempdorm2sex_p[post_draws[p]]) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
+    )
+    fem_s_post_pptdorm[i,,p] <-  fem_s
+    fem_g_post_pptdorm[i,,p] <-  fem_g
+    fem_f_post_pptdorm[i,,p] <-  fem_f
+    fem_p_post_pptdorm[i,,p] <-  fem_p
+    male_s_post_pptdorm[i,,p] <-  male_s
+    male_g_post_pptdorm[i,,p] <-  male_g
+    male_f_post_pptdorm[i,,p] <-  male_f
+    male_p_post_pptdorm[i,,p] <-  male_p
+  }
+}
+
+fem_s_25_pptdorm <-fem_g_25_pptdorm<-fem_f_25_pptdorm<-fem_p_25_pptdorm<-male_s_25_pptdorm <-male_g_25_pptdorm<-male_f_25_pptdorm<-male_p_25_pptdorm  <- matrix(NA,2,length(pptdorm_seq))
+
+for(s in 1:size_bin_num){
+  for(l in 1:length(pptdorm_seq)){
+    fem_s_25_pptdorm[,l] <- quantile(fem_s_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    male_s_25_pptdorm[,l] <- quantile(male_s_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    
+    fem_g_25_pptdorm[,l] <- quantile(fem_g_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    male_g_25_pptdorm[,l] <- quantile(male_g_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    
+    fem_f_25_pptdorm[,l] <- quantile(fem_f_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    male_f_25_pptdorm[,l] <- quantile(male_f_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    
+    fem_p_25_pptdorm[,l] <- quantile(fem_p_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    male_p_25_pptdorm[,l] <- quantile(male_p_post_pptdorm[s,l,],probs=c(0.375,0.625))
+  }
+}
 ## Temperature of the dormant season
 # sample vital rate functions from the join posterior
 tempdorm_seq <- seq(min(poar_surv_binned$tempdorm),max(poar_surv_binned$tempdorm),length.out=30)
+
+fem_s_post_tempdorm <- fem_g_post_tempdorm <- fem_f_post_tempdorm<- fem_p_post_tempdorm <-male_s_post_tempdorm <- male_g_post_tempdorm <- male_f_post_tempdorm<- male_p_post_tempdorm<- array(NA,dim=c(size_bin_num,length(tempdorm_seq),n_post_draws))
+
+for(p in 1:n_post_draws){
+  for(i in 1:size_bin_num){
+    s=1;      
+    fem_s <- invlogit((surv_coef$b0_s[post_draws[p]]) + 
+                        (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] +
+                        (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                        (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                        (surv_coef$bpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
+                        (surv_coef$bpptdorm_s[post_draws[p]]) *  surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                        (surv_coef$btempgrow_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                        (surv_coef$btempdorm_s[post_draws[p]]) * tempdorm_seq +
+                        (surv_coef$bpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
+                        (surv_coef$bpptdormsex_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempgrowsex_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                        (surv_coef$btempdormsex_s[post_draws[p]]) * tempdorm_seq * (s-1) +
+                        (surv_coef$btempdormpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                        (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                        (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * tempdorm_seq * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                        (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                        (surv_coef$bpptgrow2_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 +
+                        (surv_coef$bpptdorm2_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 +
+                        (surv_coef$btempgrow2_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 +
+                        (surv_coef$btempdorm2_s[post_draws[p]]) * (tempdorm_seq^2) +
+                        (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 * (s-1) +
+                        (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 * (s-1) +
+                        (surv_coef$btempgrow2sex_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
+                        (surv_coef$btempdorm2sex_s[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    fem_g <- exp((grow_coef$b0_g[post_draws[p]]) + 
+                   (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] +
+                   (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                   (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                   (grow_coef$bpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] +
+                   (grow_coef$bpptdorm_g[post_draws[p]]) *  grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] +
+                   (grow_coef$btempgrow_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                   (grow_coef$btempdorm_g[post_draws[p]]) * tempdorm_seq +
+                   (grow_coef$bpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * (s-1) +
+                   (grow_coef$bpptdormsex_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempgrowsex_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                   (grow_coef$btempdormsex_g[post_draws[p]]) * tempdorm_seq * (s-1) +
+                   (grow_coef$btempdormpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                   (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                   (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * tempdorm_seq * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                   (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                   (grow_coef$bpptgrow2_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 +
+                   (grow_coef$bpptdorm2_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 +
+                   (grow_coef$btempgrow2_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 +
+                   (grow_coef$btempdorm2_g[post_draws[p]]) * (tempdorm_seq^2) +
+                   (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                   (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                   (grow_coef$btempgrow2sex_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                   (grow_coef$btempdorm2sex_g[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    fem_f <- invlogit((flow_coef$b0_f[post_draws[p]]) + 
+                        (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] +
+                        (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                        (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                        (flow_coef$bpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] +
+                        (flow_coef$bpptdorm_f[post_draws[p]]) *  flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] +
+                        (flow_coef$btempgrow_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                        (flow_coef$btempdorm_f[post_draws[p]]) * tempdorm_seq +
+                        (flow_coef$bpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * (s-1) +
+                        (flow_coef$bpptdormsex_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempgrowsex_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                        (flow_coef$btempdormsex_f[post_draws[p]]) * tempdorm_seq * (s-1) +
+                        (flow_coef$btempdormpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                        (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                        (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * tempdorm_seq * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                        (flow_coef$btempgrowpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                        (flow_coef$bpptgrow2_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 +
+                        (flow_coef$bpptdorm2_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 +
+                        (flow_coef$btempgrow2_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 +
+                        (flow_coef$btempdorm2_f[post_draws[p]]) * (tempdorm_seq^2) +
+                        (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                        (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                        (flow_coef$btempgrow2sex_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                        (flow_coef$btempdorm2sex_f[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    fem_p <- exp((panic_coef$b0_p[post_draws[p]]) + 
+                   (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] +
+                   (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                   (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                   (panic_coef$bpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] +
+                   (panic_coef$bpptdorm_p[post_draws[p]]) *  panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] +
+                   (panic_coef$btempgrow_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                   (panic_coef$btempdorm_p[post_draws[p]]) * tempdorm_seq +
+                   (panic_coef$bpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * (s-1) +
+                   (panic_coef$bpptdormsex_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempgrowsex_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                   (panic_coef$btempdormsex_p[post_draws[p]]) * tempdorm_seq * (s-1) +
+                   (panic_coef$btempdormpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                   (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                   (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * tempdorm_seq * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                   (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                   (panic_coef$bpptgrow2_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
+                   (panic_coef$bpptdorm2_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
+                   (panic_coef$btempgrow2_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                   (panic_coef$btempdorm2_p[post_draws[p]]) * (tempdorm_seq^2) +
+                   (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
+                   (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +
+                   (panic_coef$btempgrow2sex_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 * (s-1) +
+                   (panic_coef$btempdorm2sex_p[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    s=2;       
+    male_s <- invlogit((surv_coef$b0_s[post_draws[p]]) + 
+                         (surv_coef$bsize_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] +
+                         (surv_coef$bsizesex_s[post_draws[p]]) * surv_mean_sizes$size[surv_mean_sizes$Sex==s & surv_mean_sizes$size_bin==i] * (s-1) +
+                         (surv_coef$bsex_s[post_draws[p]]) * (s-1) +
+                         (surv_coef$bpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] +
+                         (surv_coef$bpptdorm_s[post_draws[p]]) *  surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] +
+                         (surv_coef$btempgrow_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                         (surv_coef$btempdorm_s[post_draws[p]]) * tempdorm_seq +
+                         (surv_coef$bpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * (s-1) +
+                         (surv_coef$bpptdormsex_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                         (surv_coef$btempgrowsex_s[post_draws[p]]) * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                         (surv_coef$btempdormsex_s[post_draws[p]]) * tempdorm_seq * (s-1) +
+                         (surv_coef$btempdormpptdorm_s[post_draws[p]]) * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s] +
+                         (surv_coef$btempgrowpptgrow_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] +
+                         (surv_coef$btempdormpptdormsex_s[post_draws[p]]) * tempdorm_seq * surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s] * (s-1) +
+                         (surv_coef$btempgrowpptgrowsex_s[post_draws[p]]) * surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s] * surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s] * (s-1) +
+                         (surv_coef$bpptgrow2_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 +
+                         (surv_coef$bpptdorm2_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 +
+                         (surv_coef$btempgrow2_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 +
+                         (surv_coef$btempdorm2_s[post_draws[p]]) * (tempdorm_seq^2) +
+                         (surv_coef$bpptgrow2sex_s[post_draws[p]]) * (surv_mean_pptgrow$pptgrow[surv_mean_pptgrow$Sex==s])^2 * (s-1) +
+                         (surv_coef$bpptdorm2sex_s[post_draws[p]]) * (surv_mean_pptdorm$pptdorm[surv_mean_pptdorm$Sex==s])^2 * (s-1) +
+                         (surv_coef$btempgrow2sex_s[post_draws[p]]) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
+                         (surv_coef$btempdorm2sex_s[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    male_g <- exp((grow_coef$b0_g[post_draws[p]]) + 
+                    (grow_coef$bsize_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] +
+                    (grow_coef$bsizesex_g[post_draws[p]]) * grow_mean_sizes$size[grow_mean_sizes$Sex==s & grow_mean_sizes$size_bin==i] * (s-1) +
+                    (grow_coef$bsex_g[post_draws[p]]) * (s-1) +
+                    (grow_coef$bpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] +
+                    (grow_coef$bpptdorm_g[post_draws[p]]) *  grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] +
+                    (grow_coef$btempgrow_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                    (grow_coef$btempdorm_g[post_draws[p]]) * tempdorm_seq +
+                    (grow_coef$bpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * (s-1) +
+                    (grow_coef$bpptdormsex_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempgrowsex_g[post_draws[p]]) * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                    (grow_coef$btempdormsex_g[post_draws[p]]) * tempdorm_seq * (s-1) +
+                    (grow_coef$btempdormpptdorm_g[post_draws[p]]) * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s] +
+                    (grow_coef$btempgrowpptgrow_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] +
+                    (grow_coef$btempdormpptdormsex_g[post_draws[p]]) * tempdorm_seq * grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s] * (s-1) +
+                    (grow_coef$btempgrowpptgrowsex_g[post_draws[p]]) * grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s] * grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s] * (s-1) +
+                    (grow_coef$bpptgrow2_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 +
+                    (grow_coef$bpptdorm2_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 +
+                    (grow_coef$btempgrow2_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 +
+                    (grow_coef$btempdorm2_g[post_draws[p]]) * (tempdorm_seq^2) +
+                    (grow_coef$bpptgrow2sex_g[post_draws[p]]) * (grow_mean_pptgrow$pptgrow[grow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                    (grow_coef$bpptdorm2sex_g[post_draws[p]]) * (grow_mean_pptdorm$pptdorm[grow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                    (grow_coef$btempgrow2sex_g[post_draws[p]]) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                    (grow_coef$btempdorm2sex_g[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    male_f <- invlogit((flow_coef$b0_f[post_draws[p]]) + 
+                         (flow_coef$bsize_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] +
+                         (flow_coef$bsizesex_f[post_draws[p]]) * flow_mean_sizes$size[flow_mean_sizes$Sex==s & flow_mean_sizes$size_bin==i] * (s-1) +
+                         (flow_coef$bsex_f[post_draws[p]]) * (s-1) +
+                         (flow_coef$bpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] +
+                         (flow_coef$bpptdorm_f[post_draws[p]]) *  flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] +
+                         (flow_coef$btempgrow_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                         (flow_coef$btempdorm_f[post_draws[p]]) * tempdorm_seq +
+                         (flow_coef$bpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * (s-1) +
+                         (flow_coef$bpptdormsex_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempgrowsex_f[post_draws[p]]) * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                         (flow_coef$btempdormsex_f[post_draws[p]]) * tempdorm_seq * (s-1) +
+                         (flow_coef$btempdormpptdorm_f[post_draws[p]]) * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s] +
+                         (flow_coef$btempgrowpptgrow_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] +
+                         (flow_coef$btempdormpptdormsex_f[post_draws[p]]) * tempdorm_seq * flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s] * (s-1) +
+                         (flow_coef$btempgrowpptgrowsex_f[post_draws[p]]) * flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s] * flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s] * (s-1) +
+                         (flow_coef$bpptgrow2_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 +
+                         (flow_coef$bpptdorm2_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 +
+                         (flow_coef$btempgrow2_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 +
+                         (flow_coef$btempdorm2_f[post_draws[p]]) * (tempdorm_seq^2) +
+                         (flow_coef$bpptgrow2sex_f[post_draws[p]]) * (flow_mean_pptgrow$pptgrow[flow_mean_pptgrow$Sex==s])^2 * (s-1) +
+                         (flow_coef$bpptdorm2sex_f[post_draws[p]]) * (flow_mean_pptdorm$pptdorm[flow_mean_pptdorm$Sex==s])^2 * (s-1) +
+                         (flow_coef$btempgrow2sex_f[post_draws[p]]) * (flow_mean_tempgrow$tempgrow[flow_mean_tempgrow$Sex==s])^2 * (s-1) +
+                         (flow_coef$btempdorm2sex_f[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    male_p <- exp((panic_coef$b0_p[post_draws[p]]) + 
+                    (panic_coef$bsize_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] +
+                    (panic_coef$bsizesex_p[post_draws[p]]) * panic_mean_sizes$size[panic_mean_sizes$Sex==s & panic_mean_sizes$size_bin==i] * (s-1) +
+                    (panic_coef$bsex_p[post_draws[p]]) * (s-1) +
+                    (panic_coef$bpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] +
+                    (panic_coef$bpptdorm_p[post_draws[p]]) *  panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] +
+                    (panic_coef$btempgrow_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                    (panic_coef$btempdorm_p[post_draws[p]]) * tempdorm_seq +
+                    (panic_coef$bpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * (s-1) +
+                    (panic_coef$bpptdormsex_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempgrowsex_p[post_draws[p]]) * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                    (panic_coef$btempdormsex_p[post_draws[p]]) * tempdorm_seq * (s-1) +
+                    (panic_coef$btempdormpptdorm_p[post_draws[p]]) * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s] +
+                    (panic_coef$btempgrowpptgrow_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] +
+                    (panic_coef$btempdormpptdormsex_p[post_draws[p]]) * tempdorm_seq * panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s] * (s-1) +
+                    (panic_coef$btempgrowpptgrowsex_p[post_draws[p]]) * panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s] * panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s] * (s-1) +
+                    (panic_coef$bpptgrow2_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 +
+                    (panic_coef$bpptdorm2_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 +
+                    (panic_coef$btempgrow2_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 +
+                    (panic_coef$btempdorm2_p[post_draws[p]]) * (tempdorm_seq^2) +
+                    (panic_coef$bpptgrow2sex_p[post_draws[p]]) * (panic_mean_pptgrow$pptgrow[panic_mean_pptgrow$Sex==s])^2 * (s-1) +
+                    (panic_coef$bpptdorm2sex_p[post_draws[p]]) * (panic_mean_pptdorm$pptdorm[panic_mean_pptdorm$Sex==s])^2 * (s-1) +
+                    (panic_coef$btempgrow2sex_p[post_draws[p]]) * (panic_mean_tempgrow$tempgrow[panic_mean_tempgrow$Sex==s])^2 * (s-1) +
+                    (panic_coef$btempdorm2sex_p[post_draws[p]]) * (tempdorm_seq^2) * (s-1)
+    )
+    
+    fem_s_post_tempdorm[i,,p] <-  fem_s
+    fem_g_post_tempdorm[i,,p] <-  fem_g
+    fem_f_post_tempdorm[i,,p] <-  fem_f
+    fem_p_post_tempdorm[i,,p] <-  fem_p
+    male_s_post_tempdorm[i,,p] <-  male_s
+    male_g_post_tempdorm[i,,p] <-  male_g
+    male_f_post_tempdorm[i,,p] <-  male_f
+    male_p_post_tempdorm[i,,p] <-  male_p
+  }
+}
+
+fem_s_25_tempdorm <-fem_g_25_tempdorm<-fem_f_25_tempdorm<-fem_p_25_tempdorm<-male_s_25_tempdorm <-male_g_25_tempdorm<-male_f_25_tempdorm<-male_p_25_tempdorm  <- matrix(NA,2,length(tempdorm_seq))
+
+for(s in 1:size_bin_num){
+  for(l in 1:length(tempdorm_seq)){
+    fem_s_25_tempdorm[,l] <- quantile(fem_s_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    male_s_25_tempdorm[,l] <- quantile(male_s_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    
+    fem_g_25_tempdorm[,l] <- quantile(fem_g_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    male_g_25_tempdorm[,l] <- quantile(male_g_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    
+    fem_f_25_tempdorm[,l] <- quantile(fem_f_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    male_f_25_tempdorm[,l] <- quantile(male_f_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    
+    fem_p_25_tempdorm[,l] <- quantile(fem_p_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    male_p_25_tempdorm[,l] <- quantile(male_p_post_tempdorm[s,l,],probs=c(0.375,0.625))
+  }
+}
 
 # set up figure
 sex_cols <- RColorBrewer::brewer.pal(8, "Dark2")[c(2,1)]
 sex_lty <- c(1,1)
 bin_shapes <- 15
-diff_col <- RColorBrewer::brewer.pal(8, "Dark2")[6]
-diff_alpha <- 0.35
+polygon_col <- RColorBrewer::brewer.pal(8, "Dark2")[c(2,1)]
+polygon_alpha <- 0.35
 graph<-list("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P")
 layout.matrix <- rbind(matrix(1:4, nrow = 1, ncol = 4, byrow = F),
                        matrix(5:8, nrow = 1, ncol = 4, byrow = F),
                        matrix(9:12, nrow = 1, ncol = 4, byrow = F),
                        matrix(13:16, nrow = 1, ncol = 4, byrow = F))
 #print figure
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/vital_rates_v1.pdf",height = 12,width = 14,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/vital_rates_v1_r1.pdf",height = 12,width = 14,useDingbats = F)
 layout(mat = layout.matrix,
        heights = c(2, 2, 2,2), # Heights of one row
        widths = c(2, 2, 2,2))
-# layout.show(16)
+#layout.show(16)
 
 par(oma=c(4,1,0.5,0.5))
 with(poar_surv_binned,{
@@ -904,6 +1907,12 @@ with(poar_surv_binned,{
                          mean(surv_coef$btempgrow2sex_s) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
                          mean(surv_coef$btempdorm2sex_s) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(fem_s_25_pptgrow[1,],rev(fem_s_25_pptgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(male_s_25_pptgrow[1,],rev(male_s_25_pptgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -944,6 +1953,12 @@ with(poar_surv_binned,{
                         mean(surv_coef$btempdorm2sex_s) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
     
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(fem_s_25_tempgrow[1,],rev(fem_s_25_tempgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(male_s_25_tempgrow[1,],rev(male_s_25_tempgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -983,6 +1998,12 @@ with(poar_surv_binned,{
                          mean(surv_coef$btempgrow2sex_s) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
                          mean(surv_coef$btempdorm2sex_s) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(fem_s_25_pptdorm[1,],rev(fem_s_25_pptdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(male_s_25_pptdorm[1,],rev(male_s_25_pptdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
     par(mar=c(2,4,0.5,0))
   }
@@ -1023,6 +2044,12 @@ with(poar_surv_binned,{
                         mean(surv_coef$btempgrow2sex_s) * (surv_mean_tempgrow$tempgrow[surv_mean_tempgrow$Sex==s])^2 * (s-1) +
                         mean(surv_coef$btempdorm2sex_s) * (tempdorm_seq^2) * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(fem_s_25_tempdorm[1,],rev(fem_s_25_tempdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(male_s_25_tempdorm[1,],rev(male_s_25_tempdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1066,6 +2093,12 @@ with(poar_grow_binned,{
                          mean(grow_coef$btempdorm2sex_g) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
     
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(fem_g_25_pptgrow[1,],rev(fem_g_25_pptgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(male_g_25_pptgrow[1,],rev(male_g_25_pptgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1108,6 +2141,12 @@ with(poar_grow_binned,{
 
     
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(fem_g_25_tempgrow[1,],rev(fem_g_25_tempgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(male_g_25_tempgrow[1,],rev(male_g_25_tempgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1150,6 +2189,12 @@ with(poar_grow_binned,{
                          mean(grow_coef$btempgrow2sex_g) * (grow_mean_tempgrow$tempgrow[grow_mean_tempgrow$Sex==s])^2 * (s-1) +
                          mean(grow_coef$btempdorm2sex_g) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(fem_g_25_pptdorm[1,],rev(fem_g_25_pptdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(male_g_25_pptdorm[1,],rev(male_g_25_pptdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1191,6 +2236,12 @@ with(poar_grow_binned,{
                          mean(grow_coef$btempdorm2sex_g) * (tempdorm_seq^2) * (s-1)
     )
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(fem_g_25_tempdorm[1,],rev(fem_g_25_tempdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(male_g_25_tempdorm[1,],rev(male_g_25_tempdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1234,6 +2285,12 @@ with(poar_flow_binned,{
     )
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(fem_f_25_pptgrow[1,],rev(fem_f_25_pptgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(male_f_25_pptgrow[1,],rev(male_f_25_pptgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1273,6 +2330,12 @@ with(poar_flow_binned,{
                         mean(flow_coef$btempgrow2sex_f) * (tempgrow_seq^2) * (s-1) +
                         mean(flow_coef$btempdorm2sex_f) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
     ) ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(fem_f_25_tempgrow[1,],rev(fem_f_25_tempgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(male_f_25_tempgrow[1,],rev(male_f_25_tempgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1315,6 +2378,12 @@ with(poar_flow_binned,{
   
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(fem_f_25_pptdorm[1,],rev(fem_f_25_pptdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(male_f_25_pptdorm[1,],rev(male_f_25_pptdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1358,6 +2427,12 @@ with(poar_flow_binned,{
   
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(fem_f_25_tempdorm[1,],rev(fem_f_25_tempdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(male_f_25_tempdorm[1,],rev(male_f_25_tempdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1402,6 +2477,12 @@ with(poar_panic_binned,{
     )
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(fem_p_25_pptgrow[1,],rev(fem_p_25_pptgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
+              y=c(male_p_25_pptgrow[1,],rev(male_p_25_pptgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
     legend(900, 12, 
        legend=c( "Female","Male"),
@@ -1453,6 +2534,12 @@ with(poar_panic_binned,{
                         mean(panic_coef$btempdorm2sex_p) * (panic_mean_tempdorm$tempdorm[panic_mean_tempdorm$Sex==s])^2 * (s-1)
     
     ) ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(fem_p_25_tempgrow[1,],rev(fem_p_25_tempgrow[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
+              y=c(male_p_25_tempgrow[1,],rev(male_p_25_tempgrow[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1497,6 +2584,12 @@ with(poar_panic_binned,{
     )
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(fem_p_25_pptdorm[1,],rev(fem_p_25_pptdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
+              y=c(male_p_25_pptdorm[1,],rev(male_p_25_pptdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
@@ -1539,6 +2632,12 @@ with(poar_panic_binned,{
                          mean(panic_coef$btempdorm2sex_p) * (tempdorm_seq^2) * (s-1)
     )
      ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(fem_p_25_tempdorm[1,],rev(fem_p_25_tempdorm[2,])),
+              col=alpha(polygon_col[1],polygon_alpha),border=NA)
+      polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
+              y=c(male_p_25_tempdorm[1,],rev(male_p_25_tempdorm[2,])),
+              col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
 })
