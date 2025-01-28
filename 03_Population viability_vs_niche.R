@@ -1069,6 +1069,7 @@ Timedorm<-system.time(
 
 ## write output as a dataframe
 nichedormant<-data.frame(lambda_dorm_post)
+
 prob_lambda_dorm_post<-c()
 for(l in 1:ncol(nichedormant)){
   prob_lambda_dorm_post[l]<-mean(nichedormant[,l]>1,na.rm=T)
@@ -1233,6 +1234,7 @@ Timegrow<-system.time(
 )
 
 nichegrowing<-data.frame(lambda_grow_post)
+
 prob_lambda_grow_post<-c()
 for(l in 1:ncol(nichegrowing)){
   prob_lambda_grow_post[l]<-mean(nichegrowing[,l]>1,na.rm=T)
@@ -1417,6 +1419,7 @@ Timedorm<-system.time(
 )
 ## write output as a dataframe
 nichedormant_fd<-data.frame(lambda_dorm_post)
+
 prob_lambda_dorm_post_fd<-c()
 for(l in 1:ncol(nichedormant_fd)){
   prob_lambda_dorm_post_fd[l]<-mean(nichedormant_fd[,l]>1,na.rm=T)
@@ -1581,6 +1584,7 @@ Timegrow<-system.time(
     }
 )
 nichegrowing_fd<-data.frame(clim_grow_post,Pr=prob_lambda_grow_post)
+
 # read in result
 prob_lambda_grow_post_fd<-c()
 for(l in 1:ncol(nichegrowing_fd)){
@@ -1597,7 +1601,10 @@ niche_diff_dormant<-prob_lambda_dorm_post_fd-prob_lambda_dorm_post
 mtrx_diff_dorm <- matrix(niche_diff_dormant, nrow = 30, dimnames = list(all_pptdorm_seq,all_tempdorm_seq))
 niche_diff_grow<-prob_lambda_grow_post_fd-prob_lambda_grow_post
 mtrx_diff_grow<- matrix(niche_diff_grow, nrow = 30, dimnames = list(all_pptgrow_seq,all_tempgrow_seq))
-
+dx_dorm <- density(unique(prob_lambda_dorm_post_fd))
+dy_dorm <- density(unique(prob_lambda_dorm_post))
+dx_grow <- density(unique(prob_lambda_grow_post_fd))
+dy_grow <- density(unique(prob_lambda_grow_post))
 # Fig 3. Niche 
 
 scal_breaks <- c(seq(0, 1, length.out = 101))
@@ -1605,7 +1612,7 @@ scal_breaks <- c(seq(0, 1, length.out = 101))
 scal_breaks_diff <- c(seq(-0.2, 0.80, length.out = 101))
 scal_breaks_diff_dorm <- c(seq(-0.05, 0.30, length.out = 101))
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing_r1.pdf",width=8,height=10,useDingbats = F)
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/niche_dormant_growing_r1.pdf",width=8,height=10,useDingbats = F)
 par(mar=c(5,5,2,2),mfrow=c(3,2))
 fields::image.plot(all_pptdorm_seq,all_tempdorm_seq,mtrx_dorm_fd,col=topo.colors(100),xlab="Dormant season precip",ylab="Dormant season temp",main="",breaks=scal_breaks,cex.lab=1.2,
                    legend.width=1, legend.shrink=0.75,
@@ -1639,12 +1646,6 @@ fields::image.plot(all_pptgrow_seq,all_tempgrow_seq,mtrx_grow_2sex,col=topo.colo
 mtext( "D",side = 3, adj = 0,cex=1.2)
 mtext("Two-sex model (FM)",side = 3, adj = 0.5,cex=1,line=0.3)
 # Density  plot----
-
-dx_dorm <- density(unique(prob_lambda_dorm_post_fd))
-dy_dorm <- density(unique(prob_lambda_dorm_post))
-dx_grow <- density(unique(prob_lambda_grow_post_fd))
-dy_grow <- density(unique(prob_lambda_grow_post))
-
 plot(dx_dorm, lwd = 2, main = "", ylab="Density", xlab = expression("Pr " (lambda) > 1),cex.lab=1.2, xlim=c(0,0.965),ylim=c(0,1.5),
      col = "red")
 abline(v=mean(prob_lambda_dorm_post_fd),lty=2,lwd = 2,col="red")

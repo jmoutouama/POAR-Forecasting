@@ -441,6 +441,9 @@ ppc_dens_overlay(data_sites_season$y_m, y_m_sim)+
 # dev.off()
 
 ## Posterior mean values for each vital rate -----
+
+fit_allsites_season
+
 summary(fit_allsites_season, pars=quote_bare(bsizesex_s,bsex_s,
                                bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
                                btempgrowpptgrowsex_s,btempdormpptdormsex_s,
