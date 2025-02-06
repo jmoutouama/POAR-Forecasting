@@ -440,42 +440,6 @@ ppc_dens_overlay(data_sites_season$y_m, y_m_sim)+
 #           ppc_grow,ppc_panic,ppc_germ,cols=2)
 # dev.off()
 
-## Posterior mean values for each vital rate -----
-
-fit_allsites_season
-
-summary(fit_allsites_season, pars=quote_bare(bsizesex_s,bsex_s,
-                               bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
-                               btempgrowpptgrowsex_s,btempdormpptdormsex_s,
-                               bpptgrow2sex_s,bpptdorm2sex_s,btempdorm2sex_s,
-                               btempgrow2sex_s), probs = c(0.025, 0.975))$summary
-
-summary(fit_allsites_season, pars=quote_bare(bsizesex_g,bsex_g,
-                                             bpptgrowsex_g,btempgrowsex_g,bpptdormsex_g,btempdormsex_g,
-                                             btempgrowpptgrowsex_g,btempdormpptdormsex_g,
-                                             bpptgrow2sex_g,bpptdorm2sex_g,btempdorm2sex_g,
-                                             btempgrow2sex_g), probs = c(0.025, 0.975))$summary
-summary(fit_allsites_season, pars=quote_bare(bsizesex_f,bsex_f,
-                                             bpptgrowsex_f,btempgrowsex_f,bpptdormsex_f,btempdormsex_f,
-                                             btempgrowpptgrowsex_f,btempdormpptdormsex_f,
-                                             bpptgrow2sex_f,bpptdorm2sex_f,btempdorm2sex_f,
-                                             btempgrow2sex_f), probs = c(0.025, 0.975))$summary
-
-
-
-
-remotes::install_github("mike-lawrence/ezStan")
-stan_summary(
-  fit_allsites_season,
-  pars = quote_bare(b0_s,bsizesex_s,btempgrowpptgrow_s,btempdormpptdorm_s,bsex_s,bpptdorm_s,
-                    bsize_s,bpptgrow_s,btempgrow_s,btempdorm_s,
-                    bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
-                    btempgrowpptgrowsex_s,btempdormpptdormsex_s,bpptgrow2_s,
-                    btempgrow2_s,btempdorm2_s,bpptgrow2sex_s,bpptdorm2_s,bpptdorm2sex_s,btempdorm2sex_s,
-                    btempgrow2sex_s),
-  probs = c(0.025, 0.975)
-)
-
 # Estimates plots ----
 posterior_season <- as.array(fit_allsites_season)
 color_scheme_set("orange")
@@ -575,7 +539,7 @@ grow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_g,bt
   labs(color = "Interaction type:")+
   xlab("Posterior estimates (Growth)")+
   ylab(NULL) +
-  xlim(-1.5,1.5)+
+  xlim(-1.25,1.25)+
   ggtitle("B") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
@@ -595,7 +559,7 @@ flow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_f,bt
                                                               bpptgrowsex_f,btempgrowsex_f,bpptdormsex_f,btempdormsex_f,
                                                               btempgrowpptgrowsex_f,btempdormpptdormsex_f,bpptgrow2_f,
                                                               btempgrow2_f,btempdorm2_f,bpptgrow2sex_f,bpptdorm2_f,bpptdorm2sex_f,btempdorm2sex_f,
-                                                              btempgrow2sex_f)) + 
+                                                              btempgrow2sex_f),prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_f","bsex_f", "bsize_f","bsizesex_f",
                                        "bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f",
                                        "bpptgrowsex_f","bpptdormsex_f", "btempdormsex_f","btempgrowsex_f",
@@ -651,7 +615,7 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
                                                                bpptgrowsex_p,btempgrowsex_p,bpptdormsex_p,btempdormsex_p,
                                                                btempgrowpptgrowsex_p,btempdormpptdormsex_p,bpptgrow2_p,
                                                                btempgrow2_p,btempdorm2_p,bpptgrow2sex_p,bpptdorm2_p,bpptdorm2sex_p,btempdorm2sex_p,
-                                                               btempgrow2sex_p)) + 
+                                                               btempgrow2sex_p),prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_p","bsex_p", "bsize_p","bsizesex_p",
                                        "bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p",
                                        "bpptgrowsex_p","bpptdormsex_p", "btempdormsex_p","btempgrowsex_p",
@@ -686,9 +650,9 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
         panel.grid.minor = element_blank(),
         panel.background = element_rect(colour = "black", size=0.5))
 
-# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean.pdf",useDingbats = F,height=12,width=10)
-# ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
-# dev.off()
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean_r1.pdf",useDingbats = F,height=12,width=10)
+ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
+dev.off()
 
 # Plot vital rate figure (2D) ----
 poar <- poar.clim_seasonal  
@@ -1102,21 +1066,21 @@ for(p in 1:n_post_draws){
   }
 }
 
-fem_s_25_pptgrow <-fem_g_25_pptgrow<-fem_f_25_pptgrow<-fem_p_25_pptgrow<-male_s_25_pptgrow <-male_g_25_pptgrow<-male_f_25_pptgrow<-male_p_25_pptgrow  <- matrix(NA,2,length(pptgrow_seq))
+fem_s_75_pptgrow <-fem_g_75_pptgrow<-fem_f_75_pptgrow<-fem_p_75_pptgrow<-male_s_75_pptgrow <-male_g_75_pptgrow<-male_f_75_pptgrow<-male_p_75_pptgrow  <- matrix(NA,2,length(pptgrow_seq))
 
 for(s in 1:size_bin_num){
   for(l in 1:length(pptgrow_seq)){
-    fem_s_25_pptgrow[,l] <- quantile(fem_s_post_pptgrow[s,l,],probs=c(0.375,0.625))
-    male_s_25_pptgrow[,l] <- quantile(male_s_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    fem_s_75_pptgrow[,l] <- quantile(fem_s_post_pptgrow[s,l,],probs=c(0.125,0.875))
+    male_s_75_pptgrow[,l] <- quantile(male_s_post_pptgrow[s,l,],probs=c(0.125,0.875))
     
-    fem_g_25_pptgrow[,l] <- quantile(fem_g_post_pptgrow[s,l,],probs=c(0.375,0.625))
-    male_g_25_pptgrow[,l] <- quantile(male_g_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    fem_g_75_pptgrow[,l] <- quantile(fem_g_post_pptgrow[s,l,],probs=c(0.125,0.875))
+    male_g_75_pptgrow[,l] <- quantile(male_g_post_pptgrow[s,l,],probs=c(0.125,0.875))
     
-    fem_f_25_pptgrow[,l] <- quantile(fem_f_post_pptgrow[s,l,],probs=c(0.375,0.625))
-    male_f_25_pptgrow[,l] <- quantile(male_f_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    fem_f_75_pptgrow[,l] <- quantile(fem_f_post_pptgrow[s,l,],probs=c(0.125,0.875))
+    male_f_75_pptgrow[,l] <- quantile(male_f_post_pptgrow[s,l,],probs=c(0.125,0.875))
  
-    fem_p_25_pptgrow[,l] <- quantile(fem_p_post_pptgrow[s,l,],probs=c(0.375,0.625))
-    male_p_25_pptgrow[,l] <- quantile(male_p_post_pptgrow[s,l,],probs=c(0.375,0.625))
+    fem_p_75_pptgrow[,l] <- quantile(fem_p_post_pptgrow[s,l,],probs=c(0.125,0.875))
+    male_p_75_pptgrow[,l] <- quantile(male_p_post_pptgrow[s,l,],probs=c(0.125,0.875))
   }
 }
 
@@ -1345,21 +1309,21 @@ for(p in 1:n_post_draws){
   }
 }
 
-fem_s_25_tempgrow <-fem_g_25_tempgrow<-fem_f_25_tempgrow<-fem_p_25_tempgrow<-male_s_25_tempgrow <-male_g_25_tempgrow<-male_f_25_tempgrow<-male_p_25_tempgrow  <- matrix(NA,2,length(tempgrow_seq))
+fem_s_75_tempgrow <-fem_g_75_tempgrow<-fem_f_75_tempgrow<-fem_p_75_tempgrow<-male_s_75_tempgrow <-male_g_75_tempgrow<-male_f_75_tempgrow<-male_p_75_tempgrow  <- matrix(NA,2,length(tempgrow_seq))
 
 for(s in 1:size_bin_num){
   for(l in 1:length(tempgrow_seq)){
-    fem_s_25_tempgrow[,l] <- quantile(fem_s_post_tempgrow[s,l,],probs=c(0.375,0.625))
-    male_s_25_tempgrow[,l] <- quantile(male_s_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    fem_s_75_tempgrow[,l] <- quantile(fem_s_post_tempgrow[s,l,],probs=c(0.125,0.875))
+    male_s_75_tempgrow[,l] <- quantile(male_s_post_tempgrow[s,l,],probs=c(0.125,0.875))
     
-    fem_g_25_tempgrow[,l] <- quantile(fem_g_post_tempgrow[s,l,],probs=c(0.375,0.625))
-    male_g_25_tempgrow[,l] <- quantile(male_g_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    fem_g_75_tempgrow[,l] <- quantile(fem_g_post_tempgrow[s,l,],probs=c(0.125,0.875))
+    male_g_75_tempgrow[,l] <- quantile(male_g_post_tempgrow[s,l,],probs=c(0.125,0.875))
     
-    fem_f_25_tempgrow[,l] <- quantile(fem_f_post_tempgrow[s,l,],probs=c(0.375,0.625))
-    male_f_25_tempgrow[,l] <- quantile(male_f_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    fem_f_75_tempgrow[,l] <- quantile(fem_f_post_tempgrow[s,l,],probs=c(0.125,0.875))
+    male_f_75_tempgrow[,l] <- quantile(male_f_post_tempgrow[s,l,],probs=c(0.125,0.875))
     
-    fem_p_25_tempgrow[,l] <- quantile(fem_p_post_tempgrow[s,l,],probs=c(0.375,0.625))
-    male_p_25_tempgrow[,l] <- quantile(male_p_post_tempgrow[s,l,],probs=c(0.375,0.625))
+    fem_p_75_tempgrow[,l] <- quantile(fem_p_post_tempgrow[s,l,],probs=c(0.125,0.875))
+    male_p_75_tempgrow[,l] <- quantile(male_p_post_tempgrow[s,l,],probs=c(0.125,0.875))
   }
 }
 ## Precipitation of the dormant season
@@ -1591,21 +1555,21 @@ for(p in 1:n_post_draws){
   }
 }
 
-fem_s_25_pptdorm <-fem_g_25_pptdorm<-fem_f_25_pptdorm<-fem_p_25_pptdorm<-male_s_25_pptdorm <-male_g_25_pptdorm<-male_f_25_pptdorm<-male_p_25_pptdorm  <- matrix(NA,2,length(pptdorm_seq))
+fem_s_75_pptdorm <-fem_g_75_pptdorm<-fem_f_75_pptdorm<-fem_p_75_pptdorm<-male_s_75_pptdorm <-male_g_75_pptdorm<-male_f_75_pptdorm<-male_p_75_pptdorm  <- matrix(NA,2,length(pptdorm_seq))
 
 for(s in 1:size_bin_num){
   for(l in 1:length(pptdorm_seq)){
-    fem_s_25_pptdorm[,l] <- quantile(fem_s_post_pptdorm[s,l,],probs=c(0.375,0.625))
-    male_s_25_pptdorm[,l] <- quantile(male_s_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    fem_s_75_pptdorm[,l] <- quantile(fem_s_post_pptdorm[s,l,],probs=c(0.125,0.875))
+    male_s_75_pptdorm[,l] <- quantile(male_s_post_pptdorm[s,l,],probs=c(0.125,0.875))
     
-    fem_g_25_pptdorm[,l] <- quantile(fem_g_post_pptdorm[s,l,],probs=c(0.375,0.625))
-    male_g_25_pptdorm[,l] <- quantile(male_g_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    fem_g_75_pptdorm[,l] <- quantile(fem_g_post_pptdorm[s,l,],probs=c(0.125,0.875))
+    male_g_75_pptdorm[,l] <- quantile(male_g_post_pptdorm[s,l,],probs=c(0.125,0.875))
     
-    fem_f_25_pptdorm[,l] <- quantile(fem_f_post_pptdorm[s,l,],probs=c(0.375,0.625))
-    male_f_25_pptdorm[,l] <- quantile(male_f_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    fem_f_75_pptdorm[,l] <- quantile(fem_f_post_pptdorm[s,l,],probs=c(0.125,0.875))
+    male_f_75_pptdorm[,l] <- quantile(male_f_post_pptdorm[s,l,],probs=c(0.125,0.875))
     
-    fem_p_25_pptdorm[,l] <- quantile(fem_p_post_pptdorm[s,l,],probs=c(0.375,0.625))
-    male_p_25_pptdorm[,l] <- quantile(male_p_post_pptdorm[s,l,],probs=c(0.375,0.625))
+    fem_p_75_pptdorm[,l] <- quantile(fem_p_post_pptdorm[s,l,],probs=c(0.125,0.875))
+    male_p_75_pptdorm[,l] <- quantile(male_p_post_pptdorm[s,l,],probs=c(0.125,0.875))
   }
 }
 ## Temperature of the dormant season
@@ -1837,21 +1801,21 @@ for(p in 1:n_post_draws){
   }
 }
 
-fem_s_25_tempdorm <-fem_g_25_tempdorm<-fem_f_25_tempdorm<-fem_p_25_tempdorm<-male_s_25_tempdorm <-male_g_25_tempdorm<-male_f_25_tempdorm<-male_p_25_tempdorm  <- matrix(NA,2,length(tempdorm_seq))
+fem_s_75_tempdorm <-fem_g_75_tempdorm<-fem_f_75_tempdorm<-fem_p_75_tempdorm<-male_s_75_tempdorm <-male_g_75_tempdorm<-male_f_75_tempdorm<-male_p_75_tempdorm  <- matrix(NA,2,length(tempdorm_seq))
 
 for(s in 1:size_bin_num){
   for(l in 1:length(tempdorm_seq)){
-    fem_s_25_tempdorm[,l] <- quantile(fem_s_post_tempdorm[s,l,],probs=c(0.375,0.625))
-    male_s_25_tempdorm[,l] <- quantile(male_s_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    fem_s_75_tempdorm[,l] <- quantile(fem_s_post_tempdorm[s,l,],probs=c(0.125,0.875))
+    male_s_75_tempdorm[,l] <- quantile(male_s_post_tempdorm[s,l,],probs=c(0.125,0.875))
     
-    fem_g_25_tempdorm[,l] <- quantile(fem_g_post_tempdorm[s,l,],probs=c(0.375,0.625))
-    male_g_25_tempdorm[,l] <- quantile(male_g_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    fem_g_75_tempdorm[,l] <- quantile(fem_g_post_tempdorm[s,l,],probs=c(0.125,0.875))
+    male_g_75_tempdorm[,l] <- quantile(male_g_post_tempdorm[s,l,],probs=c(0.125,0.875))
     
-    fem_f_25_tempdorm[,l] <- quantile(fem_f_post_tempdorm[s,l,],probs=c(0.375,0.625))
-    male_f_25_tempdorm[,l] <- quantile(male_f_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    fem_f_75_tempdorm[,l] <- quantile(fem_f_post_tempdorm[s,l,],probs=c(0.125,0.875))
+    male_f_75_tempdorm[,l] <- quantile(male_f_post_tempdorm[s,l,],probs=c(0.125,0.875))
     
-    fem_p_25_tempdorm[,l] <- quantile(fem_p_post_tempdorm[s,l,],probs=c(0.375,0.625))
-    male_p_25_tempdorm[,l] <- quantile(male_p_post_tempdorm[s,l,],probs=c(0.375,0.625))
+    fem_p_75_tempdorm[,l] <- quantile(fem_p_post_tempdorm[s,l,],probs=c(0.125,0.875))
+    male_p_75_tempdorm[,l] <- quantile(male_p_post_tempdorm[s,l,],probs=c(0.125,0.875))
   }
 }
 
@@ -1867,7 +1831,7 @@ layout.matrix <- rbind(matrix(1:4, nrow = 1, ncol = 4, byrow = F),
                        matrix(9:12, nrow = 1, ncol = 4, byrow = F),
                        matrix(13:16, nrow = 1, ncol = 4, byrow = F))
 #print figure
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/vital_rates_v1_r1.pdf",height = 12,width = 14,useDingbats = F)
+pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/vital_rates_v1_75.pdf",height = 12,width = 14,useDingbats = F)
 layout(mat = layout.matrix,
        heights = c(2, 2, 2,2), # Heights of one row
        widths = c(2, 2, 2,2))
@@ -1911,10 +1875,10 @@ with(poar_surv_binned,{
                          mean(surv_coef$btempdorm2sex_s) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(fem_s_25_pptgrow[1,],rev(fem_s_25_pptgrow[2,])),
+              y=c(fem_s_75_pptgrow[1,],rev(fem_s_75_pptgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(male_s_25_pptgrow[1,],rev(male_s_25_pptgrow[2,])),
+              y=c(male_s_75_pptgrow[1,],rev(male_s_75_pptgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -1957,10 +1921,10 @@ with(poar_surv_binned,{
     
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(fem_s_25_tempgrow[1,],rev(fem_s_25_tempgrow[2,])),
+              y=c(fem_s_75_tempgrow[1,],rev(fem_s_75_tempgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(male_s_25_tempgrow[1,],rev(male_s_25_tempgrow[2,])),
+              y=c(male_s_75_tempgrow[1,],rev(male_s_75_tempgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2002,10 +1966,10 @@ with(poar_surv_binned,{
                          mean(surv_coef$btempdorm2sex_s) * (surv_mean_tempdorm$tempdorm[surv_mean_tempdorm$Sex==s])^2 * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(fem_s_25_pptdorm[1,],rev(fem_s_25_pptdorm[2,])),
+              y=c(fem_s_75_pptdorm[1,],rev(fem_s_75_pptdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(male_s_25_pptdorm[1,],rev(male_s_25_pptdorm[2,])),
+              y=c(male_s_75_pptdorm[1,],rev(male_s_75_pptdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
     par(mar=c(2,4,0.5,0))
@@ -2048,10 +2012,10 @@ with(poar_surv_binned,{
                         mean(surv_coef$btempdorm2sex_s) * (tempdorm_seq^2) * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(fem_s_25_tempdorm[1,],rev(fem_s_25_tempdorm[2,])),
+              y=c(fem_s_75_tempdorm[1,],rev(fem_s_75_tempdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(male_s_25_tempdorm[1,],rev(male_s_25_tempdorm[2,])),
+              y=c(male_s_75_tempdorm[1,],rev(male_s_75_tempdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2097,10 +2061,10 @@ with(poar_grow_binned,{
     
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(fem_g_25_pptgrow[1,],rev(fem_g_25_pptgrow[2,])),
+              y=c(fem_g_75_pptgrow[1,],rev(fem_g_75_pptgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(male_g_25_pptgrow[1,],rev(male_g_25_pptgrow[2,])),
+              y=c(male_g_75_pptgrow[1,],rev(male_g_75_pptgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2145,10 +2109,10 @@ with(poar_grow_binned,{
     
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(fem_g_25_tempgrow[1,],rev(fem_g_25_tempgrow[2,])),
+              y=c(fem_g_75_tempgrow[1,],rev(fem_g_75_tempgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(male_g_25_tempgrow[1,],rev(male_g_25_tempgrow[2,])),
+              y=c(male_g_75_tempgrow[1,],rev(male_g_75_tempgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2193,10 +2157,10 @@ with(poar_grow_binned,{
                          mean(grow_coef$btempdorm2sex_g) * (grow_mean_tempdorm$tempdorm[grow_mean_tempdorm$Sex==s])^2 * (s-1)
     ),lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(fem_g_25_pptdorm[1,],rev(fem_g_25_pptdorm[2,])),
+              y=c(fem_g_75_pptdorm[1,],rev(fem_g_75_pptdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(male_g_25_pptdorm[1,],rev(male_g_25_pptdorm[2,])),
+              y=c(male_g_75_pptdorm[1,],rev(male_g_75_pptdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2240,10 +2204,10 @@ with(poar_grow_binned,{
     )
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(fem_g_25_tempdorm[1,],rev(fem_g_25_tempdorm[2,])),
+              y=c(fem_g_75_tempdorm[1,],rev(fem_g_75_tempdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(male_g_25_tempdorm[1,],rev(male_g_25_tempdorm[2,])),
+              y=c(male_g_75_tempdorm[1,],rev(male_g_75_tempdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2289,10 +2253,10 @@ with(poar_flow_binned,{
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(fem_f_25_pptgrow[1,],rev(fem_f_25_pptgrow[2,])),
+              y=c(fem_f_75_pptgrow[1,],rev(fem_f_75_pptgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(male_f_25_pptgrow[1,],rev(male_f_25_pptgrow[2,])),
+              y=c(male_f_75_pptgrow[1,],rev(male_f_75_pptgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2334,10 +2298,10 @@ with(poar_flow_binned,{
                         mean(flow_coef$btempdorm2sex_f) * (flow_mean_tempdorm$tempdorm[flow_mean_tempdorm$Sex==s])^2 * (s-1)
     ) ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(fem_f_25_tempgrow[1,],rev(fem_f_25_tempgrow[2,])),
+              y=c(fem_f_75_tempgrow[1,],rev(fem_f_75_tempgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(male_f_25_tempgrow[1,],rev(male_f_25_tempgrow[2,])),
+              y=c(male_f_75_tempgrow[1,],rev(male_f_75_tempgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2382,10 +2346,10 @@ with(poar_flow_binned,{
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(fem_f_25_pptdorm[1,],rev(fem_f_25_pptdorm[2,])),
+              y=c(fem_f_75_pptdorm[1,],rev(fem_f_75_pptdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(male_f_25_pptdorm[1,],rev(male_f_25_pptdorm[2,])),
+              y=c(male_f_75_pptdorm[1,],rev(male_f_75_pptdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2431,10 +2395,10 @@ with(poar_flow_binned,{
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(fem_f_25_tempdorm[1,],rev(fem_f_25_tempdorm[2,])),
+              y=c(fem_f_75_tempdorm[1,],rev(fem_f_75_tempdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(male_f_25_tempdorm[1,],rev(male_f_25_tempdorm[2,])),
+              y=c(male_f_75_tempdorm[1,],rev(male_f_75_tempdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2481,10 +2445,10 @@ with(poar_panic_binned,{
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(fem_p_25_pptgrow[1,],rev(fem_p_25_pptgrow[2,])),
+              y=c(fem_p_75_pptgrow[1,],rev(fem_p_75_pptgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow),rev(pptgrow_seq*sd(poar_2015_2016$pptgrow) + mean(poar_2015_2016$pptgrow))),
-              y=c(male_p_25_pptgrow[1,],rev(male_p_25_pptgrow[2,])),
+              y=c(male_p_75_pptgrow[1,],rev(male_p_75_pptgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
     legend(900, 12, 
@@ -2538,10 +2502,10 @@ with(poar_panic_binned,{
     
     ) ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(fem_p_25_tempgrow[1,],rev(fem_p_25_tempgrow[2,])),
+              y=c(fem_p_75_tempgrow[1,],rev(fem_p_75_tempgrow[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow),rev(tempgrow_seq*sd(poar_2015_2016$tempgrow) + mean(poar_2015_2016$tempgrow))),
-              y=c(male_p_25_tempgrow[1,],rev(male_p_25_tempgrow[2,])),
+              y=c(male_p_75_tempgrow[1,],rev(male_p_75_tempgrow[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2588,10 +2552,10 @@ with(poar_panic_binned,{
     
             ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(fem_p_25_pptdorm[1,],rev(fem_p_25_pptdorm[2,])),
+              y=c(fem_p_75_pptdorm[1,],rev(fem_p_75_pptdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm),rev(pptdorm_seq*sd(poar_2015_2016$pptdorm) + mean(poar_2015_2016$pptdorm))),
-              y=c(male_p_25_pptdorm[1,],rev(male_p_25_pptdorm[2,])),
+              y=c(male_p_75_pptdorm[1,],rev(male_p_75_pptdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }
@@ -2636,10 +2600,10 @@ with(poar_panic_binned,{
     )
      ,lty=sex_lty[s],lwd=3,col= sex_cols[s])
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(fem_p_25_tempdorm[1,],rev(fem_p_25_tempdorm[2,])),
+              y=c(fem_p_75_tempdorm[1,],rev(fem_p_75_tempdorm[2,])),
               col=alpha(polygon_col[1],polygon_alpha),border=NA)
       polygon(x=c(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm),rev(tempdorm_seq*sd(poar_2015_2016$tempdorm) + mean(poar_2015_2016$tempdorm))),
-              y=c(male_p_25_tempdorm[1,],rev(male_p_25_tempdorm[2,])),
+              y=c(male_p_75_tempdorm[1,],rev(male_p_75_tempdorm[2,])),
               col=alpha(polygon_col[2],polygon_alpha),border=NA)
     }
   }

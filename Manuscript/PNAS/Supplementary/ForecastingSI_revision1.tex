@@ -1,3 +1,4 @@
+\PassOptionsToPackage{usenames,dvipsnames}{xcolor}
 \documentclass[9pt,twoside,lineno]{pnas-new}
 % Use the lineno option to display guide line numbers if required.
 
@@ -9,6 +10,7 @@
 %\graphicspath{{/Users/tm9/Dropbox/github/POAR-Forecasting/Manuscript/Figures/}}
 \newcommand{\tom}[2]{{\color{red}{#1}}\footnote{\textit{\color{red}{#2}}}}
 \newcommand{\jacob}[2]{{\color{blue}{#1}}\footnote{\textit{\color{blue}{#2}}}}
+\newcommand{\revise}[1]{{\color{Mahogany}{#1}}}
 \title{Forecasting range shifts of a dioecious plant species under climate change}
 \author{Jacob K. Moutouama, Aldo Compagnoni and Tom E.X. Miller}
 \correspondingauthor{Jacob Moutouama.\\E-mail: jmoutouama@gmail.com}
@@ -66,7 +68,7 @@ Each vital rate also includes normally distributed random effects for block-to-b
 
 
 \subsection*{C. Sex ratio responses to climatic variation across common garden sites} \label {sssec:sexratio_bayesian}
-To understand the impact of climatic variation across common garden sites on {\color{red} sex ratio (OSR and SR), we used  bayesian models  to propagate the uncertainty in our estimates of the  the expected value ($\nu$)(Eq.\ref{eq:sr_fn})}:
+To understand the impact of climatic variation across common garden sites on \revise {sex ratio (OSR and SR), we used  bayesian models  to propagate the uncertainty in our estimates of the  the expected value ($\nu$)(Eq.\ref{eq:sr_fn})}:
 \begin{align}\label{eq:sr_fn}
 \begin{split}
 	\nu =   \omega_{0}+ \omega_{1}pptgrow + \omega_{2}pptdorm + \omega_{3}tempgrow + \omega_{4}tempdorm + \\
@@ -86,7 +88,7 @@ We established 124 experimental populations in plots measuring 0.4 x 0.4m and se
 We varied population density (1-48 plants/plot) and sex ratio (0\%-100\% female) across the experimental populations, and we replicated 34 combinations of density and sex ratio.
 We collected panicles from a subset of females in each plot and recorded the number of seeds in each panicle.
 We assessed reproductive success (seeds fertilized) using greenhouse-based germination and trazolium-based seed viability assays.
-Seed viability was modeled {\color{red}to propagate the uncertainty in our estimates}  with a binomial distribution where the probability of viability ($v$) was given by:
+Seed viability was modeled \revise {to propagate the uncertainty in our estimates}  with a binomial distribution where the probability of viability ($v$) was given by:
 \begin{align}\label{eq:viab}
 	v = v_{0} * (1 - OSR^{\alpha})
 \end{align}
@@ -124,12 +126,13 @@ Given that germination was conditional on seed viability, the probability of suc
 
 \begin{figure}
 \centering
-\includegraphics[width=0.99\linewidth]{Posterior_mean.pdf}
-\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions. 
+\includegraphics[width=0.99\linewidth]{Posterior_mean_r1.pdf}
+\caption{Mean parameter values\revise{, 50\% and} 95\% credible intervals of the posterior probability distributions. 
 		pptgrow is  the precipitation of growing season,
 		Tempgrow is the temperature of growing season,
 		pptdorm is the temperature of dormant season,
-		Tempdorm is the temperature of dormant season.}
+		Tempdorm is the temperature of dormant season.
+		}
 \label{Sup:Posterior}
 \end{figure}
 \clearpage
@@ -155,7 +158,7 @@ Given that germination was conditional on seed viability, the probability of suc
 \includegraphics[width=0.95\linewidth]{gardens_OSR.pdf}
 \caption{\textbf{Significant Operational Sex Ratio response across climate gradient}.
 			(A, B) Proportion of panicles that were females across  temperature of the growing and dormant season.
-			Each line represents a  posterior sample. We used (300 posterior samples)  }
+			Each line represents a  posterior sample. We used (300 posterior samples) }
 \label{Sup:gardens_OSR}
 \end{figure}
 \clearpage
@@ -163,7 +166,7 @@ Given that germination was conditional on seed viability, the probability of suc
 \begin{figure}
 \centering
 \includegraphics[width=0.70\linewidth]{Posterior_ORS.pdf}
-\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions for climate drivers of operational sex ratio (female fraction of total panicles) across common garden years and sites. 
+\caption{Mean parameter values\revise{, 50\% and} 95\% credible intervals of the posterior probability distributions for climate drivers of operational sex ratio (female fraction of total panicles) across common garden years and sites. 
 		pptgrow is  the precipitation of growing season,
 		Tempgrow is the temperature of growing season,
 		pptdorm is the temperature of dormant season,
@@ -175,11 +178,12 @@ Given that germination was conditional on seed viability, the probability of suc
 \begin{figure}
 \centering
 \includegraphics[width=0.70\linewidth]{Posterior_SR.pdf}
-\caption{Mean parameter values and 95\% credible intervals of the posterior probability distributions for climate drivers of sex ratio (female fraction of the populations) across common garden years and sites. 
+\caption{Mean parameter values\revise{, 50\% and} 95\% credible intervals of the posterior probability distributions for climate drivers of sex ratio (female fraction of the populations) across common garden years and sites. 
 			pptgrow is  the precipitation of growing season,
 			Tempgrow is the temperature of growing season,
 			pptdorm is the temperature of dormant season,
-			Tempdorm is the temperature of dormant season.}
+			Tempdorm is the temperature of dormant season.
+			}
 \label{Sup:posterior_SR}
 \end{figure}
 \clearpage
@@ -219,15 +223,15 @@ Given that germination was conditional on seed viability, the probability of suc
 \end{figure}
 \clearpage
 
-\begin{figure}
-\centering
-\includegraphics[width=0.99\linewidth]{Niche_overestimation.pdf}
-\caption{ Assessment of the statistical difference between the two-sex models and the female dominant model for the dormant and growing season. 
-			Plots show the density of Pr ($\lambda > 1$) values for female dominant (pink) and two-sex models (violet) for each season. 
-			The means for each model are shown as vertical dashed lines. }
-\label{Sup:Niche_overestimation}
-\end{figure}
-\clearpage
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.99\linewidth]{Niche_overestimation.pdf}
+%\caption{ Assessment of the statistical difference between the two-sex models and the female dominant model for the dormant and growing season. 
+%			Plots show the density of Pr ($\lambda > 1$) values for female dominant (pink) and two-sex models (violet) for each season. 
+%			The means for each model are shown as vertical dashed lines. }
+%\label{Sup:Niche_overestimation}
+%\end{figure}
+%\clearpage
 % \begin{figure}
 %  \centering
 %  \includegraphics[width=0.6\linewidth]{OSR.pdf}
