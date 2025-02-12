@@ -34,10 +34,12 @@
 
 % Please add here a significance statement to explain the relevance of your work
 \significancestatement{
-\revise{Sex biases are ubiquitous in nature and central to biology. 
-However, most forecasts of population viability and range shifts overlook the complexity of sex structure, and thus the potential for females and males to differ in their sensitivity to climate drivers.
- We} used a combination of  demographic data collected from a  common garden experiment, climate change forecasts, and mathematical models to demonstrate that accounting for only one sex could underestimate the impact of climate change on dioecious species, particularly in regions of their range that are biased toward one sex. 
-This work highlights how incorporating demographic complexity can improve biodiversity forecasts in a changing world.
+\revise{Dioecy is ubiquitous in nature and central to the ecology and evolution of most animals and many plants. 
+However, most forecasts of population viability and range shifts overlook the complexity of sex structure, and thus the potential for females and males to differ in their sensitivity to climate change.
+Using a dioecious plant model system, we show that future climate change is likely to push populations toward female-biased sex ratios, which will impair seed production. 
+Ignoring this feedback between sex ratio and vital rates, as traditional models do, over-estimates the range of suitable habitat and under-estimates the likelihood of range shifts under climate change. 
+This work highlights how incorporating demographic complexity associated with sex structure can improve biodiversity forecasts in a changing world.
+}
 }
 
 % Please include corresponding authosr, author contribution and author declaration information
@@ -57,7 +59,7 @@ We developed demographic models of range limitation, parameterized from geograph
 We contrasted predictions of a standard female-dominant model with those of a two-sex model that accounts for feedbacks between sex ratio and vital rates. 
 Both model versions predict that future climate change will induce a poleward shift of niche suitability beyond current northern limits.
 However, the magnitude of the poleward shift was underestimated by the female-dominant model because females have broader temperature tolerance than males but become mate-limited under female-biased sex ratios, which are forecasted to become more common under future climate.
-Our result illustrate how explicitly accounting for both sexes could enhance population viability forecasts and conservation planning for dioecious species in response to climate change.
+Our result illustrate how explicitly accounting for both sexes can enhance population viability forecasts and conservation planning for dioecious species in response to climate change.
 \end{abstract}
 
 %\dates{This manuscript was compiled on \today}
@@ -105,7 +107,7 @@ is distributed along environmental gradients in the south-central U.S. correspon
 Across these environmental gradients, we installed common gardens at 14 sites to quantify sex-specific demographic responses to environmental variation, and we conducted a sex ratio manipulation experiment to measure the influence of OSR on demographic rates.
 The south-central U.S. has experienced rapid climate warming since 1900 and warming is projected to continue through the end of the century (Fig. \ref{fig:study_design}, Fig. S2). 
 Our previous study showed that, despite evidence for differentiation of climatic niche between sexes, the female niche mattered the most in driving longitudinal range limits of Texas bluegrass \citep{miller2022two}. 
-However, that study used a single proxy variable (longitude) to represent environmental variation related to aridity and did not consider variation in temperature, which is the much stronger dimension of forecasted climate change in this region (Fig. \ref{fig:study_design}). 
+However, that study used a single proxy variable (longitude) to represent environmental variation related to aridity and did not consider variation in temperature, which is the stronger dimension of forecasted climate change in this region (Fig. \ref{fig:study_design}). 
 A rigorous forecast for the implications of future climate change requires that we transition from implicit to explicit treatment of multiple climate drivers, as we do here.
 Leveraging the power of Bayesian inference, we take a probabilistic view of past, present, and future range limits by quantifying the probability of population viability \revise{($Pr(\lambda \ge 1)$)} in relation to geographic variation in the climate drivers of demography, an approach that fully accounts for uncertainty arising from multiple sources of estimation and process error. %using Markov Chain Monte Carlo (MCMC) can be utilized to infer species niche which is defined as the range of resources and conditions allowing its populations of self-sustaining populations, conditional on different factors of the environment \citep{maguire1973niche,hutchinson1978introduction,diez2014probabilistic}
 Specifically, we asked:
@@ -117,23 +119,22 @@ Specifically, we asked:
 
 \section*{Results}
 \subsection*{Sex specific demographic responses and sex ratio variation across climatic conditions}
-Bayesian mixed effect models, describing how each vital rate varies as a function of sex, size, and climate covariates (precipitation and temperature of growing and dormant seasons), revealed the demographic response of Texas bluegrass to climate drivers across common garden sites and years, and identified demographic differences between the sexes. 
-Regression coefficients related to sex and/or sex:size interactions were significantly non-zero (95\% credible intervals excluding zero)  \revise{particularly for flowering} (Fig. S3), suggesting sexual divergence in demography. 
-Females generally had an advantage over males, especially in survival and flowering (Fig. \ref{fig:vital_rates}). 
+\tom{Bayesian mixed effect models, describing how each vital rate varies as a function of sex, size, and climate covariates (precipitation and temperature of growing and dormant seasons), revealed the demographic response of Texas bluegrass to climate drivers across common garden sites and years, and identified demographic differences between the sexes. 
+Regression coefficients related to sex and/or sex:size interactions were significantly non-zero (95\% credible intervals excluding zero), \revise{particularly for probability of flowering (Fig. S3), suggesting sexual divergence in demography whereby females had an advantage over males (Fig. \ref{fig:vital_rates}).} 
 %\tom{Across all sites and years, \% of females survived compared to \% of males, and \% of surviving females flowered compared to \% of surviving males.}{I think it would be interesting to add just the raw numbers here.} 
-Furthermore, there were significant interactions between sex and one or more climate variables (Fig. S3), indicating sexual niche divergence in response to shared climate drivers.  
-Fig. S4 and S5 visualize the magnitude of sexual divergence in demography across niche space, revealing that female advantages in survival and flowering  were greatest at both high and low growing season temperature extremes. 
+Furthermore, there were significant effects of climate covariates and interactions between sex and one or more climate variables (Fig. S3), indicating sexual niche divergence in response to shared climate drivers.  
+Fig. S4 and S5 visualize the magnitude of sexual divergence in demography across niche space, revealing that female advantages in survival and flowering  were greatest at both high and low growing season temperature extremes. }{I think this paragraph needs to be edited more carefully so that our statements about statistical support are unambiguous -- following the reviewer's comment. I made some changes but I am skipping over this for now.}
 
 % Plant size and sex interaction was significant for all vitals rates (Fig. \ref{Sup:Posterior}), suggesting a sexual dimorphism.
 % For survival, flowering and reproduction the interaction between temperature and precipitation of the growing season and dormant season was not significant (Fig. \ref{Sup:Posterior}). 
 % However, for growth, the interaction between temperature and precipitation of the growing season and dormant season was significantly higher than zero (Fig. \ref{Sup:Posterior}). 
 Across 14 common garden sites, operational sex ratio (proportion of panicles that are female) of the experimental populations was female-biased on average ($\approx 60$ \% female), reflecting the overall greater rates of female vs. male flowering. 
 OSR was most female-biased (up to 80\% female) at extreme values of temperature, especially growing season temperature (Fig. S6, Fig. S7), consistent with the female flowering advantage at temperature extremes seen in the vital rate data. 
-In contrast, there was very little variation in sex ratio (proportion of plants that are female) in the years following common garden establishment (all sites were planted with equal numbers of females and males) and no detectable influence of climate covariates (Fig. S8), indicating that operational sex ratio is much more labile than sex ratio, and skew in the OSR comes from sex-biased reproductive rates more so than sex-biased survival. 
+In contrast, there was very little variation in sex ratio (proportion of plants that are female) in the years following common garden establishment (all sites were planted with equal numbers of females and males) and no detectable influence of climate covariates (Fig. S8), indicating that operational sex ratio is much more labile than population sex ratio, and skew in the OSR comes from sex-biased reproductive rates more so than sex-biased mortality. 
 
 \subsection*{Climate drivers of population viability across niche space}
 We integrated the vital rate responses in a climate-explicit matrix projection model (MPM) framework. 
-Female-dominant  and two-sex versions of the MPM  both allow for sex-specific response to climate, \revise{ but only the two-sex model accounts for the feedback between OSR and seed fertilization (pollen limitation under female-biased sex ratios: Fig. S12}).
+Female-dominant and two-sex versions of the MPM  both allow for sex-specific response to climate, \revise{but only the two-sex model accounts for the feedback between OSR and seed fertilization (pollen limitation under female-biased sex ratios: Fig. S12}).
 %The MPM reveals how climate shapes fitness variation across niche dimensions and geographic space, and how accounting for sex structure modifies these inferences. 
 Fig. \ref{fig:niche} shows the estimated probability of population viability ($\lambda \ge 1$) across seasonal climate niche space; these probabilities account for uncertainty in the vital rate parameters as well as process error related to the spatial heterogeneity and genotypic variation incorporated into our experimental design. 
 For both female-dominant and two-sex models, fitness variation across niche space indicated intermediate temperature optima and declines in fitness at high and low temperature extremes, with weaker effects of precipitation (compare vertical and horizontal contours in Fig. \ref{fig:niche}). 
@@ -144,17 +145,17 @@ LTRE analysis also showed that declines in population viability at high and low 
 %\tom{Points in Fig. \ref{fig:niche} show that climate change forecasted for the common garden locations would move many of them toward lower-suitabilty regions of niche space associated with high growing and dormant season temperatures (see also Fig. S11).}{I think these points are removed, right?}
 
 While the female-dominant and two-sex models were generally in agreement about high confidence in intermediate temperature optima, they differed around the edges of niche space (Fig. \ref{fig:niche}C, D, S11). 
-The female-dominant model over-predicted population viability, especially with respect to growing season temperature \revise {(Fig. \ref{fig:niche}E, F)}. 
-For example, the female-dominant model predicted that, for most levels of precipitation, warm growing season (winter) temperatures of $\sim 20\degree C$ had high suitability ($Pr(\lambda \ge 1) > 0.9$), while the two-sex model indicated that these conditions were most likely unsuitable ($Pr(\lambda \ge 1) < 0.5$). 
+The female-dominant model over-predicted population viability, especially with respect to growing season temperature \revise {(Fig. \ref{fig:niche}E, F)}.\tom{}{In Fig 3 E,F the colors of the vertical lines do not match the colors of the density distributions.} 
+For example, the female-dominant model predicted that, for most levels of precipitation, warm growing season (winter) temperatures of $\> 20\degree C$ had high suitability ($Pr(\lambda \ge 1) > 0.9$), while the two-sex model indicated that these conditions were most likely unsuitable ($Pr(\lambda \ge 1) < 0.5$). 
 Similarly, at low winter temperatures that the two-sex model identifies with high certainty as unsuitable ($Pr(\lambda \ge 1) < 0.1$), the female-dominant model is more optimistic ($Pr(\lambda \ge 1) > 0.4$). 
-Across growing season climate space, the female-dominant model over-estimates population viability by 9.2\%, on average. 
+Across growing season climate space, the female-dominant model over-estimates population viability by 9.2\%, on average (Fig. \ref{fig:niche}F). 
 The difference between female-dominant and two-sex models was qualitatively similar but weaker in magnitude for niche dimensions of the dormant season (Fig. \ref{fig:niche}E).
-Female-dominant and two-sex models diverged most strongly in regions of niche space that favored strongly female-biased operational sex ratios \revise {(Fig. S16 to S19)}, suggesting mate limitation as the biological mechanism underlying model differences. 
+Female-dominant and two-sex models diverged most strongly in regions of niche space that favored strongly female-biased operational sex ratios \revise {(Fig. S16 to S19)}\tom{}{These are the maps but wasn't there a niche space figure?}, suggesting mate limitation as the biological mechanism underlying model differences. 
 The two-sex model accounts for feedbacks between OSR and female fertility that were estimated through a separate sex ratio manipulation experiment, showing reduced seed viability at OSR exceeding $\sim$ 75\% female panicles (Fig. S12).
 Lacking this feedback, the female-dominant model over-predicts population viability in regions of niche space where male flowering is not sufficient to maximize seed set. 
 
 \subsection*{Climatic change induces shifts in geographic niche and population OSR}
-We next projected the climatic niche onto geographic space (Texas, Oklahoma and Kansas) to examine how suitable niche conditions for Texas bluegrass are shifting due to climate change, considering relatively ``optimistic''(RCP4.5)  and ``pessimistic''(RCP8.5) scenarios (Fig. \ref{fig:geoprojcmc}). 
+We next projected the climatic niche onto geographic space (Texas, Oklahoma and Kansas) to examine how suitable niche conditions for Texas bluegrass are shifting due to climate change, \revise{considering relatively ``optimistic''(RCP4.5)  and ``pessimistic''(RCP8.5) scenarios (Fig. \ref{fig:geoprojcmc}).}\tom{}{I think I added this text last time so I flagged it as ``revise''. I recommend you do this for all changes, even those that are not in direct response to a reviewer comment. That helps give the impression that the manuscript has changed from our original submission.} 
 For both female-dominant and two-sex models, the predicted geographic niche generally corresponds well to independent observations of Texas bluegrass occurrence from the Global Biodiversity Information Facility (GBIF) (Fig. \ref{fig:geoprojcmc}).
 The predicted geographic niche is more expansive than the GBIF occurrences, particularly at southern, western, and eastern edges, suggesting some degree of range disequilibrium (e.g., due to dispersal limitation), geographic bias in occurrence records, and/or model mis-specification. 
 Under past (1901-1930) and present (1990-2019) conditions, the two-sex and female-dominant models predict widespread suitability with high confidence ($Pr(\lambda  \ge 1) \approx 1$) across much of Texas and Oklahoma. 
@@ -165,7 +166,7 @@ This predicted poleward niche shift is highly consistent across different global
 
 Female-dominant and two-sex models are in broad agreement about northward migration of the climatic niche, but the geographic projections reveal hotspots of disagreement where the female-dominant model over-predicts climate suitability and under-predicts the likelihood of range shifts (Fig. \ref{fig:geoprojcmc}). 
 These hotspots are generally regions of predicted strong female bias in the operational sex ratio (Fig. S16 to Fig. S19). 
-The strongest contrast between the two models is in the pessimistic climate change scenario (RCP8.5), where the female-dominant model over-predicts population viability by as much as 20\% across much of the region (Fig. S20) and thus under-estimates the magnitude of a potential range shift. 
+The strongest contrast between the two models is in the pessimistic climate change scenario (RCP8.5), where the female-dominant model over-predicts suitability by as much as 20\% across much of the region (Fig. S20) and thus under-estimates the magnitude of a potential range shift. 
 In this scenario, a broad swath of the current distribution that is forecasted to be unsuitable ($Pr(\lambda \ge 1) \approx 0$) by the two-sex model is identified as marginally suitable ($Pr(\lambda \ge 1) \approx 0.5$) by the female-dominant model. 
 That difference arises because the two-sex model recognizes that strongly female-biased sex ratios cannot support viable populations. 
 The OSR of Texas bluegrass across its range is projected to be ca. 75\% female panicles, on average, by end of century under RCP8.5, an increase from ca. 60\% female under projections for past and current conditions (Fig. S21). 
@@ -175,7 +176,8 @@ The more optimistic climate change scenario (RCP4.5) predicts an intermediate sh
 Dioecious species make up a large fraction of Earth's biodiversity -- most animals and many plants -- yet we have little knowledge about how sex-specific demography and responses to climate drivers may affect population viability and range shifts of dioecious species under climate change.
 We used demographic data collected from common garden and sex ratio manipulation experiments, hierarchical Bayesian statistical modeling, and sex-structured demographic modeling to forecast, for the first time, the likely impact of climate change on range dynamics of a dioecious species.
 We found that demographic rates of Texas bluegrass and their sensitivities to climate drivers show significant sex bias, with females out-performing males, on average, and high and low temperature extremes negatively affecting flowering rates of males more so than females, leading to female skew in the operational sex ratio. 
-Future climate change will likely not only shift this species' geographic niche northward, but it will also further skew operational sex ratios toward stronger female bias: for Texas bluegrass, the future is female, and it is in Kansas. 
+Future climate change will likely not only shift this species' geographic niche northward, but it will also further skew operational sex ratios toward stronger female bias. 
+For Texas bluegrass, the future is female -- and it is in Kansas. 
 Our two-sex modeling framework accounts for reductions in female fertility with increasing female bias, and therefore predicts a narrower climatic niche than the corresponding female-dominant model that ignores the feedback between population structure and vital rates. 
 Failure to account for population sex structure can therefore lead to overestimation of suitable niche space and underestimation of range shifts under global change. 
 
@@ -184,12 +186,12 @@ Was it worth the trouble?
 Generally, we suggest the answer should depend on the aims of the investigator. 
 Predictions of the two-sex and female-dominant models were in strong agreement about climate niche optima, and LTRE decomposition suggested that female vital rates determine population responses to climate variation much more so than male vital rates. 
 If we wanted to know whether a poleward range shift is likely for Texas bluegrass, the simpler female-dominant approach could have given us the correct answer. 
-\revise{This is good news from a conservation standpoint because most studies on dioecious species rely on the female-dominant approach \citep{caswell1986two}}.
-But more focused questions, especially around the edges of niche space where sex ratio skew is more likely to impair population viability, may require an explicit accounting for feedbacks associated with sex structure \revise{\citep{eberhart2017sex}}. 
+\revise{This is good news from a conservation standpoint because most studies on dioecious species rely on the female-dominant approach \citep{caswell1986two}}.\tom{}{I don't really understand what this sentence is trying to say. What makes this good news from a conservation standpoint? I am also not sure why you cite Caswell and Weeks. That paper is 40 years old. In what way does the citation support this sentence?}
+But more focused questions, especially around the edges of niche space, where sex ratio skew is more likely to impair population viability, may require an explicit accounting for feedbacks associated with sex structure \revise{\citep{eberhart2017sex}}. 
 If we aimed to identify specific regions that are more or less inclined toward contraction or expansion, or sites that might be suitable for assisted migration, we would reach qualitatively different conclusions with female-dominant and two-sex models. 
 For example, the female-dominant model is over-confident that large swaths of Oklahoma will remain marginally suitable for Texas bluegrass under the business-as-usual emissions scenario, while the two-sex model is more pessimistic, because this region will become too female-biased to support viable populations. 
 More generally, we hypothesize that accounting for sex structure should be most important under conditions that are already near the limits of population viability, where effects of mate limitation could be more consequential. 
-This suggests a particularly important role of sex-structured modeling for threatened and endangered species, as conservation biologists have already recognized \citep{jenouvrier2012effects}. 
+This suggests a particularly important role of sex-structured modeling for threatened and endangered species, as conservation biologists have already recognized \tom{\citep{jenouvrier2012effects}. }{If you are only going to cite this one paper I would use ``e.g.,''}
 
 
 Our results suggest that climate change, and specifically climate warming, will drive a classic pattern of poleward expansion: contraction at the southern trailing edge due to temperatures exceeding tolerable limits and expansion at the northern leading edge due to release from low temperature limitation. 
@@ -200,12 +202,12 @@ For example, studies suggested that grasses can have delayed phenology in respon
 Regardless of the mechanism, it is clear that climate warming will generate leading and trailing edges. 
 Whether and at what pace the realized species' distribution tracks geographic changes in suitable niche space is a different, open question. 
 Expansion of the leading edge could lag behind availability of suitable habitat due to dispersal limitation \citep{pagel2020mismatches}, and legacies of long-lived individuals can promote persistence of trailing edge populations even as environmental conditions deteriorate \revise{\citep{margaret2023trailing,bohner2020extensive}}.
-Environmentally-explicit demographic models are emerging as powerful tools to understand and predict the limits of population viability under global change \citep{schultz2022climate, merow2017climate}, but incorporating non-equilibrium dynamics that emerge from dispersal limitation and and historical legacies is an important new direction for this field.
+Environmentally-explicit demographic models are emerging as powerful tools to understand and predict the limits of population viability under global change \citep{schultz2022climate, merow2017climate}, but incorporating non-equilibrium dynamics that emerge from dispersal limitation and historical legacies is an important new direction for this field.
 
 Our finding that climate change in the south-central US will likely lead to female-biased operational sex ratios contrasts with previous studies of dioecious plants. 
 While a baseline female demographic advantage has been observed in several dioecious species \citep{bawa1980evolution,sasaki2019complex}, studies focused on sex-specific sensitivity to climate drivers often predict an increase in male frequency in response to climate stress \citep{petry2016sex,hultine2016climate}. 
-\revise{Here, the female bias was not a direct response to climate, such as temperature-dependent sex determination seen in some organisms like invertebrates and reptiles \citep{korpelainen1990sex}. 
-Instead, bias in sex ratio resulted from climate-induced changes in vital rates that accumulate throughout species life cycle.}
+\revise{Here, the female bias was not a direct response to climate, such as temperature-dependent sex determination seen in some organisms like invertebrates and reptiles \citep{korpelainen1990sex}\tom{}{You could also cite something more directly about climate change, such as Janzen 1994 PNAS}. 
+Instead, bias in the operational sex ratio resulted from climate-induced changes in vital rates that accumulate throughout the life cycle.}
 We speculate that differences in the costs of reproduction related to pollination mode may help explain which sex is favored under climate stress. 
 For most dioecious plant species, the cost of reproduction is often higher for females than males due to the requirement to develop seeds and fruits \citep{cipollini1994sexual}. %Two mechanisms could explain the observed demographic advantage of females over males for survival and flowering and the opposite for growth and number of panicles.
 %The trade-off between fitness traits (survival, growth and fertility) due to resource limitation and the pollination mode of our study species (wind pollinated) could explain such a result \citep{cipollini1994sexual,freeman1976differential}.
@@ -215,13 +217,13 @@ Additional comparative studies across species that differ in life history traits
 
 \revise{
 %One aspect of our study suggests that 
-Climate conditions during the dormant season are at least as important as those during the growing season. 
-%This finding  is consistent with a recent synthesis suggesting that the dormant season matters for plants \citep{evers2021lagged}. 
-One probable explanation for the importance of the dormant season in our study system is that Texas, Oklahoma and Kansas often experience a very high  temperature during   the summer which corresponds to the dormant season  (Fig. \ref{fig:study_design}).
-Therefore, an increase in temperature during the dormant season could reduce water storage in the soil, negatively affecting plant survival and growth.
-Furthermore, high levels of precipitation that occurred during our study were typically associated with tropical storms during the late-summer dormant season or extreme weather systems during the spring growing season. 
-For example, the wettest conditions we observed were linked to the 2015 flooding and tornado outbreak across much of Texas and Oklahoma. 
-Therefore, the negative effects of high precipitation were likely driven by waterlogged soils and disturbances associated with these extreme events.}
+Interestingly, we found that climate conditions during the dormant season were at least as important as those during the growing season. 
+This finding is consistent with a recent synthesis suggesting that the dormant season can be surprisingly important for plant demography \citep{evers2021lagged}. 
+For Texas bluegrass, a C-3 species, the dormant season corresponds to the hot summer months in the southern Great Plains, which are forecasted to reach seasonal mean temperatures of up to 32-34\degree C by the end of the century (Fig. \ref{fig:study_design}).
+High dormant-season temperatures could reduce water storage in the soil, negatively affecting plant survival and growth. 
+\tom{We also found some negative effects of high growing-season precipitation, which may reflect extreme weather systems during the spring growing season. }{I changed the section on precip because these effects were only negative in the growing season.}
+For example, the wettest conditions we observed were linked to a Spring 2015 flooding and tornado outbreak across much of Texas and Oklahoma. 
+Negative effects of high precipitation were therefore likely driven by waterlogged soils and disturbances associated with these extreme events.}
 
 Our forecasts for responses to climate change in Texas bluegrass should be interpreted in light of several features of our study design. 
 First, the design of our common garden experiment and statistical modeling (which treats source population as a random effect) means that our geographic projections correspond to an average genotype from across the range of Texas bluegrass. 
@@ -251,10 +253,10 @@ Our work provides a mechanistic framework for predicting the impact of global ch
 Texas bluegrass (\textit{Poa arachnifera}) is a dioecious perennial, cool-season (C3) grass that occurs in the south-central U.S. (Texas, Oklahoma, and southern Kansas) (Fig. \ref{fig:study_design}) \citep{hitchcock1971manual}. 
 Texas bluegrass grows between October and May, flowers in spring, and goes dormant during the hot summer months of June to September \citep{kindiger2004interspecific}. 
 Following this life history, we divided the calendar year into growing (October 1 - May 31) and dormant (June 1 - September 30) seasons in the analyses below. 
-Biological sex is genetically based and the birth (seed) sex ratio is 1:1 \citep{jacobs2000grasses}. 
+Biological sex is genetically based and the birth (seed) sex ratio is 1:1 \citep{renganayaki2005identification,jacobs2000grasses}. 
 %Females and males are morphologically indistinguishable except for their inflorescences. 
 Like all grasses, this species is wind-pollinated \citep{hitchcock1971manual} and most male-female pollen transfer occurs within 15m \citep{compagnoni2017can}. 
-\revise{In \emph{Poa arachnifera}, unfertilized ovules lead to the production of non-viable seeds and only seed viability is dependent on  the operational sex ratio \citep{compagnoni2017can}.}
+\revise{In \emph{Poa arachnifera}, unfertilized ovules lead to the production of non-viable seeds, and seed viability is dependent on males \citep{compagnoni2017can}.}
 Surveys of 22 natural populations throughout the species' distribution indicated that operational sex ratio (the female fraction of inflorescences) ranged from 0.007 to 0.986 with a mean of 0.404 \citep{miller2022two}. 
 
 Latitudinal limits of the Texas bluegrass distribution span 7.74 \degree C to 16.94 \degree C of mean temperature during the growing season and 24.38 \degree C to 28.80 \degree C  during the dormant season. 
@@ -269,30 +271,31 @@ We conducted a range-wide common garden experiment to quantify sex-specific demo
 Details of the experimental design are provided in \cite{miller2022two}; we provide a brief overview here. 
 The experiment was installed at 14 sites throughout and, in some cases, beyond the natural range of Texas bluegrass, providing coverage of a broad range of latitude and longitude (Fig. \ref{fig:study_design}A).
 At each site, we established 14 blocks. 
-For each block we planted three female and three male individuals that were clonally propagated from females and males from \revise{\linelabel{sourcepop} seven} natural source populations (Fig. \ref{fig:study_design}A); clones never deviated from their expected sex. 
+For each block we planted three female and three male individuals that were clonally propagated from females and males from \revise{\linelabel{sourcepop} seven} natural source populations (Fig. \ref{fig:study_design}A); upon flowering, clones never deviated from their expected sex. 
 The experiment was established in November 2013 with a total of 588 female and 588 male plants, and was censused in May of 2014, 2015, and 2016. 
 At each census, we collected data on survival, size (number of tillers), and number of panicles (reproductive inflorescences). 
 For the analyses that follow, we focus on the 2014-15 and 2015-16 transition years, since the start of the experiment did not include the full 2013-14 transition year. 
 
 \subsubsection*{Climatic data collection}
-We gathered downscaled monthly temperature and precipitation for each site from Chelsa \citep{karger2017climatologies} to describe observed climate conditions during our study period.
+We gathered downscaled monthly temperature and precipitation data for each site from Chelsa \citep{karger2017climatologies} to describe observed climate conditions during our study period.
 These climate data were used as covariates in vital rate regressions. 
 %We prefer temperature and precipitation because they capture the most the climate in the study region \colorbox{BurntOrange}{Source}. 
 We aligned the climatic years to match demographic transition years (June 1 -- May 31) and growing and dormant seasons within each year.
 %Based on the natural history of this summer-dormant cool-season species, we divided each transition year into dormant (June 1 through September 30) and growing (October 1 through May 31) seasons. 
 % The 2014-15 transition year was substantially wetter and cooler across the study region than 2015-16, especially during the growing season (Fig.\ref{Sup:climate_variation}), so our study design provides both spatial and inter-annual coverage of climate variables. 
 To back-cast and forecast demographic responses to changes in climate throughout the study region, we also gathered projection data for three 30-year periods: ``past'' (1901-1930), ``current'' (1990-2019) and ``future'' (2070-2100).
-We evaluated future climate projections from two scenarios of representative concentration pathways (RCPs): RCP4.5, and RCP8.5, using four general circulation models (GCMs)(SI Appendix, section A). 
+We evaluated future climate projections for two scenarios of representative concentration pathways (RCP4.5 and RCP8.5) using four general circulation models (GCMs)(SI Appendix, section A). 
 
 \subsubsection*{Sex-specific demographic responses to climatic variation across common garden sites}
 We used individual-level measurements of survival, growth (change in number of tillers), flowering (yes/no), and number of panicles (conditional on flowering), to develop Bayesian mixed effect models describing how each vital rate varies as a function of sex, size, and four climate covariates (precipitation and temperature of growing and dormant season). 
 %\tom{We kept the four climate covariates in the mixed effect models because each climatic variable describes different aspect of climate that could be important for the species persistence across its range.}{This sentence does not contain any information.} 
-These vital rate models included main effects of size (the natural log of tiller number), sex, seasonal climate covariates and the interaction between sex and climate covariates (SI Appendix, section B). 
+These vital rate models included main effects of size (the natural log of tiller number), sex, seasonal climate covariates, and the interactions between sex and climate covariates (SI Appendix, section B). 
+\revise{We included second-order terms for the climate covariates to account for potentially non-monotonic responses (SI Appendix, section B).}
 
 \subsubsection*{Sex ratio responses to climatic variation across common garden sites}
 The experimental data were additionally used to investigate how climatic variation across the range influenced sex ratio and operational sex ratio of the common garden populations. 
 To do so, we developed two Bayesian linear models, pooling data collected during three years.
-Each model had OSR or SR as response variable and a climate variable (temperature and precipitation of the growing season and dormant season) as predictor (SI Appendix, section C). 
+Each model had OSR (female fraction of panicles) or SR (female fraction of surviving individuals) as response variable and a climate variable (temperature and precipitation of the growing season and dormant season) as predictor (SI Appendix, section C). 
 
 
 \subsubsection*{Model-fitting procedures}
@@ -304,12 +307,12 @@ We assessed the fit of the models using posterior predictive checks \citep{piiro
 %Then we assumed that there is 95 \% probability that the true (unknown) estimates would lie within that interval, given the evidence provided by the observed data for each vital rate.
  
 \subsection*{Two-sex and female-dominant matrix projection models}
-We used the climate-dependent vital rate regressions estimated above, combined with \revise{additional data on seed number, seed viability and seed germination to} build female-dominant and two-sex versions of a climate-explicit matrix projection model (MPMs) structured by the discrete state variables size (number of tillers) and sex.
+We used the climate-dependent vital rate regressions estimated above, combined with \revise{additional data on seed number, OSR-dependent seed viability, and seed germination to} build female-dominant and two-sex versions of a climate-explicit matrix projection model (MPMs) structured by the discrete state variables size (number of tillers) and sex.
 \revise{Here, seed number reflects how many seeds a female initiated, while seed viability is the fraction of initiated seeds that are fertilized via pollination from males. }
-The female-dominant and two-sex versions of the model both allow for sex-specific response to climate and differ only in the feedback between operational sex ratio and seed fertilization. 
+The female-dominant and two-sex versions of the model both allow for sex-specific response to climate and differ only in the feedback between OSR and seed fertilization. 
 For clarity of presentation we do not explicitly include climate-dependence in the notation below, but the following model was evaluated over variation in seasonal temperature and precipitation. 
 
-Let $F_{x,\ t}$ and $M_{x,\ t}$ be the number of female and male plants of size $x$ in year $t$, where $x$  \revise{\linelabel{size} is a natural number with $x \in [1,...\ U]$.
+Let $F_{x,\ t}$ and $M_{x,\ t}$ be the number of female and male plants of size $x$ in year $t$, where $x$  \revise{\linelabel{size} is integer-valued with $x \in [1,...\ U]$.
 The minimum possible size is one tiller and $U$ is the 95th percentile of observed maximum size (35 tillers)}.
 Let $F^{R}_{t}$ and $M^{R}_{t}$ be new female and male recruits in year $t$, which we treat as distinct from the rest of the size distribution because we assume they do not reproduce in their first year, consistent with our observations.
 For a pre-breeding census, the expected numbers of recruits in year $t+1$ is given by:
@@ -317,9 +320,9 @@ For a pre-breeding census, the expected numbers of recruits in year $t+1$ is giv
 F^{R}_{t+1} = \sum_{1}^{U} [ \, p^{F}(x) \cdot c^{F}(x) \cdot d \cdot v(F_{t},M_{t}) \cdot m \cdot \rho ] \, F_{x, t} \\
 M^{R}_{t+1} = \sum_{1}^{U} [ \, p^{F}(x) \cdot c^{F}(x) \cdot d \cdot v(F_{t},M_{t}) \cdot m \cdot (1-\rho) ] \, F_{x,t}
 \end{align}
-\noindent where $p^{F}$ and $c^{F}$ are, respectively, flowering probability and panicle production for females of size $x$, $d$ is the number of seeds per female panicle, $v$ is the probability that a seed is fertilized, $m$ is the probability that a fertilized seed germinates, and $\rho$ is the primary sex ratio (proportion of recruits that are female), which we assume to be $0.5$ \citep{miller2022two}. 
+\noindent where $p^{F}$ and $c^{F}$ are, respectively, flowering probability and panicle production for females of size $x$, $d$ is the total (fertilized and unfertilized) number of seeds per female panicle, $v$ is the probability that a seed is fertilized, $m$ is the probability that a fertilized seed germinates, and $\rho$ is the primary sex ratio (proportion of recruits that are female), which we assume to be $0.5$ \citep{miller2022two}. 
 
-In the two-sex model, seed fertilization is a function of population structure, allowing for feedback between vital rates and operational sex ratio (OSR). 
+In the two-sex model, seed fertilization is a function of population structure, allowing for feedback between vital rates and operational sex ratio. 
 In the context of the model, OSR is defined as the fraction of panicles that are female and is derived from the $U \times 1$ vectors $F_{t}$ and $M_{t}$:
 \begin{align}\label{eq:viab_MPM}
 	v(F_{t},M_{t}) = v_{0} * \left[ 1 - \Phi(x) \right]
@@ -329,8 +332,8 @@ In the context of the model, OSR is defined as the fraction of panicles that are
 The summations tally the numbers of female and male panicles over the size distribution, giving the fraction of total panicles that are female. 
 We focus on the female fraction of panicles and not female fraction of flowering individuals because panicle number can vary widely depending on size; we assume that few males with many panicles vs. many males with few panicles are interchangeable pollination environments. 
 Eq. \ref{eq:viab_MPM} has the properties that seed fertilization is maximized at $v_{0}$ as OSR approaches 100\% male, goes to zero as OSR approaches 100\% female, and parameter $\alpha$ controls how female seed viability declines as male panicles become rare. 
-We estimated these parameters using data from a sex ratio manipulation experiment, conducted in the center of the range, in which seed fertilization was measured in plots of varying OSR; this experiment is described elsewhere  \citep{compagnoni2017can} and is summarized in (SI Appendix, section D).
-This experiment also provided  parameters for seed number per panicle ($d$) and germination rate ($m$).
+We estimated these parameters using data from a sex ratio manipulation experiment, conducted in the center of the range, in which seed fertilization was measured in plots of varying OSR; this experiment is described elsewhere  \citep{compagnoni2017can} and is summarized in SI Appendix, section D.
+This experiment also provided parameters for total seed number per panicle ($d$) and germination rate ($m$).
  \revise{\linelabel{uncertainty} All parameter estimates related to seed production, seed viability, and germination were estimated in Bayesian framework, and their uncertainty was propagated into the MPM along with that of other demographic rates}. 
 Lacking data on climate-dependence, we assume that seed fertilization, seed number, and germination rate do not vary with climate.  
 
@@ -348,12 +351,10 @@ We used $g\ (y,\ x=1)$ (the future size distribution of one-tiller plants from t
 The second component of the equations indicates survival and size transition of established plants from the previous year, where $s$ and $g$ give the probabilities of surviving at size $x$ and growing from sizes $x$ to $y$, respectively, and superscripts indicate that these functions may be unique to females ($F$) and males ($M$).
 
 The model described above yields a $2(U+1) \times 2(U+1)$ transition matrix. 
-\revise{The matrix population model is  structured like  integral projection model (IPM) but is  not one  for several reasons. 
-First, we used two discrete state variables: sex and size. 
-Second, unlike an IPM, we employed a discrete probability distribution (the Poisson Inverse-Gaussian) to define transitions from each initial size to each possible subsequent size. 
-Finally, there is no integration of the matrix.}
-We estimated the population growth rate $\lambda$ of the female dominant model as the leading eigenvalue of the transition matrix. 
-Since the two-sex MPM is nonlinear (matrix elements affect and are affected by population structure) we estimated $\lambda$ and stable sex ratio (female fraction of all individuals) and operational sex ratio (female fraction of panicles) by numerical simulation.
+\revise{The matrix population model is parameterized from regression sub-models like an integral projection model (IPM), but it is not an IPM because size is a discrete state variable.
+We employed a discrete probability distribution (the Poisson Inverse-Gaussian) to define transitions from each initial size to each possible subsequent size in $[1,...\ U]$ (SI Appendix, section B).}
+We estimated the asymptotic population growth rate $\lambda$ of the female dominant model as the leading eigenvalue of the transition matrix. 
+Since the two-sex MPM is nonlinear (matrix elements affect and are affected by population structure) we estimated $\lambda$ and asymptotic sex ratio (female fraction of all individuals) and operational sex ratio (female fraction of panicles) by numerical simulation.
 Since all parameters were estimated using MCMC sampling, we were able to propagate the uncertainty in our estimates of the vital rate parameters to uncertainty in $\lambda$. 
 Furthermore, by sampling over distributions associated with site, block, and source population variance terms, we are able to incorporate process error into the total uncertainty in $\lambda$, in addition to the uncertainty that arises from imperfect knowledge of the parameter values. 
 For example, sampling over site and block variances accounts for regional and local spatial heterogeneity that is not explained by climate, and sampling over source population variance accounts for genetically-based demographic differences across the species' range.
@@ -361,7 +362,7 @@ For example, sampling over site and block variances accounts for regional and lo
 
 \subsection*{Life Table Response Experiments}
 %We conducted two types of Life Table Response Experiments (LTRE) to isolate contributions of climate variables and sex-specific vital rates to variation in $\lambda$.
-To identify which aspect of climate is most important for population viability, we used an LTRE based on a nonparametric model for the dependence of $\lambda$ on parameters associated with seasonal temperature and precipitation \citep{ellner2016data}. 
+To identify which aspect of climate is most important for population viability, we used a Life Table Response Experiment (LTRE) based on a nonparametric model for the dependence of $\lambda$ on parameters associated with seasonal temperature and precipitation \citep{ellner2016data}. 
 To do so, we used the RandomForest package to fit a regression model with four climatic variables (temperature of growing season, precipitation of growing season, temperature of the dormant season and precipitation of the dormant season) as predictors  and $\lambda$  calculated from the two sex model as response \citep{liaw2002classification}.
 %The regression model allowed the estimation of the relative importance of each predictor. 
 %\jacob{The importance of each climate covariate is measured by asking: how wrongly is $\lambda$ predicted if we replaced the focal predictor (e.g., temperature of growing season) by a random value of the other predictors.}{hope this makes sense now}
@@ -379,7 +380,7 @@ This LTRE decomposes the sensitivity of $\lambda$ to climate according to:
 
 \subsection*{Population viability across the climatic niche and geographic range}
 % A species' ecological niche can be defined as the range of resources and conditions allowing its populations to self- sustained  ($\lambda > 1$) \citep{maguire1973niche,hutchinson1978introduction,diez2014probabilistic}.
-To understand how climate shapes the niche and geographic range of Texas bluegrass, we estimated the probability of self- sustaining populations (Pr ($\lambda \ge 1$)) conditional to temperature and precipitation of the dormant and growing seasons.
+To understand how climate shapes the niche and geographic range of Texas bluegrass, we estimated the probability of self-sustaining populations (Pr ($\lambda \ge 1$)) conditional to temperature and precipitation of the dormant and growing seasons.
 Pr ($\lambda \ge 1$) was calculated for the two-sex and female dominant MPMs using the proportion of 300 posterior samples that lead to a $\lambda \ge 1$ \citep{diez2014probabilistic}.
 Population viability in climate niche space was then represented as a contour plot with values of Pr ($\lambda \ge 1$) at given temperature and precipitation for the growing season, holding dormant season climate constant, and vice versa. 
 %We also visualized how our common garden sites have moved and are expected to move through climate space through time due to climate change. 
@@ -438,7 +439,7 @@ We thank the organizations and institutions who hosted us at their field station
 			Lines show fitted statistical models for females (orange) and males (green) based on posterior mean parameter values.
 			%Lower panels below each data panel show the posterior distribution of the difference between females and males as a function of climate (positive and negative values indicate female and male advantage, respectively); dashed horizontal line shows zero difference.
 			% Statistical results are shown in Figure \ref{Sup:Posterior}.
-			The fitted lines were estimated using only one climate covariate, while the other covariates and size were held constant.
+			The fitted lines were estimated using only one climate covariate, while the other covariates and size were held constant. %TOM: say what size this is plotted for.
 			%Shaded regions show the 25\% percentiles of parameter uncertainty (for visualization only).
 			}
 \label{fig:vital_rates}
