@@ -448,7 +448,7 @@ surv_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_s,bsizesex_s,bt
                                                               bpptgrowsex_s,btempgrowsex_s,bpptdormsex_s,btempdormsex_s,
                                                               btempgrowpptgrowsex_s,btempdormpptdormsex_s,bpptgrow2_s,
                                                               btempgrow2_s,btempdorm2_s,bpptgrow2sex_s,bpptdorm2_s,bpptdorm2sex_s,btempdorm2sex_s,
-                                                              btempgrow2sex_s),prob_outer=0.95) + 
+                                                              btempgrow2sex_s),prob = 0.50, prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_s","bsex_s", "bsize_s","bsizesex_s",
                                        "bpptgrow_s","bpptdorm_s","btempgrow_s","btempdorm_s",
                                        "bpptgrowsex_s","bpptdormsex_s", "btempdormsex_s","btempgrowsex_s",
@@ -481,7 +481,7 @@ surv_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_s,bsizesex_s,bt
                                      "bpptgrow2sex_s"=expression(pptgrow^2:sex),
                                      "btempgrow2sex_s"=expression(tempgrow^2:sex)))+
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
+  #labs(color = "Interaction type:")+
   xlab("Posterior estimates (Survival)")+
   xlim(-2,2)+
   ggtitle("A") +
@@ -503,7 +503,7 @@ grow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_g,bt
                                                               bpptgrowsex_g,btempgrowsex_g,bpptdormsex_g,btempdormsex_g,
                                                               btempgrowpptgrowsex_g,btempdormpptdormsex_g,bpptgrow2_g,
                                                               btempgrow2_g,btempdorm2_g,bpptgrow2sex_g,bpptdorm2_g,bpptdorm2sex_g,btempdorm2sex_g,
-                                                              btempgrow2sex_g),prob_outer=0.95) + 
+                                                              btempgrow2sex_g),prob = 0.55,prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_g","bsex_g", "bsize_g","bsizesex_g",
                                        "bpptgrow_g","bpptdorm_g","btempgrow_g","btempdorm_g",
                                        "bpptgrowsex_g","bpptdormsex_g", "btempdormsex_g","btempgrowsex_g",
@@ -536,10 +536,10 @@ grow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_g,bt
                                      "bpptgrow2sex_g"=expression(pptgrow^2:sex),
                                      "btempgrow2sex_g"=expression(tempgrow^2:sex)))+
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
+  #labs(color = "Interaction type:")+
   xlab("Posterior estimates (Growth)")+
   ylab(NULL) +
-  xlim(-1.25,1.25)+
+  xlim(-1.5,1.5)+
   ggtitle("B") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
@@ -554,12 +554,12 @@ grow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_g,bt
         panel.grid.minor = element_blank(),
         panel.background = element_rect(colour = "black", size=0.5))
 
-flow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_f,btempgrowpptgrow_f,btempdormpptdorm_f,bsex_f,bpptdorm_f,
+flow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_f,bsizesex_f,btempgrowpptgrow_f,btempdormpptdorm_f,bsex_f,bpptdorm_f,
                                                               bsize_f,bpptgrow_f,btempgrow_f,btempdorm_f,
                                                               bpptgrowsex_f,btempgrowsex_f,bpptdormsex_f,btempdormsex_f,
                                                               btempgrowpptgrowsex_f,btempdormpptdormsex_f,bpptgrow2_f,
                                                               btempgrow2_f,btempdorm2_f,bpptgrow2sex_f,bpptdorm2_f,bpptdorm2sex_f,btempdorm2sex_f,
-                                                              btempgrow2sex_f),prob_outer=0.95) + 
+                                                              btempgrow2sex_f),prob = 0.5,prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_f","bsex_f", "bsize_f","bsizesex_f",
                                        "bpptgrow_f","bpptdorm_f","btempgrow_f","btempdorm_f",
                                        "bpptgrowsex_f","bpptdormsex_f", "btempdormsex_f","btempgrowsex_f",
@@ -592,10 +592,10 @@ flow_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_g,bsizesex_f,bt
                                      "bpptgrow2sex_f"=expression(pptgrow^2:sex),
                                      "btempgrow2sex_f"=expression(tempgrow^2:sex)))+
   geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
-  labs(color = "Interaction type:")+
+  #labs(color = "Interaction type:")+
   xlab("Posterior estimates (Flowering)")+
   ylab(NULL) +
-  xlim(-2,2)+
+  xlim(-3,3)+
   ggtitle("C") +
   # geom_rect(xmin = 0, xmax=2.25, ymin = 0, ymax = 25, alpha = 0.006, fill = "#F4B400", color = NA)+
   # geom_rect(xmin = -2.25, xmax = 0, ymin = 0, ymax = 25, alpha = 0.006, fill = "#0F9D58", color = NA)+
@@ -615,7 +615,7 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
                                                                bpptgrowsex_p,btempgrowsex_p,bpptdormsex_p,btempdormsex_p,
                                                                btempgrowpptgrowsex_p,btempdormpptdormsex_p,bpptgrow2_p,
                                                                btempgrow2_p,btempdorm2_p,bpptgrow2sex_p,bpptdorm2_p,bpptdorm2sex_p,btempdorm2sex_p,
-                                                               btempgrow2sex_p),prob_outer=0.95) + 
+                                                               btempgrow2sex_p),prob = 0.5,prob_outer=0.95) + 
   ggplot2::scale_y_discrete(limits = c("b0_p","bsex_p", "bsize_p","bsizesex_p",
                                        "bpptgrow_p","bpptdorm_p","btempgrow_p","btempdorm_p",
                                        "bpptgrowsex_p","bpptdormsex_p", "btempdormsex_p","btempgrowsex_p",
@@ -631,8 +631,8 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
                                      "btempgrowpptgrow_p"="tempgrow:pptgrow", "btempdormpptdorm_p"="tempdorm:pptdorm",
                                      "bpptgrow2_p"=expression(pptgrow^2),"btempgrow2_p"=expression(tempgrow^2),"bpptdorm2_p"=expression(pptdorm^2),"btempdorm2_p"=expression(tempdorm^2),
                                      "bpptdorm2sex_p"=expression(pptdorm^2:sex),"btempdorm2sex_p"=expression(tempdorm^2:sex),"bpptgrow2sex_p"=expression(pptgrow^2:sex),"btempgrow2sex_p"=expression(tempgrow^2:sex)))+
-  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "white") +
-  labs(color = "Interaction type:")+
+  geom_vline(xintercept = 0, linetype = "dashed", size = 0.6, alpha = 0.6, color = "black") +
+  #labs(color = "Interaction type:")+
   xlab("Posterior estimates (Panicles)")+
   ylab(NULL) +
   xlim(-1,1)+
@@ -650,9 +650,9 @@ panic_clim<-mcmc_intervals(posterior_season, pars = quote_bare(b0_p,bsizesex_p,b
         panel.grid.minor = element_blank(),
         panel.background = element_rect(colour = "black", size=0.5))
 
-pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean_r1.pdf",useDingbats = F,height=12,width=10)
-ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
-dev.off()
+# pdf("/Users/jm200/Library/CloudStorage/Dropbox/Miller Lab/github/POAR-Forecasting/Manuscript/Figures/Posterior_mean_r1.pdf",useDingbats = F,height=12,width=10)
+# ggarrange(surv_clim,grow_clim,flow_clim,panic_clim + rremove("ylab"), ncol = 2, nrow = 2)
+# dev.off()
 
 # Plot vital rate figure (2D) ----
 poar <- poar.clim_seasonal  
@@ -834,6 +834,88 @@ panic_coef <- rstan::extract(fit_full, pars = quote_bare(b0_p,bsex_p,bsex_p,bsiz
                                                          site_tau_p,block_tau_p,source_tau_p))
 
 via_coef <- rstan::extract(fit_full, pars = quote_bare(v0,a_v,m,lambda_d))
+
+# Coefficient summary  ----
+summary(fit_full,pars = quote_bare(bsizesex_s,bsex_s,
+                                   bpptgrowsex_s,bpptdormsex_s,btempgrowsex_s,btempdormsex_s,
+                                   btempdormpptdormsex_s,btempgrowpptgrowsex_s,
+                                   bpptgrow2sex_s,bpptdorm2sex_s,
+                                   btempgrow2sex_s,btempdorm2sex_s),p=c(0.025, 0.975))$summary
+
+summary(fit_full,pars = quote_bare(bsizesex_g,bsex_g,
+                                   bpptgrowsex_g,bpptdormsex_g,btempgrowsex_g,btempdormsex_g,
+                                   btempdormpptdormsex_g,btempgrowpptgrowsex_g,
+                                   bpptgrow2sex_g,bpptdorm2sex_g,
+                                   btempgrow2sex_g,btempdorm2sex_g),p=c(0.025, 0.975))$summary
+
+summary(fit_full,pars = quote_bare(bsizesex_f,bsex_f,
+                                   bpptgrowsex_f,bpptdormsex_f,btempgrowsex_f,btempdormsex_f,
+                                   btempdormpptdormsex_f,btempgrowpptgrowsex_f,
+                                   bpptgrow2sex_f,bpptdorm2sex_f,
+                                   btempgrow2sex_f,btempdorm2sex_f),p=c(0.025, 0.975))$summary
+
+summary(fit_full,pars = quote_bare(bsizesex_p,bsex_p,
+                                   bpptgrowsex_p,bpptdormsex_p,btempgrowsex_p,btempdormsex_p,
+                                   btempdormpptdormsex_p,btempgrowpptgrowsex_p,
+                                   bpptgrow2sex_p,bpptdorm2sex_p,
+                                   btempgrow2sex_p,btempdorm2sex_p),p=c(0.025, 0.975))$summary
+# Pr lambda higher than 1  ----
+mean(surv_coef$bsizesex_s > 0,na.rm=T)
+mean(surv_coef$bsex_s > 0,na.rm=T)
+mean(surv_coef$bpptgrowsex_s >0,na.rm=T)
+mean(surv_coef$bpptdormsex_s >0,na.rm=T)
+mean(surv_coef$btempgrowsex_s >0,na.rm=T)
+mean(surv_coef$btempdormsex_s >0,na.rm=T)
+
+mean(surv_coef$btempdormpptdormsex_s >0,na.rm=T)
+mean(surv_coef$btempgrowpptgrow_s >0,na.rm=T)
+mean(surv_coef$bpptgrow2sex_s >0,na.rm=T)
+mean(surv_coef$bpptdorm2sex_s >0,na.rm=T)
+mean(surv_coef$btempdorm2sex_s >0,na.rm=T)
+mean(surv_coef$btempgrow2sex_s >0,na.rm=T)
+
+mean(grow_coef$bsizesex_g > 0,na.rm=T)
+mean(grow_coef$bsex_g >0,na.rm=T)
+mean(grow_coef$bpptgrowsex_g >0,na.rm=T)
+mean(grow_coef$bpptdormsex_g >0,na.rm=T)
+mean(grow_coef$btempgrowsex_g >0,na.rm=T)
+mean(grow_coef$btempdormsex_g >0,na.rm=T)
+
+mean(grow_coef$btempdormpptdormsex_g >0,na.rm=T)
+mean(grow_coef$btempgrowpptgrow_g >0,na.rm=T)
+mean(grow_coef$bpptgrow2sex_g >0,na.rm=T)
+mean(grow_coef$bpptdorm2sex_g >0,na.rm=T)
+mean(grow_coef$btempdorm2sex_g >0,na.rm=T)
+mean(grow_coef$btempgrow2sex_g >0,na.rm=T)
+
+mean(flow_coef$bsizesex_f > 0,na.rm=T)
+mean(flow_coef$bsex_f >0,na.rm=T)
+mean(flow_coef$bpptgrowsex_f >0,na.rm=T)
+mean(flow_coef$bpptdormsex_f >0,na.rm=T)
+mean(flow_coef$btempgrowsex_f >0,na.rm=T)
+mean(flow_coef$btempdormsex_f >0,na.rm=T)
+
+mean(flow_coef$btempdormpptdormsex_f >0,na.rm=T)
+mean(flow_coef$btempgrowpptgrow_f >0,na.rm=T)
+mean(flow_coef$bpptgrow2sex_f >0,na.rm=T)
+mean(flow_coef$bpptdorm2sex_f >0,na.rm=T)
+mean(flow_coef$btempdorm2sex_f >0,na.rm=T)
+mean(flow_coef$btempgrow2sex_f >0,na.rm=T)
+
+mean(panic_coef$bsizesex_p >0,na.rm=T)
+mean(panic_coef$bsex_p >0,na.rm=T)
+mean(panic_coef$bpptgrowsex_p >0,na.rm=T)
+mean(panic_coef$bpptdormsex_p >0,na.rm=T)
+mean(panic_coef$btempgrowsex_p >0,na.rm=T)
+mean(panic_coef$btempdormsex_p >0,na.rm=T)
+
+mean(panic_coef$btempdormpptdormsex_p >0,na.rm=T)
+mean(panic_coef$btempgrowpptgrow_p >0,na.rm=T)
+mean(panic_coef$bpptgrow2sex_p >0,na.rm=T)
+mean(panic_coef$bpptdorm2sex_p >0,na.rm=T)
+mean(panic_coef$btempdorm2sex_p >0,na.rm=T)
+mean(panic_coef$btempgrow2sex_p >0,na.rm=T)
+
 
 ## Precipitation of the growing season 
 # sample vital rate functions from the join posterior

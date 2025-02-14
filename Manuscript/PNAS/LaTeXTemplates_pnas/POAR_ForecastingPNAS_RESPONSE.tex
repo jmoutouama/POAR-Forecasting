@@ -71,7 +71,7 @@ Thank you for the opportunity to submit a revision of our manuscript for your co
 	\item We increased the paper’s accessibility and impact for a broad PNAS audience by: 
 	\begin{itemize}
 	\item Re-writing our significance statement to appeal to a more general audience.	
-	\item Including in the discussion elements related to the effect of climate change on sex ratio not only for animals but also for plants. -- TOM: I think this has not been done.
+	\item Including in the discussion elements related to the effect of climate change on sex ratio not only for animals but also for plants.
 	\item Discussing the potential mechanisms by which the dormant and growing season affect population dynamics.
 	\end{itemize}
 \end{enumerate}
@@ -110,7 +110,7 @@ More   specifically:
 \comment{ Overall the authors do a commendable (and appropriate) job of propagating uncertainty in their analyses. However, it was hard for me to tell whether that was also done for the parameters estimated in the previous sex ratio experiment, or if mean parameters were used? This seems quite important as that’s the key
 relationship for distinguishing the two-sex model}
 \response{Thank you for this question. We agree that sex ratio-dependence is an important element of the model that we could have explained better. Yes, we propagated the uncertainty in the parameters estimated from the sex ratio experiment using Bayesian statistics, such that the total uncertainty we describe ($Pr(\lambda \ge 1)$) is inclusive of uncertainty in the feedback between sex ratio and seed fertilization. 
-These details are now included in the main text (line 578- line 581) as well as in the supplementary material (line 46 and line 61).}
+These details are now included in the main text (line 581- line 584) as well as in the supplementary material (line 46 and line 61).}
 
 \comment{ Fig S13 shows how seed viability is related to OSR in that experiment, declining over ~ 75\% OSR, but also highlights
 the very large apparent variability in that relationship. It was also unclear to me whether seed number was affected by OSR and was included in the model, or only
@@ -118,35 +118,34 @@ viability? It would be nice to include in this paper some discussion of why OSR 
 biology.}
 \response{Thank you for your comment regarding the natural history of our study system. 
 Our model includes parameters related to seed number, viability, and germination, as all of these influence population dynamics. 
-We have clarified this in the manuscript (lines 523-524).
-However, only seed viability depends on the Operational Sex Ratio (OSR), as we now specify in the manuscript (lines 439-442). 
+We have clarified this in the manuscript (lines 525-526).
+However, only seed viability depends on the Operational Sex Ratio (OSR), as we now specify in the manuscript (lines 438-440). 
 Seed number reflects how many seeds a female initiates, while seed viability represents the fraction of initiated seeds that are fertilized through pollination by males.
-We have added these details in the manuscript (lines 527-529).
+We have added these details in the manuscript (lines 529-532).
 Figure S13 illustrates our empirical estimate of how seed viability varies in relation to OSR. 
 \\
-We appreciate the suggestion to include a discussion on why OSR affects seed viability. We referenced our previous study\footnote{Compagnoni A, Steigman K, Miller TE (2017). Can’t live with them, can’t live without them? balancing mating and competition in two-sex populations. Proceedings of the Royal Society B: Biological Sciences 284(1865):20171999} that tested the effect of OSR on seed viability in the text and provided additional details in the supplementary material (line 53 - line 66).
-
-TOM: the footnote is getting spread across two pages.}%
+We appreciate the suggestion to include a discussion on why OSR affects seed viability. We referenced our previous study\footnote{https://royalsocietypublishing.org/doi/10.1098/rspb.2017.1999} that tested the effect of OSR on seed viability in the text and provided additional details in the supplementary material (line 53 - line 66).
+}
 
 \comment{ I might have thought OSR would primarily affect seed number rather than viability. Do unfertilized ovules produce non-viable seeds in this species (they’re not simply aborted)?}
 \response{Correct, in \emph{Poa arachnifera}, unfertilized ovules lead to the production of non-viable seeds. 
 Based on the way we parameterize the life cycle, the total number of viable seeds produced is a function of the number of seeds initiated and the fraction of initiated seeds that are fertilized; only the latter is dependent on OSR (Figure S13). 
-In our revised manuscript, we have added more information about the reproductive biology so that there is a clearer connection between the demographic model and the natural history (lines 439 - line 442). }
+In our revised manuscript, we have added more information about the reproductive biology so that there is a clearer connection between the demographic model and the natural history (lines 438 - line 440). }
 
 \comment{It seems important to have some discussion of the potential mechanism by which dormant season climate could be important, and how these predictions are different than for growing season climate.}
 \response{We agree with the reviewer on this and we appreciate the suggestion.  
 One probable explanation for the the importance of the dormant season in our study system is that Texas, Oklahoma and Kansas experience a very high temperatures during this period that the focal species must survive, even in its dormant state.
-We added content to the Discussion section regarding potential mechanisms by which dormant season climate could be important (line  358- line 366).}
+We added content to the Discussion section regarding potential mechanisms by which dormant season climate could be important (line  356- line 366).}
 
 \comment{Why does precipitation have a negative effect on most vital rates in this seasonally arid region?.}
 \response{Good question. High values of precipitation that occurred during our study were typically associated with tropical storms during the late-summer dormant season or extreme weather systems during the spring growing season. 
 For example, the wettest conditions we observed were associated with the 2015 flooding and tornado outbreak across much of Texas and Oklahoma. 
 Negative effects of high precipitation were therefore likely driven by water-logged soils and disturbance associated with extreme events. 
-We now address this in the discussion (line 367 - line 374).
+We now address this in the discussion (line 367 - line 373).
 }
 
 \comment{ Since there are mixed models of the vital rates, as a continuous function of size, I didn’t follow why discrete MPM were used instead of IPMs. I assume there’s a good reason, given the authors’ expertise, but not clear why discrete model used and how all the individual transitions were estimated. Maybe the mixed models were discretized, like an IPM ends up doing in practice, and I just didn’t understand? It’s hard to imagine how climate effects on that many discrete transitions would be estimated.}
-\response{Thank you for this question. We understand the confusion and we have attempted to clarify this in our revised manuscript (lines 605 - line 611).
+\response{Thank you for this question. We understand the confusion and we have attempted to clarify this in our revised manuscript (lines 609 - line 615).
 Our matrix model includes two discrete state variables, sex and size. 
 Size is discrete because it is integer-valued; an individual may be 1,2,...,N tillers in size but not 1.7 or 12.631 tillers, for example. 
 It would be terribly inefficient (and, as the reviewer suggests, probably impossible) to parameterize the transition matrix element-by-element. 
@@ -155,26 +154,25 @@ Like an IPM, size is a covariate in these regressions.
 But unlike an IPM, we use a discrete probability distribution (the Poisson Inverse-Gaussian) to define transitions from each initial size to each possible subsequent size (and the regression machinery allows us to incorporate climate dependence and random effects in these transition probabilities). 
 Thus, it is not an Integral Projection Model because there is nothing to integrate, but it is built like one. 
 We use these methods a lot (Lynn et al. 2021, Miller and Compagnoni 2022, Fowler et al. 2024), and we get this question a lot!
-
-TOM: Be sure to add these citations.
 }
 
 \comment{ And U is 35 tillers; how many size stages do the models have?}
-\response{Following the rationale in our previous response, the model has $U=35$ stages (each corresponding to a size in tiller number) plus a separate recruit stage, so across both sexes the projection matrix is $72 \times 72$. We have clarified this in our revision (line 538- line 540).}
+\response{Following the rationale in our previous response, the model has $U=35$ stages (each corresponding to a size in tiller number) plus a separate recruit stage, so across both sexes the projection matrix is $72 \times 72$. We have clarified this in our revision (line 540- line 542).}
 
 \comment{Fig S3 – says 95\% CI but two intervals shown}
 \response{Thank you. We now clarify in the legend that the two bar types correspond to 50 and 95 percentiles of the posterior distribution.}
 
 \comment{L104 says most sex coefficients were significant, but this isn’t obvious from Fig S3 (most seem overlapping zero); perhaps authors could be more specific about which rates they conclude are significant, or include probabilities of overlap with zero.}
 \response{Thank you for  this comment.
-We have edited this sentence and added more specificity regarding our interpretation of the vital rate coefficients (line 107).
-
-TOM: I think there is more work to do here.}
+We have edited this sentence and added more specificity regarding our interpretation of the vital rate coefficients (line 106 - line 108). 
+We also included  the  probabilities of overlap with zero as suggested. 
+Finally we added in a supplementary  material a table summarizing the vital rates posterior means, 95\% credible intervals, the probability of the coefficient being greater than 0, and the probability of the coefficient being less than 0 (see Table S1). 
+}
 
 \comment{Text says 8 source pops. In Fig 1 I only count 7?}
 \response{We thank the reviewer for catching this error. 
 The correct number is seven source populations. 
-We have updated the text (line 470).}
+We have updated the text (line 469).}
 
 \comment{Fig 2 – maybe show shaded uncertainty regions on the regression?}
 \response{We appreciate this suggestion and we tried this when we first generated these results. However, it turns out that wide uncertainty intervals visually dominate the plots. 
@@ -194,7 +192,7 @@ It remains our preference to show the simpler version of Figure 3 (as in the cur
 }
 
 \comment{L176, 179 – are these referring to the wrong figure panels? E and F show the difs between the sex and no-sex models I believe}
-\response{Good catch. Yes, we referred to the wrong figure panels. We have updated the Figure panels (line 164). Thank you.}
+\response{Good catch. Yes, we referred to the wrong figure panels. We have updated the Figure panels (line 165). Thank you.}
 
 \comment{ Fig 3 – the plot of past, current and future points is hard to eyeball any patterns. Maybe in addition a histogram or density plot of the values to show any shifts in probabilities?}
 \response{ Thank you for this suggestion. We agree that our previous figure was hard to interpret, so we have changed it. We have updated Figure 3 by removing the observed climate values, since trajectories of climate change are already shown in Figure 1B,C. We also replaced the bottom two panels (which previously showed the difference between female-dominant and two-sex models) with density plots to illustrate shifts in probabilities, as recommended.}
@@ -208,22 +206,19 @@ It remains our preference to show the simpler version of Figure 3 (as in the cur
 \comment{However, the study as currently written strikes me as being written for other plant ecologists and demographers - an Ecology or Journal of Ecology audience, not a PNAS audience. I am a plant demographer, so I would defer to others outside the field if they read the manuscript and see the exciting results as written. But, in the event that other reviewers do not see the substantial advance made by this paper, I believe the manuscript could be made exciting to a general audience by emphasizing the following points:
 \\
 1. Climate change is changing the operational sex ratio of plant populations. This change is not due to something direct like temperature-dependent sex determination, but to climate-induced changes in vital rates later in life. Many organisms are likely to have sex-dependent vital rates, and interactions of climate with these differences. Changes in sex ratio are an under-appreciated (and kind of creepy) implication of climate change that could appeal broadly to the general public. This point could, for example, get at least one paragraph in the discussion, in relation to other studies that have shown effects of climate change on sex ratio, in both animals and plants.}
-\response{ We thank the reviewer for this suggestion to expanding the reach of our work. We have added in Discussion sentences that addresses shifts in sex ratio as a general feature of climate change that has been documented in both plants and animals (line 340 - line 345).
+\response{ We thank the reviewer for this suggestion to expanding the reach of our work. We have added in Discussion sentences that addresses shifts in sex ratio as a general feature of climate change that has been documented in both plants and animals (line 330 - line 343).
 We have also updated the significance statement.
-
-TOM: I think there is more work to do on this one.}
+}
 
 \comment{2. Climate conditions during the non-growing season were at least as important as climate conditions during the growing season. These results are currently in an appendix, but I suggest moving them to the main text. Off the top of my head, I am not aware of many (any?) other plant demogrpahy studies that have addressed this question explicitly. To a broad group of readers (scientists and the general public), I think it could be amazing that times when organisms are dormant matter as much as times of the year when they are active. How often has this been done in other studies? How much do we know about seasonality in projected impacts of climate change?}
 \response{This is a great suggestion and, we agree, an interesting element of our results. There are, in fact, previous studies that address the influence of growing vs dormant season weather on plant demography (e.g., Evers et al. 2021 Global Change Biology), and our results have some precedence in this literature, which was partly why we did not make it a more central focus. 
-But to incorporate this suggestion we now address the importance of both the dormant and growing season as well as the mechanisms by which the dormant season could affect population growth (line 358 - line 366). 
+But to incorporate this suggestion we now address the importance of both the dormant and growing season as well as the mechanisms by which the dormant season could affect population growth (line 356 - line 366). 
 \\
-Unfortunately, we cannot move a figure from the Appendix to the main text, as the maximum number of figures is limited to four, but we have added a discussion paragraph on the impact of climate seasonality on population dynamics (line 358 - line 374).}
+Unfortunately, we cannot move a figure from the Appendix to the main text, as the maximum number of figures is limited to four, but we have added a discussion paragraph on the impact of climate seasonality on population dynamics (line 356 - line 373).}
 
 \comment{3. The result that the two models make broadly similar predictions is important and comforting. As written, the paper emphasizes the differences between projections from models that account for sex-ratio and from traditional female-only demographic models. I would give at least as much time to the similarities. Qualitatively, we are getting the right patterns with conventional methods, and, although the devil is in the details of the biology, there are also a lot of details of the climate, habitat, potential for local adaptation, etc that are missing. This result is good news in the sense that not all details fundamentally change the story of climate change impacts. (Even though the simple models miss the creepy and cool changes in sex ratio for this species.)}
 \response{Thank you for this valuable suggestion on highlighting both the differences and similarities between projections from models that account for sex ratios and traditional female-only demographic models. 
-We highlighted the differences and similarities between projections from models in the discussion (line 272 -line 302) and the conclusion  (line 419 -line 422). We have now added the implication for conservations in the manuscript (line  283 - line  285).
-
-TOM: I think the revisions for this comment can be improved.}
+We highlighted the differences and similarities between projections from models in the discussion (line 273 -line 301) and the conclusion  (line 417 -line 422). We have rewritten the significance statement.}
 
 \comment{As a minor comment, I suspect Figure 3 would be especially hard for a nonspecialist to understand, and I encourage the authors to think about a simpler message they might want to convey in a different figure in the main text. (Again, I say this as a specialist trying to imagine myself as a nonspecialist reading the paper.)}
 \response{We appreciate this suggestion and we agree. 
