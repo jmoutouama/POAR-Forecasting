@@ -391,71 +391,62 @@ Given that germination was conditional on seed viability, the probability of suc
  \caption{Estimated coefficients for vital rates, including posterior means, 95\% credible intervals, the probability of the coefficient being greater than 0, and the probability of the coefficient being less than 0. 
  The bold coefficients are the coefficient for which  $Pr( coefficient  \lessgtr 0) > 0.7$.
  The coefficients were estimated using a Bayesian mixed-effects model.}
-\begin{tabular}{llllll}
+\begin{tabular}{lllllll}
 \toprule
-\textbf{Coefficient (Coeff)} & \textbf{mean} & \textbf{2.50\%} & \textbf{97.50\%} & \textbf{Pr (Coeff \textgreater 0)} & \textbf{Pr (Coeff \textless  0)} \\
-\\
+\textbf{Vital rate} & \textbf{Coefficient} & \textbf{mean} & \textbf{2.50\%} & \textbf{97.50\%} & \textbf{Pr (Coeff \textgreater 0)} & \textbf{Pr (Coeff \textless  0)} \\
 \midrule
-\textbf{bsizesex\_s} & \textbf{-0.153} & \textbf{-0.543} & \textbf{0.250} & \textbf{0.226} & \textbf{0.774} \\
-\textbf{bsex\_s} & \textbf{-0.382} & \textbf{-1.667} & \textbf{0.838} & \textbf{0.275} & \textbf{0.725} \\
-\textbf{bpptgrowsex\_s} & \textbf{-0.317} & \textbf{-1.160} & \textbf{0.553} & \textbf{0.232} & \textbf{0.768} \\
-bpptdormsex\_s & -0.146 & -0.855 & 0.590 & 0.337 & 0.663 \\
-\textbf{btempgrowsex\_s} & \textbf{-0.431} & \textbf{-1.292} & \textbf{0.428} & \textbf{0.168} & \textbf{0.832} \\
-btempdormsex\_s & -0.238 & -1.169 & 0.728 & 0.311 & 0.689 \\
-\textbf{btempdormpptdormsex\_s} & \textbf{-0.436} & \textbf{-1.135} & \textbf{0.246} & \textbf{0.108} & \textbf{0.892} \\
-btempgrowpptgrowsex\_s & 0.514 & -0.186 & 1.214 & 0.649 & 0.351 \\
-\textbf{bpptgrow2sex\_s} & \textbf{0.175} & \textbf{-0.394} & \textbf{0.753} & \textbf{0.729} & 0.271 \\
-\textbf{bpptdorm2sex\_s} & \textbf{-0.317} & \textbf{-0.743} & \textbf{0.101} & \textbf{0.066} & \textbf{0.934} \\
-\textbf{btempgrow2sex\_s} & \textbf{0.351} & \textbf{-0.447} & \textbf{1.166} & \textbf{0.224} & \textbf{0.776} \\
-\textbf{btempdorm2sex\_s} & \textbf{-0.204} & \textbf{-0.764} & \textbf{0.349} & \textbf{0.809} & 0.191 \\
-\textbf{bsizesex\_g} & \textbf{0.169} & \textbf{0.017} & \textbf{0.315} & \textbf{0.983} & 0.017 \\
-\textbf{bsex\_g} & \textbf{-0.254} & \textbf{-0.753} & \textbf{0.258} & \textbf{0.160} & \textbf{0.840} \\
-\textbf{bpptgrowsex\_g} & \textbf{0.421} & \textbf{0.070} & \textbf{0.784} & \textbf{0.992} & 0.008 \\
-bpptdormsex\_g & -0.212 & -0.502 & 0.079 & 0.077 & 0.923 \\
-\textbf{btempgrowsex\_g} & \textbf{0.176} & \textbf{-0.155} & \textbf{0.486} & \textbf{0.854} & 0.146 \\
-\textbf{btempdormsex\_g} & \textbf{-0.308} & \textbf{-0.664} & \textbf{0.036} & \textbf{0.043} & \textbf{0.957} \\
-\textbf{btempdormpptdormsex\_g} & \textbf{-0.158} & \textbf{-0.368} & \textbf{0.044} & \textbf{0.069} & \textbf{0.931} \\
-\textbf{btempgrowpptgrowsex\_g} & \textbf{-0.005} & \textbf{-0.314} & \textbf{0.303} & \textbf{0.967} & 0.033 \\
-\textbf{bpptgrow2sex\_g} & \textbf{-0.141} & \textbf{-0.317} & \textbf{0.020} & \textbf{0.046} & \textbf{0.954} \\
-\textbf{bpptdorm2sex\_g} & \textbf{-0.052} & \textbf{-0.209} & \textbf{0.106} & \textbf{0.256} & \textbf{0.744} \\
-\textbf{btempgrow2sex\_g} & \textbf{-0.066} & \textbf{-0.367} & \textbf{0.242} & \textbf{0.876} & 0.124 \\
-btempdorm2sex\_g & 0.105 & -0.077 & 0.277 & 0.337 & 0.663 \\
-\textbf{bsizesex\_f} & \textbf{0.150} & \textbf{-0.277} & \textbf{0.578} & \textbf{0.759} & 0.241 \\
-\textbf{bsex\_f} & \textbf{-0.810} & \textbf{-2.324} & \textbf{0.773} & \textbf{0.144} & \textbf{0.856} \\
-bpptgrowsex\_f & -0.087 & -1.158 & 0.934 & 0.439 & 0.561 \\
-bpptdormsex\_f & -0.189 & -1.052 & 0.683 & 0.339 & 0.661 \\
-btempgrowsex\_f & -0.215 & -1.208 & 0.783 & 0.339 & 0.661 \\
-btempdormsex\_f & -0.086 & -1.164 & 0.976 & 0.444 & 0.556 \\
-btempdormpptdormsex\_f & -0.105 & -0.701 & 0.517 & 0.371 & 0.629 \\
-btempgrowpptgrowsex\_f & -0.174 & -1.192 & 0.857 & 0.651 & 0.349 \\
-\textbf{bpptgrow2sex\_f} & \textbf{0.306} & \textbf{-0.214} & \textbf{0.832} & \textbf{0.869} & 0.131 \\
-bpptdorm2sex\_f & -0.086 & -0.695 & 0.503 & 0.394 & 0.606 \\
-btempgrow2sex\_f & -0.348 & -1.295 & 0.545 & 0.535 & 0.465 \\
-\textbf{btempdorm2sex\_f} & \textbf{0.022} & \textbf{-0.529} & \textbf{0.552} & \textbf{0.236} & \textbf{0.764} \\
-\textbf{bsizesex\_p} & \textbf{0.037} & \textbf{-0.088} & \textbf{0.158} & \textbf{0.732} & 0.268 \\
-bsex\_p & -0.068 & -0.340 & 0.211 & 0.303 & 0.697 \\
-bpptgrowsex\_p & -0.041 & -0.289 & 0.203 & 0.361 & 0.639 \\
-bpptdormsex\_p & 0.010 & -0.210 & 0.233 & 0.534 & 0.466 \\
-btempgrowsex\_p & 0.008 & -0.236 & 0.268 & 0.514 & 0.486 \\
-\textbf{btempdormsex\_p} & \textbf{-0.096} & \textbf{-0.341} & \textbf{0.157} & \textbf{0.229} & \textbf{0.771} \\
-btempdormpptdormsex\_p & 0.015 & -0.207 & 0.234 & 0.555 & 0.445 \\
-\textbf{btempgrowpptgrowsex\_p} & \textbf{-0.052} & \textbf{-0.287} & \textbf{0.208} & \textbf{0.289} & \textbf{0.711} \\
-\textbf{bpptgrow2sex\_p} & \textbf{0.059} & \textbf{-0.153} & \textbf{0.264} & \textbf{0.719} & 0.281 \\
-bpptdorm2sex\_p & 0.042 & -0.148 & 0.236 & 0.668 & 0.332 \\
-\textbf{btempgrow2sex\_p} & \textbf{-0.116} & \textbf{-0.370} & \textbf{0.144} & \textbf{0.173} & \textbf{0.827} \\
-\textbf{btempdorm2sex\_p} & \textbf{-0.092} & \textbf{-0.284} & \textbf{0.100} & \textbf{0.184} & \textbf{0.816}\\
+Survival & \textbf{size*sex} & \textbf{-0.153} & \textbf{-0.543} & \textbf{0.250} & \textbf{0.226} & \textbf{0.774} \\
+Survival & \textbf{sex} & \textbf{-0.382} & \textbf{-1.667} & \textbf{0.838} & \textbf{0.275} & \textbf{0.725} \\
+Survival & \textbf{pptgrow*sex} & \textbf{-0.317} & \textbf{-1.160} & \textbf{0.553} & \textbf{0.232} & \textbf{0.768} \\
+Survival & pptdorm*sex & -0.146 & -0.855 & 0.590 & 0.337 & 0.663 \\
+Survival & \textbf{tempgrow*sex} & \textbf{-0.431} & \textbf{-1.292} & \textbf{0.428} & \textbf{0.168} & \textbf{0.832} \\
+Survival & tempdorm*sex & -0.238 & -1.169 & 0.728 & 0.311 & 0.689 \\
+Survival & \textbf{tempdorm*pptdorm*sex} & \textbf{-0.436} & \textbf{-1.135} & \textbf{0.246} & \textbf{0.108} & \textbf{0.892} \\
+Survival & tempgrow*pptgrow*sex & 0.514 & -0.186 & 1.214 & 0.649 & 0.351 \\
+Survival & \textbf{pptgrow2*sex} & \textbf{0.175} & \textbf{-0.394} & \textbf{0.753} & \textbf{0.729} & 0.271 \\
+Survival & \textbf{pptdorm2*sex} & \textbf{-0.317} & \textbf{-0.743} & \textbf{0.101} & \textbf{0.066} & \textbf{0.934} \\
+Survival & \textbf{tempgrow2*sex} & \textbf{0.351} & \textbf{-0.447} & \textbf{1.166} & \textbf{0.224} & \textbf{0.776} \\
+Survival & \textbf{tempdorm2*sex} & \textbf{-0.204} & \textbf{-0.764} & \textbf{0.349} & \textbf{0.809} & 0.191 \\
+Growth & \textbf{size*sex} & \textbf{0.169} & \textbf{0.017} & \textbf{0.315} & \textbf{0.983} & 0.017 \\
+Growth & \textbf{sex} & \textbf{-0.254} & \textbf{-0.753} & \textbf{0.258} & \textbf{0.160} & \textbf{0.840} \\
+Growth & \textbf{pptgrow*sex} & \textbf{0.421} & \textbf{0.070} & \textbf{0.784} & \textbf{0.992} & 0.008 \\
+Growth & pptdorm*sex & -0.212 & -0.502 & 0.079 & 0.077 & 0.923 \\
+Growth & \textbf{tempgrow*sex} & \textbf{0.176} & \textbf{-0.155} & \textbf{0.486} & \textbf{0.854} & 0.146 \\
+Growth & \textbf{tempdorm*sex} & \textbf{-0.308} & \textbf{-0.664} & \textbf{0.036} & \textbf{0.043} & \textbf{0.957} \\
+Growth & \textbf{tempdorm*pptdorm*sex} & \textbf{-0.158} & \textbf{-0.368} & \textbf{0.044} & \textbf{0.069} & \textbf{0.931} \\
+Growth & \textbf{tempgrow*pptgrow*sex} & \textbf{-0.005} & \textbf{-0.314} & \textbf{0.303} & \textbf{0.967} & 0.033 \\
+Growth & \textbf{pptgrow2*sex} & \textbf{-0.141} & \textbf{-0.317} & \textbf{0.020} & \textbf{0.046} & \textbf{0.954} \\
+Growth & \textbf{pptdorm2*sex} & \textbf{-0.052} & \textbf{-0.209} & \textbf{0.106} & \textbf{0.256} & \textbf{0.744} \\
+Growth & \textbf{tempgrow2*sex} & \textbf{-0.066} & \textbf{-0.367} & \textbf{0.242} & \textbf{0.876} & 0.124 \\
+Growth & tempdorm2*sex & 0.105 & -0.077 & 0.277 & 0.337 & 0.663 \\
+Flowering & \textbf{size*sex} & \textbf{0.150} & \textbf{-0.277} & \textbf{0.578} & \textbf{0.759} & 0.241 \\
+Flowering & \textbf{sex} & \textbf{-0.810} & \textbf{-2.324} & \textbf{0.773} & \textbf{0.144} & \textbf{0.856} \\
+Flowering & pptgrowsex & -0.087 & -1.158 & 0.934 & 0.439 & 0.561 \\
+Flowering & pptdormsex & -0.189 & -1.052 & 0.683 & 0.339 & 0.661 \\
+Flowering & tempgrowsex & -0.215 & -1.208 & 0.783 & 0.339 & 0.661 \\
+Flowering & tempdormsex & -0.086 & -1.164 & 0.976 & 0.444 & 0.556 \\
+Flowering & tempdorm*pptdorm*sex & -0.105 & -0.701 & 0.517 & 0.371 & 0.629 \\
+Flowering & tempgrow*pptgrow*sex & -0.174 & -1.192 & 0.857 & 0.651 & 0.349 \\
+Flowering & \textbf{pptgrow2*sex} & \textbf{0.306} & \textbf{-0.214} & \textbf{0.832} & \textbf{0.869} & 0.131 \\
+Flowering & pptdorm2*sex & -0.086 & -0.695 & 0.503 & 0.394 & 0.606 \\
+Flowering & tempgrow2*sex & -0.348 & -1.295 & 0.545 & 0.535 & 0.465 \\
+Flowering & \textbf{tempdorm2*sex} & \textbf{0.022} & \textbf{-0.529} & \textbf{0.552} & \textbf{0.236} & \textbf{0.764} \\
+Panicles & \textbf{size*sex} & \textbf{0.037} & \textbf{-0.088} & \textbf{0.158} & \textbf{0.732} & 0.268 \\
+Panicles & sex & -0.068 & -0.340 & 0.211 & 0.303 & 0.697 \\
+Panicles & pptgrow*sex & -0.041 & -0.289 & 0.203 & 0.361 & 0.639 \\
+Panicles & pptdorm*sex & 0.010 & -0.210 & 0.233 & 0.534 & 0.466 \\
+Panicles & tempgrow*sex & 0.008 & -0.236 & 0.268 & 0.514 & 0.486 \\
+Panicles & \textbf{tempdorm*sex} & \textbf{-0.096} & \textbf{-0.341} & \textbf{0.157} & \textbf{0.229} & \textbf{0.771} \\
+Panicles & tempdorm*pptdorm*sex & 0.015 & -0.207 & 0.234 & 0.555 & 0.445 \\
+Panicles & \textbf{tempgrow*pptgrow*sex} & \textbf{-0.052} & \textbf{-0.287} & \textbf{0.208} & \textbf{0.289} & \textbf{0.711} \\
+Panicles & \textbf{pptgrow2*sex} & \textbf{0.059} & \textbf{-0.153} & \textbf{0.264} & \textbf{0.719} & 0.281 \\
+Panicles & pptdorm2*sex & 0.042 & -0.148 & 0.236 & 0.668 & 0.332 \\
+Panicles & \textbf{tempgrow2*sex} & \textbf{-0.116} & \textbf{-0.370} & \textbf{0.144} & \textbf{0.173} & \textbf{0.827} \\
+Panicles & \textbf{tempdorm2*sex} & \textbf{-0.092} & \textbf{-0.284} & \textbf{0.100} & \textbf{0.184} & \textbf{0.816}\\
 \bottomrule
 \end{tabular}
 \end{table}
-\newpage
 
-
-
-
-
-
-
-\newpage
 
 \bibliography{Forecasting}
 
